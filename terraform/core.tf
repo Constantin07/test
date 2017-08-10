@@ -9,8 +9,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = "true"
 
   tags {
-    Name = "vpc"
-    Env  = "Dev"
+    Name    = "vpc"
+    Env     = "Dev"
+    Project = "test"
   }
 }
 
@@ -26,8 +27,9 @@ resource "aws_vpc_dhcp_options" "dhcp_option" {
   netbios_node_type   = 2
 
   tags {
-    Name = "dhcp-option"
-    Env  = "Dev"
+    Name    = "dhcp-option"
+    Env     = "Dev"
+    Project = "test"
   }
 }
 
