@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc" {
   tags {
     Name    = "vpc"
     Env     = "${var.environment}"
-    Project = "test"
+    Project = "${var.project}"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_vpc_dhcp_options" "dhcp_option" {
   tags {
     Name    = "dhcp-option"
     Env     = "${var.environment}"
-    Project = "test"
+    Project = "${var.project}"
   }
 }
 
@@ -42,8 +42,9 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name = "gateway"
-    Env  = "${var.environment}"
+    Name    = "gateway"
+    Env     = "${var.environment}"
+    Project = "${var.project}"
   }
 }
 
