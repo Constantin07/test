@@ -10,7 +10,7 @@ resource "aws_vpc" "vpc" {
 
   tags {
     Name    = "vpc"
-    Env     = "Dev"
+    Env     = "${var.environment}"
     Project = "test"
   }
 }
@@ -28,7 +28,7 @@ resource "aws_vpc_dhcp_options" "dhcp_option" {
 
   tags {
     Name    = "dhcp-option"
-    Env     = "Dev"
+    Env     = "${var.environment}"
     Project = "test"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_internet_gateway" "gw" {
 
   tags {
     Name = "gateway"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -57,7 +57,7 @@ resource "aws_route_table" "public_rt" {
 
   tags {
     Name = "public_rt"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_route_table" "private_rt" {
 
   tags {
     Name = "private_rt"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -78,7 +78,7 @@ resource "aws_subnet" "public_subnet_a" {
 
   tags {
     Name = "public_subnet_a"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -95,7 +95,7 @@ resource "aws_subnet" "public_subnet_b" {
 
   tags {
     Name = "public_subnet_b"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -112,7 +112,7 @@ resource "aws_subnet" "public_subnet_c" {
 
   tags {
     Name = "public_subnet_c"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
@@ -134,12 +134,12 @@ resource "aws_security_group" "vpc_sg" {
 
   tags {
     Name = "vpc_sg"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
 
 resource "aws_security_group" "dev_sg" {
-  name        = "dev_sg"
+  name        = "${var.environment}_sg"
   description = "Dev security group"
 
   ingress {
@@ -158,6 +158,6 @@ resource "aws_security_group" "dev_sg" {
 
   tags {
     Name = "dev_sg"
-    Env  = "Dev"
+    Env  = "${var.environment}"
   }
 }
