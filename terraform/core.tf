@@ -141,7 +141,7 @@ resource "aws_security_group" "vpc_sg" {
 
 resource "aws_security_group" "dev_sg" {
   name        = "${var.environment}_sg"
-  description = "Dev security group"
+  description = "Dev environment security group"
 
   ingress {
     from_port       = 0
@@ -158,7 +158,8 @@ resource "aws_security_group" "dev_sg" {
   }
 
   tags {
-    Name = "dev_sg"
-    Env  = "${var.environment}"
+    Name    = "dev_sg"
+    Env     = "${var.environment}"
+    Project = "${var.project}"
   }
 }
