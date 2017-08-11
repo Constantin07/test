@@ -106,7 +106,8 @@ node {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
             	} catch(org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
-            	    def user = e.causes.get(0).getUser().toString()
+            	    def cause = e.causes.get(0)
+            	    def user = cause.getUser().toString()
             	    if('SYSTEM' == user) {
             		timeout = true
             	    } else {
