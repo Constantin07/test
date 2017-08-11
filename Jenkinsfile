@@ -29,7 +29,10 @@ node {
 
     stage('Get secrets'){
 	withEnv(["PATH+git-crypt=/usr/local/bin"]) {
-	    sh 'env; git crypt unlock'
+	    sh '''
+		env
+		#git crypt unlock
+	    '''
 	}
     }
 
