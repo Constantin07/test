@@ -2,8 +2,7 @@
 
 def git_url = 'git@github.com:Constantin07/test.git'
 def plan_exitcode
-def timeout = false
-def user_aborted = false
+def aborted = false
 
 node {
 
@@ -105,19 +104,14 @@ node {
         	    timeout(time: 1, unit: 'MINUTES') {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
-            	} catch(org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
-            	    def cause = e.causes.get(0)
-            	    def user = cause.getUser().toString()
-            	    if('SYSTEM' == user) {
-            		timeout = true
-            	    } else {
-            		user_aborted = true
-            		echo "Aborted by: [${user}]"
+            	} catch(err) {
+            		aborted = true
+            		echo "Timeout reached or user aborted."
             		currentBuild.result = 'ABORTED'
             	    }
             	}
 
-		if(timeout == false && user_aborted == false) {
+		if(aborted == false) {
 		    try {
                 	unstash 'plan'
 
@@ -138,7 +132,7 @@ node {
                 	}
             	    } catch(err) {
                 	// Send a message via HipChat
-                	echo "Plan Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                	echo "Plan Discarded."
                 	currentBuild.result = 'UNSTABLE'
             	    }
             	}
