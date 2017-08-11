@@ -27,6 +27,10 @@ node {
         ])
     }
 
+    stage('Get secrets'){
+	sh 'git crypt unlock'
+    }
+
     dir(path: './terraform') {
 
         stage('Validate') {
