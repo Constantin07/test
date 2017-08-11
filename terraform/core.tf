@@ -116,8 +116,8 @@ resource "aws_subnet" "public_subnet_c" {
   map_public_ip_on_launch = "true"
 
   tags {
-    Name = "public_subnet_c"
-    Env  = "${var.environment}"
+    Name    = "public_subnet_c"
+    Env     = "${var.environment}"
     Project = "${var.project}"
   }
 }
@@ -139,8 +139,9 @@ resource "aws_security_group" "vpc_sg" {
   }
 
   tags {
-    Name = "vpc_sg"
-    Env  = "${var.environment}"
+    Name    = "vpc_sg"
+    Env     = "${var.environment}"
+    Project = "${var.project}"
   }
 }
 
