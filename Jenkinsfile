@@ -100,7 +100,7 @@ node {
         milestone label: 'Plan'
 
         if(plan_exitcode == 2) {
-            stage(name: 'Apply', concurency: 1) {
+            stage(name: 'Approve', concurency: 1) {
         	try {
         	    timeout(time: 1, unit: 'MINUTES') {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
@@ -110,25 +110,29 @@ node {
             		echo "Timeout reached or user aborted. Plan Discarded."
             		currentBuild.result = 'ABORTED'
             	}
+            }
 
-		if(aborted == false) {
-            	    unstash 'plan'
+	    if(aborted == true) {
+		return
+	    }
 
-            	    ansiColor('xterm') {
-                    	withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                    	accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    	secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                    	credentialsId: 'Amazon Credentials']]) {
-                    	    apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
-                    	}
-            	    }
+            stage(name: 'Apply', concurency: 1) {
+            	unstash 'plan'
 
-            	    if(apply_exitcode == 0) {
-                    	echo "Changes Applied."
-            	    } else {
-                    	echo "Apply Failed."
-                    	currentBuild.result = 'FAILURE'
-            	    }
+            	ansiColor('xterm') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                    credentialsId: 'Amazon Credentials']]) {
+                    	apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
+                    }
+            	}
+
+            	if(apply_exitcode == 0) {
+        	    echo "Changes Applied."
+            	} else {
+                    echo "Apply Failed."
+                    currentBuild.result = 'FAILURE'
             	}
     	    }
         }
