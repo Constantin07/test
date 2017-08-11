@@ -85,14 +85,14 @@ node {
 
                 if(plan_exitcode == 1) {
                     // Error (send a message via HipChat)
-                    echo "Plan Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                    echo "Plan Failed."
                     currentBuild.result = 'FAILURE'
                 }
 
                 if(plan_exitcode == 2) {
                     // Succeeded, there is a diff to apply (send a message via HiChat)
                     stash name: "plan", includes: "plan.out"
-                    echo "Plan Awaiting Approval: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                    echo "Plan Awaiting Approval."
                 }
             }
         }
@@ -108,7 +108,7 @@ node {
             	} catch(err) {
             		aborted = true
             		echo "Timeout reached or user aborted. Plan Discarded."
-            		currentBuild.result = 'ABORTED'
+            		currentBuild.result = 'NOT_EXECUTED'
             	}
 
 		if(aborted == false) {
