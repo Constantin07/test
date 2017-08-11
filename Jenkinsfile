@@ -1,8 +1,11 @@
 #!groovy
 
+def git_url = 'git@github.com:Constantin07/test.git'
+def plan_exitcode
+def timeout = false
+def user_aborted = false
+
 node {
-    int plan_exitcode
-    def git_url = 'git@github.com:Constantin07/test.git'
 
     // Set path to terraform
     env.PATH = "/usr/local/bin:${env.PATH}"
@@ -53,8 +56,8 @@ node {
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     credentialsId: 'Amazon Credentials']]) {
-                    // Initialize S3 backend
-                    sh 'terraform init'
+                	// Initialize S3 backend
+                	sh 'terraform init'
                 }
 
                 // Syntax validation 
@@ -66,9 +69,12 @@ node {
 
         stage(name: 'Plan', concurency: 1) {
             ansiColor('xterm') {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'Amazon Credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    plan_exitcode = sh(returnStatus: true,
-                        script: 'terraform plan -detailed-exitcode -out=plan.out')
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+            	    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            	    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+            	    credentialsId: 'Amazon Credentials']]) {
+                	plan_exitcode = sh(returnStatus: true,
+                    	    script: 'terraform plan -detailed-exitcode -out=plan.out')
                 }
                 echo "Terraform plan exit code: ${plan_exitcode}"
 
@@ -95,35 +101,47 @@ node {
 
         if(plan_exitcode == 2) {
             stage(name: 'Apply', concurency: 1) {
+        	try {
         	    timeout(time: 1, unit: 'MINUTES') {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
+            	} catch(err) {
+            	    def user = err.getCauses()[0].getUser()
+            	    if('SYSTEM' == user.toString()) {
+            		timeout = true
+            	    } else {
+            		user_aborted = true
+            		echo "Aborted by: [${user}]"
+            		currentBuild.result = 'ABORTED'
+            	    }
+            	}
 
-		try {
-                    unstash 'plan'
+		if(timeout == false && user_aborted == false) {
+		    try {
+                	unstash 'plan'
 
-                    ansiColor('xterm') {
-                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                        credentialsId: 'Amazon Credentials']]) {
-                            def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
-                        }
-                    }
+                	ansiColor('xterm') {
+                    	    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                    	    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    	    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                    	    credentialsId: 'Amazon Credentials']]) {
+                        	def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
+                    	    }
+                	}
 
-                    if(apply_exitcode == 0) {
-                        echo "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
-                    } else {
-                        echo "Apply Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
-                        currentBuild.result = 'FAILURE'
-                    }
-
-                } catch (err) {
-                    // Send a message via HipChat
-                    echo "Plan Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
-                    currentBuild.result = 'UNSTABLE'
-                }
-            }
+                	if(apply_exitcode == 0) {
+                    	    echo "Changes Applied."
+                	} else {
+                    	    echo "Apply Failed."
+                    	    currentBuild.result = 'FAILURE'
+                	}
+            	    } catch(err) {
+                	// Send a message via HipChat
+                	echo "Plan Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                	currentBuild.result = 'UNSTABLE'
+            	    }
+            	}
+    	    }
         }
     }
 }
