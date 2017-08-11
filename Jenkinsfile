@@ -108,7 +108,7 @@ node {
             	} catch(err) {
             		aborted = true
             		echo "Timeout reached or user aborted. Plan Discarded."
-            		currentBuild.result = 'NOT_EXECUTED'
+            		currentBuild.result = 'ABORTED'
             	}
 
 		if(aborted == false) {
