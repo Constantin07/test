@@ -108,7 +108,6 @@ node {
             		aborted = true
             		echo "Timeout reached or user aborted."
             		currentBuild.result = 'ABORTED'
-            	    }
             	}
 
 		if(aborted == false) {
