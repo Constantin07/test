@@ -82,6 +82,7 @@ resource "aws_subnet" "public_subnet_a" {
   tags {
     Name = "public_subnet_a"
     Env  = "${var.environment}"
+    Project = "${var.project}"
   }
 }
 
