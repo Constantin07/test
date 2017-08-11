@@ -105,9 +105,9 @@ node {
         	    timeout(time: 1, unit: 'MINUTES') {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
-            	} catch(err) {
-            	    def user = err.getCause()[0].getUser()
-            	    if('SYSTEM' == user.toString()) {
+            	} catch(org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+            	    def user = e.causes.get(0).getUser().toString()
+            	    if('SYSTEM' == user) {
             		timeout = true
             	    } else {
             		user_aborted = true
