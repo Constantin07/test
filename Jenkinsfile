@@ -95,22 +95,24 @@ node {
 
         if(plan_exitcode == 2) {
             stage(name: 'Apply', concurency: 1) {
-                try {
-                    input message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin'
+        	    timeout(time: 1, unit: 'MINUTES') {
+                	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
+            	    }
 
+		try {
                     unstash 'plan'
 
                     ansiColor('xterm') {
                         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        credentialsId: 'Amazon Credentials',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                        credentialsId: 'Amazon Credentials']]) {
                             def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
                         }
                     }
 
                     if(apply_exitcode == 0) {
-                        echo "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER}"    
+                        echo "Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                     } else {
                         echo "Apply Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                         currentBuild.result = 'FAILURE'
