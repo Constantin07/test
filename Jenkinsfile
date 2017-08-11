@@ -106,33 +106,27 @@ node {
             	    }
             	} catch(err) {
             		aborted = true
-            		echo "Timeout reached or user aborted."
+            		echo "Timeout reached or user aborted. Plan Discarded."
             		currentBuild.result = 'ABORTED'
             	}
 
 		if(aborted == false) {
-		    try {
-                	unstash 'plan'
+            	    unstash 'plan'
 
-                	ansiColor('xterm') {
-                    	    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                    	    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    	    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                    	    credentialsId: 'Amazon Credentials']]) {
-                        	def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
-                    	    }
-                	}
+            	    ansiColor('xterm') {
+                    	withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                    	accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    	secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                    	credentialsId: 'Amazon Credentials']]) {
+                    	    def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
+                    	}
+            	    }
 
-                	if(apply_exitcode == 0) {
-                    	    echo "Changes Applied."
-                	} else {
-                    	    echo "Apply Failed."
-                    	    currentBuild.result = 'FAILURE'
-                	}
-            	    } catch(err) {
-                	// Send a message via HipChat
-                	echo "Plan Discarded."
-                	currentBuild.result = 'UNSTABLE'
+            	    if(apply_exitcode == 0) {
+                    	echo "Changes Applied."
+            	    } else {
+                    	echo "Apply Failed."
+                    	currentBuild.result = 'FAILURE'
             	    }
             	}
     	    }
