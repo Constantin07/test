@@ -27,7 +27,7 @@ node {
         ])
     }
 
-dir(path: './terraform') {
+    dir(path: './terraform') {
 
         stage('Validate') {
             // Remove the terraform state file so we always start from a clean state
