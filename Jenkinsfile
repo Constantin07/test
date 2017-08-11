@@ -31,7 +31,7 @@ node {
 	withEnv(["PATH+git-crypt=/usr/local/bin"]) {
 	    sh '''
 		env
-		#git crypt unlock
+		git crypt unlock
 	    '''
 	}
     }
