@@ -106,7 +106,7 @@ node {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
             	} catch(err) {
-            	    def user = err.getCauses()[0].getUser()
+            	    def user = err.getCause()[0].getUser()
             	    if('SYSTEM' == user.toString()) {
             		timeout = true
             	    } else {
