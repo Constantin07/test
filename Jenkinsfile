@@ -30,7 +30,7 @@ node {
     stage('Get secrets'){
 	    sh '''
 		env
-		git crypt unlock
+		#git crypt unlock
 	    '''
     }
 
