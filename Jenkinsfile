@@ -28,7 +28,9 @@ node {
     }
 
     stage('Get secrets'){
-	sh 'git crypt unlock'
+	withEnv(["PATH+git-crypt=/usr/local/bin"]) {
+	    sh 'git crypt unlock'
+	}
     }
 
     dir(path: './terraform') {
