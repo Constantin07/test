@@ -2,6 +2,7 @@
 
 def git_url = 'git@github.com:Constantin07/test.git'
 def plan_exitcode
+def apply_exitcode
 def aborted = false
 
 node {
@@ -118,7 +119,7 @@ node {
                     	accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     	secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     	credentialsId: 'Amazon Credentials']]) {
-                    	    def apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
+                    	    apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
                     	}
             	    }
 
