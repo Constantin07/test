@@ -17,7 +17,7 @@ node {
         projectUrlStr: 'https://github.com/Constantin07/test'],
 
         properties([pipelineTriggers([pollSCM('''TZ=Europe/London
-        H/1 * * * *''')])]),
+        * * * * *''')])]),
 
         // Allow only one change at a time
         disableConcurrentBuilds()
