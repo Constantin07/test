@@ -58,7 +58,7 @@ node {
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     credentialsId: 'Amazon Credentials']]) {
                 	// Initialize S3 backend
-                	sh 'terraform init'
+                	sh 'terraform init -force-copy'
                 }
 
                 // Syntax validation 
