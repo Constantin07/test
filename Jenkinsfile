@@ -47,10 +47,10 @@ node {
             }
 
             ansiColor('xterm') {
-                echo 'Print terraform version'
+                //Print terraform version
                 sh 'terraform --version'
 
-                echo 'Rewrite in cannonical format'
+                //Rewrite in cannonical format
                 sh 'terraform fmt -list=true -diff=false'
 
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
@@ -61,10 +61,10 @@ node {
                 	sh 'terraform init -force-copy'
                 }
 
-                echo 'Load modules'
+                //Load modules
                 sh 'terraform get -update=true'
 
-                echo 'Syntax validation'
+                //Syntax validation
                 sh 'terraform validate'
             }
         }
