@@ -16,8 +16,8 @@ node {
         [$class: 'GithubProjectProperty',
         projectUrlStr: 'https://github.com/Constantin07/test'],
 
-        properties([pipelineTriggers([pollSCM('''TZ=Europe/London
-        * * * * *''')])]),
+        pipelineTriggers([pollSCM('''TZ=Europe/London
+        * * * * *''')]),
 
         // Allow only one change at a time
         disableConcurrentBuilds()
