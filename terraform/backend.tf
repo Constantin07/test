@@ -3,7 +3,7 @@ terraform {
     bucket         = "costea-states"
     key            = "terraform/terraform.tfstate"
     dynamodb_table = "costea-states"
-    encrypt        = "true"
+    encrypt        = true
     region         = "eu-west-1"
   }
 }

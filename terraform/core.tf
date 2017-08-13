@@ -1,12 +1,8 @@
-provider "aws" {
-  region = "${var.region}"
-}
-
 resource "aws_vpc" "vpc" {
   cidr_block           = "${var.vpc_cidr}"
   instance_tenancy     = "default"
-  enable_dns_support   = "true"
-  enable_dns_hostnames = "true"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags {
     Name    = "vpc"
@@ -135,7 +131,7 @@ resource "aws_security_group" "vpc_sg" {
     from_port = 0
     to_port   = 0
     protocol  = "icmp"
-    self      = "true"
+    self      = true
   }
 
   tags {
