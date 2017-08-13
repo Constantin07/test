@@ -47,21 +47,24 @@ node {
             }
 
             ansiColor('xterm') {
-                // Print terraform version
+                echo 'Print terraform version'
                 sh 'terraform --version'
 
-                // Rewrite in cannonical format
+                echo 'Rewrite in cannonical format'
                 sh 'terraform fmt -list=true -diff=false'
 
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     credentialsId: 'Amazon Credentials']]) {
-                	// Initialize S3 backend
+                	echo 'Initialize S3 backend'
                 	sh 'terraform init -force-copy'
                 }
 
-                // Syntax validation 
+                echo 'Load modules'
+                sh 'terraform get -update=true'
+
+                echo 'Syntax validation'
                 sh 'terraform validate'
             }
         }
@@ -80,20 +83,20 @@ node {
                 echo "Terraform plan exit code: ${plan_exitcode}"
 
                 if(plan_exitcode == 0) {
-                    echo "No changes to apply."
+                    echo 'No changes to apply.'
                     currentBuild.result = 'SUCCESS'
                 }
 
                 if(plan_exitcode == 1) {
                     // Error (send a message via HipChat)
-                    echo "Plan Failed."
+                    echo 'Plan Failed.'
                     currentBuild.result = 'FAILURE'
                 }
 
                 if(plan_exitcode == 2) {
                     // Succeeded, there is a diff to apply (send a message via HiChat)
                     stash name: "plan", includes: "plan.out"
-                    echo "Plan Awaiting Approval."
+                    echo 'Plan Awaiting Approval.'
                 }
             }
         }
@@ -108,7 +111,7 @@ node {
             	    }
             	} catch(err) {
             		aborted = true
-            		echo "Timeout reached or user aborted. Plan Discarded."
+            		echo 'Timeout reached or user aborted. Plan Discarded.'
             		currentBuild.result = 'ABORTED'
             	}
             }
@@ -132,7 +135,7 @@ node {
             	if(apply_exitcode == 0) {
         	    echo "Changes Applied."
             	} else {
-                    echo "Apply Failed."
+                    echo 'Apply Failed.'
                     currentBuild.result = 'FAILURE'
             	}
     	    }

@@ -1,5 +1,6 @@
 # Global IAM settings
-resource "aws_iam_account_password_policy" "custom" {
+
+resource "aws_iam_account_password_policy" "iam_account_settings" {
   allow_users_to_change_password = true
   max_password_age               = 180
   minimum_password_length        = 8
@@ -9,4 +10,3 @@ resource "aws_iam_account_password_policy" "custom" {
   require_symbols                = true
   require_uppercase_characters   = true
 }
-
