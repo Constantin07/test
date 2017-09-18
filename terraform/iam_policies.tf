@@ -3,7 +3,7 @@ resource "aws_iam_policy" "Policy-DynamoDB-State-Lock" {
   name        = "Access-to-dynamo-db-lock-table"
   path        = "/"
 
-  policy      = <<EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -44,7 +44,7 @@ resource "aws_iam_policy" "Policy-S3-State" {
   name        = "Access-to-s3-state-bucket"
   path        = "/"
 
-  policy      = <<EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [

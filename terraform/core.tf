@@ -53,8 +53,8 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags {
-    Name = "public_rt"
-    Env  = "${var.environment}"
+    Name    = "public_rt"
+    Env     = "${var.environment}"
     Project = "${var.project}"
   }
 }
@@ -63,8 +63,8 @@ resource "aws_route_table" "private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name = "private_rt"
-    Env  = "${var.environment}"
+    Name    = "private_rt"
+    Env     = "${var.environment}"
     Project = "${var.project}"
   }
 }
@@ -76,8 +76,8 @@ resource "aws_subnet" "public_subnet_a" {
   map_public_ip_on_launch = "true"
 
   tags {
-    Name = "public_subnet_a"
-    Env  = "${var.environment}"
+    Name    = "public_subnet_a"
+    Env     = "${var.environment}"
     Project = "${var.project}"
   }
 }
@@ -94,8 +94,8 @@ resource "aws_subnet" "public_subnet_b" {
   map_public_ip_on_launch = "true"
 
   tags {
-    Name = "public_subnet_b"
-    Env  = "${var.environment}"
+    Name    = "public_subnet_b"
+    Env     = "${var.environment}"
     Project = "${var.project}"
   }
 }
@@ -171,9 +171,9 @@ resource "aws_security_group" "server_sg" {
   description = "Dev server security group"
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
