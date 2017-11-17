@@ -58,7 +58,7 @@ node {
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     credentialsId: 'Amazon Credentials']]) {
                 	echo 'Initialize S3 backend'
-                	sh 'terraform init -force-copy'
+                	sh 'terraform init -get=true -force-copy'
                 }
 
                 //Load modules
