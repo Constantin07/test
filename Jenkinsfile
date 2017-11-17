@@ -128,7 +128,7 @@ node {
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                     credentialsId: 'Amazon Credentials']]) {
-                    	apply_exitcode = sh(returnStatus: true, script: 'terraform apply plan.out')
+                    	apply_exitcode = sh(returnStatus: true, script: 'terraform apply -auto-approve plan.out')
                     }
             	}
 
