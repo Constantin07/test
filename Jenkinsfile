@@ -106,7 +106,7 @@ node {
         if(plan_exitcode == 2) {
             stage(name: 'Approve', concurency: 1) {
         	try {
-        	    timeout(time: 1, unit: 'MINUTES') {
+        	    timeout(time: 3, unit: 'MINUTES') {
                 	input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             	    }
             	} catch(err) {
