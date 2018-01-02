@@ -185,7 +185,7 @@ resource "aws_security_group" "server_sg" {
   }
 
   tags {
-    Name    = "server_sg"
+    Name    = "server_sg1"
     Env     = "${var.environment}"
     Project = "${var.project}"
   }
