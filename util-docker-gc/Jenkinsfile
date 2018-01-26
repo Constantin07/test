@@ -11,6 +11,7 @@ pipeline {
         disableConcurrentBuilds()
         timestamps()
         ansiColor('xterm')
+        timeout(time: 1, unit: 'HOURS')
     }
 
     //environment {
