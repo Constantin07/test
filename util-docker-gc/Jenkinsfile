@@ -1,0 +1,36 @@
+pipeline {
+
+    agent any
+
+    triggers {
+        cron('H 23 * * *')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        disableConcurrentBuilds()
+        timestamps()
+    }
+
+    //environment {
+    //}
+
+    stages {
+
+        stage('Clean old images and containers') {
+            steps {
+                sh '''
+                    docker run --rm -e DRY_RUN=0 -e MINIMUM_IMAGES_TO_SAVE=1 -e FORCE_IMAGE_REMOVAL=1 -e GRACE_PERIOD_SECONDS=86400 -v /var/run/docker.sock:/var/run/docker.sock spotify/docker-gc
+                '''
+            }
+        }
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+    }
+
+}
