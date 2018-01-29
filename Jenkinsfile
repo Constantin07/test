@@ -23,6 +23,7 @@ node {
         disableConcurrentBuilds()
     ])
 
+timestamps {
     stage('Checkout'){
         checkout([$class: 'GitSCM',
             branches: [[name: '*/master']],
@@ -140,5 +141,6 @@ node {
             	}
     	    }
         }
+    }
     }
 }
