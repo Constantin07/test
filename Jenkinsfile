@@ -42,6 +42,7 @@ node {
     		$class: 'GitSCM',
         	branches: [[name: '*/master']],
         	doGenerateSubmoduleConfigurations: false,
+        	extensions: [[$class: 'CleanBeforeCheckout']],
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
 
