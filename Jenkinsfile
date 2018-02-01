@@ -35,7 +35,7 @@ node {
         	doGenerateSubmoduleConfigurations: false,
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
-	    comment = get_comment()
+	    currentBuild.description = get_comment()
 	}
 
 	stage('Get secrets'){
