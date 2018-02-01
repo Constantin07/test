@@ -7,7 +7,13 @@ def aborted = false
 
 // Get comment of last commit
 def get_comment() {
-     return sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
+    def f = 'output_file.txt'
+    def status = sh(returnStatus: true, script: "git log -1 --pretty=%B > ${f} 2>&1")
+    if (status != 0) {
+	currentBuild.result = 'FAILED'
+	error readFile(${f}).trim()
+    }
+    sh "${f}"
 }
 
 node {
@@ -35,6 +41,8 @@ node {
         	doGenerateSubmoduleConfigurations: false,
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
+
+	    // Add comment to build description
 	    currentBuild.description = get_comment()
 	}
 
