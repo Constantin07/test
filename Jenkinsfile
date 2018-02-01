@@ -13,7 +13,7 @@ def get_comment() {
 	currentBuild.result = 'FAILED'
 	error "Failed to read commit comment"
     } else {
-	return readFile(${f}).trim()
+	return readFile($f).trim()
     }
     sh "rm $f"
 }
