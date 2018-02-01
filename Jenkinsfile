@@ -8,7 +8,7 @@ def aborted = false
 // Get comment of last commit
 def get_comment() {
     def f = 'output_file.txt'
-    def status = sh(returnStatus: true, script: "git log -1 --pretty=%B > $f")
+    def status = sh(returnStatus: true, script: "git log -1 --pretty=%B > output_file.txt")
     if (status != 0) {
 	currentBuild.result = 'FAILED'
 	error "Failed to read commit comment"
