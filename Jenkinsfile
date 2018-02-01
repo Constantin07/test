@@ -41,7 +41,6 @@ node {
     	    checkout([
     		$class: 'GitSCM',
         	branches: [[name: '*/master']],
-        	browser: [$class: 'GithubWeb', repoUrl: 'https://github.com/Constantin07/test'],
         	doGenerateSubmoduleConfigurations: false,
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
@@ -158,6 +157,10 @@ node {
                 	currentBuild.result = 'FAILURE'
             	    }
     		}
+    	    }
+    	    
+    	    stage(name: 'Cleanup', concurency: 1) {
+    		cleanWs()
     	    }
 	}
     }
