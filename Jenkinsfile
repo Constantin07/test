@@ -5,6 +5,11 @@ def plan_exitcode
 def apply_exitcode
 def aborted = false
 
+// Get comment of last commit
+def get_comment() {
+     return sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
+}
+
 node {
 
     // Set path to terraform
@@ -30,6 +35,7 @@ node {
         	doGenerateSubmoduleConfigurations: false,
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
+	    comment = get_comment()
 	}
 
 	stage('Get secrets'){
