@@ -11,7 +11,7 @@ def get_comment() {
     def status = sh(returnStatus: true, script: "git log -1 --pretty=%B > ${f}")
     if (status != 0) {
 	currentBuild.result = 'FAILED'
-	error "Failed to read commit comment"
+	error "Failed to read last commit's comment"
     } else {
 	return readFile(f).trim()
     }
@@ -38,8 +38,10 @@ node {
 
     timestamps {
 	stage('Checkout'){
-    	    checkout([$class: 'GitSCM',
+    	    checkout([
+    		$class: 'GitSCM',
         	branches: [[name: '*/master']],
+        	browser: [$class: 'GithubWeb', repoUrl: 'https://github.com/Constantin07/test'],
         	doGenerateSubmoduleConfigurations: false,
         	userRemoteConfigs: [[credentialsId: 'Git', url: git_url]]
 	    ])
