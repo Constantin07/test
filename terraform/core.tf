@@ -31,11 +31,6 @@ resource "aws_vpc_endpoint" "vpc_endpoint_dynamodb" {
   ]
 }
 
-resource "aws_vpc_endpoint" "vpc_endpoint_ec2" {
-  vpc_id       = "${aws_vpc.vpc.id}"
-  service_name = "com.amazonaws.eu-west-1.ec2"
-}
-
 resource "aws_vpc_dhcp_options" "dhcp_option" {
   domain_name         = "test.local"
   domain_name_servers = ["8.8.8.8", "8.8.4.4"]
