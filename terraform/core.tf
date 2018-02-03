@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-resource "aws_vpc_endpoint" "vpc_endpoint" {
+resource "aws_vpc_endpoint" "vpc_endpoint_s3" {
   vpc_id       = "${aws_vpc.vpc.id}"
   service_name = "com.amazonaws.eu-west-1.s3"
 }
