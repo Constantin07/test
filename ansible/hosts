@@ -1,3 +1,6 @@
+centos7   ansible_host=10.0.2.4
+localhost ansible_host=127.0.0.1
+
 [elasticsearch]
 elasticsearc-1 ansible_host=10.0.2.18
 elasticsearc-2 ansible_host=10.0.2.19
