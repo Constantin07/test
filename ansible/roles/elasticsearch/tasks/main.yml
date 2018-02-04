@@ -1,0 +1,56 @@
+---
+
+- name: Create mount point in /etc/elasticsearch dir
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0775
+    state: directory
+  with_items:
+    - "/etc/elasticsearch"
+    - "/var/lib/elasticsearch"
+    - "/var/log/elasticsearch"
+
+- name: Push configuration for service {{ image_name }}
+  template:
+    src: "elasticsearch.yml.j2"
+    dest: "/etc/elasticsearch/elasticsearch.yml"
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Prefetch docker image
+  docker_image:
+    api_version: auto
+    name: "{{ docker_host }}/{{ repository }}/{{ image_name }}:{{ version }}"
+    tag: "{{ version }}"
+    state: present
+  when: prefetch_image|default(True)|bool == True
+
+- name: Run docker image
+  docker_container:
+    api_version: auto
+    name: "{{ image_name }}"
+    image: "{{ docker_host }}/{{ repository }}/{{ image_name }}:{{ version }}"
+    state: started
+    recreate: True
+    exposed_ports:
+      - "9200"
+      - "9300"
+    published_ports:
+      - "9200:9200"
+      - "9300:9300"
+    memory: "{{ memory|default('1gb') }}"
+    volumes:
+      - "/etc/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "/var/lib/elasticsearch:/var/lib/elasticsearch"
+      - "/var/log/elasticsearch:/var/log/elasticsearch"
+    env:
+      DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
+    restart_policy: on-failure
+    restart_retries: 10
+    trust_image_content: true
+    ulimits:
+      - "nofile:262144:262144"
+      - "memlock:-1:-1"

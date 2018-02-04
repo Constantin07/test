@@ -1,11 +1,11 @@
 ---
 
-- hosts:
-    - elasticsearch
+- hosts: elasticsearch
   gather_facts: True
   become: yes
   become_user: root
 
   roles:
-   - ctop
-   - docker
+   #- ctop
+   #- docker
+    - elasticsearch
