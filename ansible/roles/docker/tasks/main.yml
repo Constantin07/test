@@ -1,0 +1,49 @@
+---
+
+- import_tasks: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Docker
+  package: name="{{ docker_package }}" state="{{ docker_package_state }}"
+
+- name: Install required packages
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - python2-pip
+
+- name: Install docker-py
+  pip: name=docker-py version=1.10.6
+
+- name: Ensure dependant services are started
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - systemd-journald
+
+- name: Create docker config directory
+  file:
+    path: "/etc/docker"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Ensure Docker is started and enabled at boot
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Update /etc/docker.daemon.json file
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart docker
