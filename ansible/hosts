@@ -1,0 +1,4 @@
+[elasticsearch]
+elasticsearc-1 ansible_host=10.0.2.18
+elasticsearc-2 ansible_host=10.0.2.19
+elasticsearc-3 ansible_host=10.0.2.20
