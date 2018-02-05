@@ -2,6 +2,6 @@ centos7   ansible_host=10.0.2.4
 localhost ansible_host=127.0.0.1
 
 [elasticsearch]
-elasticsearch-1 ansible_host=10.0.2.18
-elasticsearch-2 ansible_host=10.0.2.19
-elasticsearch-3 ansible_host=10.0.2.20
+elasticsearch-1.internal ansible_host=10.0.2.18
+elasticsearch-2.internal ansible_host=10.0.2.19
+elasticsearch-3.internal ansible_host=10.0.2.20

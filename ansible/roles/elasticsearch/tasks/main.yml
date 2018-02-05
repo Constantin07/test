@@ -43,10 +43,11 @@
       - "9300:9300"
     memory: "{{ memory|default('1gb') }}"
     volumes:
-      - "/etc/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
-      - "/var/lib/elasticsearch:/var/lib/elasticsearch"
-      - "/var/log/elasticsearch:/var/log/elasticsearch"
+      - "/etc/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro"
+      - "/var/lib/elasticsearch:/var/lib/elasticsearch:rw"
+      - "/var/log/elasticsearch:/var/log/elasticsearch:rw"
     env:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
     restart_retries: 10
@@ -54,3 +55,4 @@
     ulimits:
       - "nofile:262144:262144"
       - "memlock:-1:-1"
+      - "nproc:10000:10000"
