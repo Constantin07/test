@@ -20,6 +20,14 @@
     group: root
     mode: 0664
 
+- name: Push java policy {{ image_name }}
+  copy:
+    src: "java.security"
+    dest: "/etc/elasticsearch/java.security"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Prefetch docker image
   docker_image:
     api_version: auto
@@ -35,6 +43,7 @@
     image: "{{ docker_host }}/{{ repository }}/{{ image_name }}:{{ version }}"
     state: started
     recreate: True
+    oom_killer: False
     exposed_ports:
       - "9200"
       - "9300"
@@ -44,10 +53,11 @@
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "/etc/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro"
+      - "/etc/elasticsearch/java.security:/usr/lib/jvm/jre-1.8.0-openjdk/lib/security/java.security:ro"
       - "/var/lib/elasticsearch:/var/lib/elasticsearch:rw"
       - "/var/log/elasticsearch:/var/log/elasticsearch:rw"
     env:
-      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
     restart_retries: 10
