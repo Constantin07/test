@@ -5,3 +5,6 @@ localhost ansible_host=127.0.0.1
 elasticsearch-1.internal ansible_host=10.0.2.18
 elasticsearch-2.internal ansible_host=10.0.2.19
 elasticsearch-3.internal ansible_host=10.0.2.20
+
+[elasticsearch:vars]
+ansible_user=root
