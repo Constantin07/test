@@ -1,0 +1,20 @@
+cluster.name: elasticsearch
+node.name: ${HOSTNAME}
+
+bootstrap.memory_lock: true
+
+http.port: 9200
+network.bind_host: 0.0.0.0
+network.host: _site_
+
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
+discovery.zen.hosts_provider: file
+discovery.zen.minimum_master_nodes: 2
+
+xpack.security.authc:
+  anonymous:
+    username: elastic
+    roles: superuser
