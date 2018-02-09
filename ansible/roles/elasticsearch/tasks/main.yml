@@ -17,7 +17,6 @@
     name: "{{ docker_host }}/{{ image_name }}:{{ version }}"
     tag: "{{ version }}"
     state: present
-  when: prefetch_image|default(True)|bool == True
 
 - name: Run docker image
   docker_container:
