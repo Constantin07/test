@@ -8,7 +8,7 @@
     mode: 0775
     state: directory
   with_items:
-    - "/var/lib/elasticsearch"
+    - "/var/data/elasticsearch"
     - "/var/log/elasticsearch"
 
 - name: Prefetch docker image
@@ -36,8 +36,8 @@
     network_mode: host
     memory: "{{ memory|default('1gb') }}"
     volumes:
-      - "/var/lib/elasticsearch:/var/lib/elasticsearch:rw"
-      - "/var/log/elasticsearch:/var/log/elasticsearch:rw"
+      - "/var/data/elasticsearch:/usr/share/elasticsearch/data:rw"
+      - "/var/log/elasticsearch:/usr/share/elasticsearch/logs:rw"
     env:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true"
       ELASTIC_PASSWORD: "{{ ELASTIC_PASSWORD }}"
