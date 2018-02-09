@@ -38,8 +38,7 @@ setup.template.overwrite: true
 setup.template.enabled: true
 
 output.elasticsearch:
-  enabled: true
-  host: ["elasticsearch.internal:9200"]
+  hosts: ["elasticsearch.internal:9200"]
   protocol: http
   index: "metricbeat-%{+yyyy.MM.dd}"
   compression_level: 1
