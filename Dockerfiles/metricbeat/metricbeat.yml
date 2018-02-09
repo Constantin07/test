@@ -12,6 +12,7 @@ metricbeat.modules:
   cpu_ticks: false
 
 setup.template.name: "metricbeat-*"
+setup.template.pattern: "metricbeat-*"
 setup.template.fields: "fields.yml"
 setup.template.overwrite: true
 setup.template.enabled: true
