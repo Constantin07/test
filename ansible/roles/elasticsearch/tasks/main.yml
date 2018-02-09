@@ -30,9 +30,10 @@
     exposed_ports:
       - "9200"
       - "9300"
-    published_ports:
-      - "9200:9200"
-      - "9300:9300"
+#    published_ports:
+#      - "9200:9200"
+#      - "9300:9300"
+    network_mode: host
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "/var/lib/elasticsearch:/var/lib/elasticsearch:rw"
