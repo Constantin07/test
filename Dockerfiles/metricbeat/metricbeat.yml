@@ -37,11 +37,15 @@ queue:
     flush.min_events: 512
     flush.timeout: 5s
 
-setup.template.name: "metricbeat-*"
+setup.template.name: "metricbeat"
 setup.template.pattern: "metricbeat-*"
-setup.template.fields: "/usr/share/metricbeat/fields.yml"
+setup.template.fields: "fields.yml"
 setup.template.overwrite: true
 setup.template.enabled: true
+setup.template.settings:
+  index.number_of_shards: 1
+  index.number_of_replicas: 1
+  _source.enabled: true
 
 output.elasticsearch:
   hosts: ["elasticsearch.internal:9200"]

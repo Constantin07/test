@@ -1,6 +1,6 @@
----
 
-server.name: kibana.internal
+console.enabled: true
+server.name: centos7.internal
 
 elasticsearch.url: http://elasticsearch.internal:9200
 
