@@ -10,7 +10,7 @@ network.host: _site_
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 
-discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
+#discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
 discovery.zen.hosts_provider: file
 discovery.zen.minimum_master_nodes: 2
 
