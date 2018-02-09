@@ -7,6 +7,9 @@ http.port: 9200
 network.bind_host: 0.0.0.0
 network.host: _site_
 
+path.logs: /var/log/elasticsearch
+path.data: /var/data/elasticsearch
+
 discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
 discovery.zen.hosts_provider: file
 discovery.zen.minimum_master_nodes: 2
