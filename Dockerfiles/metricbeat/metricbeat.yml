@@ -11,6 +11,11 @@ metricbeat.modules:
   processes: ['.*']
   cpu_ticks: false
 
+setup.template.name: "metricbeat-*"
+setup.template.fields: "fields.yml"
+setup.template.overwrite: true
+setup.template.enabled: true
+
 output.elasticsearch:
   hosts: ["elasticsearch.internal:9200"]
   protocol: http
