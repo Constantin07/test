@@ -19,14 +19,13 @@
     state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
+      - "/proc:/hostfs/proc:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/:/hostfs:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     env:
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
     restart_retries: 10
     trust_image_content: true
-    ulimits:
-      - "nofile:262144:262144"
-      - "memlock:-1:-1"
-      - "nproc:10000:10000"
     log_driver: journald
