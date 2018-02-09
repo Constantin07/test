@@ -1,0 +1,12 @@
+---
+
+- hosts: elasticsearch
+  gather_facts: True
+  become: yes
+  become_user: root
+  serial: 3
+
+  roles:
+   #- ctop
+   #- docker
+    - metricbeat
