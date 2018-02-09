@@ -11,14 +11,6 @@
     - "/var/data/elasticsearch"
     - "/var/log/elasticsearch"
 
-- name: Prefetch docker image
-  docker_image:
-    api_version: auto
-    pull: yes
-    name: "{{ docker_host }}/{{ image_name }}:{{ version }}"
-    tag: "{{ version }}"
-    state: present
-
 - name: Run docker image
   docker_container:
     api_version: auto
@@ -33,7 +25,9 @@
 #    published_ports:
 #      - "9200:9200"
 #      - "9300:9300"
+    pull: yes
     network_mode: host
+    state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "/var/data/elasticsearch:/var/data/elasticsearch:rw"
@@ -49,3 +43,4 @@
       - "nofile:262144:262144"
       - "memlock:-1:-1"
       - "nproc:10000:10000"
+    log_driver: journald
