@@ -27,9 +27,15 @@ metricbeat.modules:
   period: 15s
   hosts: ["localhost:9200"]
 
+xpack.monitoring:
+  enabled: true
+  elasticsearch:
+
 queue:
   mem:
     events: 4096
+    flush.min_events: 512
+    flush.timeout: 5s
 
 setup.template.name: "metricbeat-*"
 setup.template.pattern: "metricbeat-*"
