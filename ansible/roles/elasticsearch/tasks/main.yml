@@ -40,6 +40,7 @@
       - "/var/log/elasticsearch:/var/log/elasticsearch:rw"
     env:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true"
+      ES_PASSWORD: "{{ ES_PASSWORD }}"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
     restart_retries: 10

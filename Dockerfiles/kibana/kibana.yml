@@ -1,6 +1,9 @@
 ---
 
 server.name: kibana.internal
+
 elasticsearch.url: http://elasticsearch.internal:9200
 
 elasticsearch.username: elastic
+
+xpack.monitoring.ui.container.elasticsearch.enabled: false
