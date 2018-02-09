@@ -9,7 +9,6 @@ metricbeat.modules:
   enabled: true
   period: 15s
   processes: ['.*']
-  cpu_ticks: false
 
 setup.template.name: "metricbeat-*"
 setup.template.pattern: "metricbeat-*"
