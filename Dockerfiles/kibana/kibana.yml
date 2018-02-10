@@ -5,10 +5,10 @@ server.port: 5601
 server.ssl.enabled: false
 
 elasticsearch.url: "http://elasticsearch.internal:9200"
-elasticsearch.username: "kibana"
+#elasticsearch.username: "kibana"
 #elasticsearch.password: ""
 
-xpack.security.encryptionKey: "hwpkLC9C29TWOfqnBPCumbC7G6UBNCvn"
-xpack.security.sessionTimeout: 600000
+#xpack.security.encryptionKey: "hwpkLC9C29TWOfqnBPCumbC7G6UBNCvn"
+#xpack.security.sessionTimeout: 600000
 
-xpack.monitoring.ui.container.elasticsearch.enabled: true
+#xpack.monitoring.ui.container.elasticsearch.enabled: true
