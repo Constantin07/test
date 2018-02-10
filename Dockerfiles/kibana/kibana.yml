@@ -5,7 +5,7 @@ server.port: 5601
 server.ssl.enabled: false
 
 elasticsearch.url: "http://elasticsearch.internal:9200"
-elasticsearch.username: ""
-elasticsearch.password: ""
+#elasticsearch.username: ""
+#elasticsearch.password: ""
 
 xpack.monitoring.ui.container.elasticsearch.enabled: true
