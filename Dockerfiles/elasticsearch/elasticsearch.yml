@@ -14,7 +14,7 @@ discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
 discovery.zen.hosts_provider: file
 discovery.zen.minimum_master_nodes: 2
 
-xpack.security.authc:
-  anonymous:
-    username: elastic
-    roles: superuser
+#xpack.security.authc:
+#  anonymous:
+#    username: elastic
+#    roles: superuser
