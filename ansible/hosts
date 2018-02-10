@@ -1,10 +1,10 @@
-centos7.internal ansible_host=10.0.2.4
-localhost ansible_host=127.0.0.1
+centos7.internal ansible_user=root
+localhost ansible_user=root
 
 [elasticsearch]
-elasticsearch-1.internal ansible_host=10.0.2.18
-elasticsearch-2.internal ansible_host=10.0.2.19
-elasticsearch-3.internal ansible_host=10.0.2.20
+elasticsearch-1.internal
+elasticsearch-2.internal
+elasticsearch-3.internal
 
 [elasticsearch:vars]
 ansible_user=root
