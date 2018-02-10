@@ -1,3 +1,4 @@
 *.key filter=git-crypt diff=git-crypt
 *.auto.tfvars filter=git-crypt diff=git-crypt
 ansible/roles/elasticsearch/defaults/main.yml filter=git-crypt diff=git-crypt
+ansible/roles/kibana/defaults/main.yml filter=git-crypt diff=git-crypt
