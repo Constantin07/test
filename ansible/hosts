@@ -11,4 +11,4 @@ ansible_user=root
 
 [all:children]
 elasticsearch
-centos7.local
+centos7.internal
