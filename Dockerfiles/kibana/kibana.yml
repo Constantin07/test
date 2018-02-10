@@ -1,9 +1,11 @@
 
 console.enabled: true
 server.name: centos7.internal
+server.port: 5601
+server.ssl.enabled: false
 
-elasticsearch.url: http://elasticsearch.internal:9200
+elasticsearch.url: "http://elasticsearch.internal:9200"
+#elasticsearch.username: elastic
+#elasticsearch.password: changeme
 
-elasticsearch.username: elastic
-
-xpack.monitoring.ui.container.elasticsearch.enabled: false
+xpack.monitoring.ui.container.elasticsearch.enabled: true
