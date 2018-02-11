@@ -27,6 +27,8 @@
 #      - "9300:9300"
     pull: yes
     network_mode: host
+    cpu_period: 1000000
+    cpu_quota: 2000000
     state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
@@ -36,7 +38,7 @@
       ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true"
       ELASTIC_PASSWORD: "{{ ELASTIC_PASSWORD }}"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
-    restart_policy: on-failure
+    restart_policy: always
     restart_retries: 10
     trust_image_content: true
     ulimits:
