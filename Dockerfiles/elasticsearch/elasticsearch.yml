@@ -16,6 +16,11 @@ discovery.zen.minimum_master_nodes: 2
 
 xpack.security.enabled: false
 
+xpack.security.authc.realms:
+  native:
+    type: native
+    order: 0
+
 #xpack.security.authc:
 #  anonymous:
 #    username: elastic
