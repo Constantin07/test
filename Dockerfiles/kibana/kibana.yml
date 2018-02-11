@@ -11,4 +11,5 @@ xpack.security.enabled: true
 xpack.security.encryptionKey: "hwpkLC9C29TWOfqnBPCumbC7G6UBNCvn"
 xpack.security.sessionTimeout: 600000
 
+xpack.monitoring.enabled: true
 xpack.monitoring.ui.container.elasticsearch.enabled: true
