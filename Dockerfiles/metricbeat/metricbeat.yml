@@ -57,6 +57,8 @@ setup.template.settings:
 output.elasticsearch:
   hosts: ["elasticsearch.internal:9200"]
   protocol: http
+  username: "elastic"
+  password: ${ELASTIC_PASSWORD}
   index: "metricbeat-%{+yyyy.MM.dd}"
   compression_level: 1
 
