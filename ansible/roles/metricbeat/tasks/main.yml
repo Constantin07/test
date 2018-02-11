@@ -18,6 +18,7 @@
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     user: 0
     env:
+      ELASTIC_PASSWORD: "{{ ELASTIC_PASSWORD }}"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
     restart_retries: 10
