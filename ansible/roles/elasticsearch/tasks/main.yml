@@ -39,7 +39,7 @@
       ELASTIC_PASSWORD: "{{ ELASTIC_PASSWORD }}"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
-    restart_retries: 10
+#    restart_retries: 10
     trust_image_content: true
     ulimits:
       - "nofile:262144:262144"
