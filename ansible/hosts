@@ -1,6 +1,7 @@
-centos7.internal
-localhost
+localhost ansible_user=root
+
 [local]
+centos7.internal
 
 [elasticsearch]
 elasticsearch-1.internal
