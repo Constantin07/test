@@ -47,7 +47,7 @@ setup.template.settings:
   index.number_of_replicas: 0
   _source.enabled: true
 
-setup.dashboards.enabled: true
+#setup.dashboards.enabled: true
 
 output.elasticsearch:
   hosts: ["elasticsearch.internal:9200"]
