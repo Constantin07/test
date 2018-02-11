@@ -8,12 +8,12 @@
     state: started
     recreate: True
     oom_killer: False
-#    exposed_ports:
-#      - "5601"
-#    published_ports:
-#      - "5601:5601"
+    exposed_ports:
+      - "5601"
+    published_ports:
+      - "5601:5601"
     pull: yes
-    network_mode: host
+    network_mode: bridge
     state: started
     memory: "{{ memory|default('1gb') }}"
 #    volumes:
