@@ -33,7 +33,7 @@ xpack.monitoring:
 
 queue:
   mem:
-    events: 4096
+    events: 2048
     flush.min_events: 10
     flush.timeout: 3s
 
