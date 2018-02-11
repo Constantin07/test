@@ -16,7 +16,6 @@
 #      - "9300:9300"
     pull: yes
     network_mode: host
-    state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "/proc:/hostfs/proc:ro"
