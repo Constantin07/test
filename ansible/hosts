@@ -1,5 +1,6 @@
-centos7.internal ansible_user=root
-localhost ansible_user=root
+centos7.internal
+localhost
+[local]
 
 [elasticsearch]
 elasticsearch-1.internal
@@ -7,8 +8,10 @@ elasticsearch-2.internal
 elasticsearch-3.internal
 
 [elasticsearch:vars]
-ansible_user=root
 
 [all:children]
 elasticsearch
-centos7.internal
+local
+
+[all:vars]
+ansible_user=root
