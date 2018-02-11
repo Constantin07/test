@@ -43,8 +43,8 @@ setup.template.fields: "fields.yml"
 setup.template.overwrite: true
 setup.template.enabled: true
 setup.template.settings:
-  index.number_of_shards: 1
-  index.number_of_replicas: 1
+  index.number_of_shards: 2
+  index.number_of_replicas: 0
   _source.enabled: true
 
 output.elasticsearch:
