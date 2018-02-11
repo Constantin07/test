@@ -18,7 +18,7 @@ metricbeat.modules:
     process.cgroups.enabled: true
 
   - module: docker
-    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network", "image"]
     hosts: ["unix:///var/run/docker.sock"]
     period: 15s
 
