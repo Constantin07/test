@@ -11,7 +11,7 @@ metricbeat.modules:
       - process_summary
       - uptime
     enabled: true
-    period: 15s
+    period: 10s
     processes: ['.*']
     cpu.metrics:  ["percentages"]
     core.metrics: ["percentages"]
@@ -20,11 +20,11 @@ metricbeat.modules:
   - module: docker
     metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network", "image"]
     hosts: ["unix:///var/run/docker.sock"]
-    period: 15s
+    period: 10s
 
   - module: elasticsearch
     metricsets: ["node", "node_stats"]
-    period: 15s
+    period: 10s
     hosts: ["localhost:9200"]
 
 xpack.monitoring:

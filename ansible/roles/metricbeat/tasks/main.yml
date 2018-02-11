@@ -23,7 +23,6 @@
       - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
       - "/:/hostfs:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    user: 0
     env:
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: on-failure
