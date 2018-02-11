@@ -7,6 +7,7 @@ server.ssl.enabled: false
 elasticsearch.url: "http://elasticsearch.internal:9200"
 elasticsearch.username: "kibana"
 
+xpack.security.enabled: true
 xpack.security.encryptionKey: "hwpkLC9C29TWOfqnBPCumbC7G6UBNCvn"
 xpack.security.sessionTimeout: 600000
 
