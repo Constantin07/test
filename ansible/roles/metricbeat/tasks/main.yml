@@ -8,12 +8,6 @@
     state: started
     recreate: True
     oom_killer: False
-#    exposed_ports:
-#      - "9200"
-#      - "9300"
-#    published_ports:
-#      - "9200:9200"
-#      - "9300:9300"
     pull: yes
     network_mode: host
     memory: "{{ memory|default('1gb') }}"

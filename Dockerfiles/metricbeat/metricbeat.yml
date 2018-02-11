@@ -22,10 +22,10 @@ metricbeat.modules:
     hosts: ["unix:///var/run/docker.sock"]
     period: 10s
 
-  - module: elasticsearch
-    metricsets: ["node", "node_stats"]
-    period: 10s
-    hosts: ["localhost:9200"]
+#  - module: elasticsearch
+#    metricsets: ["node", "node_stats"]
+#    period: 10s
+#    hosts: ["localhost:9200"]
 
 xpack.monitoring:
   enabled: true
