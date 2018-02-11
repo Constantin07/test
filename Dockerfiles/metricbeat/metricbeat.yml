@@ -1,31 +1,31 @@
 metricbeat.modules:
-- module: system
-  metricsets:
-    - cpu
-    - filesystem
-    - fsstat
-    - load
-    - memory
-    - network
-    - process
-    - process_summary
-    - uptime
-  enabled: true
-  period: 15s
-  processes: ['.*']
-  cpu.metrics:  ["percentages"]
-  core.metrics: ["percentages"]
-  process.cgroups.enabled: true
+  - module: system
+    metricsets:
+      - cpu
+      - filesystem
+      - fsstat
+      - load
+      - memory
+      - network
+      - process
+      - process_summary
+      - uptime
+    enabled: true
+    period: 15s
+    processes: ['.*']
+    cpu.metrics:  ["percentages"]
+    core.metrics: ["percentages"]
+    process.cgroups.enabled: true
 
-- module: docker
-  metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 15s
+  - module: docker
+    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 15s
 
-- module: elasticsearch
-  metricsets: ["node", "node_stats"]
-  period: 15s
-  hosts: ["localhost:9200"]
+  - module: elasticsearch
+    metricsets: ["node", "node_stats"]
+    period: 15s
+    hosts: ["localhost:9200"]
 
 xpack.monitoring:
   enabled: true
@@ -34,8 +34,8 @@ xpack.monitoring:
 queue:
   mem:
     events: 4096
-    flush.min_events: 512
-    flush.timeout: 5s
+    flush.min_events: 10
+    flush.timeout: 3s
 
 setup.template.name: "metricbeat"
 setup.template.pattern: "metricbeat-*"
