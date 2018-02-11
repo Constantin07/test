@@ -10,7 +10,7 @@ elasticsearch-3.internal
 
 [elasticsearch:vars]
 
-[all:children]
+[monitoring:children]
 elasticsearch
 local
 
