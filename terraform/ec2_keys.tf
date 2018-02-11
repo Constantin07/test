@@ -1,5 +1,5 @@
 data "aws_region" "current" {
-  current = true
+  name = "eu-west-1"
 }
 
 resource "aws_key_pair" "aws" {
