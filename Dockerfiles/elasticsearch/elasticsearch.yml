@@ -25,3 +25,5 @@ xpack.security.authc.realms:
 #  anonymous:
 #    username: elastic
 #    roles: superuser
+
+index.refresh_interval: 3
