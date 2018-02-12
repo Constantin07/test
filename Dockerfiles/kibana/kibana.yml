@@ -13,3 +13,4 @@ xpack.security.sessionTimeout: 600000
 
 xpack.monitoring.enabled: true
 xpack.monitoring.ui.container.elasticsearch.enabled: true
+xpack.monitoring.report_stats: false
