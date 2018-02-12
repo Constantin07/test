@@ -4,4 +4,4 @@ version: "latest"
 
 docker_host: "centos7.internal:5000"
 image_name: "kibana"
-memory: "512m"
+memory: "768m"
