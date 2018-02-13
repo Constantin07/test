@@ -1,0 +1,11 @@
+---
+
+- hosts: centos7.internal
+  gather_facts: True
+  become: yes
+  become_user: root
+
+  roles:
+   #- ctop
+   #- docker
+    - grafana
