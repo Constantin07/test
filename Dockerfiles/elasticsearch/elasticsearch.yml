@@ -26,5 +26,4 @@ xpack.security.authc.realms:
 #    username: elastic
 #    roles: superuser
 
-index.refresh_interval: 3
 indices.recovery.max_bytes_per_sec: 100mb
