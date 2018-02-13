@@ -5,3 +5,13 @@ version: "latest"
 docker_host: "centos7.internal:5000"
 image_name: "grafana"
 memory: "500m"
+
+plugins: >
+  grafana-clock-panel,
+  grafana-simple-json-datasource,
+  grafana-piechart-panel,
+  grafana-worldmap-panel,
+  novalabs-annotations-panel,
+  michaeldmoore-annunciator-panel,
+  vonage-status-panel,
+  mtanda-histogram-panel
