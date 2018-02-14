@@ -1,7 +1,7 @@
 def nodeName = ''
 
 def terraform = fileLoader.fromGit(
-  'Jenkins/terraform',
+  'Jenkins/terraform.groovy',
   'git@github.com:Constantin07/test.git',
   'master',
   'Git',
