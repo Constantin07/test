@@ -9,3 +9,7 @@ terraform {
     region         = "eu-west-1"
   }
 }
+
+provider "tls" {
+  version = ">= 1.0.1"
+}
