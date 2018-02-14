@@ -159,7 +159,7 @@ def build(nodeName = '', directory = '.') {
                             // Apply stage
                             // - unstash plan.out
                             // - Execute `terraform apply` against the stashed plan
-                            stage('Apply', concurency: 1) {
+                            stage(name: 'Apply', concurency: 1) {
                                 unstash 'plan'
 
                                 def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
