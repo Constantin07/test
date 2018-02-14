@@ -12,7 +12,7 @@ def get_comment() {
     sh "rm ${f}"
 }
 
-def build(nodeName = '', directory = './') {
+def build(nodeName = '', directory = '.') {
 
     // Global state
     def needUpdate = false
@@ -39,7 +39,7 @@ def build(nodeName = '', directory = './') {
         //env.PATH = "${tfHome}:${env.PATH}"
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-        
+
             dir(path: directory) {
 
                 stage('Checkout') {
@@ -53,13 +53,13 @@ def build(nodeName = '', directory = './') {
                     comment = get_comment()
                     currentBuild.description = comment
                 }
-                
-                milestone label: 'Checkout'          
-                
+
+                milestone label: 'Checkout'
+
                 stage('Unlock secrets'){
                     sh 'git crypt unlock'
                 }
-                
+
                 milestone label: 'Unlock secrets' 
 
                 // Terraform AWS credentials wrapper
@@ -75,7 +75,7 @@ def build(nodeName = '', directory = './') {
                     stage("Validate") {
                         //Print terraform version
                         sh 'terraform --version'
-                        
+
                         // Remove the .terraform directory
                         dir('.terraform') {
                             deleteDir()
@@ -86,7 +86,7 @@ def build(nodeName = '', directory = './') {
                             rm -f plan.out
                             rm -f terraform.tfstate.backup
                         '''
-                        
+
                         // initialise configuration
                         retry(3) {
                             echo 'Initialize S3 backend'
@@ -104,7 +104,7 @@ def build(nodeName = '', directory = './') {
 
                     milestone label: 'Validate'
 
-                    stage(name: "Plan", concurency: 1) {
+                    stage(name: 'Plan', concurency: 1) {
                         def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
                         echo "Terraform plan exit code: ${exitCode}"
                         switch (exitCode) {
@@ -127,7 +127,7 @@ def build(nodeName = '', directory = './') {
                     milestone label: 'Plan'
 
                     if (needUpdate) {
-                        println "Send a notification here"
+                        println 'Send a notification here'
                     }
                 }
             }
@@ -162,12 +162,12 @@ def build(nodeName = '', directory = './') {
                             // Apply stage
                             // - unstash plan.out
                             // - Execute `terraform apply` against the stashed plan
-                            stage("Apply", concurency: 1) {
+                            stage('Apply', concurency: 1) {
                                 unstash 'plan'
 
                                 def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
                                 if (exitCode == 0) {
-                                    echo "Changes Applied."
+                                    echo 'Changes Applied.'
                                     currentBuild.result = 'SUCCESS'
                                 } else {
                                     echo 'Apply Failed.'
