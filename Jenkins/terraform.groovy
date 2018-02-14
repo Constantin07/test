@@ -43,11 +43,7 @@ def build(nodeName = '', directory = '.') {
             dir(path: directory) {
 
                 stage('Checkout') {
-                    checkout([$class: 'GitSCM',
-                        branches: [[name: '*/master']],
-                        doGenerateSubmoduleConfigurations: false,
-                        userRemoteConfigs: [[credentialsId: 'Git']]
-                    ])
+                    checkout(scm)
 
                     // Add comment to build description
                     comment = get_comment()
