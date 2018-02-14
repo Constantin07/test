@@ -12,7 +12,7 @@ def get_comment() {
     sh "rm ${f}"
 }
 
-def build(nodeName = '') {
+def build(nodeName = '', directory = './') {
 
     // Global state
     def needUpdate = false
@@ -39,6 +39,8 @@ def build(nodeName = '') {
         //env.PATH = "${tfHome}:${env.PATH}"
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+        
+            dir(path: directory) {
 
                 stage('Checkout') {
                     checkout([$class: 'GitSCM',
@@ -50,13 +52,15 @@ def build(nodeName = '') {
                     // Add comment to build description
                     comment = get_comment()
                     currentBuild.description = comment
-
+                }
+                
+                milestone label: 'Checkout'          
+                
+                stage('Unlock secrets'){
                     sh 'git crypt unlock'
                 }
-
-                milestone label: 'Checkout'
-
-            dir(path: "./terraform/${environment}") {
+                
+                milestone label: 'Unlock secrets' 
 
                 // Terraform AWS credentials wrapper
                 withCredentials([
@@ -68,22 +72,31 @@ def build(nodeName = '') {
                     ]
                 ])
                 {
-                    stage("Validate - ${environment}") {
+                    stage("Validate") {
                         //Print terraform version
                         sh 'terraform --version'
-
+                        
                         // Remove the .terraform directory
                         dir('.terraform') {
                             deleteDir()
                         }
 
+                        // Ensure we always start from a clean state
+                        sh '''
+                            rm -f plan.out
+                            rm -f terraform.tfstate.backup
+                        '''
+                        
                         // initialise configuration
                         retry(3) {
+                            echo 'Initialize S3 backend'
                             sh 'terraform init -get=true -force-copy'
                         }
 
                         //Load modules if any
-                        sh 'terraform get -update=true'
+                        retry(3) {
+                            sh 'terraform get -update=true'
+                        }
 
                         //Syntax validation
                         sh 'terraform validate'
@@ -91,56 +104,39 @@ def build(nodeName = '') {
 
                     milestone label: 'Validate'
 
-                    stage(name: "Plan - ${environment}") {
+                    stage(name: "Plan", concurency: 1) {
                         def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
+                        echo "Terraform plan exit code: ${exitCode}"
                         switch (exitCode) {
                             case 0:
+                                echo 'No changes to apply.'
                                 currentBuild.result = 'SUCCESS'
                                 break
                             case 1:
+                                echo 'Plan Failed.'
                                 currentBuild.result = 'FAILURE'
                                 break
                             case 2:
+                                echo 'Plan Awaiting Approval.'
                                 needUpdate = true
                                 stash(name: 'plan', includes: 'plan.out')
                                 break
                         }
                     }
-                }
 
-                milestone label: 'Plan'
+                    milestone label: 'Plan'
 
-                if (needUpdate) {
-                    withCredentials([
-                        [
-                            $class: 'UsernamePasswordMultiBinding',
-                            credentialsId: 'Hipchat',
-                            usernameVariable: 'HIPCHAT_USERNAME',
-                            passwordVariable: 'HIPCHAT_APIKEY'
-                        ]
-                    ]) {
-                            def msg_template = "${env.JOB_NAME} #${env.BUILD_NUMBER} needs user confirmation \
-                                                (<a href='${env.BUILD_URL}/console'>Console</a> / \
-                                                <a href='${env.BUILD_URL}/flowGraphTable'>Steps</a> / \
-                                                <a href='${env.RUN_DISPLAY_URL}/'>Pipeline</a>), Change: " + comment
-                            hipchatSend(
-                                color: 'PURPLE',
-                                message: msg_template,
-                                room: 'Platform Engineering',
-                                server: 'api.hipchat.com',
-                                sendAs: "${env.HIPCHAT_USERNAME}",
-                                token: "${env.HIPCHAT_APIKEY}",
-                                v2enabled: true
-                            )
-                        }
+                    if (needUpdate) {
+                        println "Send a notification here"
+                    }
                 }
             }
         }
-    } // node
+    }
 
     if (needUpdate) {
         try {
-            input(message: 'Apply Plan?', ok: 'Apply')
+            input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
             apply = true
         } catch (err) {
             apply = false
@@ -151,13 +147,13 @@ def build(nodeName = '') {
         if (apply) {
             node(nodeName) {
                 wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                    dir(path: "./terraform/${environment}") {
+                    dir(path: directory) {
 
                         // Terraform AWS credentials wrapper
                         withCredentials([
                             [
                                 $class: 'AmazonWebServicesCredentialsBinding',
-                                credentialsId: 'Terraform',
+                                credentialsId: 'Amazon Credentials',
                                 accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                             ]
@@ -166,13 +162,15 @@ def build(nodeName = '') {
                             // Apply stage
                             // - unstash plan.out
                             // - Execute `terraform apply` against the stashed plan
-                            stage("Apply - ${environment}") {
+                            stage("Apply", concurency: 1) {
                                 unstash 'plan'
 
-                                def exitCode = sh(script: 'terraform apply plan.out', returnStatus: true)
+                                def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
                                 if (exitCode == 0) {
+                                    echo "Changes Applied."
                                     currentBuild.result = 'SUCCESS'
                                 } else {
+                                    echo 'Apply Failed.'
                                     currentBuild.result = 'FAILURE'
                                 }
                             }
