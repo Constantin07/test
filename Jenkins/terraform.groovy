@@ -25,7 +25,7 @@ def build(nodeName = '', directory = '.') {
             [
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '30')),
 
-                properties([pipelineTriggers(pollSCM('''TZ=Europe/London
+                properties([pipelineTriggers([githubPush(), pollSCM('''TZ=Europe/London
                 * * * * *''')])]),
 
                 // Allow only one job at a time
@@ -42,9 +42,7 @@ def build(nodeName = '', directory = '.') {
 
 
             stage('Checkout') {
-                checkout([$class: 'GitSCM',
-                    extensions: [[$class: 'CleanBeforeCheckout']]
-                ])
+                checkout(scm)
 
                 // Add comment to build description
                 comment = get_comment()
