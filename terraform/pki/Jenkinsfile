@@ -1,10 +1,12 @@
 def nodeName = ''
 
+/*
 def terraform = fileLoader.fromGit(
   'Jenkins/terraform.groovy',
   'git@github.com:Constantin07/test.git',
   'master',
   'Git',
   nodeName)
+*/
 
 //terraform.build(nodeName, 'terraform/pki')
