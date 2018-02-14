@@ -40,23 +40,24 @@ def build(nodeName = '', directory = '.') {
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
 
+
+            stage('Checkout') {
+                checkout(scm)
+
+                // Add comment to build description
+                comment = get_comment()
+                currentBuild.description = comment
+            }
+
+            milestone label: 'Checkout'
+
+            stage('Unlock secrets'){
+                sh 'git crypt unlock'
+            }
+
+            milestone label: 'Unlock secrets' 
+
             dir(path: directory) {
-
-                stage('Checkout') {
-                    checkout(scm)
-
-                    // Add comment to build description
-                    comment = get_comment()
-                    currentBuild.description = comment
-                }
-
-                milestone label: 'Checkout'
-
-                stage('Unlock secrets'){
-                    sh 'git crypt unlock'
-                }
-
-                milestone label: 'Unlock secrets' 
 
                 // Terraform AWS credentials wrapper
                 withCredentials([
