@@ -44,7 +44,7 @@ def build(nodeName = '', directory = '.') {
             stage('Checkout') {
                 checkout([$class: 'GitSCM',
                     extensions: [[$class: 'CleanBeforeCheckout']]
-                )
+                ])
 
                 // Add comment to build description
                 comment = get_comment()
