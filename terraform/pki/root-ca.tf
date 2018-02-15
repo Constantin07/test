@@ -4,7 +4,7 @@ resource "tls_self_signed_cert" "ca" {
 
   subject {
     common_name         = "Trusted Root CA"
-    organization        = "Testing"
+    organization        = "Root CA"
     organizational_unit = "N/A"
     street_address      = ["N/A"]
     province            = "London"
@@ -19,4 +19,18 @@ resource "tls_self_signed_cert" "ca" {
   allowed_uses = [
     "cert_signing",
   ]
+}
+
+output "ca_cert_pem" {
+  description = "The ROOT CA certificate in PEM format"
+  value       = "${tls_self_signed_cert.ca.cert_pem}"
+}
+
+output "ca_validity" {
+  description = "The ROOT CA certificates validity timeframe"
+
+  value = {
+    start = "${tls_self_signed_cert.ca.validity_start_time}"
+    end   = "${tls_self_signed_cert.ca.validity_end_time}"
+  }
 }
