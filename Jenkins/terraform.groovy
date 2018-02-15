@@ -25,7 +25,7 @@ def build(nodeName = '', directory = '.') {
             [
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '30')),
 
-                pipelineTriggers([pollSCM('''TZ=Europe/London
+                pipelineTriggers([githubPush(), pollSCM('''TZ=Europe/London
                 * * * * *''')]),
 
                 // Allow only one job at a time
