@@ -29,8 +29,8 @@ resource "tls_cert_request" "etcd_cert_req" {
 
 resource "tls_locally_signed_cert" "etcd_cert" {
   cert_request_pem   = "${tls_cert_request.etcd_cert_req.cert_request_pem}"
-  ca_key_algorithm   = "${tls_self_signed_cert.ca.ca_key_algorithm}"
-  ca_private_key_pem = "${file("${path.module}/files/ca-priv-key.pem")}"
+  ca_key_algorithm   = "${local.ca_key_algorithm}"
+  ca_private_key_pem = "${local.ca_private_key_pem}"
   ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
 
   is_ca_certificate     = false
