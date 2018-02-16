@@ -48,3 +48,12 @@ output "etcd_cert_pem" {
   description = "Etcd certificate in PEM format"
   value       = "${tls_locally_signed_cert.etcd_cert.cert_pem}"
 }
+
+output "etcd_cert_validity" {
+  description = "Etcd certificate validity timeframe"
+
+  value = {
+    start = "${tls_locally_signed_cert.etcd_cert.validity_start_time}"
+    end   = "${tls_locally_signed_cert.etcd_cert.validity_end_time}"
+  }
+}
