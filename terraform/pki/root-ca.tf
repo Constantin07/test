@@ -1,3 +1,5 @@
+/* Trusted root CA */
+
 resource "tls_self_signed_cert" "ca" {
   key_algorithm   = "RSA"
   private_key_pem = "${file("${path.module}/files/ca-priv-key.pem")}"
