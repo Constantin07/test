@@ -145,7 +145,7 @@ def build(nodeName = '', directory = '.') {
 
         if (apply) {
             node(nodeName) {
-                wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+                ansiColor('xterm') {
                     dir(path: directory) {
 
                         // Terraform AWS credentials wrapper
