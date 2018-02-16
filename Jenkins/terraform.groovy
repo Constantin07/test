@@ -102,7 +102,9 @@ def build(nodeName = '', directory = '.') {
                     milestone label: 'Validate'
 
                     stage(name: 'Plan', concurency: 1) {
-                        def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
+                        timestamps {
+                            def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
+                        }
                         echo "Terraform plan exit code: ${exitCode}"
                         switch (exitCode) {
                             case 0:
@@ -161,8 +163,9 @@ def build(nodeName = '', directory = '.') {
                             // - Execute `terraform apply` against the stashed plan
                             stage(name: 'Apply', concurency: 1) {
                                 unstash 'plan'
-
-                                def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
+                                timestamps {
+                                    def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
+                                }
                                 if (exitCode == 0) {
                                     echo 'Changes Applied.'
                                     currentBuild.result = 'SUCCESS'
