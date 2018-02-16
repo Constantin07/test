@@ -39,7 +39,6 @@ def build(nodeName = '', directory = '.') {
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
 
-
             stage('Checkout') {
                 checkout(scm)
 
@@ -54,7 +53,7 @@ def build(nodeName = '', directory = '.') {
                 sh 'git crypt unlock'
             }
 
-            milestone label: 'Unlock secrets' 
+            milestone label: 'Unlock secrets'
 
             dir(path: directory) {
 
@@ -68,34 +67,36 @@ def build(nodeName = '', directory = '.') {
                     ]
                 ])
                 {
-                    stage("Validate") {
-                        //Print terraform version
-                        sh 'terraform --version'
+                    timestamps {
+                        stage("Validate") {
+                            //Print terraform version
+                            sh 'terraform --version'
 
-                        // Remove the .terraform directory
-                        dir('.terraform') {
-                            deleteDir()
+                            // Remove the .terraform directory
+                            dir('.terraform') {
+                                deleteDir()
+                            }
+
+                            // Ensure we always start from a clean state
+                            sh '''
+                                rm -f plan.out
+                                rm -f terraform.tfstate.backup
+                            '''
+
+                            // initialise configuration
+                            retry(3) {
+                                echo 'Initialize S3 backend'
+                                sh 'terraform init -get=true -force-copy'
+                            }
+
+                            //Load modules if any
+                            retry(3) {
+                                sh 'terraform get -update=true'
+                            }
+
+                            //Syntax validation
+                            sh 'terraform validate'
                         }
-
-                        // Ensure we always start from a clean state
-                        sh '''
-                            rm -f plan.out
-                            rm -f terraform.tfstate.backup
-                        '''
-
-                        // initialise configuration
-                        retry(3) {
-                            echo 'Initialize S3 backend'
-                            sh 'terraform init -get=true -force-copy'
-                        }
-
-                        //Load modules if any
-                        retry(3) {
-                            sh 'terraform get -update=true'
-                        }
-
-                        //Syntax validation
-                        sh 'terraform validate'
                     }
 
                     milestone label: 'Validate'
