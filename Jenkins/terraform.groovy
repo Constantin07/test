@@ -158,20 +158,20 @@ def build(nodeName = '', directory = '.') {
                             ]
                         ])
                         {
-                            // Apply stage
-                            // - unstash plan.out
-                            // - Execute `terraform apply` against the stashed plan
-                            stage(name: 'Apply', concurency: 1) {
-                                unstash 'plan'
-                                timestamps {
+                            timestamps {
+                                // Apply stage
+                                // - unstash plan.out
+                                // - Execute `terraform apply` against the stashed plan
+                                stage(name: 'Apply', concurency: 1) {
+                                    unstash 'plan'
                                     def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
-                                }
-                                if (exitCode == 0) {
-                                    echo 'Changes Applied.'
-                                    currentBuild.result = 'SUCCESS'
-                                } else {
-                                    echo 'Apply Failed.'
-                                    currentBuild.result = 'FAILURE'
+                                    if (exitCode == 0) {
+                                        echo 'Changes Applied.'
+                                        currentBuild.result = 'SUCCESS'
+                                    } else {
+                                        echo 'Apply Failed.'
+                                        currentBuild.result = 'FAILURE'
+                                    }
                                 }
                             }
                         }
