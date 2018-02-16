@@ -26,3 +26,20 @@ resource "tls_cert_request" "etcd_cert_req" {
     "127.0.0.1",
   ]
 }
+
+resource "tls_locally_signed_cert" "etcd_cert" {
+  cert_request_pem   = "${tls_cert_request.etcd_cert_req.cert_request_pem}"
+  ca_key_algorithm   = "${tls_self_signed_cert.ca.ca_key_algorithm}"
+  ca_private_key_pem = "${tls_self_signed_cert.ca.ca_private_key_pem}"
+  ca_cert_pem        = "${tls_self_signed_cert.ca.ca_cert_pem}"
+
+  is_ca_certificate     = false
+  validity_period_hours = 87600
+  early_renewal_hours   = 3160
+
+  allowed_uses = [
+    "server_auth",
+    "data_encipherment",
+    "key_encipherment",
+  ]
+}
