@@ -43,3 +43,8 @@ resource "tls_locally_signed_cert" "etcd_cert" {
     "key_encipherment",
   ]
 }
+
+output "etcd_cert_pem" {
+  description = "Etcd certificate in PEM format"
+  value       = "${tls_locally_signed_cert.etcd_cert.cert_pem}"
+}
