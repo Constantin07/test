@@ -25,6 +25,8 @@ resource "tls_self_signed_cert" "ca" {
 
   allowed_uses = [
     "cert_signing",
+    "key_encipherment",
+    "digital_signature",
   ]
 }
 
