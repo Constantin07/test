@@ -14,7 +14,7 @@ discovery.zen.ping.unicast.hosts: [ elasticsearch.internal ]
 discovery.zen.hosts_provider: file
 discovery.zen.minimum_master_nodes: 2
 
-http.cors.enabled: true
+http.cors.enabled: false
 http.cors.allow-origin: "*.internal"
 
 xpack.security.enabled: true
