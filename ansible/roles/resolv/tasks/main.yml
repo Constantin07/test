@@ -1,0 +1,19 @@
+---
+
+- name: Update /etc/NetworkManager/NetworkManager.conf file
+  lineinfile:
+    path: /etc/NetworkManager/NetworkManager.conf
+    insertafter: '^\[main\]$'
+    line: "dns=none"
+    state: present
+  notify: restart network_manager
+
+- meta: flush_handlers
+
+- name: Update /etc/resolv.conf file
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644

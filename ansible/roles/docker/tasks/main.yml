@@ -6,14 +6,6 @@
 - name: Install Docker
   package: name="{{ docker_package }}" state="{{ docker_package_state }}"
 
-- name: Install required packages
-  yum:
-    name: "{{ item  }}"
-    state: present
-    update_cache: yes
-  with_items:
-    - python2-pip
-
 - name: Install docker-py
   pip: name=docker-py version=1.10.6
 

@@ -1,0 +1,12 @@
+---
+
+- hosts: etc
+  gather_facts: True
+  become: yes
+  become_user: root
+  serial: 1
+
+  roles:
+   - resolv
+#   - ctop
+#   - docker
