@@ -11,11 +11,12 @@ elasticsearch-3.internal
 [elasticsearch:vars]
 
 [etc]
-etc-1.internal ansible_user=root
+etc-1.internal
 
 [monitoring:children]
 elasticsearch
 local
+etc
 
 [all:vars]
 ansible_user=root
