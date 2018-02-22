@@ -1,0 +1,17 @@
+---
+
+- name: Install chronyd package
+  yum:
+    name: chrony
+    state: present
+    update_cache: yes
+
+- name: Update /etc/chrony.conf file
+  copy:
+    src: chrony.conf
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- meta: flush_handlers
