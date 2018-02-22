@@ -15,15 +15,16 @@ resource "tls_cert_request" "etcd_server_cert_req" {
   }
 
   dns_names = [
-    "etcd1.internal",
-    "etcd2.internal",
-    "etcd3.internal",
+    "etcd-1.internal",
+    "etcd-2.internal",
+    "etcd-3.internal",
     "etcd.internal",
     "localhost",
   ]
 
   ip_addresses = [
     "127.0.0.1",
+    "10.0.2.24",
   ]
 }
 
