@@ -39,6 +39,7 @@ resource "tls_locally_signed_cert" "etcd_server_cert" {
   early_renewal_hours   = 3160
 
   allowed_uses = [
+    "digital_signature",
     "server_auth",
     "data_encipherment",
     "key_encipherment",
@@ -73,6 +74,7 @@ resource "tls_locally_signed_cert" "etcd_client_cert" {
   early_renewal_hours   = 3160
 
   allowed_uses = [
+    "digital_signature",
     "client_auth",
     "data_encipherment",
     "key_encipherment",
@@ -107,6 +109,7 @@ resource "tls_locally_signed_cert" "etcd_peer_cert" {
   early_renewal_hours   = 3160
 
   allowed_uses = [
+    "digital_signature",
     "client_auth",
     "data_encipherment",
     "key_encipherment",
