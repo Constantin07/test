@@ -4,9 +4,11 @@
   gather_facts: True
   become: yes
   become_user: root
-  serial: 1
+  serial: 50
 
   roles:
-   - resolv
+#   - resolv
+#   - chronyd
+    - kernel
 #   - ctop
 #   - docker
