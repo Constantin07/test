@@ -1,0 +1,15 @@
+---
+
+- hosts: etcd
+  gather_facts: True
+  become: yes
+  become_user: root
+  serial: 3
+
+  roles:
+#   - resolv
+#   - chronyd
+#   - kernel
+#   - ctop
+#   - docker
+   - { role: etcd, clean_certs_dir: no, clean_data_dir: no }

@@ -1,0 +1,12 @@
+---
+
+version: "v3.2.16"
+image_name: "quay.io/coreos/etcd:{{ version }}"
+
+container_name: etcd
+memory: "512m"
+
+data_dir: "/etcd-data"
+data_volume: "etcd-data"
+
+certs_dir: "/etc/etcd/certs"

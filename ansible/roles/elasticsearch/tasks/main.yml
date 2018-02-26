@@ -11,7 +11,7 @@
     - "/var/data/elasticsearch"
     - "/var/log/elasticsearch"
 
-- name: Run docker image
+- name: Run docker elasticsearch container
   docker_container:
     api_version: auto
     name: "{{ image_name }}"
