@@ -10,13 +10,15 @@ elasticsearch-3.internal
 
 [elasticsearch:vars]
 
-[etc]
-etc-1.internal
+[etcd]
+etcd-1.internal
+etcd-2.internal
+etcd-3.internal
 
 [monitoring:children]
 elasticsearch
 local
-etc
+etcd
 
 [all:vars]
 ansible_user=root
