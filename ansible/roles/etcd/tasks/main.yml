@@ -1,0 +1,87 @@
+---
+
+- name: Stop and remove etcd container
+  docker_container:
+    api_version: auto
+    name: "{{ container_name }}"
+    state: absent
+
+- name: Clean cert dir
+  file:
+    path: "{{ certs_dir }}"
+    state: absent
+  when: clean_certs_dir|bool
+
+- name: Create etcd mount point directories
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0775
+    state: directory
+  with_items:
+    - "{{ certs_dir }}"
+
+- name: Copy etcd certificates
+  copy:
+    src: "{{ item }}"
+    dest: "{{ certs_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - etcd_ca.crt
+    - "{{ ansible_nodename }}.crt"
+    - "{{ ansible_nodename }}_key.pem"
+
+- name: Clean data dir
+  shell: rm -rf /var/lib/docker/volumes/"{{ data_volume }}"/_data/*
+  args:
+    warn: False
+  when: clean_data_dir|bool
+
+- name: Run etcd container
+  docker_container:
+    api_version: auto
+    name: "{{ container_name }}"
+    image: "{{ image_name }}"
+    state: started
+    recreate: True
+    oom_killer: False
+    exposed_ports:
+      - "2379"
+      - "2380"
+    published_ports:
+#      - "2379:2379"
+#      - "2380:2380"
+    pull: yes
+    network_mode: host
+    memory: "{{ memory|default('1gb') }}"
+    volumes:
+      - "{{ data_volume }}:{{ data_dir }}:rw"
+      - "{{ certs_dir }}:{{ certs_dir }}:ro"
+    env:
+      ETCD_NAME: "{{ ansible_nodename }}"
+      ETCD_DATA_DIR: "{{ data_dir }}"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "https://{{ ansible_nodename }}:2380"
+      ETCD_LISTEN_PEER_URLS: "https://0.0.0.0:2380"
+      ETCD_ADVERTISE_CLIENT_URLS: "https://{{ ansible_nodename }}:2379"
+      ETCD_LISTEN_CLIENT_URLS: "https://0.0.0.0:2379"
+      ETCD_INITIAL_CLUSTER_STATE: "new"
+      ETCD_INITIAL_CLUSTER_TOKEN: "etcd-k8-cluster"
+      ETCD_DISCOVERY_SRV: "internal"
+      ETCD_PROXY: "off"
+      ETCD_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
+      ETCD_TRUSTED_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
+      ETCD_CERT_FILE: "{{ certs_dir }}/{{ ansible_nodename }}.crt"
+      ETCD_KEY_FILE: "{{ certs_dir }}/{{ ansible_nodename }}_key.pem"
+      ETCD_CLIENT_CERT_AUTH: "true"
+      ETCD_PEER_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
+      ETCD_PEER_TRUSTED_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
+      ETCD_PEER_CERT_FILE: "{{ certs_dir }}/{{ ansible_nodename }}.crt"
+      ETCD_PEER_KEY_FILE: "{{ certs_dir }}/{{ ansible_nodename }}_key.pem"
+      ETCD_PEER_CLIENT_CERT_AUTH: "true"
+      DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
+    restart_policy: always
+    trust_image_content: true
+    log_driver: journald

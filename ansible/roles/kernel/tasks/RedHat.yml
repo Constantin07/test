@@ -10,13 +10,14 @@
     name: http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
     state: present
 
-- name: Install latest kernel
+- name: Install the latest kernel
   yum:
     name: kernel-ml
     enablerepo: elrepo-kernel
     disablerepo: "*"
     update_cache: yes
     state: latest
+  notify: update grub
 
 - name: Update /etc/default/grub
   lineinfile:
