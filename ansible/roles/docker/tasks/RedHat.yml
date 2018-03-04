@@ -1,12 +1,19 @@
 ---
 
-- name: Install required packages
+- name: Install epel-release
   yum:
     name: "{{ item  }}"
     state: present
     update_cache: yes
   with_items:
     - epel-release
+
+- name: Install required packages
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  with_items:
     - python2-pip
 
 - name: Ensure old versions of Docker are not installed
