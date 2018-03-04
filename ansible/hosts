@@ -15,6 +15,9 @@ etcd-1.internal
 etcd-2.internal
 etcd-3.internal
 
+[kube]
+k8s-master.internal
+
 [monitoring:children]
 elasticsearch
 local
