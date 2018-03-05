@@ -1,0 +1,12 @@
+# Kubernetes cluster network '{{ etcd_flannel_network }}'
+
+FLANNEL_ETCD_ENDPOINTS="https://etcd-1.internal:2379,https://etcd-2.internal:2379,https://etcd-3.internal:2379"
+
+FLANNEL_ETCD_KEY="/{{ etcd_flannel_network }}/network"
+FLANNEL_ETCD_PREFIX="/{{ etcd_flannel_network }}/network"
+
+FLANNEL_ETCD_CAFILE="/etc/flanneld/certs/etcd_ca.crt"
+FLANNEL_ETCD_CERTFILE="/etc/flanneld/certs/etcd_client.crt"
+FLANNEL_ETCD_KEYFILE="/etc/flanneld/certs/etc_client_key.pem"
+
+FLANNEL_OPTIONS="--ip-masq=true -etcd-cafile /etc/flanneld/certs/etcd_ca.crt -etcd-certfile /etc/flanneld/certs/etcd_client.crt -etcd-keyfile /etc/flanneld/certs/etc_client_key.pem"

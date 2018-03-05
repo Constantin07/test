@@ -25,13 +25,16 @@
     mode: 0755
     state: directory
 
+- name: Add sysctl configurations
+  include_tasks: sysctl.yml
+
 - name: Ensure Docker is started and enabled at boot
   service:
     name: docker
     state: started
     enabled: yes
 
-- name: Update /etc/docker.daemon.json file
+- name: Update /etc/docker/daemon.json file
   copy:
     src: daemon.json
     dest: /etc/docker/daemon.json

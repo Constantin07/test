@@ -1,7 +1,7 @@
 ---
 
+- name: restart flanneld
+  service: name=flanneld state=restarted
+
 - name: restart docker
   service: name=docker state=restarted
-
-- name: reload sysctl.conf
-  command: /sbin/sysctl -p

@@ -9,6 +9,6 @@ memory: "512m"
 data_dir: "/etcd-data"
 data_volume: "etcd-data"
 
-certs_dir: "/etc/etcd/certs"
+etcd_certs_dir: "/etc/etcd/certs"
 
 snapshot_count: 5000

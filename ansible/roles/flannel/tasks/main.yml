@@ -1,0 +1,66 @@
+---
+
+- name: Install flannel
+  yum:
+    name: flannel-0.7.1
+    state: present
+    update_cache: yes
+
+- name: Create /etc/flanneld/certs directory
+  file:
+    path: "{{ flanneld_certs_dir }}"
+    owner: root
+    group: root
+    mode: 0775
+    state: directory
+
+- name: Copy etcd client certificates to /etc/flanneld/certs
+  copy:
+    src: "{{ item }}"
+    dest: "{{ flanneld_certs_dir }}"
+    owner: root
+    group: root
+    mode: 0440
+  with_items:
+    - "{{ role_path }}/../etcd/files/etcd_ca.crt"
+    - "{{ role_path }}/../etcd/files/etcd_client.crt"
+    - "{{ role_path }}/../etcd/files/etc_client_key.pem"
+  notify: restart flanneld
+
+- name: Upload /etc/sysconfig/flanneld
+  template:
+    src: flanneld.j2
+    dest: /etc/sysconfig/flanneld
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart flanneld
+    - restart docker
+
+- name: Create dropin directory /etc/systemd/system/docker.service.d
+  file:
+    path: /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Copy flannel.conf droping for docker.service
+  copy:
+    src: 10-flanneld.conf
+    dest: /etc/systemd/system/docker.service.d/10-flanneld.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart docker
+
+- name: Ensure flanneld is started and enabled at boot
+  systemd:
+    name: flanneld.service
+    state: started
+    daemon_reload: yes
+    enabled: yes
+
+- meta: flush_handlers

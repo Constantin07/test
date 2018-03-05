@@ -15,8 +15,15 @@ etcd-1.internal
 etcd-2.internal
 etcd-3.internal
 
-[kube]
+[kube-masters]
 k8s-master.internal
+
+[kube-slaves]
+k8s-node1.internal
+
+[kube:children]
+kube-masters
+kube-slaves
 
 [monitoring:children]
 elasticsearch

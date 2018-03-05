@@ -1,0 +1,8 @@
+{
+  "Network": "172.96.0.0/12",
+  "SubnetLen": 24,
+  "Backend":
+    {
+      "Type": "vxlan"
+    }
+}

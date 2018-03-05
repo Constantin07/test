@@ -8,7 +8,7 @@
 
 - name: Clean cert dir
   file:
-    path: "{{ certs_dir }}"
+    path: "{{ etcd_certs_dir }}"
     state: absent
   when: clean_certs_dir|bool
 
@@ -20,12 +20,12 @@
     mode: 0775
     state: directory
   with_items:
-    - "{{ certs_dir }}"
+    - "{{ etcd_certs_dir }}"
 
 - name: Copy etcd certificates
   copy:
     src: "{{ item }}"
-    dest: "{{ certs_dir }}"
+    dest: "{{ etcd_certs_dir }}"
     owner: root
     group: root
     mode: 0644
@@ -59,7 +59,7 @@
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "{{ data_volume }}:{{ data_dir }}:rw"
-      - "{{ certs_dir }}:{{ certs_dir }}:ro"
+      - "{{ etcd_certs_dir }}:{{ etcd_certs_dir }}:ro"
     env:
       ETCD_NAME: "{{ ansible_nodename }}"
       ETCD_DATA_DIR: "{{ data_dir }}"
@@ -71,18 +71,45 @@
       ETCD_INITIAL_CLUSTER_TOKEN: "etcd-k8-cluster"
       ETCD_DISCOVERY_SRV: "internal"
       ETCD_PROXY: "off"
-      ETCD_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
-      ETCD_TRUSTED_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
-      ETCD_CERT_FILE: "{{ certs_dir }}/{{ ansible_nodename }}.crt"
-      ETCD_KEY_FILE: "{{ certs_dir }}/{{ ansible_nodename }}_key.pem"
+      ETCD_CA_FILE: "{{ etcd_certs_dir }}/etcd_ca.crt"
+      ETCD_TRUSTED_CA_FILE: "{{ etcd_certs_dir }}/etcd_ca.crt"
+      ETCD_CERT_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}.crt"
+      ETCD_KEY_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}_key.pem"
       ETCD_CLIENT_CERT_AUTH: "true"
-      ETCD_PEER_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
-      ETCD_PEER_TRUSTED_CA_FILE: "{{ certs_dir }}/etcd_ca.crt"
-      ETCD_PEER_CERT_FILE: "{{ certs_dir }}/{{ ansible_nodename }}.crt"
-      ETCD_PEER_KEY_FILE: "{{ certs_dir }}/{{ ansible_nodename }}_key.pem"
+      ETCD_PEER_CA_FILE: "{{ etcd_certs_dir }}/etcd_ca.crt"
+      ETCD_PEER_TRUSTED_CA_FILE: "{{ etcd_certs_dir }}/etcd_ca.crt"
+      ETCD_PEER_CERT_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}.crt"
+      ETCD_PEER_KEY_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}_key.pem"
       ETCD_PEER_CLIENT_CERT_AUTH: "true"
       ETCD_SNAPSHOT_COUNT: "{{ snapshot_count }}"
+      ETCD_ELECTION_TIMEOUT: 2000
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
     trust_image_content: true
     log_driver: journald
+
+- name: Wait for etcd cluster to come up
+  wait_for: timeout=7
+  delegate_to: 127.0.0.1
+
+- name: Check etcd cluster health
+  command: >
+    /usr/bin/etcdctl
+    --cert-file="{{ role_path }}/files/etcd_client.crt"
+    --key-file="{{ role_path }}/files/etc_client_key.pem"
+    --ca-file="{{ role_path }}/files/etcd_ca.crt"
+    --discovery-srv=internal
+    cluster-health
+  delegate_to: 127.0.0.1
+
+- name: Load flanneld config into etcd
+  shell: >
+    /usr/bin/etcdctl
+    --cert-file="{{ role_path }}/files/etcd_client.crt"
+    --key-file="{{ role_path }}/files/etc_client_key.pem"
+    --ca-file="{{ role_path }}/files/etcd_ca.crt"
+    --no-sync
+    --discovery-srv=internal
+    set "/{{ etcd_flannel_network }}/network/config" < "{{ role_path }}/files/flannel-conf.json"
+  delegate_to: 127.0.0.1
+  run_once: true
