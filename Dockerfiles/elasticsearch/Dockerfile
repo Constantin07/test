@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:6.2.1
+FROM docker.elastic.co/elasticsearch/elasticsearch:6.2.2
 
 ADD java.policy /usr/share/elasticsearch/
 ADD elasticsearch.yml /usr/share/elasticsearch/config/
