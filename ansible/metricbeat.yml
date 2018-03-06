@@ -6,10 +6,10 @@
   become_user: root
 
   roles:
-    - common
-    - resolv
-    - chronyd
-    - kernel
+   #- common
+   #- resolv
+   #- chronyd
+   #- kernel
    #- ctop
    #- docker
     - metricbeat

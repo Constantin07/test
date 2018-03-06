@@ -7,9 +7,10 @@
   serial: 3
 
   roles:
+#   - common
 #   - resolv
 #   - chronyd
 #   - kernel
 #   - ctop
 #   - docker
-   - { role: etcd, clean_certs_dir: no, clean_data_dir: no }
+    - { role: etcd, clean_certs_dir: no, clean_data_dir: no }
