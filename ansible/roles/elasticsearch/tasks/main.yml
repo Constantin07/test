@@ -29,7 +29,6 @@
     network_mode: host
     cpu_period: 1000000
     cpu_quota: 2000000
-    state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "/var/data/elasticsearch:/var/data/elasticsearch:rw"
