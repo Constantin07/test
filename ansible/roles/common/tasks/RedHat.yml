@@ -1,0 +1,25 @@
+---
+
+- name: Remove not required packages
+  yum:
+    name: "{{item}}"
+    state: absent
+  with_items:
+    - postfix
+
+- name: Install required packages for SELinux Ansible module
+  yum:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+
+- name: Disable SELinux at next reboot
+  selinux:
+    state: disabled
+
+- name: Set SELinux in permissive mode until the machine is rebooted
+  command: setenforce 0
+  ignore_errors: true
+  changed_when: false
