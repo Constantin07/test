@@ -11,7 +11,7 @@ pipeline {
         disableConcurrentBuilds()
         timestamps()
         ansiColor('xterm')
-        timeout(time: 1, unit: 'HOURS')
+        durabilityHint('PERFORMANCE_OPTIMIZED')
     }
 
     //environment {
