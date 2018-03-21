@@ -24,10 +24,8 @@ kube-masters
 kube-slaves
 
 [monitoring:children]
-local
 elasticsearch
 etcd
-kube
 
 [all:vars]
 ansible_user=root
