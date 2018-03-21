@@ -1,10 +1,16 @@
 ---
 
+- name: set timezone to Europe/London
+  timezone:
+    name: Europe/London
+
 - name: Install chronyd package
   yum:
-    name: chrony
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  with_items:
+    - chrony
 
 - name: Update /etc/chrony.conf file
   copy:
@@ -13,5 +19,6 @@
     owner: root
     group: root
     mode: 0644
+  notify: restart chronyd
 
 - meta: flush_handlers
