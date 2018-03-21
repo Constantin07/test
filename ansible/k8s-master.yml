@@ -6,9 +6,10 @@
   become_user: root
 
   roles:
+#   - common
 #   - resolv
 #   - chronyd
-#   - kernel
+    - kernel
 #   - ctop
 #    - docker
     - flannel

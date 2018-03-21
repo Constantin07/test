@@ -11,8 +11,8 @@ resource "tls_cert_request" "k8s_api_server_cert_req" {
   private_key_pem = "${tls_private_key.k8s_api_server_priv_key.private_key_pem}"
 
   subject {
-    common_name  = "k8s.internal"
-    organization = "etcd"
+    common_name  = "master1.k8s.internal"
+    organization = "Kube"
   }
 
   dns_names = [

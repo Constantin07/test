@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/metricbeat:6.2.2
+FROM docker.elastic.co/beats/metricbeat:6.2.3
 
 ADD metricbeat.yml /usr/share/metricbeat/
 

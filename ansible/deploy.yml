@@ -1,6 +1,6 @@
 ---
 
-- hosts: centos7.internal
+- hosts: etcd
   gather_facts: True
   become: yes
   become_user: root
