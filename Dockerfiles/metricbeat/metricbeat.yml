@@ -52,7 +52,12 @@ setup.template.settings:
   index.number_of_replicas: 0
   _source.enabled: true
 
-#setup.dashboards.enabled: true
+setup.dashboards.enabled: false
+
+setup.kibana:
+  host: "kibana.internal:5601"
+  username: "elastic"
+  password: ${ELASTIC_PASSWORD}
 
 output.elasticsearch:
   hosts: ["elasticsearch.internal:9200"]
