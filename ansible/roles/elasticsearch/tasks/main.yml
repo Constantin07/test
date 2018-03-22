@@ -11,6 +11,9 @@
     - "/var/data/elasticsearch"
     - "/var/log/elasticsearch"
 
+- name: Add sysctl configurations
+  include_tasks: sysctl.yml
+
 - name: Run docker elasticsearch container
   docker_container:
     api_version: auto
