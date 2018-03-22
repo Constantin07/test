@@ -1,0 +1,16 @@
+---
+
+- name: Add sysctl values
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: no
+    ignoreerrors: yes
+  with_items: "{{ sysctl_config }}"
+
+- name: Reload sysctl
+  command: /bin/true
+  notify: reload sysctl.conf
+
+- meta: flush_handlers
