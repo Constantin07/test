@@ -24,7 +24,8 @@ pipeline {
                 sh '''
                     docker pull spotify/docker-gc
                     docker run --rm -e DRY_RUN=0 -e MINIMUM_IMAGES_TO_SAVE=1 -e FORCE_IMAGE_REMOVAL=1 -e GRACE_PERIOD_SECONDS=86400 -v /var/run/docker.sock:/var/run/docker.sock spotify/docker-gc
-                    docker volume ls --filter dangling=true -q | xargs -r docker volume rm
+                    docker ps --filter "status=exited" -q | xargs -r docker rm
+                    docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm
                 '''
             }
         }
