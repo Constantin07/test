@@ -84,7 +84,7 @@ def build(nodeName = '', directory = '.') {
                             // initialise configuration
                             retry(3) {
                                 echo 'Initialize S3 backend'
-                                sh 'terraform init -get=true -force-copy'
+                                sh 'terraform init -get=true -upgrade=true -force-copy'
                             }
 
                             //Load modules if any
