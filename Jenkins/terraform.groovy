@@ -84,13 +84,13 @@ def build(nodeName = '', directory = '.') {
                             // initialise configuration
                             retry(3) {
                                 echo 'Initialize S3 backend'
-                                sh 'terraform init -get=true -upgrade=true -force-copy'
+                                sh 'terraform init -get=true -upgrade=true -verify-plugins=true -force-copy'
                             }
 
                             //Load modules if any
-                            retry(3) {
+                            /*retry(3) {
                                 sh 'terraform get -update=true'
-                            }
+                            }*/
 
                             //Syntax validation
                             sh 'terraform validate'
