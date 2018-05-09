@@ -11,4 +11,4 @@
 #   - chronyd
     - kernel
 #   - ctop
-#   - docker
+    - docker

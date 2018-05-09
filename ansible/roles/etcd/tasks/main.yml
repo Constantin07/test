@@ -81,7 +81,6 @@
       ETCD_PEER_CERT_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}.crt"
       ETCD_PEER_KEY_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}_key.pem"
       ETCD_PEER_CLIENT_CERT_AUTH: "true"
-      ETCD_SNAPSHOT_COUNT: "{{ snapshot_count }}"
       ETCD_ELECTION_TIMEOUT: 2000
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
