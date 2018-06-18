@@ -1,6 +1,6 @@
 ---
 
-version: "v3.2.19"
+version: "v3.2.20"
 image_name: "quay.io/coreos/etcd:{{ version }}"
 
 container_name: etcd
