@@ -1,6 +1,6 @@
 ---
 
-- name: Run docker kibana container
+- name: Run docker kibana container | {{ version }}
   docker_container:
     api_version: auto
     name: "{{ image_name }}"
