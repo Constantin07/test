@@ -1,5 +1,8 @@
 ---
 
+- name: Install docker-py
+  pip: name=docker-py version=1.10.6
+
 - name: Install epel-release
   yum:
     name: "{{ item  }}"

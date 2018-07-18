@@ -6,9 +6,6 @@
 - name: Install Docker
   package: name="{{ docker_package }}" state="{{ docker_package_state }}"
 
-- name: Install docker-py
-  pip: name=docker-py version=1.10.6
-
 - name: Ensure dependant services are started
   service:
     name: "{{ item }}"
