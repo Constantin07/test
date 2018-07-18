@@ -7,10 +7,10 @@
   serial: 1
 
   roles:
-   #- common
-   #- resolv
-   #- chronyd
+    - common
+    - resolv
+    - chronyd
    #- kernel
-   #- ctop
+    - ctop
     - docker
     - elasticsearch
