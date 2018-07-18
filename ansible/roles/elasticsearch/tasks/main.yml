@@ -14,7 +14,7 @@
 - name: Add sysctl configurations
   include_tasks: sysctl.yml
 
-- name: Run docker elasticsearch container
+- name: Run docker elasticsearch container | {{ version }}
   docker_container:
     api_version: auto
     name: "{{ image_name }}"
