@@ -6,6 +6,7 @@
   become_user: root
 
   roles:
-   #- ctop
-   #- docker
+    - common
+    - ctop
+    - docker
     - kibana
