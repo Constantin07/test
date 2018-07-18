@@ -27,5 +27,11 @@ kube-slaves
 elasticsearch
 etcd
 
+[all:children]
+local
+elasticsearch
+etcd
+kube
+
 [all:vars]
 ansible_user=root
