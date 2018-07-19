@@ -67,32 +67,27 @@ def build(nodeName = '', directory = '.') {
                 {
                     timestamps {
                         stage("Validate") {
-                            //Print terraform version
+                            println "Print terraform version"
                             sh 'terraform --version'
 
-                            // Remove the .terraform directory
+                            println "Remove the .terraform directory"
                             dir('.terraform') {
                                 deleteDir()
                             }
 
-                            // Ensure we always start from a clean state
+                            println "Ensure we always start from a clean state"
                             sh '''
                                 rm -f plan.out
                                 rm -f terraform.tfstate.backup
                             '''
 
-                            // initialise configuration
+                            println "Initialise configuration"
                             retry(3) {
                                 echo 'Initialize S3 backend'
                                 sh 'terraform init -get=true -upgrade=true -verify-plugins=true -force-copy'
                             }
 
-                            //Load modules if any
-                            /*retry(3) {
-                                sh 'terraform get -update=true'
-                            }*/
-
-                            //Syntax validation
+                            println "Syntax validation"
                             sh 'terraform validate'
                         }
                     }
@@ -124,7 +119,7 @@ def build(nodeName = '', directory = '.') {
                     milestone label: 'Plan'
 
                     if (needUpdate) {
-                        println 'Send a notification here'
+                        println "Send a notification here"
                     }
                 }
             }
