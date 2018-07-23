@@ -3,6 +3,11 @@ variable "vpc_cidr" {
   type        = "string"
 }
 
+variable "internal_dns_domain" {
+  description = "Internal DNS domain"
+  default     = ""
+}
+
 variable "environment" {
   description = "Environment name"
   type        = "string"
@@ -14,12 +19,13 @@ variable "project" {
 }
 
 variable "availability_zones_count" {
-  description = "Number of avalability zones"
+  description = "Number of avalability zones to use"
   type        = "string"
   default     = "2"
 }
 
 variable "extra_tags" {
-  type    = "map"
-  default = {}
+  description = "Extra tags to apply to the provisioned resources"
+  type        = "map"
+  default     = {}
 }
