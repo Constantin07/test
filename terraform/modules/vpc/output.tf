@@ -6,6 +6,10 @@ output "vpc_cidr_block" {
   value = "${aws_vpc.default.cidr_block}"
 }
 
+output "vpc_dns_suffix" {
+  value = "${aws_vpc_dhcp_options.default.domain_name}"
+}
+
 output "vpc_internet_gateway_id" {
   value = "${aws_internet_gateway.default.id}"
 }

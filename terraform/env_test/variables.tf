@@ -7,6 +7,11 @@ variable "vpc_cidr" {
   type        = "string"
 }
 
+variable "internal_dns_domain" {
+  description = "Internal DNS domain"
+  type        = "string"
+}
+
 variable "availability_zones_count" {
   description = "Number of avalability zones"
   type        = "string"

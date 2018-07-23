@@ -1,3 +1,7 @@
+/**
+* Terraform module to spin up a VPC
+*/
+
 data "aws_region" "current" {}
 
 resource "aws_vpc" "default" {
@@ -16,8 +20,12 @@ resource "aws_vpc" "default" {
     ), var.extra_tags)}"
 }
 
+locals {
+  domain_name = "${var.internal_dns_domain == "" ? "${data.aws_region.current.name}.compute.internal" : var.internal_dns_domain}"
+}
+
 resource "aws_vpc_dhcp_options" "default" {
-  domain_name         = "${data.aws_region.current.name}.compute.internal"
+  domain_name         = "${local.domain_name}"
   domain_name_servers = ["AmazonProvidedDNS"]
 
   tags = "${merge(map(
