@@ -13,3 +13,9 @@ module "core" {
     ManagedBy   = "Terraform"
   }
 }
+
+module "key_pairs" {
+  source = "../modules/key_pairs"
+
+  key_name_prefix = "${var.project}_${var.environment}"
+}

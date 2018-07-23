@@ -21,3 +21,7 @@ output "private_subnets" {
 output "public_subnets" {
   value = "${aws_subnet.public.*.id}"
 }
+
+output "network_acl_private" {
+  value = "${aws_network_acl.private.id}"
+}

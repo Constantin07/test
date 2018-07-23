@@ -9,7 +9,7 @@ resource "aws_vpc" "default" {
   enable_classiclink             = false
   enable_classiclink_dns_support = false
 
-  assign_generated_ipv6_cidr_block = false
+  assign_generated_ipv6_cidr_block = true
 
   tags = "${merge(map(
       "Name", "${var.project}-${var.environment}-vpc"
@@ -71,11 +71,20 @@ resource "aws_internet_gateway" "default" {
     ), var.extra_tags)}"
 }
 
+resource "aws_egress_only_internet_gateway" "default" {
+  vpc_id = "${aws_vpc.default.id}"
+}
+
 /*
+
 resource "aws_eip" "nat_gateway" {
   count = "${length(local.availability_zones)}"
 
   vpc = true
+
+  tags = "${merge(map(
+      "Name", "${var.project}-${var.environment}-nat-gw-${substr(element(local.availability_zones, count.index), -1, 1)}"
+    ), var.extra_tags)}"
 }
 
 resource "aws_nat_gateway" "default" {
@@ -90,6 +99,7 @@ resource "aws_nat_gateway" "default" {
 
   depends_on = ["aws_internet_gateway.default"]
 }
+
 */
 
 resource "aws_vpc_endpoint" "s3" {
@@ -100,4 +110,76 @@ resource "aws_vpc_endpoint" "s3" {
 resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id       = "${aws_vpc.default.id}"
   service_name = "com.amazonaws.${data.aws_region.current.name}.dynamodb"
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  tags = "${merge(map(
+      "Name", "${var.project}-${var.environment}-public-rt"
+    ), var.extra_tags)}"
+}
+
+resource "aws_route" "outer_igw" {
+  route_table_id         = "${aws_route_table.public.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = "${aws_internet_gateway.default.id}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "public_s3" {
+  vpc_endpoint_id = "${aws_vpc_endpoint.s3.id}"
+  route_table_id  = "${aws_route_table.public.id}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "public_dynamodb" {
+  vpc_endpoint_id = "${aws_vpc_endpoint.dynamodb.id}"
+  route_table_id  = "${aws_route_table.public.id}"
+}
+
+resource "aws_route_table" "private" {
+  count = "${length(local.availability_zones)}"
+
+  vpc_id = "${aws_vpc.default.id}"
+
+  tags = "${merge(map(
+      "Name", "${var.project}-${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
+    ), var.extra_tags)}"
+}
+
+/*
+resource "aws_route" "private_natgw" {
+  count = "${length(local.availability_zones)}"
+
+  route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = "${element(aws_nat_gateway.default.*.id, count.index)}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "private_s3" {
+  count = "${length(local.availability_zones)}"
+
+  vpc_endpoint_id = "${aws_vpc_endpoint.s3.id}"
+  route_table_id  = "${element(aws_route_table.private.*.id, count.index)}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "private_dynamodb" {
+  count = "${length(local.availability_zones)}"
+
+  vpc_endpoint_id = "${aws_vpc_endpoint.dynamodb.id}"
+  route_table_id  = "${element(aws_route_table.private.*.id, count.index)}"
+}
+*/
+
+resource "aws_route_table_association" "public" {
+  count = "${length(local.availability_zones)}"
+
+  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
+  route_table_id = "${aws_route_table.public.id}"
+}
+
+resource "aws_route_table_association" "private" {
+  count = "${length(local.availability_zones)}"
+
+  subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
+  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
