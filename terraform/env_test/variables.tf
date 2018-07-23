@@ -1,3 +1,7 @@
+variable "region" {
+  description = "AWS region"
+}
+
 variable "vpc_cidr" {
   description = "The CIDR IP block allocated for VPC"
   type        = "string"
