@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.11.3"
+  required_version = ">= 0.11.7"
 
   backend "s3" {
     bucket         = "costea-states"
@@ -7,6 +7,9 @@ terraform {
     dynamodb_table = "costea-states"
     encrypt        = true
     region         = "eu-west-1"
+
+    role_arn     = "arn:aws:iam::532814210204:role/TerraformAdmin"
+    session_name = "Terraform"
   }
 }
 
