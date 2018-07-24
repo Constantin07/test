@@ -2,7 +2,6 @@ module "core" {
   source = "../modules/vpc"
 
   vpc_cidr                 = "${var.vpc_cidr}"
-  newbits                  = "${var.newbits}"
   internal_dns_domain      = "${var.internal_dns_domain}"
   availability_zones_count = "${var.availability_zones_count}"
 

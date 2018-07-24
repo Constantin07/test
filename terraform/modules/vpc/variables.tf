@@ -3,11 +3,6 @@ variable "vpc_cidr" {
   type        = "string"
 }
 
-variable "newbits" {
-  description = "The new mask for the subnet within the virtual network"
-  type        = "string"
-}
-
 variable "internal_dns_domain" {
   description = "Internal DNS domain"
   default     = ""
