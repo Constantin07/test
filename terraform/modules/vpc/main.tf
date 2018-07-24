@@ -50,7 +50,7 @@ resource "aws_subnet" "private" {
   count = "${length(local.availability_zones)}"
 
   vpc_id            = "${aws_vpc.default.id}"
-  cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, 2, 0 + count.index)}"
+  cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, var.newbits, 0 + count.index)}"
   availability_zone = "${element(local.availability_zones, count.index)}"
 
   tags = "${merge(map(
@@ -62,7 +62,7 @@ resource "aws_subnet" "public" {
   count = "${length(local.availability_zones)}"
 
   vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "${cidrsubnet(aws_vpc.default.cidr_block, 2, 2 + count.index)}"
+  cidr_block              = "${cidrsubnet(aws_vpc.default.cidr_block, var.newbits, 2 + count.index)}"
   availability_zone       = "${element(local.availability_zones, count.index)}"
   map_public_ip_on_launch = true
 
