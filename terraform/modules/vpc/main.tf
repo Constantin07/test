@@ -44,17 +44,18 @@ data "aws_availability_zones" "available" {
 
 locals {
   availability_zones = "${slice(data.aws_availability_zones.available.names, length(data.aws_availability_zones.available.names)-var.availability_zones_count, length(data.aws_availability_zones.available.names))}"
+  newbits            = "${ceil(log(2 * var.availability_zones_count, 2))}"
 }
 
 resource "aws_subnet" "private" {
   count = "${length(local.availability_zones)}"
 
   vpc_id            = "${aws_vpc.default.id}"
-  cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, var.newbits, 0 + count.index)}"
+  cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, local.newbits, 0 + count.index)}"
   availability_zone = "${element(local.availability_zones, count.index)}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-private-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.project}-${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
@@ -62,12 +63,12 @@ resource "aws_subnet" "public" {
   count = "${length(local.availability_zones)}"
 
   vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "${cidrsubnet(aws_vpc.default.cidr_block, var.newbits, 2 + count.index)}"
+  cidr_block              = "${cidrsubnet(aws_vpc.default.cidr_block, local.newbits, var.availability_zones_count + count.index)}"
   availability_zone       = "${element(local.availability_zones, count.index)}"
   map_public_ip_on_launch = true
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-public-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.project}-${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
