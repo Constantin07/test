@@ -1,4 +1,5 @@
 *.key filter=git-crypt diff=git-crypt
+*.pub filter=git-crypt diff=git-crypt
 *.pem filter=git-crypt diff=git-crypt
 *.crt filter=git-crypt diff=git-crypt
 *.auto.tfvars filter=git-crypt diff=git-crypt
