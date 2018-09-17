@@ -31,7 +31,7 @@ resource "aws_iam_policy" "Policy-DynamoDB-State-Lock" {
                 "dynamodb:UpdateTable"
             ],
             "Resource": [
-                "arn:aws:dynamodb:eu-west-1:532814210204:table/costea-states"
+                "arn:aws:dynamodb:eu-west-1:705505438149:table/costea-states"
             ]
         }
     ]
@@ -73,7 +73,7 @@ resource "aws_iam_policy" "Policy-S3-State" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws:s3:::costea-states/*"
+                "arn:aws:s3:::costea2-states/*"
             ]
         }
     ]
