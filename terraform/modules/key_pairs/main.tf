@@ -2,10 +2,6 @@
 * Module used to generate SSH keypars
 */
 
-provider "tls" {
-  version = ">= 1.1.0"
-}
-
 locals {
   key_name_prefix    = "${var.key_name_prefix == "" ? terraform.workspace : var.key_name_prefix}"
   timestamp_yyyymmdd = "${replace(substr(timestamp(), 0, 10), "-", "")}"

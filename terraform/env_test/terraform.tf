@@ -13,7 +13,7 @@ terraform {
 
 provider "aws" {
   region  = "${var.region}"
-  version = ">= 1.28.0"
+  version = ">= 1.36.0"
 
   allowed_account_ids = ["705505438149"]
 
