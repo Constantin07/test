@@ -1,9 +1,9 @@
 {
   "log-driver": "journald",
+  "storage-driver": "overlay2",
   "log-opts": {
     "mode": "non-blocking",
-    "max-buffer-size": "4m",
-    "labels": "test-lab"
+    "max-buffer-size": "4m"
   },
   "insecure-registries": [
     "centos7:5000",

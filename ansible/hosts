@@ -14,14 +14,16 @@ etcd-2.internal
 etcd-3.internal
 
 [kube-masters]
-master1.k8s.internal
+master-node1.internal
 
 [kube-slaves]
-node1.k8s.internal
 
 [kube:children]
 kube-masters
 kube-slaves
+
+[kube:vars]
+ansible_user=ubuntu
 
 [monitoring:children]
 elasticsearch
@@ -31,7 +33,6 @@ etcd
 local
 elasticsearch
 etcd
-kube
 
 [all:vars]
 ansible_user=root

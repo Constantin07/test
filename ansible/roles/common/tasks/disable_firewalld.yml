@@ -1,5 +1,12 @@
 ---
 
+- name: Populate service facts
+  service_facts:
+
 - name: Disable firewalld
-  systemd: name=firewalld enabled=no state=stopped
-  ignore_errors: yes
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped
+  when: "'firewalld' in ansible_facts.services"
+
