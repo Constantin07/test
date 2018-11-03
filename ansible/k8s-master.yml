@@ -1,15 +1,14 @@
 ---
 
 - hosts: kube
-  gather_facts: True
   become: yes
   become_user: root
 
   roles:
-#   - common
-#   - resolv
+   - common
+   - resolv
 #   - chronyd
-    - kernel
+#   - kernel
 #   - ctop
-#    - docker
-    - flannel
+   - docker
+#    - flannel

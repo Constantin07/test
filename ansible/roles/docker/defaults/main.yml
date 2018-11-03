@@ -11,5 +11,5 @@ docker_yum_repo_enable_edge: 0
 
 # Sysctl configurations
 sysctl_config:
-- { name: net.bridge.bridge-nf-call-iptables, value: 1 }
-- { name: net.bridge.bridge-nf-call-ip6tables, value: 1 }
+  - { name: net.bridge.bridge-nf-call-iptables, value: 1 }
+  - { name: net.bridge.bridge-nf-call-ip6tables, value: 1 }

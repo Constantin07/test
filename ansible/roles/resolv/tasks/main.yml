@@ -1,14 +1,7 @@
 ---
 
-- name: Update /etc/NetworkManager/NetworkManager.conf file
-  lineinfile:
-    path: /etc/NetworkManager/NetworkManager.conf
-    insertafter: '^\[main\]$'
-    line: "dns=none"
-    state: present
-  notify: restart network_manager
-
-- meta: flush_handlers
+- include_tasks: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family == 'RedHat'
 
 - name: Update /etc/resolv.conf file
   copy:
