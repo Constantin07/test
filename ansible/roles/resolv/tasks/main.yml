@@ -10,3 +10,11 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Update /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '{{ ansible_default_ipv4.address }}'
+    line: "{{ ansible_default_ipv4.address }} {{ ansible_hostname }}"
+    state: present
+  when: ansible_default_ipv4.address is defined
