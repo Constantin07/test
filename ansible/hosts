@@ -17,6 +17,8 @@ etcd-3.internal
 master-node1.internal
 
 [kube-slaves]
+worker-node1.internal
+worker-node2.internal
 
 [kube:children]
 kube-masters
