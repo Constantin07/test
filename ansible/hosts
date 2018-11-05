@@ -15,6 +15,7 @@ etcd-3.internal
 
 [kube-masters]
 master-node1.internal
+master-node2.internal
 
 [kube-slaves]
 worker-node1.internal
