@@ -1,0 +1,34 @@
+---
+
+- name: Install required packages
+  apt:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - bash-completion
+
+- name: Add GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    update_cache: yes
+    state: present
+
+- name: Install required packages
+  apt:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Exclude tools from upgrade
+  command: apt-mark hold kubelet kubeadm kubectl
