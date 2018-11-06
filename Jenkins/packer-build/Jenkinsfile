@@ -3,10 +3,24 @@ def git_url = 'git@github.com:Constantin07/test.git'
 
 node(nodeName){
 
-    stage('Checkout') {
-	checkout scm: [$class: 'GitSCM',
-	    branches: [[name: '*/master']],
-	    userRemoteConfigs: [[url: git_url ]]]
-    }
+    properties([
+	buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
+        pipelineTriggers([githubPush(),
+        pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
+        // Allow only one job at a time
+        disableConcurrentBuilds(),
+    ])
 
+    env.GOHOME = '/usr/local/go'
+    env.PATH = "${env.PATH}:${env.GOHOME}/bin:/usr/local/bin/"
+
+    ansiColor('xterm') {
+
+	stage('Checkout') {
+	    checkout scm: [$class: 'GitSCM',
+		branches: [[name: '*/master']],
+		userRemoteConfigs: [[url: git_url ]]]
+	}
+
+    }
 }
