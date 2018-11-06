@@ -15,7 +15,7 @@ node(nodeName){
     env.GOHOME = '/usr/local/go'
     env.PATH = "${env.PATH}:${env.GOHOME}/bin:/usr/local/bin/"
     def workspace = pwd()
-    env.GOPATH = "$(workspace)/go"
+    env.GOPATH = "${workspace}/go"
 
     ansiColor('xterm') {
 
