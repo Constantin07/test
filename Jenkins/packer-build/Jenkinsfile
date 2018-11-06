@@ -1,5 +1,5 @@
 def nodeName = ''
-def git_url  = 'git@github.com:Constantin07/test.git'
+def git_url  = 'https://github.com/hashicorp/packer.git'
 def sub_dir  = 'go/src/github.com/hashicorp/packer'
 
 node(nodeName){
@@ -9,7 +9,6 @@ node(nodeName){
         pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
         // Allow only one job at a time
         disableConcurrentBuilds(),
-        //extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]]
     ])
 
     env.GOHOME = '/usr/local/go'
@@ -22,7 +21,9 @@ node(nodeName){
 	stage('Checkout') {
 	    checkout scm: [$class: 'GitSCM',
 		branches: [[name: '*/master']],
-		userRemoteConfigs: [[url: git_url ]]]
+		userRemoteConfigs: [[url: git_url ]],
+		extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]]
+	    ]
 	}
 
 	stage('Build') {
