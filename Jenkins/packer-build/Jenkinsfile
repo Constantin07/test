@@ -1,6 +1,7 @@
 def nodeName = ''
 def git_url  = 'https://github.com/hashicorp/packer.git'
 def sub_dir  = 'go/src/github.com/hashicorp/packer'
+def git_hub_project = 'https://github.com/hashicorp/packer/'
 
 node(nodeName){
 
@@ -9,6 +10,7 @@ node(nodeName){
         pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
         // Allow only one job at a time
         disableConcurrentBuilds(),
+        [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hun_project],
     ])
 
     env.GOHOME = '/usr/local/go'
