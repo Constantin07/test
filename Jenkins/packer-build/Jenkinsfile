@@ -26,6 +26,8 @@ node(nodeName){
 	    ]
 	}
 
+	milestone label: 'Checkout'
+
 	stage('Build') {
 	    dir(sub_dir) {
 		sh 'env GOOS=linux GOARCH=amd64 go build -v -o bin/packer .'
