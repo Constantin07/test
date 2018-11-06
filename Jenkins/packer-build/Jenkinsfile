@@ -1,0 +1,12 @@
+def nodeName = ''
+def git_url = 'git@github.com:Constantin07/test.git'
+
+node(nodeName){
+
+    stage('Checkout') {
+	checkout scm: [$class: 'GitSCM',
+	    branches: [[name: '*/master']],
+	    userRemoteConfigs: [[url: ${git_url} ]]]
+    }
+
+}
