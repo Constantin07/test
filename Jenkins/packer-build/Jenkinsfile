@@ -9,7 +9,7 @@ node(nodeName){
         pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
         // Allow only one job at a time
         disableConcurrentBuilds(),
-        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]],
+        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]]
     ])
 
     env.GOHOME = '/usr/local/go'
