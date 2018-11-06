@@ -28,13 +28,17 @@ node(nodeName){
 
 	milestone label: 'Checkout'
 
-	stage('Build') {
-	    dir(sub_dir) {
+	dir(sub_dir) {
+	    stage('Build') {
 		sh 'env GOOS=linux GOARCH=amd64 go build -v -o bin/packer .'
+	    }
+
+	    milestone label: 'Build'
+
+	    stage('Install') {
 		sh 'sudo cp -f bin/packer /usr/local/bin/packer.io'
 		sh 'packer.io version'
 	    }
 	}
-
     }
 }
