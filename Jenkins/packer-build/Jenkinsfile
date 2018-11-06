@@ -1,18 +1,21 @@
 def nodeName = ''
-def git_url = 'git@github.com:Constantin07/test.git'
+def git_url  = 'git@github.com:Constantin07/test.git'
+def sub_dir  = 'go/src/github.com/hashicorp/packer'
 
 node(nodeName){
 
     properties([
 	buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
-        pipelineTriggers([githubPush(),
-        pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
+        pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
         // Allow only one job at a time
         disableConcurrentBuilds(),
+        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]],
     ])
 
     env.GOHOME = '/usr/local/go'
     env.PATH = "${env.PATH}:${env.GOHOME}/bin:/usr/local/bin/"
+    def workspace = pwd()
+    env.GOPATH = "$(workspace)/go"
 
     ansiColor('xterm') {
 
@@ -20,6 +23,14 @@ node(nodeName){
 	    checkout scm: [$class: 'GitSCM',
 		branches: [[name: '*/master']],
 		userRemoteConfigs: [[url: git_url ]]]
+	}
+
+	stage('Build') {
+	    dir(sub_dir) {
+		sh 'env GOOS=linux GOARCH=amd64 go build -v -o bin/packer .'
+		sh 'sudo cp -f bin/packer /usr/local/bin/packer.io'
+		sh 'packer.io version'
+	    }
 	}
 
     }
