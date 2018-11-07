@@ -4,14 +4,14 @@
   yum:
     name: "{{item}}"
     state: absent
-  with_items:
+  loop:
     - postfix
 
 - name: Install required packages for SELinux Ansible module
   yum:
     name: "{{item}}"
     state: latest
-  with_items:
+  loop:
     - libselinux-python
     - libsemanage-python
 
