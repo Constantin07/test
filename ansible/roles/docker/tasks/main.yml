@@ -32,7 +32,7 @@
     enabled: yes
 
 - name: Update /etc/docker/daemon.json file
-  copy:
+  template:
     src: daemon.json
     dest: /etc/docker/daemon.json
     owner: root
