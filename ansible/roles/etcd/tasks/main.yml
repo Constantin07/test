@@ -98,14 +98,14 @@
     cluster-health
   delegate_to: 127.0.0.1
 
-- name: Load flanneld config into etcd
-  shell: >
-    /usr/bin/etcdctl
-    --cert-file="{{ role_path }}/files/etcd_client.crt"
-    --key-file="{{ role_path }}/files/etc_client_key.pem"
-    --ca-file="{{ role_path }}/files/etcd_ca.crt"
-    --no-sync
-    --discovery-srv=internal
-    set "/{{ etcd_flannel_network }}/network/config" < "{{ role_path }}/files/flannel-conf.json"
-  delegate_to: 127.0.0.1
-  run_once: true
+#- name: Load flanneld config into etcd
+#  shell: >
+#    /usr/bin/etcdctl
+#    --cert-file="{{ role_path }}/files/etcd_client.crt"
+#    --key-file="{{ role_path }}/files/etc_client_key.pem"
+#    --ca-file="{{ role_path }}/files/etcd_ca.crt"
+#    --no-sync
+#    --discovery-srv=internal
+#    set "/{{ etcd_flannel_network }}/network/config" < "{{ role_path }}/files/flannel-conf.json"
+#  delegate_to: 127.0.0.1
+#  run_once: true
