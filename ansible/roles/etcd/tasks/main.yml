@@ -19,7 +19,7 @@
     group: root
     mode: 0775
     state: directory
-  with_items:
+  loop:
     - "{{ etcd_certs_dir }}"
 
 - name: Copy etcd certificates
@@ -29,7 +29,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - etcd_ca.crt
     - "{{ ansible_nodename }}.crt"
     - "{{ ansible_nodename }}_key.pem"
@@ -51,9 +51,6 @@
     exposed_ports:
       - "2379"
       - "2380"
-    published_ports:
-#      - "2379:2379"
-#      - "2380:2380"
     pull: yes
     network_mode: host
     memory: "{{ memory|default('1gb') }}"

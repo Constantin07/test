@@ -1,6 +1,10 @@
 {
   "log-driver": "journald",
+{% if ansible_os_family == 'Debian' %}
   "storage-driver": "overlay2",
+{% elif ansible_os_family == 'RedHat' %}
+  "storage-driver": "btrfs",
+{% endif %}
   "log-opts": {
     "mode": "non-blocking",
     "max-buffer-size": "4m"

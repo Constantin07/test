@@ -11,7 +11,7 @@
     name: "{{ item  }}"
     state: present
     update_cache: yes
-  with_items:
+  loop:
     - epel-release
 
 - name: Install required packages
@@ -19,14 +19,14 @@
     name: "{{ item  }}"
     state: present
     update_cache: yes
-  with_items:
+  loop:
     - python2-pip
 
 - name: Ensure old versions of Docker are not installed
   package:
     name: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - docker
     - docker-common
     - docker-engine

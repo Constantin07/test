@@ -4,7 +4,7 @@
   package:
     name: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - docker
     - docker-engine
     - docker.io

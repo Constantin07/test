@@ -1,6 +1,6 @@
 ---
 
-version: "v3.2.20"
+version: "v3.2.24"
 image_name: "quay.io/coreos/etcd:{{ version }}"
 
 container_name: etcd
@@ -10,4 +10,3 @@ data_dir: "/etcd-data"
 data_volume: "etcd-data"
 
 etcd_certs_dir: "/etc/etcd/certs"
-
