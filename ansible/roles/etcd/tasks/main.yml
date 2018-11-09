@@ -65,7 +65,7 @@
       ETCD_ADVERTISE_CLIENT_URLS: "https://{{ ansible_nodename }}:2379"
       ETCD_LISTEN_CLIENT_URLS: "https://0.0.0.0:2379"
       ETCD_INITIAL_CLUSTER_STATE: "new"
-      ETCD_INITIAL_CLUSTER_TOKEN: "etcd-k8-cluster"
+      ETCD_INITIAL_CLUSTER_TOKEN: "k8s-etcd-cluster"
       ETCD_DISCOVERY_SRV: "internal"
       ETCD_PROXY: "off"
       ETCD_CA_FILE: "{{ etcd_certs_dir }}/etcd_ca.crt"
@@ -78,7 +78,7 @@
       ETCD_PEER_CERT_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}.crt"
       ETCD_PEER_KEY_FILE: "{{ etcd_certs_dir }}/{{ ansible_nodename }}_key.pem"
       ETCD_PEER_CLIENT_CERT_AUTH: "true"
-      ETCD_ELECTION_TIMEOUT: 2000
+      ETCD_ENABLE_V2: "true"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
     trust_image_content: true
@@ -94,7 +94,7 @@
     --cert-file="{{ role_path }}/files/etcd_client.crt"
     --key-file="{{ role_path }}/files/etc_client_key.pem"
     --ca-file="{{ role_path }}/files/etcd_ca.crt"
-    --discovery-srv=internal
+    --endpoints "https://{{ etcd_cluster_name }}:2379"
     cluster-health
   delegate_to: 127.0.0.1
 
