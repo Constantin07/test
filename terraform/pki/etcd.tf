@@ -11,13 +11,13 @@ resource "tls_cert_request" "etcd-1_server_cert_req" {
 
   subject {
     common_name  = "etcd-1.internal"
-    organization = "etcd"
+    organization = "${var.organisation}"
   }
 
   dns_names = [
     "etcd-1.internal",
+    "${var.etcd_cluster_name}",
     "localhost",
-    "internal",
   ]
 
   ip_addresses = [
@@ -58,13 +58,13 @@ resource "tls_cert_request" "etcd-2_server_cert_req" {
 
   subject {
     common_name  = "etcd-2.internal"
-    organization = "etcd"
+    organization = "${var.organisation}"
   }
 
   dns_names = [
     "etcd-2.internal",
+    "${var.etcd_cluster_name}",
     "localhost",
-    "internal",
   ]
 
   ip_addresses = [
@@ -105,13 +105,13 @@ resource "tls_cert_request" "etcd-3_server_cert_req" {
 
   subject {
     common_name  = "etcd-3.internal"
-    organization = "etcd"
+    organization = "${var.organisation}"
   }
 
   dns_names = [
     "etcd-3.internal",
+    "${var.etcd_cluster_name}",
     "localhost",
-    "internal",
   ]
 
   ip_addresses = [
@@ -152,7 +152,7 @@ resource "tls_cert_request" "etcd_client_cert_req" {
 
   subject {
     common_name  = "etcd client"
-    organization = "etcd"
+    organization = "${var.organisation}"
   }
 }
 
