@@ -37,6 +37,8 @@ ansiColor('xterm') {
 
     milestone label: 'Build'
 
+    input(message: "Do you want to install?", ok: 'Install')
+
     stage('Install') {
 	node(nodeName) {
 	    sh 'sudo yum -y remove ansible'
