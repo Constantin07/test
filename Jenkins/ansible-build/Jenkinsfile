@@ -1,0 +1,39 @@
+def nodeName = ''
+def git_url  = 'https://github.com/ansible/ansible.git'
+def git_hub_project = 'https://github.com/ansible/ansible/'
+
+node(nodeName){
+
+    properties([
+	buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
+        pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
+        // Allow only one job at a time
+        disableConcurrentBuilds(),
+        [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
+    ])
+
+    ansiColor('xterm') {
+
+	stage('Checkout') {
+	    checkout scm: [$class: 'GitSCM',
+		branches: [[name: '*/devel']],
+		userRemoteConfigs: [[url: git_url ]]
+	    ]
+	}
+
+	milestone label: 'Checkout'
+
+	stage('Build') {
+	    sh '''#!/usr/bin/env bash
+		make clean
+		make -j 2 rpm
+		'''
+	}
+
+	milestone label: 'Build'
+
+	stage('Install') {
+	    sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
+	}
+    }
+}
