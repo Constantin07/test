@@ -82,7 +82,7 @@ def build(nodeName = '', directory = '.') {
                             '''
 
                             println "Initialise configuration"
-                            retry(3) {
+                            retry(2) {
                                 echo 'Initialize S3 backend'
                                 sh 'terraform init -get=true -upgrade=true -verify-plugins=true -force-copy'
                             }
