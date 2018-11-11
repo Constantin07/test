@@ -5,9 +5,9 @@ module "env" {
 module "core" {
   source = "../modules/vpc"
 
-  vpc_cidr                 = "${var.vpc_cidr}"
-  internal_dns_domain      = "${var.internal_dns_domain}"
-  availability_zones_count = "${var.availability_zones_count}"
+  vpc_cidr                 = "${lookup(module.env.accounts[var.environment], "vpc_cidr")}"
+  internal_dns_domain      = "${lookup(module.env.accounts[var.environment], "internal_dns_domain")}"
+  availability_zones_count = "${lookup(module.env.accounts[var.environment], "availability_zones_count")}"
 
   environment = "${var.environment}"
   project     = "${var.project}"

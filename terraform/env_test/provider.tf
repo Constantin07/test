@@ -1,8 +1,10 @@
 provider "aws" {
-  region  = "${var.region}"
-  version = ">= 1.41.0"
+  region  = "${lookup(module.env.accounts[var.environment], "region")}"
+  version = ">= 1.43.2"
 
-  allowed_account_ids = ["705505438149"]
+  allowed_account_ids = [
+    "${lookup(module.env.accounts[var.environment], "account")}",
+  ]
 
   assume_role {
     role_arn     = "arn:aws:iam::705505438149:role/TerraformAdmin"
