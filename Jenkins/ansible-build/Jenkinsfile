@@ -31,7 +31,7 @@ ansiColor('xterm') {
 	    sh '''#!/usr/bin/env bash
 		make clean
 		make -j 2 rpm
-		'''
+	    '''
 	}
     }
 
