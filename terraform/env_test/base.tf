@@ -1,3 +1,7 @@
+module "env" {
+  source = "../modules/env"
+}
+
 module "core" {
   source = "../modules/vpc"
 
