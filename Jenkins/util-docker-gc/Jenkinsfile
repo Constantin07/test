@@ -4,9 +4,9 @@ pipeline {
 
     agent any
 
-    triggers {
-        cron('H * * * *')
-    }
+    //triggers {
+    //    cron('H * * * *')
+    //}
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '20'))
