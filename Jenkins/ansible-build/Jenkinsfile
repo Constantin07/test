@@ -1,8 +1,9 @@
-def nodeName = ''
-def git_url  = 'https://github.com/ansible/ansible.git'
+def nodeName        = ''
+def git_url         = 'https://github.com/ansible/ansible.git'
 def git_hub_project = 'https://github.com/ansible/ansible/'
 
-def install = false
+def current_version = ''
+def new_version     = ''
 
 node(nodeName){
 
@@ -35,15 +36,15 @@ ansiColor('xterm') {
 		make -j 2 rpm
 	    '''
 
-	    def current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
-	    def new_version = sh(script: "ls rpm-build/ansible*.el7.noarch.rpm | cut -d. -f5", returnStdout: true).trim()
+	    current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
+	    new_version = sh(script: "ls rpm-build/ansible*.el7.noarch.rpm | cut -d. -f5", returnStdout: true).trim()
 	}
     }
 
     milestone label: 'Build'
 
     stage('Approve') {
-	if( current_version == new_version) {
+	if(current_version == new_version) {
 	    println "No changes in version"
 	    currentBuild.result = 'SUCCESS'
 	} else {
