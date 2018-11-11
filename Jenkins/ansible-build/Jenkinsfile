@@ -46,7 +46,7 @@ ansiColor('xterm') {
 	if( current_version == new_version) {
 	    println "No changes in version"
 	    currentBuild.result = 'SUCCESS'
-	else {
+	} else {
 	    input(message: "Do you want to install?")
 	}
     }
