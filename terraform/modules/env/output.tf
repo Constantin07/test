@@ -1,24 +1,33 @@
 output "accounts" {
   value = {
     "dev" = {
-      "account"             = "705505438149"
-      "region"              = "us-west-1"
-      "description"         = "Development environment"
-      "vpc_cidr"            = "10.0.0.0/24"
-      "internal_dns_domain" = ".dev.local"
-      "alias"               = "dev"
+      "account"                  = "705505438149"
+      "region"                   = "us-east-1"
+      "availability_zones_count" = 2
+      "description"              = "Development environment"
+      "vpc_cidr"                 = "10.0.0.0/24"
+      "internal_dns_domain"      = "dev.local"
+      "alias"                    = "dev"
     }
 
-    "test" = {
-      "account"             = "705505438149"
-      "region"              = "us-west-1"
-      "description"         = "Testing environment"
-      "vpc_cidr"            = "10.0.1.0/24"
-      "internal_dns_domain" = ".test.local"
-      "alias"               = "test"
+    "uat" = {
+      "account"                  = "705505438149"
+      "region"                   = "us-east-1"
+      "availability_zones_count" = 2
+      "description"              = "Testing environment"
+      "vpc_cidr"                 = "10.0.1.0/24"
+      "internal_dns_domain"      = "uat.local"
+      "alias"                    = "uat"
     }
 
-    "uat"  = "705505438149"
-    "prod" = "705505438149"
+    "prod" = {
+      "account"                  = "705505438149"
+      "region"                   = "us-east-1"
+      "availability_zones_count" = 2
+      "description"              = "Production environment"
+      "vpc_cidr"                 = "10.0.2.0/24"
+      "internal_dns_domain"      = "prod.local"
+      "alias"                    = "prod"
+    }
   }
 }
