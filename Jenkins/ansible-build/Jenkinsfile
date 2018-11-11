@@ -37,7 +37,11 @@ ansiColor('xterm') {
 
     milestone label: 'Build'
 
-    input(message: "Do you want to install?", ok: 'Install')
+    stage('Approve') {
+	input(message: "Do you want to install?")
+    }
+
+    milestone label: 'Approve'
 
     stage('Install') {
 	node(nodeName) {
