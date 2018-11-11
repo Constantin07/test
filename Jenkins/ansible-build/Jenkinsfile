@@ -11,28 +11,34 @@ node(nodeName){
         disableConcurrentBuilds(),
         [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
     ])
+}
 
-    ansiColor('xterm') {
+ansiColor('xterm') {
 
-	stage('Checkout') {
+    stage('Checkout') {
+	node(nodeName) {
 	    checkout scm: [$class: 'GitSCM',
 		branches: [[name: '*/devel']],
 		userRemoteConfigs: [[url: git_url ]]
 	    ]
 	}
+    }
 
-	milestone label: 'Checkout'
+    milestone label: 'Checkout'
 
-	stage('Build') {
+    stage('Build') {
+	node(nodeName) {
 	    sh '''#!/usr/bin/env bash
 		make clean
 		make -j 2 rpm
 		'''
 	}
+    }
 
-	milestone label: 'Build'
+    milestone label: 'Build'
 
-	stage('Install') {
+    stage('Install') {
+	node(nodeName) {
 	    sh 'sudo yum -y remove ansible'
 	    sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
 	}
