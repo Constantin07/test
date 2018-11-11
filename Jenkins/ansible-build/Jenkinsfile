@@ -33,6 +33,7 @@ node(nodeName){
 	milestone label: 'Build'
 
 	stage('Install') {
+	    sh 'sudo yum -y remove ansible'
 	    sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
 	}
     }
