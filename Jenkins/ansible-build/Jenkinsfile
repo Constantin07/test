@@ -22,7 +22,8 @@ ansiColor('xterm') {
 	node(nodeName) {
 	    checkout scm: [$class: 'GitSCM',
 		branches: [[name: '*/devel']],
-		userRemoteConfigs: [[url: git_url ]]
+		userRemoteConfigs: [[url: git_url ]],
+		extensions: [[$class: 'CleanCheckout']]
 	    ]
 	}
     }
