@@ -7,8 +7,12 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: centos:7.5.1804
+  - name: centos
+    image: centos:latest
+    pull: True
+    privileged: true
+  - name: ubuntu
+    image: ubuntu:bionic
     pull: True
     privileged: true
 provisioner:
