@@ -38,7 +38,7 @@ def build(nodeName = '', directory = '.') {
         ansiColor('xterm') {
 
             stage('Checkout') {
-                checkout(scm)
+                checkout(scm: [$class: 'GitSCM', extensions: [[$class: 'CleanCheckout']]])
 
                 // Add comment to build description
                 comment = get_comment()
