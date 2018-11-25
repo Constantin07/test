@@ -5,11 +5,11 @@
     name: Europe/London
 
 - name: Install chronyd package
-  yum:
+  package:
     name: "{{ item }}"
     state: present
     update_cache: yes
-  with_items:
+  loop:
     - chrony
 
 - name: Update /etc/chrony.conf file
