@@ -9,4 +9,4 @@
     - common
     - ctop
     - docker
-    - kibana
+    #- kibana
