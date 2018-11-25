@@ -1,12 +1,9 @@
 ---
 
 - hosts: centos7.internal
-  gather_facts: True
-  become: yes
-  become_user: root
 
   roles:
     - common
     - ctop
     - docker
-    #- kibana
+#    - kibana

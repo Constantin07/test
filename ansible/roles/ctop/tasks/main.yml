@@ -20,4 +20,4 @@
     tmp_dest: "/tmp"
     timeout: 20
     validate_certs: yes
-  when: "((ctop_ver.stdout != ctop_version) and ctop.stat.exists) or not ctop.stat.exists"
+  when: (ctop_ver.stdout != ctop_version and ctop.stat.exists) or not ctop.stat.exists
