@@ -23,8 +23,9 @@ def build(nodeName = '', directory = '.') {
 
         properties(
             [
+                durabilityHint('MAX_SURVIVABILITY'),
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '30')),
-                pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\n* * * * *")]),
+                pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
                 // Allow only one job at a time
                 disableConcurrentBuilds(),
             ]
@@ -38,7 +39,7 @@ def build(nodeName = '', directory = '.') {
         ansiColor('xterm') {
 
             stage('Checkout') {
-                checkout(scm: [$class: 'GitSCM', extensions: [[$class: 'CleanCheckout']]])
+                checkout(scm)
 
                 // Add comment to build description
                 comment = get_comment()
