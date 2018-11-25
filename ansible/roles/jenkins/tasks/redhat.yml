@@ -1,0 +1,49 @@
+---
+
+- name: Install required packages for Jenkins
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - java-1.8.0-openjdk
+
+- name: Add Jenkins repository
+  get_url:
+    url: "{{ jenkins_yum_repo_url }}"
+    dest: "/etc/yum.repos.d/jenkins.repo"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Add Jenkins GPG key.
+  rpm_key:
+    key: "{{ jenkins_yum_gpg_key }}"
+    state: present
+
+- name: Install Jenkins
+  yum:
+    name: "jenkins-{{ jenkins_version }}-*.noarch"
+    state: present
+    update_cache: yes
+
+- name: Jenkins config - JENKINS_PORT
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_PORT='
+    line: 'JENKINS_PORT="{{ jenkins_port }}"'
+  notify: restart jenkins
+
+- name: Jenkins config - JENKINS_LISTEN_ADDRESS
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_LISTEN_ADDRESS='
+    line: 'JENKINS_LISTEN_ADDRESS="0.0.0.0"'
+  notify: restart jenkins
+
+- name: Jenkins config - JAVA_OPTIONS
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_JAVA_OPTIONS='
+    line: 'JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true {{ jenkins_java_options }}"'
+  notify: restart jenkins

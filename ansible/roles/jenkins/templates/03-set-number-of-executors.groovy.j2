@@ -1,0 +1,13 @@
+#!groovy
+
+import jenkins.model.*
+
+def instance = Jenkins.getInstance()
+
+// Set number of executors
+instance.setNumExecutors(2)
+
+// Set jenkins slave port
+instance.setSlaveAgentPort({{ jenkins_slave_port }})
+
+instance.save()
