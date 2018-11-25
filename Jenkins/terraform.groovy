@@ -16,8 +16,8 @@ def build(nodeName = '', directory = '.') {
 
     // Global state
     def needUpdate = false
-    def apply = false
-    def comment = ''
+    def apply      = false
+    def comment    = ''
 
     node(nodeName) {
 
