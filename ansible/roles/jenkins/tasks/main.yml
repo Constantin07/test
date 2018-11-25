@@ -1,0 +1,38 @@
+---
+
+- name: Include OS specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Clean init.groovy.d directory
+  file:
+    path: /var/lib/jenkins/init.groovy.d
+    state: absent
+
+- name: Create init.groovy.d directory
+  file:
+    path: /var/lib/jenkins/init.groovy.d
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Load sensitive variables
+  include_vars: jenkins.enc.yml
+  no_log: True
+
+- name: Upload Groovy bootstrap scripts
+  template:
+    src: "{{ item }}"
+    dest: "/var/lib/jenkins/init.groovy.d/{{ item | basename | regex_replace('.j2','') }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  with_fileglob:
+    - ../templates/*.j2
+  notify: restart jenkins
+
+- name: Ensure Jenkins service is started and enabled
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

@@ -3,7 +3,9 @@
 - hosts: centos7.internal
 
   roles:
-    - common
-    - ctop
-    - docker
+#    - common
+#    - resolv
+#    - ctop
+#    - docker
+    - jenkins
 #    - kibana

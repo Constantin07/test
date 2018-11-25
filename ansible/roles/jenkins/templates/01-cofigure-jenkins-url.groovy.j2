@@ -1,0 +1,17 @@
+#!groovy
+
+import jenkins.model.*
+
+url = "http://{{ ansible_nodename }}:{{ jenkins_port }}"
+
+// Get the config from our running instance
+def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()
+
+// Set Jenkins URL
+jenkinsLocationConfiguration.setUrl(url)
+
+// Set Jenkins Admin e-mail
+jenkinsLocationConfiguration.setAdminAddress("Admin <{{ jenkins_admin_email }}>")
+
+// Save the configuration
+jenkinsLocationConfiguration.save()
