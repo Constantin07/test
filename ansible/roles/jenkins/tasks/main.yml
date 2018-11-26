@@ -3,6 +3,12 @@
 - name: Include OS specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
+- name: Add jenkins user to docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
+
 - name: Clean init.groovy.d directory
   file:
     path: /var/lib/jenkins/init.groovy.d
