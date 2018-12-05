@@ -1,0 +1,21 @@
+#!groovy
+
+import jenkins.model.Jenkins;
+import org.jenkinsci.plugins.scriptsecurity.scripts.*;
+
+// List of approved script signatures (script approval plugin)
+def signatures = [
+  'method hudson.model.Job getLastBuild',
+  'method java.lang.String toURL',
+  'method java.lang.String trim'
+]
+
+def script_approval = ScriptApproval.get()
+
+for(signature in signatures) {
+  script_approval.approveSignature(signature)
+}
+
+script_approval.save()
+
+println "Added approved script signatures."
