@@ -1,6 +1,9 @@
 [local]
 centos7.internal
 
+[jenkins-slaves]
+jenkins-slave.internal
+
 [elasticsearch]
 elasticsearch-1.internal
 elasticsearch-2.internal
