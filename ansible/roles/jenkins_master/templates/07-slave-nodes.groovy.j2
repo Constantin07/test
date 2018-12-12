@@ -1,0 +1,31 @@
+#!groovy
+
+import hudson.model.*
+import jenkins.model.*
+import hudson.slaves.*
+import hudson.model.Node.*
+import hudson.model.Node.Mode
+
+
+String jenkins_home = '/var/lib/jenkins'
+
+def slaves = [
+  'jenkins-slave'
+]
+
+slaves.each {
+  println "--> Create slave ${it}"
+  launcher = new JNLPLauncher(true)  // Enable WorkDir
+  DumbSlave dumb = new DumbSlave(
+    it,             // Agent name
+    jenkins_home,   // Agent's workspace             
+    launcher        // Launch strategy, JNLP
+  )
+  //dumb.setNodeDescription(it)  // Agent description
+  dumb.setLabelString(it)      // Labels
+  dumb.setMode(Mode.NORMAL)    // "Usage" field, EXCLUSIVE is "only tied to node", NORMAL is "any"
+  dumb.setNumExecutors(2)      // Number of executors
+  dumb.setRetentionStrategy(RetentionStrategy.INSTANCE)  // Is the "Availability" field and INSTANCE means "Always"
+  Jenkins.instance.addNode(dumb)
+}
+

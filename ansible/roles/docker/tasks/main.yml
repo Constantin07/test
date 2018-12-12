@@ -22,8 +22,8 @@
     mode: 0755
     state: directory
 
-- name: Add sysctl configurations
-  include_tasks: sysctl.yml
+#- name: Add sysctl configurations
+#  include_tasks: sysctl.yml
 
 - name: Ensure Docker is started and enabled at boot
   service:
