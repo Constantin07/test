@@ -1,7 +1,5 @@
 ---
 
-dependency:
-  name: galaxy
 driver:
   name: docker
 lint:
@@ -17,8 +15,14 @@ platforms:
     privileged: true
 provisioner:
   name: ansible
+  options:
+    v: True
+  playbooks:
+    converge: playbook.yml
   lint:
     name: ansible-lint
+    options:
+      force-color: True
 scenario:
   name: default
 verifier:
