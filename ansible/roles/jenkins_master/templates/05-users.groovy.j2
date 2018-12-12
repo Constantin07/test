@@ -1,0 +1,19 @@
+#!groovy
+
+import jenkins.model.*
+import hudson.security.*
+
+def instance = Jenkins.getInstance()
+
+def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+hudsonRealm.createAccount('{{ admin_username }}','{{ admin_password }}')  // Admin
+hudsonRealm.createAccount('{{ slave_username }}','{{ slave_password }}')  // Jenkins slaves
+instance.setSecurityRealm(hudsonRealm)
+
+def strategy = new GlobalMatrixAuthorizationStrategy()
+strategy.add(Jenkins.ADMINISTER, '{{ admin_username }}')
+strategy.add(Jenkins.READ, '{{ slave_username }}')
+strategy.add(Jenkins.MasterComputer.CONNECT, '{{ slave_username }}')
+instance.setAuthorizationStrategy(strategy)
+
+instance.save()

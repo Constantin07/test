@@ -1,0 +1,89 @@
+---
+
+- name: Load sensitive variables
+  include_vars: jenkins.enc.yml
+  no_log: yes
+
+- name: Install required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - java-1.8.0-openjdk
+    - git
+    - make
+    - rpm-build
+    - python-docutils
+    - python2-devel
+
+- name: Install required pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - packaging
+    - Jinja2
+    - PyYAML
+
+- name: Set JAVA_HOME
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^JAVA_HOME='
+    line: 'JAVA_HOME=/usr/lib/jvm/jre-openjdk'
+
+- name: Add Jenkins group
+  group:
+    name: "{{ jenkins_group }}"
+    gid: "{{ jenkins_group_gid }}"
+    state: present
+
+- name: Create Jenkins directory
+  file:
+    path: "{{ jenkins_dir }}"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0755
+
+- name: Add Jenkins user
+  user:
+    name: "{{ jenkins_user }}"
+    uid: "{{ jenkins_user_uid }}"
+    comment: 'Jenkins user'
+    group: "{{ jenkins_group }}"
+    groups: docker
+    home: "{{ jenkins_dir }}"
+
+- name: Download Jenkins agent
+  get_url:
+    url: "{{ jenkins_agent_url }}"
+    dest: "{{ jenkins_dir }}/agent.jar"
+    force: yes
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0664
+
+- name: Create Jenkins systemd service drop-in directory
+  file:
+    path: "/etc/systemd/system/{{ jenkins_systemd_service }}.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Install Jenkins systemd unit file
+  template:
+    src: jenkins-slave.service.j2
+    dest: "/etc/systemd/system/{{ jenkins_systemd_service }}"
+    owner: root
+    group: root
+    mode: 0664
+  notify: restart jenkins-slave
+
+- name: Enable Jenkins slave service
+  systemd:
+    name: jenkins-slave.service
+    enabled: yes
+    state: started
+    daemon_reload: yes

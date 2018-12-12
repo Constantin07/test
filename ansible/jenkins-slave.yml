@@ -1,0 +1,11 @@
+---
+
+- hosts: jenkins-slaves
+
+  roles:
+#    - common
+#    - resolv
+#    - chronyd
+#    - docker
+#    - ctop
+    - { role: jenkins_slave }

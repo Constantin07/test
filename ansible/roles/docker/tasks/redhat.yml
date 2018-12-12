@@ -1,10 +1,14 @@
 ---
 
 - name: Remove docker-py as not supported
-  pip: name=docker-py state=absent
+  pip:
+    name: docker-py
+    state: absent
 
 - name: Install docker python package
-  pip: name=docker version=3.4.1
+  pip:
+    name: docker
+    version: 3.6.0
 
 - name: Install epel-release
   yum:

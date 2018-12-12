@@ -1,0 +1,12 @@
+---
+
+jenkins_user: jenkins
+jenkins_user_uid: 2000
+jenkins_group: jenkins
+jenkins_group_gid: 2000
+jenkins_dir: '/var/lib/jenkins'
+jenkins_systemd_service: "jenkins-slave.service"
+
+jenkins_master_host: "centos7.internal"
+jenkins_master_port: 8080
+jenkins_agent_url:   "http://{{ jenkins_master_host }}:{{ jenkins_master_port }}/jnlpJars/agent.jar"
