@@ -38,9 +38,9 @@
     gid: "{{ jenkins_group_gid }}"
     state: present
 
-- name: Create Jenkins directory
+- name: Create Jenkins work directory
   file:
-    path: "{{ jenkins_dir }}"
+    path: "{{ jenkins_work_dir }}"
     state: directory
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
@@ -53,12 +53,12 @@
     comment: 'Jenkins user'
     group: "{{ jenkins_group }}"
     groups: docker
-    home: "{{ jenkins_dir }}"
+    home: "{{ jenkins_work_dir }}"
 
 - name: Download Jenkins agent
   get_url:
-    url: "{{ jenkins_agent_url }}"
-    dest: "{{ jenkins_dir }}/agent.jar"
+    url: "{{ jenkins_remoting_url }}"
+    dest: "{{ jenkins_bin_path }}/slave.jar"
     force: yes
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
@@ -66,7 +66,7 @@
 
 - name: Create Jenkins systemd service drop-in directory
   file:
-    path: "/etc/systemd/system/{{ jenkins_systemd_service }}.d"
+    path: "/etc/systemd/system/{{ jenkins_service_name }}.d"
     state: directory
     owner: root
     group: root
@@ -75,7 +75,7 @@
 - name: Install Jenkins systemd unit file
   template:
     src: jenkins-slave.service.j2
-    dest: "/etc/systemd/system/{{ jenkins_systemd_service }}"
+    dest: "/etc/systemd/system/{{ jenkins_service_name }}"
     owner: root
     group: root
     mode: 0644
@@ -83,7 +83,7 @@
 
 - name: Enable Jenkins slave service
   systemd:
-    name: jenkins-slave.service
+    name: "{{ jenkins_service_name }}"
     enabled: yes
     state: started
     daemon_reload: yes
