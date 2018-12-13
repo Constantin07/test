@@ -62,7 +62,7 @@
     force: yes
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
-    mode: 0664
+    mode: 0644
 
 - name: Create Jenkins systemd service drop-in directory
   file:
@@ -78,7 +78,7 @@
     dest: "/etc/systemd/system/{{ jenkins_systemd_service }}"
     owner: root
     group: root
-    mode: 0664
+    mode: 0644
   notify: restart jenkins-slave
 
 - name: Enable Jenkins slave service
