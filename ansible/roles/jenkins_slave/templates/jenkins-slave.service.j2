@@ -5,17 +5,18 @@ After=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory={{ jenkins_dir }}
+WorkingDirectory={{ jenkins_work_dir }}
 User={{ jenkins_user }}
 Group={{ jenkins_group }}
 PermissionsStartOnly=true
-ExecStartPre=/usr/bin/chown -R {{ jenkins_user }}:{{ jenkins_group }} {{ jenkins_dir }}
-ExecStart=/usr/bin/java -jar agent.jar \
+ExecStartPre=mkdir -p {{ jenkins_work_dir }}
+ExecStartPre=/usr/bin/chown -R {{ jenkins_user }}:{{ jenkins_group }} {{ jenkins_work_dir }}
+ExecStart=/usr/bin/java -jar {{ jenkins_bin_path }}/slave.jar \
   -jnlpUrl http://{{ jenkins_master_host }}:{{ jenkins_master_port }}/computer/{{ ansible_hostname }}/slave-agent.jnlp \
-  -jnlpCredentials {{ slave_username }}:{{ slave_password }} \
-  -workDir "{{ jenkins_dir }}"
-Restart=always
-RestartSec=20
+  -jnlpCredentials {{ jnlp_slave_username }}:{{ jnlp_slave_password }} \
+  -workDir "{{ jenkins_work_dir }}"
+Restart=on-failure
+RestartSec=25
 
 [Install]
 WantedBy=multi-user.target

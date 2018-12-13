@@ -4,9 +4,12 @@ jenkins_user: jenkins
 jenkins_user_uid: 2000
 jenkins_group: jenkins
 jenkins_group_gid: 2000
-jenkins_dir: '/var/lib/jenkins'
-jenkins_systemd_service: "jenkins-slave.service"
+jenkins_work_dir: '/var/lib/jenkins'
+jenkins_bin_path: '/usr/local/bin'
+jenkins_service_name: "jenkins-slave.service"
 
 jenkins_master_host: "centos7.internal"
 jenkins_master_port: 8080
-jenkins_agent_url:   "http://{{ jenkins_master_host }}:{{ jenkins_master_port }}/jnlpJars/agent.jar"
+jenkins_remoting_version: "3.28"
+jenkins_remoting_package: "remoting-{{ jenkins_remoting_version }}.jar"
+jenkins_remoting_url: "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/{{ jenkins_remoting_version }}/{{ jenkins_remoting_package }}"
