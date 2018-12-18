@@ -29,13 +29,34 @@
 - name: Upload Groovy bootstrap scripts
   template:
     src: "{{ item }}"
-    dest: "/var/lib/jenkins/init.groovy.d/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "{{ jenkins_home }}/init.groovy.d/{{ item | basename | regex_replace('.j2','') }}"
     owner: jenkins
     group: jenkins
     mode: 0644
   with_fileglob:
     - ../templates/*.j2
   notify: restart jenkins
+
+- name: Upload plugins list and install script
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ jenkins_home }}/{{ item.name }}"
+    owner: jenkins
+    group: jenkins
+    mode: "{{ item.mode }}"
+  loop:
+    - { name: 'install-plugins.sh', mode: '0755' }
+    - { name: 'plugins.txt', mode: '0644' }
+  notify: restart jenkins
+
+- name: Install Jenkins plugins
+  shell: "{{ jenkins_home }}/install-plugins.sh < {{ jenkins_home }}/plugins.txt"
+  environment:
+    REF_DIR:    "{{ jenkins_home }}/plugins"
+    FAILED:     "{{ jenkins_home }}/plugins/failed-plugins.txt"
+    JENKINS_UC: "https://updates.jenkins.io"
+  become: yes
+  become_user: jenkins
 
 - name: Ensure Jenkins service is started and enabled
   service:
