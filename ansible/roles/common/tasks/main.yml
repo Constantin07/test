@@ -4,3 +4,5 @@
   include_tasks: "{{ ansible_os_family }}.yml"
 
 - include_tasks: disable_firewalld.yml
+
+- include_tasks: disable_ipv6.yml
