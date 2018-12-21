@@ -1,3 +1,5 @@
+import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
+
 def nodeName        = ''
 def git_url         = 'https://github.com/ansible/ansible.git'
 def git_hub_project = 'https://github.com/ansible/ansible/'
@@ -6,60 +8,67 @@ def update = false
 
 node(nodeName){
 
-    properties([
-	buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
-        pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
-        // Allow only one job at a time
-        disableConcurrentBuilds(),
-        [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
-    ])
+  properties([
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
+    pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
+    // Allow only one job at a time
+    disableConcurrentBuilds(),
+    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
+  ])
 }
 
 ansiColor('xterm') {
 
-    stage('Checkout') {
-	node(nodeName) {
-	    checkout scm: [$class: 'GitSCM',
-		branches: [[name: '*/devel']],
-		userRemoteConfigs: [[url: git_url ]],
-		extensions: [[$class: 'CleanCheckout']]
-	    ]
-	}
+  stage('Checkout') {
+    node(nodeName) {
+      checkout scm: [$class: 'GitSCM',
+	branches: [[name: '*/devel']],
+	userRemoteConfigs: [[url: git_url ]],
+	extensions: [[$class: 'CleanCheckout']]
+      ]
+    }
+  }
+
+  milestone label: 'Checkout'
+
+  stage('Build') {
+    node(nodeName) {
+      sh '''
+	make clean
+	make -j 2 rpm
+      '''
+
+      def current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
+      def new_version = sh(script: "ls rpm-build/ansible*.el7.noarch.rpm | cut -d. -f5", returnStdout: true).trim()
+      if(current_version == new_version) {
+	println "No changes in version"
+      } else {
+	update = true
+      }
+    }
+  }
+
+  milestone label: 'Build'
+
+  if(update) {
+    stage('Approve') {
+      try {
+        timeout(time: 1, activity: false, unit: 'MINUTES') {
+	  input(message: "Do you want to install?")
+        }
+      } catch (FlowInterruptedException e) {
+        currentBuild.result = 'ABORTED'
+        return
+      }
     }
 
-    milestone label: 'Checkout'
+    milestone label: 'Approve'
 
-    stage('Build') {
-	node(nodeName) {
-	    sh '''
-		make clean
-		make -j 2 rpm
-	    '''
-
-	    def current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
-	    def new_version = sh(script: "ls rpm-build/ansible*.el7.noarch.rpm | cut -d. -f5", returnStdout: true).trim()
-	    if(current_version == new_version) {
-		println "No changes in version"
-	    } else {
-		update = true
-	    }
-	}
+    stage('Install') {
+      node(nodeName) {
+	sh 'sudo yum -y remove ansible'
+	sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
+      }
     }
-
-    milestone label: 'Build'
-
-    if(update) {
-	stage('Approve') {
-	    input(message: "Do you want to install?")
-	}
-
-	milestone label: 'Approve'
-
-	stage('Install') {
-	    node(nodeName) {
-		sh 'sudo yum -y remove ansible'
-		sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
-	    }
-	}
-    }
+  }
 }
