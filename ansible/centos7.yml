@@ -3,9 +3,8 @@
 - hosts: centos7.internal
 
   roles:
-#    - common
-#    - resolv
-#    - ctop
-#    - docker
+    - common
+    - resolv
+    - ctop
+    - docker
     - { role: jenkins_master, jenkins_version: "2.156" }
-

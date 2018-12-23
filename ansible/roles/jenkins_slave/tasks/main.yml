@@ -15,6 +15,7 @@
     - rpm-build
     - python-docutils
     - python2-devel
+    - gnupg2
 
 - name: Install required pip packages
   pip:
