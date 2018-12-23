@@ -32,9 +32,9 @@ def build(nodeName = '', directory = '.') {
         )
 
         // Set path to terraform
-        env.PATH = "/usr/local/bin:${env.PATH}"
-        //def tfHome = tool(name: 'Terraform', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool')
-        //env.PATH = "${tfHome}:${env.PATH}"
+        //env.PATH = "/usr/local/bin:${env.PATH}"
+        def tfHome = tool(name: 'Terraform', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool')
+        env.PATH = "${tfHome}:${env.PATH}"
 
         ansiColor('xterm') {
 
