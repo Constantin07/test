@@ -2,6 +2,7 @@
 *.pub filter=git-crypt diff=git-crypt
 *.pem filter=git-crypt diff=git-crypt
 *.crt filter=git-crypt diff=git-crypt
+*.asc filter=git-crypt diff=git-crypt
 *.enc.yml filter=git-crypt diff=git-crypt
 *.auto.tfvars filter=git-crypt diff=git-crypt
 ansible/roles/elasticsearch/defaults/main.yml filter=git-crypt diff=git-crypt
