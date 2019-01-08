@@ -2,7 +2,7 @@
 
 import jenkins.model.*
 
-url = "http://{{ ansible_nodename }}:{{ jenkins_port }}"
+String url = 'http://{{ ansible_nodename }}:{{ jenkins_port }}'
 
 // Get the config from our running instance
 def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()

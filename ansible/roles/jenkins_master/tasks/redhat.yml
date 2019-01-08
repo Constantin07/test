@@ -1,16 +1,5 @@
 ---
 
-- name: Install required packages for Jenkins
-  yum:
-    name: "{{ item  }}"
-    state: present
-    update_cache: yes
-  loop:
-    - java-1.8.0-openjdk
-    - unzip
-    - curl
-    - gnupg2
-
 - name: Add Jenkins repository
   get_url:
     url: "{{ jenkins_yum_repo_url }}"

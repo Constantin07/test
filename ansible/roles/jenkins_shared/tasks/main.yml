@@ -1,0 +1,17 @@
+---
+
+- name: Include Linux distribution specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Install required pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - packaging
+    - Jinja2
+    - PyYAML
+
+- name: Load sensitive variables
+  include_vars: jenkins.enc.yml
+  no_log: True

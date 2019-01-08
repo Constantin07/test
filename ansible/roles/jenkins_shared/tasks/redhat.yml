@@ -1,0 +1,19 @@
+---
+
+- name: Install required packages for Jenkins both master and slave
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - git
+    - java-1.8.0-openjdk
+    - unzip
+    - curl
+    - gnupg2
+# These should be only required on slaves ?
+# required to build ansible
+    - make
+    - rpm-build
+    - python-docutils
+    - python2-devel

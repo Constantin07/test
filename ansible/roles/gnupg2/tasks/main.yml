@@ -1,0 +1,59 @@
+---
+
+- name: Check if required variables are defined
+  assert:
+    that:
+      - "{{ item }} is defined and {{ item | length }} > 0"
+  with_items:
+    - gpg_user
+    - gpg_group
+    - gpg_home
+    - gpg_private_key
+    - gpg_ownertrust
+
+- name: Check if home directory exists
+  stat:
+    path: "{{ gpg_home | dirname }}"
+  register: gpg_home_check
+
+- name: Create .gnupg directory
+  file:
+    path: "{{ gpg_home }}/.gnupg"
+    group: "{{ gpg_group }}"
+    owner: "{{ gpg_user }}"
+    mode:  0700
+    state: directory
+  when: not gpg_home_check.stat.exists
+
+- name: Copy gpg key
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ gpg_home }}/.gnupg/{{ item.name }}"
+    owner: "{{ gpg_user }}"
+    group: "{{ gpg_group }}"
+    mode:  0600
+  become: yes
+  become_user: "{{ gpg_user }}"
+  with_items:
+    - { name: "{{ gpg_private_key }}" }
+    - { name: "{{ gpg_ownertrust }}" }
+
+- name: Import gpg private key
+  command: "gpg --batch --import {{ gpg_home }}/.gnupg/{{ gpg_private_key }}"
+  args:
+    creates: "{{ gpg_home }}/.gnupg/secring.gpg"
+  become: yes
+  become_user: "{{ gpg_user }}"
+
+- name: Import gpg ownertrust
+  command: "gpg --import-ownertrust {{ gpg_home }}/.gnupg/{{ gpg_ownertrust }}"
+  become: yes
+  become_user: "{{ gpg_user }}"
+
+- name: Delete temporary gpg file(s)
+  command: shred -u "{{ item }}"
+  become: yes
+  become_user: "{{ gpg_user }}"
+  with_items:
+    - "{{ gpg_home }}/.gnupg/{{ gpg_private_key }}"
+    - "{{ gpg_home }}/.gnupg/{{ gpg_ownertrust }}"

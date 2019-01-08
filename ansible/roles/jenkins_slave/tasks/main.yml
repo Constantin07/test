@@ -1,31 +1,5 @@
 ---
 
-- name: Load sensitive variables
-  include_vars: jenkins.enc.yml
-  no_log: yes
-
-- name: Install required packages
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - java-1.8.0-openjdk
-    - git
-    - make
-    - rpm-build
-    - python-docutils
-    - python2-devel
-    - gnupg2
-
-- name: Install required pip packages
-  pip:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - packaging
-    - Jinja2
-    - PyYAML
-
 - name: Set JAVA_HOME
   lineinfile:
     dest: /etc/environment
