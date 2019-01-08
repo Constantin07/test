@@ -1,6 +1,6 @@
 ---
 
-- name: Include OS specific tasks
+- name: Include Linux distribution specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: Add jenkins user to docker group
@@ -21,10 +21,6 @@
     owner: jenkins
     group: jenkins
     mode: 0755
-
-- name: Load sensitive variables
-  include_vars: jenkins.enc.yml
-  no_log: True
 
 - name: Upload Groovy bootstrap scripts
   template:

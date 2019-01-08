@@ -1,0 +1,10 @@
+---
+dependencies:
+  - role: gnupg2
+    vars:
+      gpg_user: "{{ jenkins_user }}"
+      gpg_group: "{{ jenkins_group }}"
+      gpg_home: "{{ jenkins_work_dir }}"
+      gpg_private_key: 'jenkins_automation.asc'
+      gpg_ownertrust:  'ownertrust.txt'
+  - role: jenkins_shared
