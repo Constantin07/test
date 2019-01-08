@@ -1,0 +1,13 @@
+---
+
+- name: Install required packages for git-crypt
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - make
+    - gcc
+    - gcc-c++
+    - openssl-devel
+    - openssl-libs
