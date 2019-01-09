@@ -15,6 +15,7 @@ ExecStart=/usr/bin/java -jar {{ jenkins_bin_path }}/slave.jar \
   -jnlpUrl http://{{ jenkins_master_host }}:{{ jenkins_master_port }}/computer/{{ ansible_hostname }}/slave-agent.jnlp \
   -jnlpCredentials {{ jnlp_slave_username }}:{{ jnlp_slave_password }} \
   -workDir "{{ jenkins_work_dir }}"
+KillSignal=SIGTERM
 Restart=on-failure
 RestartSec=25
 
