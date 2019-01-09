@@ -1,0 +1,42 @@
+#!groovy
+
+// Reference https://wiki.jenkins.io/display/JENKINS/Docker+Plugin
+
+import com.nirima.jenkins.plugins.docker.DockerCloud
+import com.nirima.jenkins.plugins.docker.DockerTemplate
+import com.nirima.jenkins.plugins.docker.DockerTemplateBase
+import com.nirima.jenkins.plugins.docker.launcher.AttachedDockerComputerLauncher
+import io.jenkins.docker.connector.DockerComputerAttachConnector
+import jenkins.model.Jenkins
+
+def dockerCloudParameters = [
+  connectTimeout:   3,
+  containerCapStr:  '100',
+  credentialsId:    '',
+  dockerHostname:   '',
+  name:             'docker.local',
+  readTimeout:      60,
+  serverUrl:        'unix:///var/run/docker.sock',
+  version:          ''
+]
+
+DockerCloud dockerCloud = new DockerCloud(
+  dockerCloudParameters.name,
+  [],
+  dockerCloudParameters.serverUrl,
+  dockerCloudParameters.containerCapStr,
+  dockerCloudParameters.connectTimeout,
+  dockerCloudParameters.readTimeout,
+  dockerCloudParameters.credentialsId,
+  dockerCloudParameters.version,
+  dockerCloudParameters.dockerHostname
+)
+
+// get Jenkins instance
+Jenkins jenkins = Jenkins.getInstance()
+
+// add cloud configuration to Jenkins
+jenkins.clouds.add(dockerCloud)
+
+// save current Jenkins state to disk
+jenkins.save()
