@@ -1,0 +1,18 @@
+#!groovy
+
+import jenkins.model.*
+
+def inst = Jenkins.instance
+if(!inst.isQuietingDown()) {
+  if(inst.isUsageStatisticsCollected()){
+    inst.setNoUsageStatistics(true)
+    inst.save()
+    println 'Disabled submitting usage stats to Jenkins project.'
+  }
+  else {
+    println 'Nothing changed. Usage stats are not submitted to the Jenkins project.'
+  }
+}
+else {
+  println 'Shutdown mode enabled. Disable usage stats SKIPPED.'
+}
