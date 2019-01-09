@@ -5,6 +5,7 @@ blueocean
 build-timestamp
 credentials
 custom-tools-plugin
+docker-plugin
 docker-workflow
 git
 github
