@@ -5,13 +5,9 @@ import com.cloudbees.jenkins.plugins.customtools.CustomTool;
 import com.synopsys.arc.jenkinsci.plugins.customtools.versions.ToolVersionConfig;
 import hudson.tools.*
 
-String tool_name = 'Terraform'
-String tool_version ='0.11.11'
-String tool_url ="https://releases.hashicorp.com/terraform/${tool_version}/terraform_${tool_version}_linux_amd64.zip"
-
 def Tools = []
 Tools.add(name: 'Terraform', url: 'https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip')
-Tools.add(name: 'Packer',  url: 'https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip')
+Tools.add(name: 'Packer', url: 'https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip')
 
 def inst = Jenkins.getInstance()
 def desc = inst.getExtensionList(com.cloudbees.jenkins.plugins.customtools.CustomTool.DescriptorImpl.class)[0];
@@ -24,11 +20,11 @@ Tools.each { t ->
   } else {
     println "Installing ${t.name}"
 
-    List installers = new ArrayList()
+    def installers = []
     def tf_installer = new ZipExtractionInstaller(
-      '',        // node label to install tool on
-      t.url,     // url
-      ''         // subdir
+      '',      // node label to use custom tool on
+      t.url,   // url
+      ''       // subdir
     )
     installers.add(tf_installer)
 
@@ -36,15 +32,15 @@ Tools.each { t ->
     properties.add(new InstallSourceProperty(installers))
 
     def newTool = new CustomTool(
-      t.name,            // Name
-      '',                // Installation directory (home)
-      properties,        // Tool properties
-      '',                // Exported paths
-      null,              // labelSpecifics
+      t.name,                     // Name
+      '',                         // Installation directory (home)
+      properties,                 // Tool properties
+      '',                         // Exported paths
+      null,                       // labelSpecifics
       ToolVersionConfig.DEFAULT,  // toolVersion
-      null               // additionalVariables
+      null                        // additionalVariables
     )
-    customTools.push(newTool)
+    customTools.add(newTool)
   }
 }
 
