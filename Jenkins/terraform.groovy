@@ -129,8 +129,10 @@ def build(nodeName = '', directory = '.') {
   if (needUpdate) {
     try {
       timeout(time: 60, activity: false, unit: 'MINUTES') {
-        input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
-        apply = true
+        stage('Apply') {
+          input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
+          apply = true
+        }
       }
     } catch (FlowInterruptedException e) {
       currentBuild.result = 'ABORTED'
@@ -139,7 +141,7 @@ def build(nodeName = '', directory = '.') {
       apply = false
     }
 
-    milestone label: 'User input'
+    milestone label: 'Apply'
 
     if (apply) {
       node(nodeName) {
