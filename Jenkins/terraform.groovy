@@ -1,4 +1,5 @@
 #!groovy
+import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 // Get comment of last commit
 def get_comment() {
@@ -127,9 +128,14 @@ def build(nodeName = '', directory = '.') {
 
   if (needUpdate) {
     try {
-      input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
-      apply = true
-    } catch (err) {
+      timeout(time: 2, activity: false, unit: 'MINUTES') {
+        input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
+        apply = true
+      }
+    } catch (FlowInterruptedException e) {
+      currentBuild.result = 'ABORTED'
+      return
+    } catch (e) {
       apply = false
     }
 
