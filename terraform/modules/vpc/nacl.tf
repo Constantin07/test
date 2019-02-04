@@ -6,7 +6,7 @@ resource "aws_network_acl" "private" {
   ]
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-private-nacl"
+      "Name", "${var.environment}-private-nacl"
     ), var.extra_tags)}"
 }
 
