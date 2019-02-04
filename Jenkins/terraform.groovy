@@ -21,6 +21,8 @@ def build(nodeName = '', directory = '.') {
   def apply      = false
   def comment    = ''
 
+  String jobName = "${env.JOB_NAME}"
+
   node(nodeName) {
 
     properties([
@@ -93,7 +95,7 @@ def build(nodeName = '', directory = '.') {
 
           milestone label: 'Validate'
 
-          lock('Plan') {
+          lock("$jobName") {
             stage(name: 'Plan') {
               def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
               echo "Terraform plan exit code: ${exitCode}"
@@ -158,7 +160,7 @@ def build(nodeName = '', directory = '.') {
               ]
             ])
             {
-              lock('Apply') {
+              lock("$jobName") {
                 // Apply stage
                 // - unstash plan.out
                 // - Execute `terraform apply` against the stashed plan
