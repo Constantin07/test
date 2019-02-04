@@ -9,7 +9,6 @@ Terraform module to spin up a VPC
 | environment | Environment name | string | - | yes |
 | extra_tags | Extra tags to apply to the provisioned resources | map | `<map>` | no |
 | internal_dns_domain | Internal DNS domain | string | `` | no |
-| project | Project name | string | - | yes |
 | vpc_cidr | The CIDR IP block allocated for VPC | string | - | yes |
 
 ## Outputs

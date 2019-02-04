@@ -10,11 +10,9 @@ module "core" {
   availability_zones_count = "${lookup(module.env.accounts[var.environment], "availability_zones_count")}"
 
   environment = "${var.environment}"
-  project     = "${var.project}"
 
   extra_tags = {
     Environment = "${var.environment}"
-    Project     = "${var.project}"
     ManagedBy   = "Terraform"
   }
 }
@@ -22,5 +20,5 @@ module "core" {
 module "key_pairs" {
   source = "../modules/key_pairs"
 
-  key_name_prefix = "${var.project}_${var.environment}"
+  key_name_prefix = "${var.environment}"
 }

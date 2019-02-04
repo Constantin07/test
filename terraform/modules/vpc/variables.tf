@@ -13,11 +13,6 @@ variable "environment" {
   type        = "string"
 }
 
-variable "project" {
-  description = "Project name"
-  type        = "string"
-}
-
 variable "availability_zones_count" {
   description = "Number of avalability zones to use"
   type        = "string"

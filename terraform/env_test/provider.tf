@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "${lookup(module.env.accounts[var.environment], "region")}"
-  version = ">= 1.43.2"
+  version = ">= 1.57.0"
 
   allowed_account_ids = [
     "${lookup(module.env.accounts[var.environment], "account")}",
