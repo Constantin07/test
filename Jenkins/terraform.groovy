@@ -128,7 +128,7 @@ def build(nodeName = '', directory = '.') {
 
   if (needUpdate) {
     try {
-      timeout(time: 60, activity: false, unit: 'MINUTES') {
+      timeout(time: 1, activity: false, unit: 'MINUTES') {
         stage('Apply') {
           input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
           apply = true
