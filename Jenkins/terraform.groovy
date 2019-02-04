@@ -94,7 +94,7 @@ def build(nodeName = '', directory = '.') {
           milestone label: 'Validate'
 
           lock('Plan') {
-            stage(name: 'Plan', concurency: 1) {
+            stage(name: 'Plan') {
               def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
               echo "Terraform plan exit code: ${exitCode}"
               switch (exitCode) {
@@ -128,7 +128,7 @@ def build(nodeName = '', directory = '.') {
 
   if (needUpdate) {
     try {
-      timeout(time: 2, activity: false, unit: 'MINUTES') {
+      timeout(time: 60, activity: false, unit: 'MINUTES') {
         input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
         apply = true
       }
