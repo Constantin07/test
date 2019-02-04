@@ -1,3 +1,4 @@
+#!groovy
 
 // Get comment of last commit
 def get_comment() {
@@ -27,7 +28,7 @@ def build(nodeName = '', directory = '.') {
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '30')),
                 pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
                 // Allow only one job at a time
-                disableConcurrentBuilds(),
+                //disableConcurrentBuilds(),
             ]
         )
 
@@ -85,7 +86,7 @@ def build(nodeName = '', directory = '.') {
                             println "Initialise configuration"
                             retry(2) {
                                 echo 'Initialize S3 backend'
-                                sh 'terraform init -get=true -upgrade=true -verify-plugins=true -force-copy'
+                                sh 'terraform init -get=true -upgrade=true -verify-plugins=true'
                             }
 
                             println "Syntax validation"
