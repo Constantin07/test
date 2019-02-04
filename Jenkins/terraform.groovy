@@ -120,61 +120,61 @@ def build(nodeName = '', directory = '.') {
             println "Send a notification here"
           }
 
+        } // withCredentials
+      }  //dir
+    } // ansiColor
+  } // node
+
+  if (needUpdate) {
+    try {
+      input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
+      apply = true
+    } catch (err) {
+      apply = false
+    }
+
+    milestone label: 'User input'
+
+    if (apply) {
+      node(nodeName) {
+        ansiColor('xterm') {
+          dir(path: directory) {
+
+            // Terraform AWS credentials wrapper
+            withCredentials([
+              [
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: 'Amazon Credentials',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+              ]
+            ])
+            {
+              lock('Apply') {
+                // Apply stage
+                // - unstash plan.out
+                // - Execute `terraform apply` against the stashed plan
+                stage(name: 'Apply') {
+                  unstash 'plan'
+                  def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
+                  if (exitCode == 0) {
+                    echo 'Changes Applied.'
+                    currentBuild.result = 'SUCCESS'
+                  } else {
+                    echo 'Apply Failed.'
+                    currentBuild.result = 'FAILURE'
+                  }
+                }
+              }
+            }
+          }
         }
+
+        milestone label: 'Apply'
       }
     }
-  }
 
-    if (needUpdate) {
-        try {
-            input(message: 'Please review the plan. Do you want to apply?', ok: 'Apply', submitter: 'admin')
-            apply = true
-        } catch (err) {
-            apply = false
-        }
-
-        milestone label: 'User input'
-
-        if (apply) {
-            node(nodeName) {
-                ansiColor('xterm') {
-                    dir(path: directory) {
-
-                        // Terraform AWS credentials wrapper
-                        withCredentials([
-                            [
-                                $class: 'AmazonWebServicesCredentialsBinding',
-                                credentialsId: 'Amazon Credentials',
-                                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                            ]
-                        ])
-                        {
-                            timestamps {
-                                // Apply stage
-                                // - unstash plan.out
-                                // - Execute `terraform apply` against the stashed plan
-                                stage(name: 'Apply', concurency: 1) {
-                                    unstash 'plan'
-                                    def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
-                                    if (exitCode == 0) {
-                                        echo 'Changes Applied.'
-                                        currentBuild.result = 'SUCCESS'
-                                    } else {
-                                        echo 'Apply Failed.'
-                                        currentBuild.result = 'FAILURE'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                milestone label: 'Apply'
-            }
-        }
-
-        milestone label: 'Done'
+  milestone label: 'Done'
 
   }
 }
