@@ -1,2 +1,1 @@
 environment              = "dev"
-project                  = "test"

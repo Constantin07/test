@@ -16,7 +16,7 @@ resource "aws_vpc" "default" {
   assign_generated_ipv6_cidr_block = true
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-vpc"
+      "Name", "${var.environment}-vpc"
     ), var.extra_tags)}"
 }
 
@@ -29,7 +29,7 @@ resource "aws_vpc_dhcp_options" "default" {
   domain_name_servers = ["AmazonProvidedDNS"]
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-dhcp-options"
+      "Name", "${var.environment}-dhcp-options"
     ), var.extra_tags)}"
 }
 
@@ -55,7 +55,7 @@ resource "aws_subnet" "private" {
   availability_zone = "${element(local.availability_zones, count.index)}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
@@ -68,7 +68,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
@@ -76,7 +76,7 @@ resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-gw"
+      "Name", "${var.environment}-gw"
     ), var.extra_tags)}"
 }
 
@@ -92,7 +92,7 @@ resource "aws_eip" "nat_gateway" {
   vpc = true
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-nat-gw-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-nat-gw-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
@@ -103,7 +103,7 @@ resource "aws_nat_gateway" "default" {
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-nat-gw"
+      "Name", "${var.environment}-nat-gw"
     ), var.extra_tags)}"
 
   depends_on = ["aws_internet_gateway.default"]
@@ -125,7 +125,7 @@ resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-public-rt"
+      "Name", "${var.environment}-public-rt"
     ), var.extra_tags)}"
 }
 
@@ -151,7 +151,7 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.project}-${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
     ), var.extra_tags)}"
 }
 
