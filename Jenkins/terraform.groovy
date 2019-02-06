@@ -21,6 +21,7 @@ def build(nodeName = '', directory = '.') {
   def apply      = false
   def comment    = ''
 
+  // Used for locks
   String jobName = "${env.JOB_NAME}"
 
   node(nodeName) {
@@ -46,15 +47,15 @@ def build(nodeName = '', directory = '.') {
         // Add comment to build description
         comment = get_comment()
         currentBuild.description = comment
-      }
 
-      milestone label: 'Checkout'
+        milestone label: 'Checkout'
+      }
 
       stage('Unlock secrets'){
         sh 'git crypt unlock'
-      }
 
-      milestone label: 'Unlock secrets'
+        milestone label: 'Unlock secrets'
+      }
 
       dir(path: directory) {
 
@@ -91,31 +92,34 @@ def build(nodeName = '', directory = '.') {
 
             println "Syntax validation"
             sh 'terraform validate'
+
+            milestone label: 'Validate'
           }
 
-          milestone label: 'Validate'
 
-          stage(name: 'Plan') {
-            def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
-            echo "Terraform plan exit code: ${exitCode}"
-            switch (exitCode) {
-              case 0:
-                echo 'No changes to apply.'
-                currentBuild.result = 'SUCCESS'
-                break
-              case 1:
-                echo 'Plan Failed.'
-                currentBuild.result = 'FAILURE'
-                break
-              case 2:
-                echo 'Plan Awaiting Approval.'
-                needUpdate = true
-                stash(name: 'plan', includes: 'plan.out')
-                break
+          lock("${jobName}") {
+              stage(name: 'Plan') {
+              def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
+              echo "Terraform plan exit code: ${exitCode}"
+              switch (exitCode) {
+                case 0:
+                  echo 'No changes to apply.'
+                  currentBuild.result = 'SUCCESS'
+                  break
+                case 1:
+                  echo 'Plan Failed.'
+                  currentBuild.result = 'FAILURE'
+                  break
+                case 2:
+                  echo 'Plan Awaiting Approval.'
+                  needUpdate = true
+                  stash(name: 'plan', includes: 'plan.out')
+                  break
+              }
+
+              milestone label: 'Plan'
             }
           }
-
-          milestone label: 'Plan'
 
           if (needUpdate) {
             println "Send a notification here"
@@ -161,22 +165,24 @@ def build(nodeName = '', directory = '.') {
               // Apply stage
               // - unstash plan.out
               // - Execute `terraform apply` against the stashed plan
-              stage(name: 'Apply') {
-                unstash 'plan'
-                def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
-                if (exitCode == 0) {
-                  echo 'Changes Applied.'
-                  currentBuild.result = 'SUCCESS'
-                } else {
-                  echo 'Apply Failed.'
-                  currentBuild.result = 'FAILURE'
+              lock("${jobName}") {
+                stage(name: 'Apply') {
+                  unstash 'plan'
+                  def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
+                  if (exitCode == 0) {
+                    echo 'Changes Applied.'
+                    currentBuild.result = 'SUCCESS'
+                  } else {
+                    echo 'Apply Failed.'
+                    currentBuild.result = 'FAILURE'
+                  }
+
+                  milestone label: 'Apply'
                 }
               }
             }
           }
         }
-
-        milestone label: 'Apply'
       }
     }
 
