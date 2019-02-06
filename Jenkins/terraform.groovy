@@ -95,25 +95,23 @@ def build(nodeName = '', directory = '.') {
 
           milestone label: 'Validate'
 
-          lock("$jobName") {
-            stage(name: 'Plan') {
-              def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
-              echo "Terraform plan exit code: ${exitCode}"
-              switch (exitCode) {
-                case 0:
-                  echo 'No changes to apply.'
-                  currentBuild.result = 'SUCCESS'
-                  break
-                case 1:
-                  echo 'Plan Failed.'
-                  currentBuild.result = 'FAILURE'
-                  break
-                case 2:
-                  echo 'Plan Awaiting Approval.'
-                  needUpdate = true
-                  stash(name: 'plan', includes: 'plan.out')
-                  break
-              }
+          stage(name: 'Plan', concurrency: 1) {
+            def exitCode = sh(script: "terraform plan -out=plan.out -detailed-exitcode", returnStatus: true)
+            echo "Terraform plan exit code: ${exitCode}"
+            switch (exitCode) {
+              case 0:
+                echo 'No changes to apply.'
+                currentBuild.result = 'SUCCESS'
+                break
+              case 1:
+                echo 'Plan Failed.'
+                currentBuild.result = 'FAILURE'
+                break
+              case 2:
+                echo 'Plan Awaiting Approval.'
+                needUpdate = true
+                stash(name: 'plan', includes: 'plan.out')
+                break
             }
           }
 
