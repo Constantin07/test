@@ -35,8 +35,8 @@ DockerCloud dockerCloud = new DockerCloud(
 // get Jenkins instance
 Jenkins jenkins = Jenkins.getInstance()
 
-// add cloud configuration to Jenkins
-jenkins.clouds.add(dockerCloud)
+// add cloud configuration to Jenkins (or update existing one)
+jenkins.clouds.replace(dockerCloud)
 
 // save current Jenkins state to disk
 jenkins.save()
