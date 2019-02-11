@@ -1,0 +1,38 @@
+#!groovy
+
+// Ref: https://gist.github.com/ceilfors/1400fd590632db1f51ca
+// Ref: https://stackoverflow.com/questions/32519829/delete-workspace-when-job-is-removed-by-dsl-plugin
+
+import com.cloudbees.hudson.plugins.folder.Folder
+import hudson.FilePath
+import jenkins.model.Jenkins
+
+def boolean isFolder(String name) {
+  def item = Jenkins.instance.getItemByFullName(name)
+  return item instanceof Folder
+}
+
+def deleteUnusedWorkspace(FilePath root, String path) {
+  root.list().each { child ->
+    String fullName = path + child.name
+
+    def item = Jenkins.instance.getItemByFullName(fullName)
+
+    if (isFolder(fullName)) {
+      deleteUnusedWorkspace(root.child(child.name), "$fullName/")
+    } else if (item == null) {
+      println "Deleting (no such found): '${fullName}'"
+      child.deleteRecursive()
+    } else if (item instanceof Job && !item.isBuildable()) {
+      println "Deleting (job disabled): '${fullName}'"
+      child.deleteRecursive()
+    }
+  }
+}
+
+// Loop through all slave nodes
+for (node in Jenkins.instance.nodes) {
+  println "Processing [${node.displayName}]"
+  def workspaceRoot = node.rootPath.child("workspace")
+  deleteUnusedWorkspace(workspaceRoot, "")
+}
