@@ -16,12 +16,15 @@ def deleteUnusedWorkspace(FilePath root, String path) {
   root.list().each { child ->
     String fullName = path + child.name
 
+    // Don not delete shared libraries
+    def matcher = (child.name ==~ /.*@tmp/)
+
     def item = Jenkins.instance.getItemByFullName(fullName)
 
     if (isFolder(fullName)) {
-      deleteUnusedWorkspace(root.child(child.name), "$fullName/")
-    } else if (item == null) {
-      println "Deleting (no such found): '${fullName}'"
+      deleteUnusedWorkspace(root.child(child.name), "${fullName}/")
+    } else if (item == null && !matcher) {
+      println "Deleting (no such job found): '${fullName}'"
       child.deleteRecursive()
     } else if (item instanceof Job && !item.isBuildable()) {
       println "Deleting (job disabled): '${fullName}'"
