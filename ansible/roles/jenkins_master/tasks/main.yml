@@ -33,7 +33,7 @@
     - ../templates/*.j2
   notify: restart jenkins
 
-- name: Upload plugins list and install script
+- name: Upload list of plugins and install script
   copy:
     src: "{{ item.name }}"
     dest: "{{ jenkins_home }}/{{ item.name }}"
