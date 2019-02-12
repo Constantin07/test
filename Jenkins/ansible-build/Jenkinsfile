@@ -53,7 +53,7 @@ ansiColor('xterm') {
   if(update) {
     stage('Approve') {
       try {
-        timeout(time: 5, activity: false, unit: 'MINUTES') {
+        timeout(time: 60, activity: false, unit: 'MINUTES') {
 	  input(message: "Do you want to install?")
         }
       } catch (FlowInterruptedException e) {
