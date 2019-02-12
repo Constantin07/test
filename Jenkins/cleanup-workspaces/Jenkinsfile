@@ -33,8 +33,8 @@ def deleteUnusedWorkspace(FilePath root, String path) {
   }
 }
 
-// Loop through all slave nodes
-for (node in Jenkins.instance.nodes) {
+// Loop through all slave nodes & master
+for (node in Jenkins.instance.computers) {
   println "Processing [${node.displayName}]"
   def workspaceRoot = node.rootPath.child("workspace")
   deleteUnusedWorkspace(workspaceRoot, "")
