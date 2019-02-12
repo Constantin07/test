@@ -7,8 +7,10 @@ import org.jenkinsci.plugins.scriptsecurity.scripts.*
 def signatures = [
   'staticMethod jenkins.model.Jenkins getInstance',
   'method hudson.model.AbstractCIBase getNodes',
+  'method hudson.model.Computer getNode',
   'method hudson.model.Node getRootPath',
   'method jenkins.model.Jenkins getItemByFullName java.lang.String',
+  'method jenkins.model.Jenkins getComputers',
   'method hudson.FilePath getName',
   'method hudson.FilePath list',
   'method hudson.FilePath child java.lang.String',
