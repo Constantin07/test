@@ -45,7 +45,7 @@ def deleteUnusedWorkspace(FilePath root, String path) {
 
 // Loop through all nodes (master & slaves)
 for (node in nodeNames()) {
-  println "Processing [${node.getName()}]"
+  println "Processing [${node.getDisplayName()}]"
   def workspaceRoot = node.rootPath.child("workspace")
   deleteUnusedWorkspace(workspaceRoot, "")
 }
