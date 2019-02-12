@@ -7,6 +7,16 @@ import com.cloudbees.hudson.plugins.folder.Folder
 import hudson.FilePath
 import jenkins.model.Jenkins
 
+
+@NonCPS
+def nodeNames() {
+  def nodes = []
+    jenkins.model.Jenkins.instance.computers.each { c ->
+      nodes.add(c.getNode())
+    }
+  return nodes
+}
+
 def boolean isFolder(String name) {
   def item = Jenkins.instance.getItemByFullName(name)
   return item instanceof Folder
@@ -33,9 +43,9 @@ def deleteUnusedWorkspace(FilePath root, String path) {
   }
 }
 
-// Loop through all slave nodes & master
-for (node in Jenkins.instance.computers) {
-  println "Processing [${node.displayName}]"
+// Loop through all nodes (master & slaves)
+for (node in nodeNames()) {
+  println "Processing [${node.getName()}]"
   def workspaceRoot = node.rootPath.child("workspace")
   deleteUnusedWorkspace(workspaceRoot, "")
 }
