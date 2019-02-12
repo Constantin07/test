@@ -1,13 +1,19 @@
 #!groovy
 
-import jenkins.model.Jenkins;
-import org.jenkinsci.plugins.scriptsecurity.scripts.*;
+import jenkins.model.Jenkins
+import org.jenkinsci.plugins.scriptsecurity.scripts.*
 
 // List of approved script signatures (script approval plugin)
 def signatures = [
-  'method hudson.model.Job getLastBuild',
-  'method java.lang.String toURL',
-  'method java.lang.String trim'
+  'staticMethod jenkins.model.Jenkins getInstance',
+  'method hudson.model.AbstractCIBase getNodes',
+  'method hudson.model.Node getRootPath',
+  'method jenkins.model.Jenkins getItemByFullName java.lang.String',
+  'method hudson.FilePath getName',
+  'method hudson.FilePath list',
+  'method hudson.FilePath child java.lang.String',
+  'method hudson.FilePath deleteRecursive',
+  'method hudson.model.Job isBuildable'
 ]
 
 def script_approval = ScriptApproval.get()
