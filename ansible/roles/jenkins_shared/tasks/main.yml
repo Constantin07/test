@@ -15,3 +15,12 @@
 - name: Load sensitive variables
   include_vars: jenkins.enc.yml
   no_log: True
+
+- name: Add user "jenkins" to sudoers.d
+  lineinfile:
+    path: /etc/sudoers.d/jenkins
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
