@@ -14,6 +14,7 @@ htmlpublisher
 jobConfigHistory
 jobcopy-builder
 ldap
+matrix-auth
 matrix-project
 next-build-number
 pipeline-multibranch-defaults
