@@ -1,7 +1,6 @@
 ---
 dependencies:
   - role: git-crypt
-  - role: gnupg2
     vars:
       gpg_user: "{{ jenkins_user }}"
       gpg_group: "{{ jenkins_group }}"
