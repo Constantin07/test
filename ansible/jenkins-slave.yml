@@ -9,3 +9,4 @@
     - docker
     - ctop
     - { role: jenkins_slave }
+    - gnupg2
