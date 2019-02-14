@@ -3,7 +3,10 @@
 import jenkins.model.Jenkins
 import org.jenkinsci.plugins.scriptsecurity.scripts.*
 
-// List of approved script signatures (script approval plugin)
+// Clear exisitng entries, if any
+ScriptApproval.get().clearApprovedSignatures()
+
+// List of approved script signatures to add (script-security plugin required)
 def signatures = [
   'staticMethod jenkins.model.Jenkins getInstance',
   'method hudson.model.AbstractCIBase getNodes',
