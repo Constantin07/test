@@ -1,7 +1,11 @@
 #!groovy
 
-// Ref: https://gist.github.com/ceilfors/1400fd590632db1f51ca
-// Ref: https://stackoverflow.com/questions/32519829/delete-workspace-when-job-is-removed-by-dsl-plugin
+/* References:
+   https://gist.github.com/ceilfors/1400fd590632db1f51ca
+   https://stackoverflow.com/questions/32519829/delete-workspace-when-job-is-removed-by-dsl-plugin
+
+   workspace/jobname@libs - a of copy shared librries copied via SCM
+*/
 
 import com.cloudbees.hudson.plugins.folder.Folder
 import hudson.FilePath
