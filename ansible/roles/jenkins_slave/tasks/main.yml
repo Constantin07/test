@@ -13,14 +13,6 @@
     gid: "{{ jenkins_group_gid }}"
     state: present
 
-- name: Create Jenkins work directory
-  file:
-    path: "{{ jenkins_work_dir }}"
-    state: directory
-    owner: "{{ jenkins_user }}"
-    group: "{{ jenkins_group }}"
-    mode: 0755
-
 - name: Add Jenkins user
   user:
     name: "{{ jenkins_user }}"
@@ -29,6 +21,14 @@
     group: "{{ jenkins_group }}"
     groups: docker
     home: "{{ jenkins_work_dir }}"
+
+- name: Create Jenkins work directory
+  file:
+    path: "{{ jenkins_work_dir }}"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0755
 
 - name: Download Jenkins agent
   get_url:
