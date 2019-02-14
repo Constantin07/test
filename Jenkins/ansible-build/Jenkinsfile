@@ -4,6 +4,7 @@ def nodeName        = ''
 def git_url         = 'https://github.com/ansible/ansible.git'
 def git_hub_project = 'https://github.com/ansible/ansible/'
 
+String package_path = 'rpm-build/ansible-*.el7.noarch.rpm'
 def update = false
 
 node(nodeName){
@@ -44,6 +45,7 @@ ansiColor('xterm') {
 	println "No changes in version"
       } else {
 	update = true
+	stash(name: 'ansible', includes: package_path)
       }
     }
   }
@@ -66,8 +68,9 @@ ansiColor('xterm') {
 
     stage('Install') {
       node(nodeName) {
+        unstash(name: 'ansible')
 	sh 'sudo yum -y remove ansible'
-	sh 'sudo yum -y install rpm-build/ansible-*.el7.noarch.rpm'
+	sh "sudo yum -y install ${package_path}"
       }
     }
   }
