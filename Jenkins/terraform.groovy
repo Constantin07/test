@@ -127,8 +127,8 @@ def build(nodeName = '', directory = '.') {
 
         } // withCredentials
       }  //dir
-    } // ansiColor
-  } // node
+    } //ansiColor
+  } //node
 
   if (needUpdate) {
     try {
@@ -148,24 +148,24 @@ def build(nodeName = '', directory = '.') {
     milestone label: 'Approve'
 
     if (apply) {
-      node(nodeName) {
-        ansiColor('xterm') {
-          dir(path: directory) {
+      lock("${jobName}") {
+        node(nodeName) {
+          ansiColor('xterm') {
+            dir(path: directory) {
 
-            // Terraform AWS credentials wrapper
-            withCredentials([
-              [
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: 'Amazon Credentials',
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-              ]
-            ])
-            {
-              // Apply stage
-              // - unstash plan.out
-              // - Execute `terraform apply` against the stashed plan
-              lock("${jobName}") {
+              // Terraform AWS credentials wrapper
+              withCredentials([
+                [
+                  $class: 'AmazonWebServicesCredentialsBinding',
+                  credentialsId: 'Amazon Credentials',
+                  accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                  secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]
+              ])
+              {
+               // Apply stage
+               // - unstash plan.out
+               // - Execute `terraform apply` against the stashed plan
                 stage(name: 'Apply') {
                   unstash 'plan'
                   def exitCode = sh(script: 'terraform apply -auto-approve plan.out', returnStatus: true)
@@ -179,11 +179,11 @@ def build(nodeName = '', directory = '.') {
 
                   milestone label: 'Apply'
                 }
-              }
-            }
-          }
-        }
-      }
+              } //withCredentials
+            } //dir
+          } //ansiColour
+        } //node
+      } //lock
     }
 
   milestone label: 'Done'
