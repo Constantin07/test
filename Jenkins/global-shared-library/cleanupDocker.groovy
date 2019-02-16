@@ -7,6 +7,9 @@ def call(String nodeName='', keep_images=1) {
   lock("${env.JOB_NAME}") {
     stage("Cleanup on ${nodeName}") {
       node(nodeName) {
+
+        checkout scm
+
         def image = docker.image(docker_image)
         image.pull()
 
