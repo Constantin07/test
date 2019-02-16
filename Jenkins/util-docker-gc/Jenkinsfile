@@ -22,7 +22,8 @@ def nodeNames() {
 node() {
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
-    pipelineTriggers([cron("TZ=Europe/London\nH H/6 * * *")])
+    pipelineTriggers([cron("TZ=Europe/London\nH H/6 * * *")]),
+    disableConcurrentBuilds()
   ])
 }
 
@@ -33,4 +34,5 @@ nodeNames().each { node ->
   }
 }
 
+// Run in parallel on all nodes
 parallel builders
