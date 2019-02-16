@@ -1,22 +1,26 @@
 @Library('global-shared-library') _
 
-nodes = [
-  'master',
-  'jenkins-slave',
-  'jenkins-slave2'
-]
+import jenkins.model.Jenkins
 
-ansiColor('xterm') {
-  node(){
-
-    properties([
-      buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
-      pipelineTriggers([cron("TZ=Europe/London\nH/4 * * * *")])
-    ])
+@NonCPS
+def nodeNames() {
+  def nodes = []
+  jenkins.model.Jenkins.instance.computers.each { c ->
+    node = c.getNode()
+    if (node.getChannel() != null && node.getNumExecutors() > 0) {
+      nodes.add(node.getDisplayName())
+    }
   }
+  return nodes
+}
 
-  nodes.each { node ->
-    cleanupDocker(node)
-  }
+node() {
+  properties([
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
+    pipelineTriggers([cron("TZ=Europe/London\nH/4 * * * *")])
+  ])
+}
 
+nodeNames().each { node ->
+  cleanupDocker(node)
 }
