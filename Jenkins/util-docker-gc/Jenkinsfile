@@ -15,7 +15,7 @@ def nodeNames() {
 }
 
 nodes = [
-  'master',
+  'Jenkins',
   'jenkins-slave',
   'jenkins-slave2'
 ]
