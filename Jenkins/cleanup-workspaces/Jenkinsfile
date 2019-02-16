@@ -47,13 +47,18 @@ def deleteUnusedWorkspace(FilePath root, String path) {
   }
 }
 
-// Loop through all nodes (master & slaves)
-for (node in nodeNames()) {
-  if (node.getChannel() != null) {
-    println "Processing [${node.getDisplayName()}]"
-    def workspaceRoot = node.rootPath.child("workspace")
-    deleteUnusedWorkspace(workspaceRoot, "")
-  } else {
-    println "Skipping (offline) [${node.getDisplayName()}]"
+stage('cleanup workspaces') {
+  node() {
+
+    // Loop through all nodes (master & slaves)
+    for (node in nodeNames()) {
+      if (node.getChannel() != null) {
+        println "Processing [${node.getDisplayName()}]"
+        def workspaceRoot = node.rootPath.child("workspace")
+        deleteUnusedWorkspace(workspaceRoot, "")
+      } else {
+        println "Skipping (offline) [${node.getDisplayName()}]"
+      }
+    }
   }
 }
