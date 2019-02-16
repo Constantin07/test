@@ -1,0 +1,26 @@
+#!groovy
+
+import hudson.model.*
+import org.jenkins.plugins.lockableresources.LockableResourcesManager
+
+def jobExists(String jobName) {
+  def filterClosure = { item -> item.fullName.equals(jobName) }
+  return Jenkins.instance.getAllItems(Job.class).findAll(filterClosure)
+}
+
+def manager = LockableResourcesManager.get()
+def resources = manager.getResources()
+def resources_to_delete = []
+
+resources.each {
+  if(!jobExists(it.toString())) {
+     resources_to_delete.add(it)
+  }
+}
+
+resources_to_delete.each {
+  println "No job found for Lockable Resource: '$it', deleting ..."
+  resources.remove(it)
+}
+
+manager.save()
