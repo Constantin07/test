@@ -8,17 +8,12 @@ def nodeNames() {
   jenkins.model.Jenkins.instance.computers.each { c ->
     node = c.getNode()
     if (node.getChannel() != null && node.getNumExecutors() > 1) {
-      nodes.add(node.getDisplayName())
+      // Master node returns an empty name
+      nodes.add(c.name.replaceAll(/^$/, 'master'))
     }
   }
   return nodes
 }
-
-nodes = [
-  'master',
-  'jenkins-slave',
-  'jenkins-slave2'
-]
 
 node() {
   properties([
@@ -27,6 +22,6 @@ node() {
   ])
 }
 
-nodes.each { node ->
+nodeNames().each { node ->
   cleanupDocker(node)
 }
