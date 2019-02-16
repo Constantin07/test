@@ -7,20 +7,26 @@ def nodeNames() {
   def nodes = []
   jenkins.model.Jenkins.instance.computers.each { c ->
     node = c.getNode()
-    if (node.getChannel() != null && node.getNumExecutors() > 0) {
+    if (node.getChannel() != null && node.getNumExecutors() > 1) {
       nodes.add(node.getDisplayName())
     }
   }
   return nodes
 }
 
+nodes = [
+  'master',
+  'jenkins-slave',
+  'jenkins-slave2'
+]
+
 node() {
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
-    pipelineTriggers([cron("TZ=Europe/London\nH/4 * * * *")])
+    pipelineTriggers([cron("TZ=Europe/London\nH H/6 * * *")])
   ])
 }
 
-nodeNames().each { node ->
+nodes.each { node ->
   cleanupDocker(node)
 }
