@@ -1,5 +1,3 @@
-#!groovy
-
 import hudson.model.*
 import org.jenkins.plugins.lockableresources.LockableResourcesManager
 
@@ -8,19 +6,44 @@ def jobExists(String jobName) {
   return Jenkins.instance.getAllItems(Job.class).findAll(filterClosure)
 }
 
-def manager = LockableResourcesManager.get()
-def resources = manager.getResources()
-def resources_to_delete = []
+pipeline {
 
-resources.each {
-  if(!jobExists(it.toString())) {
-     resources_to_delete.add(it)
+  agent any
+
+  triggers {
+    cron('H * * * *')
   }
-}
 
-resources_to_delete.each {
-  println "No job found for Lockable Resource: '$it', deleting ..."
-  resources.remove(it)
-}
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    timestamps()
+    ansiColor('xterm')
+  }
 
-manager.save()
+  stages {
+    stage('cleanup locakble resources') {
+      steps{
+        script {
+          def manager = LockableResourcesManager.get()
+          def resources = manager.getResources()
+          def resources_to_delete = []
+
+          resources.each {
+            if(!jobExists(it.toString())) {
+              resources_to_delete.add(it)
+            }
+          }
+
+          resources_to_delete.each {
+            println "No job found for Lockable Resource: '$it', deleting ..."
+            resources.remove(it)
+          }
+
+          manager.save()
+        }
+      }
+    }
+  }
+
+}
