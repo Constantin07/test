@@ -4,7 +4,7 @@ def call(String nodeName='', keep_images=1) {
 
   String docker_image = 'spotify/docker-gc'
 
-  //lock("${env.JOB_NAME}") {
+  lock("${env.JOB_NAME}-${nodeName}") {
     stage("Cleanup on ${nodeName}") {
       node(nodeName) {
 
@@ -28,6 +28,5 @@ def call(String nodeName='', keep_images=1) {
         sh 'docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm'
       }
     }
-  //}
-  //milestone()
+  }
 }
