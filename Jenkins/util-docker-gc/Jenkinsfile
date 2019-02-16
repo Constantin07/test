@@ -1,4 +1,4 @@
-@Library('Global Shared Library') _
+@Library('global-shared-library') _
 
 nodes = [
   'master',
@@ -6,20 +6,17 @@ nodes = [
   'jenkins-slave2'
 ]
 
-nodes.each { node ->
-  docker.cleanup(node)
+ansiColor('xterm') {
+  node(){
+
+    properties([
+      buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
+      pipelineTriggers([cron("TZ=Europe/London\nH/4 * * * *")])
+    ])
+  }
+
+  nodes.each { node ->
+    cleanupDocker(node)
+  }
+
 }
-
-/*
-    triggers {
-        cron('H * * * *')
-    }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '20'))
-        disableConcurrentBuilds()
-        timestamps()
-        ansiColor('xterm')
-        durabilityHint('PERFORMANCE_OPTIMIZED')
-    }
-*/
