@@ -4,7 +4,7 @@ def call(String nodeName='', keep_images=1) {
 
   String docker_image = 'spotify/docker-gc'
 
-  lock("${env.JOB_NAME}-${nodeName}") {
+  lock("${env.JOB_NAME}") {
     stage("Cleanup on ${nodeName}") {
       node(nodeName) {
         def image = docker.image(docker_image)
