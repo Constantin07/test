@@ -7,6 +7,9 @@ def instance = Jenkins.getInstance()
 // Set number of executors on master
 instance.setNumExecutors(1)
 
+// Set label name on master
+instance.setLabelString('master')
+
 // Set jenkins slave port
 instance.setSlaveAgentPort({{ jenkins_slave_port }})
 
