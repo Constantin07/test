@@ -2,14 +2,18 @@
 
 import jenkins.model.Jenkins
 
-@NonCPS
 def nodeNames() {
   def nodes = []
   jenkins.model.Jenkins.instance.computers.each { c ->
-    node = c.getNode()
-    if (node.getChannel() != null && node.getNumExecutors() > 1) {
-      // Master node returns an empty name
-      nodes.add(c.name.replaceAll(/^$/, 'master'))
+    def node = c.getNode()
+    def name = c.name.toString()
+    if (node.getChannel() != null && node.getNumExecutors() > 0) {
+      // Master node returns an empty value
+      if (name == "") {
+        nodes.add("master")
+      } else {
+        nodes.add(name)
+      }
     }
   }
   return nodes
