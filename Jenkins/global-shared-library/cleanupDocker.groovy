@@ -26,4 +26,5 @@ def call(String nodeName='', keep_images=1) {
       }
     }
   }
+  milestone()
 }
