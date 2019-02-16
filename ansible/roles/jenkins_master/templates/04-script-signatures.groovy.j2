@@ -15,11 +15,16 @@ def signatures = [
   'method hudson.model.Node getChannel',
   'method jenkins.model.Jenkins getItemByFullName java.lang.String',
   'method jenkins.model.Jenkins getComputers',
+  'method hudson.model.ItemGroup getAllItems java.lang.Class',
+  'method hudson.model.Item getFullName',
+  'method hudson.model.Saveable save',
   'method hudson.FilePath getName',
   'method hudson.FilePath list',
   'method hudson.FilePath child java.lang.String',
   'method hudson.FilePath deleteRecursive',
-  'method hudson.model.Job isBuildable'
+  'method hudson.model.Job isBuildable',
+  'staticMethod org.jenkins.plugins.lockableresources.LockableResourcesManager get',
+  'method org.jenkins.plugins.lockableresources.LockableResourcesManager getResources'
 ]
 
 def script_approval = ScriptApproval.get()
