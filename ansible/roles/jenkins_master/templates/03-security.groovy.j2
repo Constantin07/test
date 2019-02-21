@@ -5,9 +5,6 @@ import jenkins.security.s2m.AdminWhitelistRule
 
 Jenkins jenkins = Jenkins.getInstance()
 
-// Disable remoting
-jenkins.getDescriptor("jenkins.CLI").get().setEnabled(false)
-
 // Enable Agent to master security subsystem
 jenkins.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
 
