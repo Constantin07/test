@@ -9,7 +9,7 @@
     groups: docker
     append: yes
 
-- name: Clean init.groovy.d directory
+- name: Empty init.groovy.d directory
   file:
     path: /var/lib/jenkins/init.groovy.d
     state: absent
