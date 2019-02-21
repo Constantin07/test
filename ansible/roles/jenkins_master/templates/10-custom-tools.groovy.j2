@@ -1,8 +1,8 @@
 #!groovy
 
 import jenkins.model.*
-import com.cloudbees.jenkins.plugins.customtools.CustomTool;
-import com.synopsys.arc.jenkinsci.plugins.customtools.versions.ToolVersionConfig;
+import com.cloudbees.jenkins.plugins.customtools.CustomTool
+import com.synopsys.arc.jenkinsci.plugins.customtools.versions.ToolVersionConfig
 import hudson.tools.*
 
 def Tools = []
@@ -10,9 +10,8 @@ Tools.add(name: 'Terraform', url: 'https://releases.hashicorp.com/terraform/0.11
 Tools.add(name: 'Packer', url: 'https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip')
 
 def inst = Jenkins.getInstance()
-def desc = inst.getExtensionList(com.cloudbees.jenkins.plugins.customtools.CustomTool.DescriptorImpl.class)[0];
+def desc = inst.getExtensionList(com.cloudbees.jenkins.plugins.customtools.CustomTool.DescriptorImpl.class)[0]
 def installs = desc.getInstallations()
-def customTools = []
 
 Tools.each { t ->
   if (installs.find { it.name == t.name }) {
@@ -20,13 +19,12 @@ Tools.each { t ->
   } else {
     println "Installing ${t.name}"
 
-    def installers = []
-    def tf_installer = new ZipExtractionInstaller(
+    List installers = new ArrayList()
+    installers.add(new ZipExtractionInstaller(
       '',      // node label to use custom tool on
       t.url,   // url
       ''       // subdir
-    )
-    installers.add(tf_installer)
+    ))
 
     List<ToolProperty> properties = new ArrayList<ToolProperty>()
     properties.add(new InstallSourceProperty(installers))
@@ -40,9 +38,10 @@ Tools.each { t ->
       ToolVersionConfig.DEFAULT,  // toolVersion
       null                        // additionalVariables
     )
-    customTools.add(newTool)
+    installs += newTool
   }
 }
 
-desc.setInstallations((com.cloudbees.jenkins.plugins.customtools.CustomTool[])customTools);
+desc.setInstallations((com.cloudbees.jenkins.plugins.customtools.CustomTool[])installs)
 desc.save()
+
