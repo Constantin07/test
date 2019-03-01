@@ -4,7 +4,10 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: Install Docker
-  package: name="{{ docker_package }}" state="{{ docker_package_state }}"
+  package:
+    name: "{{ item }}"
+    state: "{{ docker_package_state }}"
+  loop: "{{ docker_packages }}"
 
 - name: Ensure dependant services are started
   service:
