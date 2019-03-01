@@ -6,7 +6,7 @@ docker_package: "docker-{{ docker_edition }}"
 docker_package_state: latest
 
 # Used only for RedHat/CentOS.
-docker_yum_repo_url: https://download.docker.com/linux/centos/docker-{{ docker_edition }}.repo
+docker_yum_repo_url: 'https://download.docker.com/linux/centos/docker-{{ docker_edition }}.repo'
 docker_yum_repo_enable_edge: 0
 
 # Sysctl configurations
