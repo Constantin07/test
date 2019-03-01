@@ -3,7 +3,7 @@
 - name: Disable IPv6 with sysctl
   sysctl:
     name: "{{ item }}"
-    value: 1
+    value: "1"
     state: present
     reload: yes
     sysctl_set: yes

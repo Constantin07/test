@@ -1,7 +1,7 @@
 ---
 
 - name: Include OS specific tasks
-  include_tasks: "{{ ansible_os_family }}.yml"
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - include_tasks: disable_firewalld.yml
 
