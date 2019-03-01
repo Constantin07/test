@@ -1,5 +1,6 @@
 /**
 * Terraform module to spin up a VPC
+* The subnet CIDR blocks will be automatically calculated based on the number of AZs in region.
 */
 
 data "aws_region" "current" {}
