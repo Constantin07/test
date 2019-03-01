@@ -1,0 +1,27 @@
+---
+
+- name: Remove not required packages
+  yum:
+    name: "{{item}}"
+    state: absent
+  loop:
+    - postfix
+
+- name: Install required packages
+  yum:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - epel-release
+    - python2-pip
+    - libselinux-python
+    - libsemanage-python
+
+- name: Disable SELinux at next reboot
+  selinux:
+    state: disabled
+
+- name: Set SELinux in permissive mode until the machine is rebooted
+  command: setenforce 0
+  ignore_errors: true
+  changed_when: false
