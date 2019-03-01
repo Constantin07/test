@@ -7,7 +7,7 @@
     - common
     - resolv
     - chronyd
-    - kernel
+#    - kernel
     - ctop
     - docker
     - { role: etcd, clean_certs_dir: yes, clean_data_dir: no }
