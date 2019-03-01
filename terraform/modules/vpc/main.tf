@@ -55,7 +55,8 @@ resource "aws_subnet" "private" {
   availability_zone = "${element(local.availability_zones, count.index)}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}",
+      "kubernetes.io/role/internal-elb", "1"
     ), var.extra_tags)}"
 }
 
@@ -68,7 +69,8 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = "${merge(map(
-      "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}"
+      "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
+      "kubernetes.io/role/elb", "1"
     ), var.extra_tags)}"
 }
 
