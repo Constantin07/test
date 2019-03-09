@@ -102,6 +102,7 @@ def build(nodeName = '', directory = '.') {
               stage(name: 'Plan') {
               def exitCode = sh(script: "terraform plan ${tf_options} -out=plan.out -detailed-exitcode", returnStatus: true)
               echo "Terraform plan exit code: ${exitCode}"
+              throw new Exception("Throw to stop pipeline")
               switch (exitCode) {
                 case 0:
                   echo 'No changes to apply.'
