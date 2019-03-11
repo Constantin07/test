@@ -1,7 +1,7 @@
 [local]
 centos7.internal
 
-[jenkins-slaves]
+[jenkins_slaves]
 jenkins-slave.internal
 jenkins-slave2.internal
 
@@ -17,18 +17,18 @@ etcd-1.internal
 etcd-2.internal
 etcd-3.internal
 
-[kube-masters]
+[kube_masters]
 master-node1.internal
 master-node2.internal
 master-node3.internal
 
-[kube-slaves]
+[kube_slaves]
 worker-node1.internal
 worker-node2.internal
 
 [kube:children]
-kube-masters
-kube-slaves
+kube_masters
+kube_slaves
 
 [kube:vars]
 ansible_user=ubuntu
