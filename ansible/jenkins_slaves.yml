@@ -1,6 +1,6 @@
 ---
 
-- hosts: jenkins-slaves
+- hosts: jenkins_slaves
 
   roles:
     - common

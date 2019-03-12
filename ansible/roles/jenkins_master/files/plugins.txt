@@ -11,6 +11,7 @@ git
 github
 greenballs
 htmlpublisher
+job-dsl
 jobConfigHistory
 jobcopy-builder
 ldap
