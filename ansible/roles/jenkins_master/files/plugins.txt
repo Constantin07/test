@@ -20,6 +20,7 @@ matrix-project
 next-build-number
 pipeline-multibranch-defaults
 pipeline-rest-api
+pipeline-utility-steps
 timestamper
 workflow-aggregator
 workflow-remote-loader
