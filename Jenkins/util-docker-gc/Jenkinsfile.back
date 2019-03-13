@@ -1,49 +1,46 @@
 pipeline {
 
-    agent any
+  agent any
 
-    triggers {
-        cron('H * * * *')
-    }
+  triggers {
+    cron('H * * * *')
+  }
 
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '20'))
-        disableConcurrentBuilds()
-        timestamps()
-        ansiColor('xterm')
-        durabilityHint('PERFORMANCE_OPTIMIZED')
-    }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+    disableConcurrentBuilds()
+    timestamps()
+    ansiColor('xterm')
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+  }
 
-    environment {
-        DOCKER_IMAGE = 'spotify/docker-gc'
-    }
+  environment {
+    DOCKER_IMAGE = 'spotify/docker-gc'
+  }
 
-    stages {
-
-        stage('Clean old images and containers') {
-            steps {
-                script {
-                    def image = docker.image(env.DOCKER_IMAGE);
-                    image.pull()
-                }
-
-                sh '''
-                    docker run --rm --privileged \
-                    --name docker-gc \
-                    -e MINIMUM_IMAGES_TO_SAVE=1 \
-                    -e FORCE_IMAGE_REMOVAL=1 \
-                    -e GRACE_PERIOD_SECONDS=86400 \
-                    -v /var/run/docker.sock:/var/run/docker.sock \
-                    -v /etc:/etc:ro \
-                    ${DOCKER_IMAGE}
-                '''
-
-                sh 'docker ps --filter "status=exited" -q | xargs -r docker rm'
-                sh 'docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm'
-
-            }
+  stages {
+    stage('Clean old images and containers') {
+      steps {
+        script {
+          def image = docker.image(env.DOCKER_IMAGE);
+          image.pull()
         }
 
+        sh """
+          docker run --rm --privileged \
+          --name docker-gc \
+          -e MINIMUM_IMAGES_TO_SAVE=1 \
+          -e FORCE_IMAGE_REMOVAL=1 \
+          -e GRACE_PERIOD_SECONDS=86400 \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v /etc:/etc:ro \
+          ${DOCKER_IMAGE}
+        """
+
+        sh 'docker ps --filter "status=exited" -q | xargs -r docker rm'
+        sh 'docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm'
+      }
     }
+  }
 
 }
