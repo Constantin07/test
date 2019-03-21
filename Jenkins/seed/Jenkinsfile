@@ -5,10 +5,13 @@ pipelineJob('test-job') {
   definition {
     cpsScm {
       scm {
-        git('git@github.com:Constantin07/test.git')
-        branch('master')
-        remote {
-          credentials('Git')
+        git {
+          branch('master')
+          remote {
+            name('origin')
+            url('git@github.com:Constantin07/test.git')
+            credentials('Git')
+          }
         }
       }
 
