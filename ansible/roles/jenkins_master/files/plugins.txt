@@ -4,6 +4,7 @@ authorize-project
 aws-credentials
 blueocean
 build-timestamp
+compress-buildlog
 credentials
 custom-tools-plugin
 docker-plugin
