@@ -1,0 +1,25 @@
+#!groovy
+
+import jenkins.model.*
+
+// Git repositories to scan
+def repos = [
+  [ url: "git@github.com:Constantin07/test.git", branch: "master", credentialId: 'Git']
+]
+
+def instance = Jenkins.getInstance()
+
+/*
+repos.each { repo ->
+  checkout([
+    $class: 'GitSCM',
+    branches: [[name: repo.branch]],
+    userRemoteConfigs: [[credentialsId: repo.credentialId, url: repo.url ]]
+  ])
+}
+*/
+
+jobDsl scriptText: '''
+  job(\'seed\') {
+  }
+'''
