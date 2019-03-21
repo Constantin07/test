@@ -1,0 +1,19 @@
+#!groovy
+
+pipelineJob('test-job') {
+
+  definition {
+    cpsScm {
+      scm {
+        git('git@github.com:Constantin07/test.git')
+        branch('master')
+        remote {
+          credentials('Git')
+        }
+      }
+
+      scriptPath('terraform/pki/Jenkinsfile')
+
+    }
+  }
+}
