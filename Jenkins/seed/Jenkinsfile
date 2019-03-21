@@ -1,7 +1,7 @@
 #!groovy
 
 pipelineJob('test-job') {
-
+  compressBuildLog()
   definition {
     cpsScm {
       scm {
