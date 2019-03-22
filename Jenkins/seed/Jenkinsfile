@@ -14,8 +14,9 @@ pipelineJob('test-job') {
           }
         }
       }
+    description('Terraform scripts for pki')
 
-      scriptPath('terraform/pki/Jenkinsfile')
+    scriptPath('terraform/pki/Jenkinsfile')
 
     }
   }
