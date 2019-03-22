@@ -1,6 +1,6 @@
 #!groovy
 
-def call(String nodeName='', keep_images=1) {
+def call(String nodeName='', int keep_images=1) {
 
   String docker_image = 'spotify/docker-gc'
 
