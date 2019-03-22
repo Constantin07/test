@@ -1,25 +1,48 @@
 #!groovy
 
-import jenkins.model.*
+import jenkins.model.Jenkins
+import javaposse.jobdsl.plugin.*
+import hudson.model.FreeStyleProject
+import hudson.plugins.git.GitSCM
+import hudson.plugins.git.BranchSpec
+import hudson.plugins.git.UserRemoteConfig
 
-// Git repositories to scan
-def repos = [
-  [ url: "git@github.com:Constantin07/test.git", branch: "master", credentialId: 'Git']
-]
+String gitUrl = 'git@github.com:Constantin07/test.git'
+String gitBranch = 'master'
+String gitCredentialId = 'Git'
 
 def instance = Jenkins.getInstance()
 
-/*
-repos.each { repo ->
-  checkout([
-    $class: 'GitSCM',
-    branches: [[name: repo.branch]],
-    userRemoteConfigs: [[credentialsId: repo.credentialId, url: repo.url ]]
-  ])
-}
+String seedJobName = "seed"
+
+/* Remove existing job if found
+instance.items.findAll { job -> job.name == seedJobName }
+.each { job -> job.delete(); println "Job ${job.name} deleted." }
 */
 
-jobDsl scriptText: '''
-  job(\'seed\') {
-  }
-'''
+dslBuilder = new ExecuteDslScripts()
+dslBuilder.setTargets("Jenkins/seed/Jenkinsfile")
+dslBuilder.setUseScriptText(false)
+dslBuilder.setIgnoreExisting(false)
+dslBuilder.setSandbox(false)
+dslBuilder.setIgnoreMissingFiles(false)
+dslBuilder.setRemovedJobAction(RemovedJobAction.DISABLE)
+dslBuilder.setRemovedViewAction(RemovedViewAction.IGNORE)
+dslBuilder.setLookupStrategy(LookupStrategy.SEED_JOB)
+
+dslProject = new hudson.model.FreeStyleProject(instance, seedJobName)
+dslProject.scm = new GitSCM(gitUrl)
+dslProject.scm.branches = [new BranchSpec(gitBranch)]
+dslProject.scm.userRemoteConfigs = [new UserRemoteConfig(gitUrl, null, null, gitCredentialId)]
+
+dslProject.createTransientActions()
+dslProject.getPublishersList().add(dslBuilder)
+
+def job = instance.getItem(seedJobName)
+if (job == null) {
+  println "Job '${seedJobName}' not found, adding ..."
+  instance.add(dslProject, seedJobName)
+}
+
+//TODO: Update existing job if found
+
