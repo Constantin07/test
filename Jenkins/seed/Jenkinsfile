@@ -1,8 +1,20 @@
 #!groovy
 
 def repos = [
-  [ url: 'git@github.com:Constantin07/test.git', branch: 'master', credentials: 'Git' ]
+  [ url: 'git@github.com:Constantin07/test.git', branch: 'master', credential: 'Git' ]
 ]
+
+repos.each { repo ->
+  node() {
+    git branch: repo.branch, credentialsId: repo.credential, url: repo.url
+  }
+}
+
+/*
+folder('project') {
+  displayName('project')
+}
+*/
 
 pipelineJob('test-job') {
   compressBuildLog()
