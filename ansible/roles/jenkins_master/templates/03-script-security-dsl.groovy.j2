@@ -1,0 +1,8 @@
+#!groovy
+
+import jenkins.model.GlobalConfiguration
+import javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration
+
+// disable Job DSL script approval
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).useScriptSecurity=false
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).save()
