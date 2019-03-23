@@ -27,8 +27,7 @@ node() {
     disableConcurrentBuilds()
   ])
 
-  // Set job description
-  Jenkins.instance.getItem(env.JOB_NAME).description = "Clean up old docker images and containers."
+  utils.setJobDescription('Clean up old docker images and containers.')
 }
 
 def builders = [:]
