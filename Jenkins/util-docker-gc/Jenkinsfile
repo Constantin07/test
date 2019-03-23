@@ -21,10 +21,14 @@ def nodeNames() {
 
 node() {
   properties([
-    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
     pipelineTriggers([cron("TZ=Europe/London\nH H/6 * * *")]),
     disableConcurrentBuilds()
   ])
+
+  // Set job description
+  def jobName = "${env.JOB_NAME}"
+  Jenkins.instance.getItem(jobName).description = "Clean up old docker images and containers."
 }
 
 def builders = [:]
