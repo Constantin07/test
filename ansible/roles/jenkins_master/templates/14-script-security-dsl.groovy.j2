@@ -3,6 +3,6 @@
 import jenkins.model.GlobalConfiguration
 import javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration
 
-// disable Job DSL script approval
+// disable Job DSL script approval (required for FreeStyle job)
 GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).useScriptSecurity=false
 GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).save()
