@@ -1,3 +1,5 @@
+@Library('global-shared-library') _
+
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 def nodeName        = 'master'
@@ -18,6 +20,8 @@ node(nodeName){
     disableConcurrentBuilds(),
     [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
   ])
+
+  utils.setJobDescription('Build and install the latest version of Ansible.')
 }
 
 ansiColor('xterm') {
