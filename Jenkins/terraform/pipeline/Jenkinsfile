@@ -7,4 +7,4 @@ def terraform = fileLoader.fromGit(
   'Git',
   nodeName)
 
-terraform.build(nodeName, 'terraform/env_test')
+terraform.build(nodeName, 'terraform/pipeline')
