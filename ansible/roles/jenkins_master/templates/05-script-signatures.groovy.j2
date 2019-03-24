@@ -28,7 +28,9 @@ def signatures = [
   'method hudson.FilePath deleteRecursive',
   'method hudson.model.Job isBuildable',
   'staticMethod org.jenkins.plugins.lockableresources.LockableResourcesManager get',
-  'method org.jenkins.plugins.lockableresources.LockableResourcesManager getResources'
+  'method org.jenkins.plugins.lockableresources.LockableResourcesManager getResources',
+  'staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getAt java.util.List java.util.Collection',
+  'staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods take java.util.List int'
 ]
 
 def script_approval = ScriptApproval.get()
