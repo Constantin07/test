@@ -1,47 +1,35 @@
 #!groovy
 
 import jenkins.model.Jenkins
-import javaposse.jobdsl.plugin.*
-import hudson.model.FreeStyleProject
 import hudson.plugins.git.GitSCM
 import hudson.plugins.git.BranchSpec
 import hudson.plugins.git.UserRemoteConfig
+import hudson.triggers.SCMTrigger
+import org.jenkinsci.plugins.workflow.job.WorkflowJob
+import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
 
-String gitUrl = 'git@github.com:Constantin07/test.git'
-String gitBranch = 'master'
+String seedJobName     = 'seed'
+String seedJobDesc     = 'This is seed job which creates another job(s).'
+String seedJobPath     = 'Jenkins/seed/Jenkinsfile'
+String gitUrl          = 'git@github.com:Constantin07/test.git'
+String gitBranch       = 'master'
 String gitCredentialId = 'Git'
 
-def instance = Jenkins.getInstance()
+def jenkins = Jenkins.getInstance()
 
-String seedJobName = "seed"
+scm = new GitSCM(gitUrl)
+scm.branches = [new BranchSpec(gitBranch)]
+scm.userRemoteConfigs = [new UserRemoteConfig(gitUrl, null, null, gitCredentialId)]
 
-/* Remove existing job if found
-instance.items.findAll { job -> job.name == seedJobName }
-.each { job -> job.delete(); println "Job ${job.name} deleted." }
-*/
+gitTrigger = new SCMTrigger('H * * * *')
 
-dslBuilder = new ExecuteDslScripts()
-dslBuilder.setTargets("Jenkins/seed/Jenkinsfile")
-dslBuilder.setUseScriptText(false)
-dslBuilder.setIgnoreExisting(false)
-dslBuilder.setSandbox(false)
-dslBuilder.setIgnoreMissingFiles(false)
-dslBuilder.setRemovedJobAction(RemovedJobAction.DISABLE)
-dslBuilder.setRemovedViewAction(RemovedViewAction.IGNORE)
-dslBuilder.setLookupStrategy(LookupStrategy.SEED_JOB)
+workflowJob = new WorkflowJob(jenkins, seedJobName)
+workflowJob.description = seedJobDesc
+workflowJob.addTrigger(gitTrigger)
+workflowJob.definition = new CpsScmFlowDefinition(scm, seedJobPath)
 
-dslProject = new hudson.model.FreeStyleProject(instance, seedJobName)
-dslProject.scm = new GitSCM(gitUrl)
-dslProject.scm.branches = [new BranchSpec(gitBranch)]
-dslProject.scm.userRemoteConfigs = [new UserRemoteConfig(gitUrl, null, null, gitCredentialId)]
-
-dslProject.createTransientActions()
-dslProject.getPublishersList().add(dslBuilder)
-
-def job = instance.getItem(seedJobName)
-if (job == null) {
+// Don't add the job if already exists
+if (jenkins.getItem(seedJobName) == null) {
   println "Job '${seedJobName}' not found, adding ..."
-  instance.add(dslProject, seedJobName)
+  jenkins.add(workflowJob, workflowJob.name)
 }
-
-//TODO: Update existing job if found without removing build history
