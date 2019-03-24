@@ -27,6 +27,7 @@ workflowJob = new WorkflowJob(jenkins, seedJobName)
 workflowJob.description = seedJobDesc
 workflowJob.addTrigger(gitTrigger)
 workflowJob.definition = new CpsScmFlowDefinition(scm, seedJobPath)
+workflowJob.definition.setLightweight(true)
 
 // Don't add the job if already exists
 if (jenkins.getItem(seedJobName) == null) {
