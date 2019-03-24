@@ -20,7 +20,9 @@ repos.each { repo ->
           println "${f.path}"
           def jobPath = f.path.tokenize('/')
           if (jobPath.size() > 3) {
-            jobDsl scriptText: "folder('aaa')"
+            jobDsl scriptText: """
+              folder(${jobPath[1]})
+            """
           }
         }
       }
