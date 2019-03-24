@@ -21,16 +21,14 @@ repos.each { repo ->
 
           String jobConfigFile = getJobConfigPath(f.path)
           if (fileExists(jobConfigFile)) {
-            //println "${jobConfigFile} found, loading ..."
-            jobConfig = readYaml(file: jobConfigFile)
+            def jobConfig = readYaml(file: jobConfigFile)
           }
 
           def jobPath = f.path.tokenize('/')
-          /*if (jobPath.size() > 3) {
-            jobDsl scriptText: """
-              folder(${jobPath[1]})
-            """
-          }*/
+          if (jobPath.size() > 3) {
+            String script = "folder(\'${jobPath[1]}\')"
+            jobDsl(scriptText: script)
+          }
         }
       }
     }
