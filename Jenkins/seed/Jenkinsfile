@@ -17,18 +17,30 @@ repos.each { repo ->
     stage('Create jobs') {
       findFiles(glob: 'Jenkins/**/Jenkinsfile', excludes: '.git').each { f->
         if (!f.directory && f.length > 0) {
-          println "${f.path}"
+          //println "${f.path}"
+
+          String jobConfigFile = getJobConfigPath(f.path)
+          if (fileExists(jobConfigFile)) {
+            //println "${jobConfigFile} found, loading ..."
+            jobConfig = readYaml(file: jobConfigFile)
+          }
+
           def jobPath = f.path.tokenize('/')
-          if (jobPath.size() > 3) {
+          /*if (jobPath.size() > 3) {
             jobDsl scriptText: """
               folder(${jobPath[1]})
             """
-          }
+          }*/
         }
       }
     }
 
   }
+}
+
+@NonCPS
+def getJobConfigPath(String path) {
+  return path.tokenize('/')[0..-2].join('/') + '/config.yml'
 }
 
 /*
