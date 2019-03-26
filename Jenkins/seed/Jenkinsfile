@@ -5,34 +5,45 @@ def repos = [
   [ url: 'git@github.com:Constantin07/test.git', branch: 'master', credential: 'Git' ]
 ]
 
-repos.each { repo ->
-  node() {
-    stage('Checkout') {
-      checkout([$class: 'GitSCM',
-                branches: [[name: repo.branch]],
-                extensions: [[$class: 'CleanBeforeCheckout']],
-                userRemoteConfigs: [[credentialsId: repo.credential, url: repo.url]]])
-    }
+pipeline {
+  agent any
 
+  triggers {
+    pollSCM('H/2 * * * *')
+  }
+
+  options {
+     buildDiscarder(logRotator(numToKeepStr: '20'))
+     disableConcurrentBuilds()
+  }
+
+  stages {
     stage('Create jobs') {
-      findFiles(glob: 'Jenkins/**/Jenkinsfile', excludes: '.git').each { f->
-        if (!f.directory && f.length > 0) {
-          //println "${f.path}"
+      steps {
+        script {
+          repos.each { repo ->
+            checkout([$class: 'GitSCM', branches: [[name: repo.branch]], extensions: [[$class: 'CleanBeforeCheckout']],
+                      userRemoteConfigs: [[credentialsId: repo.credential, url: repo.url]]])
 
-          String jobConfigFile = getJobConfigPath(f.path)
-          if (fileExists(jobConfigFile)) {
-            def jobConfig = readYaml(file: jobConfigFile)
-          }
+            findFiles(glob: 'Jenkins/**/Jenkinsfile', excludes: '.git').each { f->
+              if (!f.directory && f.length > 0) {
 
-          def jobPath = f.path.tokenize('/')
-          if (jobPath.size() > 3) {
-            String script = "folder(\'${jobPath[1]}\')"
-            jobDsl(scriptText: script)
+                String jobConfigFile = getJobConfigPath(f.path)
+                if (fileExists(jobConfigFile)) {
+                  def jobConfig = readYaml(file: jobConfigFile)
+                }
+
+                def jobPath = f.path.tokenize('/')
+                if (jobPath.size() > 3) {
+                  String script = "folder(\'${jobPath[1]}\')"
+                  jobDsl(scriptText: script)
+                }
+              }
+            }
           }
         }
       }
     }
-
   }
 }
 
@@ -40,28 +51,3 @@ repos.each { repo ->
 def getJobConfigPath(String path) {
   return path.tokenize('/')[0..-2].join('/') + '/config.yml'
 }
-
-/*
-folder('project')
-
-pipelineJob('test-job') {
-  compressBuildLog()
-  definition {
-    cpsScm {
-      scm {
-        git {
-          branch('master')
-          remote {
-            name('origin')
-            url('git@github.com:Constantin07/test.git')
-            credentials('Git')
-          }
-        }
-      }
-
-    scriptPath('terraform/pki/Jenkinsfile')
-
-    }
-  }
-}
-*/
