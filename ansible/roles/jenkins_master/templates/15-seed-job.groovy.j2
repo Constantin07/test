@@ -4,7 +4,7 @@ import jenkins.model.Jenkins
 import hudson.plugins.git.GitSCM
 import hudson.plugins.git.BranchSpec
 import hudson.plugins.git.UserRemoteConfig
-import hudson.triggers.SCMTrigger
+//import hudson.triggers.SCMTrigger
 import org.jenkinsci.plugins.workflow.job.WorkflowJob
 import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
 
@@ -21,11 +21,11 @@ scm = new GitSCM(gitUrl)
 scm.branches = [new BranchSpec(gitBranch)]
 scm.userRemoteConfigs = [new UserRemoteConfig(gitUrl, null, null, gitCredentialId)]
 
-gitTrigger = new SCMTrigger('H * * * *')
+//gitTrigger = new SCMTrigger('H * * * *')
 
 workflowJob = new WorkflowJob(jenkins, seedJobName)
 workflowJob.description = seedJobDesc
-workflowJob.addTrigger(gitTrigger)
+//workflowJob.addTrigger(gitTrigger)
 workflowJob.definition = new CpsScmFlowDefinition(scm, seedJobPath)
 workflowJob.definition.setLightweight(true)
 
