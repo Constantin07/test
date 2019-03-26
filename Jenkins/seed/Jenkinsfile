@@ -27,6 +27,7 @@ pipeline {
 
             findFiles(glob: 'Jenkins/**/Jenkinsfile', excludes: '.git').each { f->
               if (!f.directory && f.length > 0) {
+                println "${f.path}"
 
                 String jobConfigFile = getJobConfigPath(f.path)
                 if (fileExists(jobConfigFile)) {
@@ -34,9 +35,50 @@ pipeline {
                 }
 
                 def jobPath = f.path.tokenize('/')
+
                 if (jobPath.size() > 3) {
+
                   String script = "folder(\'${jobPath[1]}\')"
                   jobDsl(scriptText: script)
+
+                def template = '''
+                  pipelineJob('$job_name') {
+                    compressBuildLog()
+                    definition {
+                      cpsScm {
+                        lightweight(true)
+                        scm {
+                          git {
+                            remote {
+                              name('origin')
+                              url('$url')
+                              credentials('$credId')
+                              branch('$branch')
+                            }
+                            extensions {
+                              cleanBeforeCheckout()
+                            }
+                          }
+                        }
+                        scriptPath('$scriptPath')
+                      }
+                    }
+                    description('$description')
+                  }
+                '''
+
+                def binding = [
+                  job_name: "${jobPath[1]}/${jobPath[2]}",
+                  url: repo.url,
+                  credId: repo.credential,
+                  branch: repo.branch,
+                  scriptPath: f.path,
+                  description : ''
+                ]
+
+                  def rendered = renderJobConfig(template, binding)
+                  binding = null  // Avoid NotSerializableException
+                  jobDsl(scriptText: rendered)
                 }
               }
             }
@@ -50,4 +92,10 @@ pipeline {
 @NonCPS
 def getJobConfigPath(String path) {
   return path.tokenize('/')[0..-2].join('/') + '/config.yml'
+}
+
+@NonCPS
+def renderJobConfig(template, binding) {
+  def engine = new groovy.text.SimpleTemplateEngine()
+  return engine.createTemplate(template).make(binding).toString()
 }
