@@ -8,6 +8,7 @@
   loop:
     - apt-transport-https
     - bash-completion
+    - curl
 
 - name: Add GPG key
   apt_key:
@@ -20,15 +21,15 @@
     update_cache: yes
     state: present
 
-- name: Install required packages
+- name: Install required Kubernetes packages
   apt:
-    name: "{{ item  }}"
+    name: "{{ item.name  }}={{ item.version }}"
     state: present
     update_cache: yes
   loop:
-    - kubelet
-    - kubeadm
-    - kubectl
+    - { name: 'kubelet', version: "{{ k8s_version }}" }
+    - { name: 'kubeadm', version: "{{ k8s_version }}" }
+    - { name: 'kubectl', version: "{{ k8s_version }}" }
 
 - name: Exclude tools from upgrade
   command: apt-mark hold kubelet kubeadm kubectl

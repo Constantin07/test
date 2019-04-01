@@ -1,0 +1,13 @@
+---
+
+- name: Remove swapfile from /etc/fstab if defined
+  replace:
+    path: /etc/fstab
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
+    backup: yes
+  register: swap_fstab
+
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0 or swap_fstab is changed

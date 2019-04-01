@@ -1,11 +1,15 @@
 {
-  "log-driver": "journald",
+{# Required by Kubernetes #}
+  "exec-opts": [ "native.cgroupdriver=systemd" ],
 {% if ansible_os_family == 'Debian' %}
   "storage-driver": "overlay2",
 {% elif ansible_os_family == 'RedHat' %}
   "storage-driver": "btrfs",
 {% endif %}
+  "log-driver": "json-file",
   "log-opts": {
+    "max-size": "20m",
+    "max-file": "5",
     "mode": "non-blocking",
     "max-buffer-size": "4m"
   },

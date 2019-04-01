@@ -28,12 +28,6 @@
 #- name: Add sysctl configurations
 #  include_tasks: sysctl.yml
 
-- name: Ensure Docker is started and enabled at boot
-  service:
-    name: docker
-    state: started
-    enabled: yes
-
 - name: Update /etc/docker/daemon.json file
   template:
     src: daemon.json
@@ -42,5 +36,11 @@
     group: root
     mode: 0644
   notify: restart docker
+
+- name: Ensure Docker is started and enabled at boot
+  service:
+    name: docker
+    state: started
+    enabled: yes
 
 - meta: flush_handlers
