@@ -1,0 +1,10 @@
+---
+
+- include_tasks: disable_swap.yml
+
+# TODO: Run only once per node
+#- include_tasks: unique-machine-id.yml
+
+- include_tasks: "{{ ansible_os_family }}.yml"
+
+- include_tasks: calico.yml

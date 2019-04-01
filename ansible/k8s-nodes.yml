@@ -10,4 +10,5 @@
    - resolv
    - docker
    - ctop
-   - kube_tools
+   - kube_common
+

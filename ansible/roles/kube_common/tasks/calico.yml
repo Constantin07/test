@@ -1,0 +1,30 @@
+---
+# Required by Calico (https://docs.projectcalico.org/v3.6/maintenance/troubleshooting#configure-networkmanager)
+
+- name: get the rpm or apt package facts
+  package_facts:
+    manager: "auto"
+
+- name: Check if Network Manager is installed (Ubuntu)
+  shell: apt list --installed | grep 'network-manager'
+  ignore_errors: True
+  when: ansible_os_family == "Debian"
+  register: is_network_manager
+
+- name: Create config file for NM
+  file:
+    path: /etc/NetworkManager/conf.d/calico.conf
+    state: file
+    owner: root
+    group: root
+    mode: 0644
+  when: is_network_manager.rc == 0
+
+- name: Ansible create file with content example
+  copy:
+    dest: /etc/NetworkManager/conf.d/calico.conf
+    content: |
+      [keyfile]
+      unmanaged-devices=interface-name:cali*;interface-name:tunl*
+  when: is_network_manager.rc == 0
+  notify: Restart NetworkManager
