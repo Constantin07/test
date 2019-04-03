@@ -7,7 +7,7 @@ pipeline {
   }
 
   triggers {
-    cron('H H(9-18) * * *')
+    pollSCM('H H(9-18) * * *')
   }
 
   options {
@@ -22,20 +22,30 @@ pipeline {
   }
 
   stages {
+
     stage('Prepare') {
       steps {
         checkout([
           $class: 'GitSCM',
           branches: [[name: 'master']],
-          userRemoteConfigs: [[credentialsId: 'Git', url: 'git@github.com:docker/distribution-library-image.git']]
+          userRemoteConfigs: [[credentialsId: 'Git', url: 'git@github.com:docker/distribution-library-image.git']],
+          extensions: [
+            [$class: 'CleanBeforeCheckout'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'tmp']
+          ]
         ])
       }
     }
 
     stage('Build image') {
-      dir('amd64') {
+      steps {
+        sh('cp -f Jenkins/build-docker-registry/Dockerfile tmp/amd64/')
+        dir('tmp/amd64') {
+          
+        }
       }
     }
+
   }
 
 }
