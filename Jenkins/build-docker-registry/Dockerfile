@@ -8,7 +8,7 @@ RUN set -ex && \
     rm -rf /usr/share/man/* /tmp/* /var/cache/apk/*
 
 COPY ./registry /bin/registry
-COPY ./config.yml /etc/docker/registry/config.yml
+COPY ./config-example.yml /etc/docker/registry/config.yml
 
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
