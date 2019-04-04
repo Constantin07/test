@@ -1,0 +1,53 @@
+#!groovy
+
+// https://github.com/andrey-pohilko/registry-cli
+
+pipeline {
+
+  agent {
+    label 'master'
+  }
+
+  triggers {
+    pollSCM('H H(9-23) * * *')
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  environment {
+    REGISTRY_HOST = 'centos7.internal:5000'
+  }
+
+  stages {
+
+    stage('List images') {
+      steps {
+        retry(2) {
+          sh('''
+            if [ "$(docker ps -aq -f status=running -f name=docker-registry)" ]; then
+              docker pull anoxis/registry-cli
+              docker run --rm anoxis/registry-cli -r http://${REGISTRY_HOST}
+            fi
+          ''')
+        }
+      }
+    }
+
+    stage('Clean images') {
+      steps {
+        sh('''
+          if [ "$(docker ps -aq -f status=running -f name=docker-registry)" ]; then
+            docker run --rm anoxis/registry-cli -r http://${REGISTRY_HOST} --delete --num 5
+            # Perform garbage collection
+            docker exec docker-registry /bin/registry garbage-collect /etc/docker/registry/config.yml --delete-untagged=true
+          fi
+        ''')
+      }
+    }
+
+  }
+
+}
