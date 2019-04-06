@@ -1,0 +1,12 @@
+---
+
+vault_version:      "1.0.2"
+vault_checksum:     "sha256:5549714c24b61ea77a7afb30e1fbff6ec596cfd39dab7a2e6cf7e71432d616cc"
+vault_package:      "vault_{{ vault_version }}_linux_amd64.zip"
+vault_url:          "https://releases.hashicorp.com/vault/{{ vault_version }}/{{ vault_package }}"
+vault_install_dir:  "/usr/local/bin"
+vault_config_dir:   "/etc/opt/vault"
+vault_user:         "vault"
+vault_group:        "vault"
+vault_home_dir:     "/etc/vault.d"
+vault_service_name: "vault.service"

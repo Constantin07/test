@@ -1,0 +1,71 @@
+---
+# Links: https://learn.hashicorp.com/vault/operations/ops-deployment-guide
+
+- name: Make sure unzip is installed
+  package:
+    name: unzip
+    update_cache: yes
+
+- name: Add vault group
+  group:
+    name: "{{ vault_group }}"
+    system: yes
+    state: present
+
+- name: Create vault config directory
+  file:
+    state: directory
+    path: "{{ vault_home_dir }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: 0700
+
+- name: Add vault user
+  user:
+    name: "{{ vault_user }}"
+    comment: "Vault user"
+    group: "{{ vault_group }}"
+    home: "{{ vault_home_dir }}"
+    shell: /bin/false
+    system: yes
+
+- name: Download vault and check (sha256)
+  get_url:
+    url: "{{ vault_url }}"
+    dest: /tmp
+    checksum: "{{ vault_checksum }}"
+
+- name: Install vault
+  unarchive:
+    src: "{{ vault_url }}"
+    dest: "{{ vault_install_dir }}"
+    remote_src: True
+    mode: 0555
+
+- name: Allow mlock syscall
+  command: "setcap cap_ipc_lock=+ep {{ vault_install_dir }}/vault"
+
+- name: Copy vault config file
+  copy:
+    src: vault.hcl
+    dest: "{{ vault_home_dir }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: 0640
+  notify: restart vault
+
+- name: Install Vault systemd unit file
+  template:
+    src: vault.service.j2
+    dest: "/etc/systemd/system/{{ vault_service_name }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart vault
+
+- name: Enable and start vault
+  systemd:
+    name: "{{ vault_service_name }}"
+    enabled: yes
+    state: started
+    daemon_reload: yes

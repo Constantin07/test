@@ -1,0 +1,39 @@
+---
+
+- name: Load sensitive data
+  include_vars: vault.enc.yml
+  no_log: True
+
+- name: Create a vault_logs volume
+  docker_volume:
+    name: vault_logs
+
+- name: Create a vault_data volume
+  docker_volume:
+    name: vault_data
+
+- name: Run vault docker container | {{ vault_version }}
+  docker_container:
+    name: "{{ image_name }}"
+    image: "{{ docker_host }}/{{ image_name }}:{{ vault_version }}"
+    command: server
+    state: started
+    recreate: yes
+    oom_killer: no
+    published_ports:
+      - "8200:8200"
+    pull: yes
+    network_mode: bridge
+    capabilities:
+      - ipc_lock
+    memory: "{{ memory|default('512mb') }}"
+    volumes:
+      - vault_logs:/vault/logs:rw
+      - vault_data:/vault/file:rw
+    env:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true -XX:UseAVX=2"
+    restart_policy: always
+    trust_image_content: true
+    ulimits:
+      - "core:0"
+    log_driver: journald
