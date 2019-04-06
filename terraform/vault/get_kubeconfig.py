@@ -2,7 +2,9 @@ from terraform_external_data import terraform_external_data
 
 import os, json, yaml
 
-# Returns a map of cluster endpoint <server> and CA cert <certificate-authority-data>
+# Returns a map of:
+# 1. cluster endpoint <server>
+# 2. CA cert <certificate-authority-data>
 # Limitations: One cluster expected in kube config file.
 
 @terraform_external_data
