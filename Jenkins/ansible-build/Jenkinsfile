@@ -7,9 +7,10 @@ def git_url         = 'https://github.com/ansible/ansible.git'
 def git_hub_project = 'https://github.com/ansible/ansible/'
 
 String package_path = 'rpm-build/ansible-*.el7.noarch.rpm'
-def update = false
+boolean update      = false
 
-String jobName = "${env.JOB_NAME}"
+String jobName      = "${env.JOB_NAME}"
+
 
 node(nodeName){
 
@@ -33,35 +34,37 @@ ansiColor('xterm') {
         userRemoteConfigs: [[url: git_url ]],
         extensions: [[$class: 'CleanCheckout']]
       ]
+
+      println "Compare Ansible versions"
+      String current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
+      String new_version = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+
+      if(current_version == new_version) {
+        println "No changes in version"
+      } else {
+        update = true
+      }
     }
   }
 
   milestone label: 'Checkout'
 
-  stage('Build') {
-    node(nodeName) {
-      sh '''
-        make clean
-        make -j 2 rpm
-      '''
-
-      def current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
-      def new_version = sh(script: "ls ${package_path} | cut -d. -f5", returnStdout: true).trim()
-      if(current_version == new_version) {
-        println "No changes in version"
-      } else {
-        update = true
+  if(update) {
+    stage('Build') {
+      node(nodeName) {
+        sh '''
+          make clean
+          make -j 2 rpm
+        '''
         stash(name: 'ansible', includes: package_path)
       }
     }
-  }
 
-  milestone label: 'Build'
+    milestone label: 'Build'
 
-  if(update) {
     stage('Approve') {
       try {
-        timeout(time: 60, activity: false, unit: 'MINUTES') {
+        timeout(time: 120, activity: false, unit: 'MINUTES') {
           input(message: "Do you want to install?")
         }
       } catch (FlowInterruptedException e) {
