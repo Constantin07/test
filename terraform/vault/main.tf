@@ -17,4 +17,3 @@ resource "vault_mount" "secrets" {
   type        = "kv"
   description = "Secret engine v1"
 }
-
