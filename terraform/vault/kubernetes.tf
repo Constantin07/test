@@ -1,12 +1,3 @@
-## AWS
-
-resource "vault_auth_backend" "aws" {
-  type                      = "aws"
-  description               = "AWS authentication"
-  default_lease_ttl_seconds = "3600"
-  max_lease_ttl_seconds     = "3600"
-}
-
 ## Kubernetes
 
 provider "kubernetes" {
@@ -36,4 +27,13 @@ resource "vault_kubernetes_auth_backend_config" "kubernetes" {
   backend            = "${vault_auth_backend.kubernetes.path}"
   kubernetes_host    = "${data.external.kube_config.result.server}"
   kubernetes_ca_cert = "${data.external.kube_config.result.certificate-authority-data}"
+}
+
+resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
+  backend                          = "${vault_auth_backend.kubernetes.path}"
+  role_name                        = "hello-kubernetes"
+  bound_service_account_names      = ["hello-kubernetes"]
+  bound_service_account_namespaces = ["default"]
+  ttl                              = 3600
+  policies                         = ["default", "hello_kubernetes"]
 }

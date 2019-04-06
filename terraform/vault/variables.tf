@@ -1,3 +1,4 @@
 variable "kube_config_file" {
-  default = "~/.kube/config"
+  description = "Path to kubectl configuration file."
+  default     = "~/.kube/config"
 }
