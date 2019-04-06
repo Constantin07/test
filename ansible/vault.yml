@@ -1,0 +1,8 @@
+---
+# Vault deployment in docker container
+
+- hosts: centos7.internal
+
+  roles:
+#    - docker
+    - { role: vault, vault_version: "1.1.0" }
