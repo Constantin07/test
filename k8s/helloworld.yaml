@@ -1,10 +1,22 @@
 ---
+
 # https://github.com/paulbouwer/hello-kubernetes
 
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hello-kubernetes
+  namespace: default
+  labels:
+    app: hello-kubernetes
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-kubernetes
+  namespace: default
 spec:
   replicas: 2
   strategy:
@@ -21,6 +33,7 @@ spec:
       labels:
         app: hello-kubernetes
     spec:
+      serviceAccountName: hello-kubernetes
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -63,6 +76,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-kubernetes
+  namespace: default
 spec:
   type: NodePort
   ports:
