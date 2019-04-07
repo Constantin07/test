@@ -10,6 +10,4 @@ CA_CERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 JWT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
 
 VAULT_TOKEN="$(vault write -field=token -ca-cert=@${CA_CERT_FILE} auth/kubernetes/login role=${VAULT_ROLE} jwt=@${JWT_FILE})"
-SECRET="$(vault kv get -format json ${VAULT_SECRET_PATH})"
-
-echo "${SECRET}" > "$3"
+vault kv get -format json ${VAULT_SECRET_PATH} > "${CREDS_FILE}"
