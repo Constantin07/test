@@ -7,3 +7,4 @@ RUN apk add --update jq curl ca-certificates openssl && update-ca-certificates &
     unzip -d /bin vault_${VAULT_VERSION}_linux_amd64.zip
 
 COPY pull_creds.sh /
+RUN chmod +x /pull_creds.sh
