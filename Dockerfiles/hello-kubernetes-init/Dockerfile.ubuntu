@@ -1,10 +1,10 @@
-FROM alpine:3.9
+FROM ubuntu:18.04
 
 ENV VAULT_VERSION=1.1.0
 
-RUN apk add --update jq curl ca-certificates openssl && update-ca-certificates && \
+RUN apt update && apt -y upgrade && apt install -y curl unzip && \
     curl -O https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
     unzip -d /bin vault_${VAULT_VERSION}_linux_amd64.zip
 
-COPY pull_creds.sh /
+COPY pull_creds.sh /pull_creds.sh
 RUN chmod +x /pull_creds.sh
