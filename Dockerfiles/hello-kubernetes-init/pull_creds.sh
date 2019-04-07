@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -x
 set -o nounset
 
 VAULT_ROLE="$1"
@@ -8,6 +9,8 @@ CREDS_FILE="$3"
 
 CA_CERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 JWT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
+
+echo $VAULT_ADDR
 
 timeout=3
 retries=5
@@ -19,7 +22,7 @@ while [ $i -le $retries ]; do
         echo "Failure to retrieve Vault token, attempt $i, retrying in $timeout seconds ..."
         sleep $timeout
     else
-        export VAULT_TOKEN
+        export VAULT_TOKEN="${VAULT_TOKEN}"
         echo "Successfully retrieved Vault token."
         break
     fi
@@ -30,7 +33,7 @@ done
 
 i=1
 while [ $i -le $retries ]; do
-    vault kv get -format json ${VAULT_SECRET_PATH} > "${CREDS_FILE}"
+    VAULT_TOKEN="${VAULT_TOKEN}" vault kv get -format json ${VAULT_SECRET_PATH} > "${CREDS_FILE}"
     if [ $? -ne 0 ]; then
         echo "Failure to read secret from Vault, attempt $i, retrying in $timeout seconds ..."
         sleep $timeout
