@@ -10,8 +10,6 @@ CREDS_FILE="$3"
 CA_CERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 JWT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
 
-echo $VAULT_ADDR
-
 timeout=3
 retries=5
 
