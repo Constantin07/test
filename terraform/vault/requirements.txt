@@ -1,2 +1,2 @@
-PyYAML==3.13
+PyYAML==5.1
 terraform-external-data==0.0.6
