@@ -46,7 +46,7 @@ resource "kubernetes_cluster_role_binding" "vault_auth" {
 
 # Get Kubernetes CA cert and cluster endpoint
 data "external" "kube_config" {
-  program = ["python", "${path.module}/get_kubeconfig.py"]
+  program = [".venv/bin/python", "${path.module}/get_kubeconfig.py"]
 
   query = {
     config_file = "${var.kube_config_file}"
