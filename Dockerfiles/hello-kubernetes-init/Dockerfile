@@ -15,3 +15,5 @@ COPY --from=BUILDER /bin/vault /bin/vault
 COPY pull_creds.sh /
 
 RUN chmod +x /pull_creds.sh /bin/vault
+
+WORKDIR /
