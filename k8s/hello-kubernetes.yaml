@@ -24,7 +24,7 @@ spec:
    rollingUpdate:
      maxUnavailable: 1
      maxSurge: 1
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 7
   selector:
     matchLabels:
       app: hello-kubernetes
@@ -34,42 +34,56 @@ spec:
         app: hello-kubernetes
     spec:
       serviceAccountName: hello-kubernetes
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - hello-kubernetes
       containers:
       - name: hello-kubernetes
-        image: paulbouwer/hello-kubernetes:1.5
+#        image: paulbouwer/hello-kubernetes:1.5
+        image: centos7.internal:5000/hello-kubernetes
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: Hello world app deployed on Kubernetes!
         resources:
           requests:
-            memory: 65Mi
+            memory: 64Mi
           limits:
-            memory: 120Mi
+            memory: 128Mi
         livenessProbe:
           tcpSocket:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 5
-          timeoutSeconds: 2
+          timeoutSeconds: 3
         readinessProbe:
           httpGet:
             path: /
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 5
-          timeoutSeconds: 2
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: secrets
+          mountPath: "/secrets"
+      # This container is run during pod initialization
+      initContainers:
+      - name: hello-kubernetes-init
+        image: centos7.internal:5000/hello-kubernetes-init:1.0
+        imagePullPolicy: Always
+        command: [ "/pull_creds.sh" ]
+        args:
+          - "hello-kubernetes"           # Vault role associated with this pod/service account
+          - "secrets/hello-kubernetes"   # Secrets path to read from in Vault
+          - "/secrets/creds.json"        # Location to store credentials
+        env:
+        - name: VAULT_ADDR
+          value: "http://vault.internal:8200"
+        volumeMounts:
+        - name: secrets
+          mountPath: "/secrets"
+      volumes:
+      - name: secrets
+        emptyDir: {}
 
 ---
 apiVersion: v1
