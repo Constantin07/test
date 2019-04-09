@@ -26,7 +26,9 @@ while [ $i -le $retries ]; do
     i=$((i + 1))
 done
 
-[[ $retries -lt $i ]] && { echo "Max retries reached, exiting ..."; exit 1; }
+if [ $retries -lt $i ]; then
+    echo "Max retries reached, exiting ..."; exit 1
+fi
 
 i=1
 while [ $i -le $retries ]; do
@@ -40,4 +42,6 @@ while [ $i -le $retries ]; do
     fi
 done
 
-[[ $retries -lt $i ]] && { echo "Max retries reached, exiting ..."; exit 1; }
+if [ $retries -lt $i ]; then
+    echo "Max retries reached, exiting ..."; exit 1
+fi
