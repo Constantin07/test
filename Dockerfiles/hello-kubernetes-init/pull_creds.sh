@@ -1,6 +1,5 @@
 #!/bin/sh
 
-#set -x
 set -o nounset
 
 VAULT_ROLE="$1"
