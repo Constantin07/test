@@ -27,7 +27,8 @@ while [ $i -le $retries ]; do
 done
 
 if [ $retries -lt $i ]; then
-    echo "Max retries reached, exiting ..."; exit 1
+    echo "Max retries reached, exiting ...";
+    exit 1
 fi
 
 i=1
@@ -43,5 +44,6 @@ while [ $i -le $retries ]; do
 done
 
 if [ $retries -lt $i ]; then
-    echo "Max retries reached, exiting ..."; exit 1
+    echo "Max retries reached, exiting ..."
+    exit 1
 fi
