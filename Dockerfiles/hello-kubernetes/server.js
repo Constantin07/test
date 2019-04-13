@@ -23,7 +23,7 @@ app.get('/', function (req, res) {
 	platform: os.type(),
 	release: os.release(),
 	hostName: os.hostname(),
-	creds: JSON.stringify(creds)
+	creds: JSON.stringify(creds['data'])
     });
 });
 
