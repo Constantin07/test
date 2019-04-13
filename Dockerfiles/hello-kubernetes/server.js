@@ -22,7 +22,8 @@ app.get('/', function (req, res) {
 	message: message,
 	platform: os.type(),
 	release: os.release(),
-	hostName: os.hostname()
+	hostName: os.hostname(),
+	creds: creds
     });
 });
 
