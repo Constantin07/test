@@ -24,7 +24,6 @@ spec:
    rollingUpdate:
      maxUnavailable: 1
      maxSurge: 1
-  revisionHistoryLimit: 7
   selector:
     matchLabels:
       app: hello-kubernetes
@@ -34,6 +33,19 @@ spec:
         app: hello-kubernetes
     spec:
       serviceAccountName: hello-kubernetes
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              namespaces: [ "default" ]
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - hello-kubernetes
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: hello-kubernetes
 #        image: paulbouwer/hello-kubernetes:1.5
