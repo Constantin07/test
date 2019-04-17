@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ARG VAULT_VERSION=1.1.0
+ARG VAULT_VERSION=1.1.1
 
 RUN apt update && apt -y upgrade && apt install -y curl unzip && \
     curl -O https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
