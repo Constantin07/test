@@ -95,7 +95,8 @@ spec:
           mountPath: "/secrets"
       volumes:
       - name: secrets
-        emptyDir: {}
+        emptyDir:
+          medium: "Memory"
 
 ---
 apiVersion: v1
