@@ -55,7 +55,4 @@ while [ $i -le $retries ]; do
     fi
 done
 
-if [ "$i" -ge "$retries" ]; then
-    log "Max retries reached, exiting ..."
-    exit 1
-fi
+[ "$i" -ge "$retries" ] && { log "Max retries reached, exiting ..."; exit 1; }
