@@ -19,16 +19,10 @@ log()
 }
 
 CA_CERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-if [ ! -f $CA_CERT_FILE ]; then
-    log "File $CA_CERT_FILE not found."
-    exit 1
-fi
+[ -f "$CA_CERT_FILE" ] || { log "File $CA_CERT_FILE not found."; exit 1; }
 
 JWT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
-if [ ! -f $JWT_FILE ]; then
-    log "File $JWT_FILE not found."
-    exit 1
-fi
+[ -f "$JWT_FILE" ] || { log "File $JWT_FILE not found."; exit 1; }
 
 timeout=3
 retries=3
