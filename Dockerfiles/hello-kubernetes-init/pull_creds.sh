@@ -54,7 +54,7 @@ fi
 
 i=1
 while [ $i -le $retries ]; do
-    VAULT_TOKEN="${VAULT_TOKEN}" vault kv get -format json ${VAULT_SECRET_PATH} > "${CREDS_FILE}"
+    vault kv get -format json ${VAULT_SECRET_PATH} > "${CREDS_FILE}"
     if [ $? -ne 0 ]; then
         log "Failure to read secret from Vault, attempt $i, retrying in $timeout seconds ..."
         sleep $timeout
