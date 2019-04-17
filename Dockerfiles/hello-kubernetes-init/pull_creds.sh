@@ -21,17 +21,17 @@ log()
 CA_CERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 if [ ! -f $CA_CERT_FILE ]; then
     log "File $CA_CERT_FILE not found."
-    exit 2
+    exit 1
 fi
 
 JWT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
 if [ ! -f $JWT_FILE ]; then
     log "File $JWT_FILE not found."
-    exit 3
+    exit 1
 fi
 
 timeout=3
-retries=5
+retries=3
 
 i=1
 while [ $i -le $retries ]; do
@@ -49,7 +49,7 @@ done
 
 if [ "$i" -ge "$retries" ]; then
     log "Max retries reached, exiting ..."
-    exit 4
+    exit 1
 fi
 
 i=1
@@ -66,5 +66,5 @@ done
 
 if [ "$i" -ge "$retries" ]; then
     log "Max retries reached, exiting ..."
-    exit 5
+    exit 1
 fi
