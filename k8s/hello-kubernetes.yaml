@@ -85,7 +85,7 @@ spec:
         command: [ "/pull_creds.sh" ]
         args:
           - "hello-kubernetes"           # Vault role associated with this pod/service account
-          - "secrets/hello-kubernetes"   # Secrets path to read from in Vault
+          - "secret/hello-kubernetes"    # Secrets path to read from in Vault
           - "/secrets/creds.json"        # Location to store credentials
         env:
         - name: VAULT_ADDR

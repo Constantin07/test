@@ -1,3 +1,3 @@
-path "secrets/hello-kubernetes" {
+path "secret/hello-kubernetes" {
   capabilities = ["read", "list"]
 }

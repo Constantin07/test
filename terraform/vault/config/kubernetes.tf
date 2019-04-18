@@ -6,13 +6,6 @@ provider "kubernetes" {
   config_context_cluster   = "kubernetes"
 }
 
-resource "vault_auth_backend" "kubernetes" {
-  type                      = "kubernetes"
-  description               = "K8s authentication"
-  default_lease_ttl_seconds = "3600"
-  max_lease_ttl_seconds     = "3600"
-}
-
 resource "kubernetes_service_account" "vault_auth" {
   metadata {
     name      = "vault-auth"

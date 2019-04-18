@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "costea2-states"
-    key    = "terraform/vault.tfstate"
+    key    = "terraform/vault/config.tfstate"
 
     dynamodb_table = "costea2-states"
     encrypt        = true

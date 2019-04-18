@@ -9,18 +9,23 @@
     groups: docker
     append: yes
 
-- name: Empty init.groovy.d directory
-  file:
-    path: /var/lib/jenkins/init.groovy.d
-    state: absent
+- name: Make sure Jenkins is stopped
+  service: name=jenkins state=stopped
 
-- name: Create init.groovy.d directory
+- name: Cleanup init.groovy.d directory
   file:
+    state: "{{ item }}"
     path: /var/lib/jenkins/init.groovy.d
-    state: directory
     owner: jenkins
     group: jenkins
     mode: 0755
+  with_items:
+    - absent
+    - directory
+
+- name: Include secrets
+  include_vars: secrets.enc.yml
+  no_log: True
 
 - name: Upload Groovy bootstrap scripts
   template:
@@ -44,6 +49,17 @@
     - { name: 'install-plugins.sh', mode: '0755' }
     - { name: 'plugins.txt', mode: '0644' }
   notify: restart jenkins
+
+- name: Cleanup /var/lib/jenkins/plugins directory
+  file:
+    state: "{{ item }}"
+    path: /var/lib/jenkins/plugins
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  with_items:
+    - absent
+    - directory
 
 - name: Install Jenkins plugins
   shell: "{{ jenkins_home }}/install-plugins.sh < {{ jenkins_home }}/plugins.txt"
