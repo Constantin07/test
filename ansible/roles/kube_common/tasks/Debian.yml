@@ -9,6 +9,7 @@
     - apt-transport-https
     - bash-completion
     - curl
+    - socat
 
 - name: Add GPG key
   apt_key:

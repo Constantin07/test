@@ -16,6 +16,7 @@
     - python2-pip
     - libselinux-python
     - libsemanage-python
+    - socat
 
 - name: Disable SELinux at next reboot
   selinux:
