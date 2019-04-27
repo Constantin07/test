@@ -9,9 +9,11 @@ RUN apk add --no-cache curl ca-certificates openssl && update-ca-certificates &&
 
 FROM alpine:3.9
 
-RUN apk add --no-cache jq curl
+ARG BIN_DIR=/usr/local/bin
 
-COPY --from=BUILDER /bin/vault /bin/vault
+RUN apk add --no-cache jq curl ca-certificates && update-ca-certificates
+
+COPY --from=BUILDER /bin/vault ${BIN_DIR}/vault
 COPY pull_creds.sh /
 
-RUN chmod +x /pull_creds.sh /bin/vault
+RUN chmod +x /pull_creds.sh ${BIN_DIR}/vault
