@@ -104,6 +104,8 @@ kind: Service
 metadata:
   name: hello-kubernetes
   namespace: default
+  labels:
+    app: hello-kubernetes
 spec:
   type: NodePort
   ports:
