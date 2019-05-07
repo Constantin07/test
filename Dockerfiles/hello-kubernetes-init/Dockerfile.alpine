@@ -1,6 +1,6 @@
 FROM alpine:3.9 AS BUILDER
 
-ARG VAULT_VERSION=1.1.1
+ARG VAULT_VERSION=1.1.2
 
 RUN apk add --no-cache curl ca-certificates openssl && update-ca-certificates && \
     curl -O https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
