@@ -5,7 +5,6 @@ metadata:
   name: vault-auth
   namespace: default
 
-
 # https://www.vaultproject.io/docs/auth/kubernetes.html
 
 ---
