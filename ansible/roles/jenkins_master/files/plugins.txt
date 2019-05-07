@@ -13,6 +13,7 @@ git
 github
 greenballs
 htmlpublisher
+http_request
 job-dsl
 jobConfigHistory
 jobcopy-builder
