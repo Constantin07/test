@@ -32,7 +32,7 @@ node(nodeName){
 
 	dir(sub_dir) {
 	    stage('Build') {
-		sh 'env GOOS=linux GOARCH=amd64 go build -v -o bin/packer .'
+		sh 'env GOOS=linux GOARCH=amd64 go build -v -ldflags -s -o bin/packer .'
 	    }
 
 	    milestone label: 'Build'
