@@ -1,0 +1,25 @@
+SHELL := /bin/bash
+
+REGISTRY ?= centos7.internal:5000
+IMAGE ?= tool-box
+
+GIT_COMMIT := $(shell git rev-parse --short HEAD)
+
+ifdef BUILD_NUMBER
+  TAG="${BUILD_NUMBER}-${GIT_COMMIT}"
+else
+  TAG=${GIT_COMMIT}
+endif
+
+.PHONY: all
+all: build publish
+
+.PHONY: build
+build:
+	docker build -t ${REGISTRY}/${IMAGE} .
+
+.PHONY: publish
+publish:
+	docker push ${REGISTRY}/${IMAGE}
+	docker tag ${REGISTRY}/${IMAGE} ${REGISTRY}/${IMAGE}:${TAG}
+	docker push ${REGISTRY}/${IMAGE}:${TAG}
