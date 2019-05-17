@@ -16,10 +16,10 @@ all: build publish
 
 .PHONY: build
 build:
-	docker build -t ${REGISTRY}/${IMAGE} .
+	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
+	docker push ${REGISTRY}/${IMAGE}:${TAG}
 
 .PHONY: publish
 publish:
-	docker push ${REGISTRY}/${IMAGE}
-	docker tag ${REGISTRY}/${IMAGE} ${REGISTRY}/${IMAGE}:${TAG}
-	docker push ${REGISTRY}/${IMAGE}:${TAG}
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+	docker push ${REGISTRY}/${IMAGE}:latest

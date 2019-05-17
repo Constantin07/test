@@ -1,0 +1,38 @@
+String project_dir='Jenkins/dockerfiles/tool-box'
+
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  stages {
+
+    stage('Build image') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make build'
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make publish'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
