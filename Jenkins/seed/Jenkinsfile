@@ -1,16 +1,18 @@
 #!groovy
 
-// Repositories to scan
+@NonCPS
+def renderJobConfig(template, binding) {
+  def engine = new groovy.text.SimpleTemplateEngine()
+  return engine.createTemplate(template).make(binding).toString()
+}
+
+// Repos to scan
 def repos = [
-  [ url: 'git@github.com:Constantin07/test.git', branch: 'master', credential: 'Git' ]
+  [ name: 'test', url: 'git@github.com:Constantin07/test.git', branch: 'master', credentials: 'Git' ]
 ]
 
 pipeline {
   agent any
-
-  triggers {
-    pollSCM('H/2 * * * *')
-  }
 
   options {
      buildDiscarder(logRotator(numToKeepStr: '20'))
@@ -21,82 +23,106 @@ pipeline {
     stage('Create jobs') {
       steps {
         script {
+
           repos.each { repo ->
-            checkout([$class: 'GitSCM', branches: [[name: repo.branch]], extensions: [[$class: 'CleanBeforeCheckout']],
-                      userRemoteConfigs: [[credentialsId: repo.credential, url: repo.url]]])
+            dir(repo['name']) {
+              checkout([$class: 'GitSCM',
+                branches: [[name: repo['branch']]],
+                extensions: [
+                  [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
+                  [$class: 'CleanBeforeCheckout']
+                ],
+                userRemoteConfigs: [[credentialsId: repo['credentials'], url: repo['url']]]
+              ])
 
-            findFiles(glob: 'Jenkins/**/Jenkinsfile', excludes: '.git').each { f->
-              if (!f.directory && f.length > 0) {
-                println "${f.path}"
+              findFiles(glob: 'Jenkins/**/Jenkinsfile').each { file->
+                println "Job ${file.path} found."
 
-                String jobConfigFile = getJobConfigPath(f.path)
+                // Create folder structure
+                def jobPath = file.path.tokenize('/')
+
+                String jobName = jobPath[1..-2].join('/').toString()
+                if (jobName == 'seed') return // Skip seed job
+
+                String jobFolder = ''
+                String folder = ''
+                if (jobPath.size() >= 4) {
+                  jobPath[1..-3].eachWithIndex { f, i ->
+                    if(i == 0) {
+                      folder = f
+                    } else {
+                      folder += '/' + f
+                    }
+                    jobFolder += 'folder("' + folder + '") {}' + '\n'
+                  }
+                }
+                println jobFolder
+
+                // Configuration options
+                String properties = ''
+
+                // Read job config file
+                String jobConfigFile = jobPath[0..-2].join('/') + '/config.yml'
                 if (fileExists(jobConfigFile)) {
-                  def jobConfig = readYaml(file: jobConfigFile)
+                  Map jobConfig = readYaml(file: jobConfigFile)
+
+                  // Properties
+                  if (jobConfig.containsKey('properties')) {
+                    properties += 'properties {'
+                    jobConfig.properties.each { property ->
+                      if (jobConfig.properties.containsKey('githubProjectUrl')) {
+                        properties += '\ngithubProjectUrl("' + jobConfig.properties.githubProjectUrl + '")'
+                      }
+                    }
+                    properties += '\n}'
+                  }
+
                 }
 
-                def jobPath = f.path.tokenize('/')
-
-                if (jobPath.size() > 3) {
-
-                  String script = "folder(\'${jobPath[1]}\')"
-                  jobDsl(scriptText: script)
-
+                // Job template
                 def template = '''
+                  $folder_path
                   pipelineJob('$job_name') {
+                    $properties
                     definition {
                       cpsScm {
-                        lightweight(true)
                         scm {
                           git {
+                            branch('$branch')
                             remote {
-                              name('origin')
+                              credentials('$credentials')
                               url('$url')
-                              credentials('$credId')
-                              branch('$branch')
-                            }
-                            extensions {
-                              cloneOptions {
-                                shallow(true)
-                              }
                             }
                           }
                         }
+                        lightweight(true)
                         scriptPath('$scriptPath')
                       }
                     }
-                    description('$description')
                   }
                 '''
 
                 def binding = [
-                  job_name: "${jobPath[1]}/${jobPath[2]}",
-                  url: repo.url,
-                  credId: repo.credential,
-                  branch: repo.branch,
-                  scriptPath: f.path,
-                  description : ''
+                  'folder_path': jobFolder,
+                  'job_name': jobName,
+                  'properties': properties,
+                  'branch': repo['branch'],
+                  'credentials': repo['credentials'],
+                  'url': repo['url'],
+                  'scriptPath': file.path,
                 ]
 
-                  def rendered = renderJobConfig(template, binding)
-                  binding = null  // Avoid NotSerializableException
-                  jobDsl(scriptText: rendered)
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+                def rendered = renderJobConfig(template, binding).trim()
+                binding = null // Avoid NotSerializableException
+                println rendered
+                jobDsl(scriptText: rendered)
 
-@NonCPS
-def getJobConfigPath(String path) {
-  return path.tokenize('/')[0..-2].join('/') + '/config.yml'
-}
+              } //findFiles
+            } // dir
+          } // repos
+        } //script
+      } //steps
+    } //stage
+  } //stages
 
-@NonCPS
-def renderJobConfig(template, binding) {
-  def engine = new groovy.text.SimpleTemplateEngine()
-  return engine.createTemplate(template).make(binding).toString()
 }
