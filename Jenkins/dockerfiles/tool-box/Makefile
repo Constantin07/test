@@ -17,7 +17,6 @@ all: build publish
 .PHONY: build
 build:
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
-	docker push ${REGISTRY}/${IMAGE}:${TAG}
 
 .PHONY: tag
 tag:

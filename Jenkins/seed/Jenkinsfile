@@ -43,7 +43,6 @@ pipeline {
 
                 def template = '''
                   pipelineJob('$job_name') {
-                    compressBuildLog()
                     definition {
                       cpsScm {
                         lightweight(true)
