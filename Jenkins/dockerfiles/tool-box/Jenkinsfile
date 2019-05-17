@@ -19,6 +19,14 @@ pipeline {
       }
     }
 
+    stage('Tag image') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make tag'
+        }
+      }
+    }
+
     stage('Publish image') {
       steps {
         dir("${project_dir}") {

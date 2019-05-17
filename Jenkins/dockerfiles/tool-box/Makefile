@@ -19,7 +19,11 @@ build:
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	docker push ${REGISTRY}/${IMAGE}:${TAG}
 
+.PHONY: tag
+tag:
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+
 .PHONY: publish
 publish:
-	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+	docker push ${REGISTRY}/${IMAGE}:${TAG}
 	docker push ${REGISTRY}/${IMAGE}:latest
