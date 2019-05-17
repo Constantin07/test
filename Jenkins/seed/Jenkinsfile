@@ -56,7 +56,9 @@ pipeline {
                               branch('$branch')
                             }
                             extensions {
-                              cleanBeforeCheckout()
+                              cloneOptions {
+                                shallow(true)
+                              }
                             }
                           }
                         }
