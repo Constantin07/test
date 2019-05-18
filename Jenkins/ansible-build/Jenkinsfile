@@ -4,7 +4,6 @@ import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 def nodeName        = 'master'
 def git_url         = 'https://github.com/ansible/ansible.git'
-def git_hub_project = 'https://github.com/ansible/ansible/'
 
 String package_path = 'rpm-build/ansible-*.el7.noarch.rpm'
 boolean update      = false
@@ -22,7 +21,6 @@ node(nodeName){
     [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
   ])
 
-  utils.setJobDescription('Build and install the latest version of Ansible.')
 }
 
 ansiColor('xterm') {
