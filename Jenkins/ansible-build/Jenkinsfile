@@ -10,15 +10,12 @@ boolean update      = false
 
 String jobName      = "${env.JOB_NAME}"
 
-
 node(nodeName){
 
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
     pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
-    // Allow only one job at a time
-    disableConcurrentBuilds(),
-    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
+    disableConcurrentBuilds(),  // Allow to run only one job at a time
   ])
 
 }
