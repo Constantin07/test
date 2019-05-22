@@ -1,0 +1,46 @@
+String project_dir='Jenkins/builds/terraform'
+
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  stages {
+
+    stage('Build') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make build'
+        }
+      }
+    }
+
+    stage('Install') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make install'
+        }
+      }
+    }
+
+    stage('Cleanup') {
+      steps {
+        dir("${project_dir}") {
+          sh 'make clean'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
