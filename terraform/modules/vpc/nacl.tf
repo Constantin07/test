@@ -1,9 +1,7 @@
 resource "aws_network_acl" "private" {
   vpc_id = "${aws_vpc.default.id}"
 
-  subnet_ids = [
-    "${aws_subnet.private.*.id}",
-  ]
+  subnet_ids = "${aws_subnet.private.*.id}"
 
   tags = "${merge(map(
       "Name", "${var.environment}-private-nacl"
