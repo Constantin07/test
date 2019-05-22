@@ -22,7 +22,7 @@ pipeline {
   }
 
   stages {
-    stage('cleanup locakble resources') {
+    stage('Cleanup lockable resources') {
       steps{
         script {
           def manager = LockableResourcesManager.get()
