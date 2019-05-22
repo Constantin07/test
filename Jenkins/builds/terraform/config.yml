@@ -1,0 +1,6 @@
+---
+
+description: 'Builds and installs terraform binary.'
+
+properties:
+  githubProjectUrl: 'https://github.com/hashicorp/terraform'

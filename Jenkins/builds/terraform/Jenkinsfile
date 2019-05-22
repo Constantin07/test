@@ -20,9 +20,15 @@ pipeline {
     }
 
     stage('Install') {
+      environment {
+        PATH = "/usr/local/bin:$PATH"
+      }
       steps {
         dir("${project_dir}") {
-          sh 'make install'
+          sh '''
+            sudo make install
+            terraform version
+          '''
         }
       }
     }

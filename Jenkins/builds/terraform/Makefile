@@ -1,6 +1,6 @@
 
-IMAGE_NAME ?= "terraform:latest"
-INSTALL_DIR ?= "/usr/local/bin"
+IMAGE_NAME ?= terraform:latest
+INSTALL_DIR ?= /usr/local/bin
 
 GOARCH := amd64
 GOOS := linux
