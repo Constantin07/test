@@ -4,9 +4,7 @@
 
 pipeline {
 
-  agent {
-    label any
-  }
+  agent any
 
   triggers {
     pollSCM('H H(9-23) * * *')

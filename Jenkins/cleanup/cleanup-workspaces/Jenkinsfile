@@ -4,7 +4,7 @@
    https://gist.github.com/ceilfors/1400fd590632db1f51ca
    https://stackoverflow.com/questions/32519829/delete-workspace-when-job-is-removed-by-dsl-plugin
 
-   workspace/job@libs - a of copy shared librries copied via SCM
+   workspace/job@libs - a of copy shared library copied via SCM
    workspace/job@script - checkout to read Jenkinsfile before executing
 */
 
