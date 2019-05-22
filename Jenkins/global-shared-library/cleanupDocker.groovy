@@ -22,8 +22,11 @@ def call(String nodeName='', int keep_images=1) {
                         /* do nothing */
                       }
 
-        sh 'docker ps --filter "status=exited" -q | xargs -r docker rm'
-        sh 'docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm'
+        sh '''
+          #docker ps --filter "status=exited" -q | xargs -r docker rm
+          #docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm
+          docker system prune -f
+        '''
       }
     }
   }
