@@ -17,10 +17,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="b5f6a1e642971af1363cadbe1f7f37c029c11dd93813151b521c0dbeacfbdaa9"
 
-ARG HELMFILE_VERSION=0.63.2
+ARG HELMFILE_VERSION=0.64.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="a6796cd61cddbbe329ca9bb972f313556f19226cc35ed8c0bdf06813a7c22654"
+ARG HELMFILE_SHA256="ce52ae1fd7fe3fd4960ba7f9e9df759671c267387db8ba9e70c1a8e5c1a4abaf"
 
 RUN apk --no-cache add curl unzip
 
@@ -36,7 +36,7 @@ RUN set -ex; curl -sS -L -o ${PACKER_FILE} ${PACKER_URL}; \
 
 RUN set -ex; curl -sS -L -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
-    tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1
+    tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
 RUN set -ex; curl -sS -L -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
