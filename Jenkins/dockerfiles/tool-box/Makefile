@@ -26,3 +26,8 @@ tag:
 publish:
 	docker push ${REGISTRY}/${IMAGE}:${TAG}
 	docker push ${REGISTRY}/${IMAGE}:latest
+
+.PHONY: clean
+clean:
+	docker rmi ${REGISTRY}/${IMAGE}:${TAG} || true
+	docker rmi ${REGISTRY}/${IMAGE}:latest || true
