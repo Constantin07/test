@@ -2,10 +2,10 @@ FROM alpine:3.9.4 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.11.14
+ARG TERRAFORM_VERSION=0.12.0
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="9b9a4492738c69077b079e595f5b2a9ef1bc4e8fb5596610f69a6f322a8af8dd"
+ARG TERRAFORM_SHA256="42ffd2db97853d5249621d071f4babeed8f5fdba40e3685e6c1013b9b7b25830"
 
 ARG PACKER_VERSION=1.4.1
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
@@ -17,10 +17,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="b5f6a1e642971af1363cadbe1f7f37c029c11dd93813151b521c0dbeacfbdaa9"
 
-ARG HELMFILE_VERSION=0.64.1
+ARG HELMFILE_VERSION=0.64.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="ce52ae1fd7fe3fd4960ba7f9e9df759671c267387db8ba9e70c1a8e5c1a4abaf"
+ARG HELMFILE_SHA256="b2f0995df6fece03667354c2ab87d8c0e6b2b2c29fb500c92aaa1abef1668a5a"
 
 RUN apk --no-cache add curl unzip
 
