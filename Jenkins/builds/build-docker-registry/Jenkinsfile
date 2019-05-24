@@ -35,8 +35,8 @@ pipeline {
 
         echo('Overwrite default config files')
         sh('''
-          cp -f Jenkins/build-docker-registry/Dockerfile tmp/amd64/
-          cp -f Jenkins/build-docker-registry/config-example.yml tmp/amd64/
+          cp -f Jenkins/builds/build-docker-registry/Dockerfile tmp/amd64/
+          cp -f Jenkins/builds/build-docker-registry/config-example.yml tmp/amd64/
         ''')
       }
     }
