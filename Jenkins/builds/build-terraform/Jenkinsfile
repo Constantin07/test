@@ -1,4 +1,4 @@
-String project_dir='Jenkins/builds/terraform'
+String project_dir='Jenkins/builds/build-terraform'
 
 pipeline {
 
