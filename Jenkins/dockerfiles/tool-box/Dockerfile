@@ -46,7 +46,7 @@ RUN set -ex; curl -sS -L -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
 
 FROM alpine:3.9.4
 
-ARG AWSCLI_VERSION=1.16.163
+ARG AWSCLI_VERSION=1.16.166
 
 RUN apk --no-cache add ca-certificates python3 && \
     pip3 install --upgrade pip setuptools && \
