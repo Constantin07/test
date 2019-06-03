@@ -64,9 +64,10 @@
 - name: Install Jenkins plugins
   shell: "{{ jenkins_home }}/install-plugins.sh < {{ jenkins_home }}/plugins.txt"
   environment:
-    REF_DIR:    "{{ jenkins_home }}/plugins"
-    FAILED:     "{{ jenkins_home }}/plugins/failed-plugins.txt"
+    REF_DIR: "{{ jenkins_home }}/plugins"
+    FAILED: "{{ jenkins_home }}/plugins/failed-plugins.txt"
     JENKINS_UC: "https://updates.jenkins.io"
+    JENKINS_UC_LATEST: "http://mirrors.jenkins-ci.org"
   become: yes
   become_user: jenkins
 
