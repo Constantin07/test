@@ -1,0 +1,26 @@
+---
+
+helmDefaults:
+  verify: false
+  wait: true
+  timeout: 120
+  recreatePods: true
+
+releases:
+  - name: nginx-ingress
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    chart: stable/nginx-ingress
+    version: 1.6.16
+    values:
+      - controller:
+          image:
+            pullPolicy: Always
+          ingressClass: internal
+          kind: DaemonSet
+          publishService:
+            enabled: true
+          service:
+            type: NodePort
+            nodePorts:
+              http: 30000
+              https: 30001
