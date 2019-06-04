@@ -3,6 +3,7 @@
 *.pem filter=git-crypt diff=git-crypt
 *.crt filter=git-crypt diff=git-crypt
 *.asc filter=git-crypt diff=git-crypt
+*.enc filter=git-crypt diff=git-crypt
 *.enc.yml filter=git-crypt diff=git-crypt
 *.auto.tfvars filter=git-crypt diff=git-crypt
 terraform.tfvars filter=git-crypt diff=git-crypt
