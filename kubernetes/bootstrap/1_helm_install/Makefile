@@ -1,4 +1,3 @@
-SHELL := /bin/bash
 
 NAMESPACE ?= kube-system
 
