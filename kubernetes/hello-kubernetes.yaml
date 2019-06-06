@@ -1,0 +1,140 @@
+---
+
+# https://github.com/paulbouwer/hello-kubernetes
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hello-kubernetes
+  namespace: default
+  labels:
+    app: hello-kubernetes
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+     maxUnavailable: 1
+     maxSurge: 1
+  selector:
+    matchLabels:
+      app: hello-kubernetes
+  template:
+    metadata:
+      labels:
+        app: hello-kubernetes
+    spec:
+      serviceAccountName: hello-kubernetes
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              namespaces: [ "default" ]
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - hello-kubernetes
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: hello-kubernetes
+#        image: paulbouwer/hello-kubernetes:1.5
+        image: centos7.internal:5000/hello-kubernetes:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: Hello world app deployed on Kubernetes!
+        - name: VAULT_ADDR
+          value: "http://vault.internal:8200"
+        - name: VAULT_ROLE
+          value: hello-kubernetes
+        - name: VAULT_SECRET_PATH
+          value: secret/hello-kubernetes
+        resources:
+          requests:
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: secrets
+          mountPath: "/secrets"
+      # This container is run during pod initialization
+#      initContainers:
+#      - name: hello-kubernetes-init
+#        image: centos7.internal:5000/hello-kubernetes-init:1.0
+#        imagePullPolicy: Always
+#        command: [ "/pull_creds.sh" ]
+#        args:
+#          - "hello-kubernetes"           # Vault role associated with this pod/service account
+#          - "secret/hello-kubernetes"    # Secrets path to read from in Vault
+#          - "/secrets/creds.json"        # Location to store credentials
+#        env:
+#        - name: VAULT_ADDR
+#          value: "http://vault.internal:8200"
+#        volumeMounts:
+#        - name: secrets
+#          mountPath: "/secrets"
+      volumes:
+      - name: secrets
+        emptyDir:
+          medium: "Memory"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes
+  namespace: default
+  labels:
+    app: hello-kubernetes
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: hello-kubernetes
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: internal
+  name: hello-kubernetes-ingress
+  namespace: default
+spec:
+  rules:
+    - host: ingress.internal
+      http:
+        paths:
+          - backend:
+              serviceName: hello-kubernetes
+              servicePort: 8080
+            path: /
