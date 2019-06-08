@@ -48,7 +48,7 @@ ansiColor('xterm') {
   milestone label: 'Checkout'
 
   if(update) {
-    lock("${env.JOB_NAME}") {
+    lock("${jobName}") {
       stage('Build') {
         node(nodeName) {
           sh '''
@@ -63,7 +63,7 @@ ansiColor('xterm') {
 
     }
 
-    lock("${env.JOB_NAME}") {
+    lock("${jobName}") {
       stage('Approve') {
         try {
           timeout(time: 120, activity: false, unit: 'MINUTES') {
