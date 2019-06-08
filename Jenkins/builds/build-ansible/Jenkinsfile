@@ -15,7 +15,8 @@ node(nodeName){
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
     pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
-    disableConcurrentBuilds(),  // Allow to run only one job at a time
+    // Allow to run only one job at a time
+    //disableConcurrentBuilds(),
   ])
 
 }
