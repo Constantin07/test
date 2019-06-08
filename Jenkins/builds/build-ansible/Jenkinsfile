@@ -63,19 +63,21 @@ ansiColor('xterm') {
 
     }
 
-
-    stage('Approve') {
-      try {
-        timeout(time: 120, activity: false, unit: 'MINUTES') {
-          input(message: "Do you want to install?")
+    lock("${env.JOB_NAME}") {
+      stage('Approve') {
+        try {
+          timeout(time: 120, activity: false, unit: 'MINUTES') {
+            input(message: "Do you want to install?")
+          }
+        } catch (FlowInterruptedException e) {
+          currentBuild.result = 'ABORTED'
+          return
         }
-      } catch (FlowInterruptedException e) {
-        currentBuild.result = 'ABORTED'
-        return
       }
-    }
 
-    milestone label: 'Approve'
+      milestone label: 'Approve'
+
+    }
 
     lock("${jobName}") {
       stage('Install') {
