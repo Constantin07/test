@@ -48,17 +48,21 @@ ansiColor('xterm') {
   milestone label: 'Checkout'
 
   if(update) {
-    stage('Build') {
-      node(nodeName) {
-        sh '''
-          make clean
-          make -j 2 rpm
-        '''
-        stash(name: 'ansible', includes: package_path)
+    lock("${env.JOB_NAME}") {
+      stage('Build') {
+        node(nodeName) {
+          sh '''
+            make clean
+            make -j 2 rpm
+          '''
+          stash(name: 'ansible', includes: package_path)
+        }
       }
+
+      milestone label: 'Build'
+
     }
 
-    milestone label: 'Build'
 
     stage('Approve') {
       try {
