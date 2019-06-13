@@ -25,10 +25,22 @@ pipeline {
       }
     }
 
-    stage('Install metrics-server') {
-      steps {
-        dir("${root_dir}/" + '2_metrics_server') {
-          sh 'make sync'
+    stage('Bootstrap') {
+      parallel {
+        stage('Install metrics-server') {
+          steps {
+            dir("${root_dir}/" + '2_metrics_server') {
+              sh 'make lint sync'
+            }
+          }
+        }
+
+        stage('Install nginx-ingress') {
+          steps {
+            dir("${root_dir}/" + '3_nginx_ingress') {
+              sh 'make lint sync'
+            }
+          }
         }
       }
     }

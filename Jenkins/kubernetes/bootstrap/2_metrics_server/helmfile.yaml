@@ -16,7 +16,7 @@ releases:
           pullPolicy: Always
       - args:
           - --kubelet-insecure-tls
-#      - service:
-#          labels:
-#            kubernetes.io/cluster-service: "true"
-#            kubernetes.io/name: metrics-server
+      - service:
+          labels:
+            kubernetes.io/cluster-service: "true"
+            kubernetes.io/name: metrics-server
