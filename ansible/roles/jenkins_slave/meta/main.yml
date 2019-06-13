@@ -9,3 +9,4 @@ dependencies:
       gpg_ownertrust:  'ownertrust.txt'
   - role: jenkins_shared
   - role: helm
+  - role: helmfile
