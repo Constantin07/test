@@ -11,6 +11,10 @@ pipeline {
     disableConcurrentBuilds()
   }
 
+  environment {
+    PATH = "$PATH:/usr/local/bin"
+  }
+
   stages {
 
     stage('Install helm') {
