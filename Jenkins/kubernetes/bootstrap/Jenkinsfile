@@ -20,7 +20,7 @@ pipeline {
     stage('Install helm') {
       steps {
         dir("${root_dir}/" + '1_helm_install') {
-          sh 'env; make install'
+          sh 'make install'
         }
       }
     }
