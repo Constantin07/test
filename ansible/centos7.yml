@@ -9,4 +9,4 @@
 #    - docker
 #    - helm
 #    - helmfile
-    - { role: jenkins_master, jenkins_version: "2.179" }
+    - { role: jenkins_master, jenkins_version: "2.180" }
