@@ -3,6 +3,9 @@
 - name: Include Linux distribution specific tasks
   include_tasks: "packages_{{ ansible_os_family|lower }}.yml"
 
+- name: Add Kubeconfig file
+  include_tasks: "kubeconfig.yml"
+
 - name: Install required pip packages
   pip:
     name: "{{ item }}"
@@ -24,3 +27,19 @@
     mode: 0440
     create: yes
     validate: 'visudo -cf %s'
+
+- name: Create Kubernetes config directory
+  file:
+    path: "{{ jenkins_work_dir }}/.kube"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0755
+
+- name: Add Kubernetes config file
+  copy:
+    src: config.enc
+    dest: "{{ jenkins_work_dir }}/.kube/config"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0644

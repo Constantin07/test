@@ -8,3 +8,4 @@ dependencies:
       gpg_private_key: 'jenkins_automation.asc'
       gpg_ownertrust:  'ownertrust.txt'
   - role: jenkins_shared
+  - role: helm

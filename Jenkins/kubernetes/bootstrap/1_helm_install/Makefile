@@ -5,6 +5,7 @@ NAMESPACE ?= kube-system
 .PHONY: install
 install:
 	kubectl apply -f rbac-config.yaml
+	helm init --client-only
 	helm init --service-account tiller --tiller-namespace ${NAMESPACE} --history-max 200 --wait
 
 # Upgrade tiller to helm version

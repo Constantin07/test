@@ -1,0 +1,5 @@
+---
+
+jenkins_user:  jenkins
+jenkins_group: "{{ jenkins_user }}"
+jenkins_work_dir: "/var/lib/{{ jenkins_user }}"
