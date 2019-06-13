@@ -1,0 +1,32 @@
+#!goovy
+
+String root_dir = 'Jenkins/kubernetes/bootstrap'
+
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  stages {
+
+    stage('Install helm') {
+      steps {
+        dir("${root_dir}/" + '1_helm_install') {
+          sh 'env; make install'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
