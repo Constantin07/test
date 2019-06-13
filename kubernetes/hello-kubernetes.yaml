@@ -80,9 +80,9 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 5
           timeoutSeconds: 3
-        volumeMounts:
-        - name: secrets
-          mountPath: "/secrets"
+#        volumeMounts:
+#        - name: secrets
+#          mountPath: "/secrets"
       # This container is run during pod initialization
 #      initContainers:
 #      - name: hello-kubernetes-init
@@ -99,10 +99,10 @@ spec:
 #        volumeMounts:
 #        - name: secrets
 #          mountPath: "/secrets"
-      volumes:
-      - name: secrets
-        emptyDir:
-          medium: "Memory"
+#      volumes:
+#      - name: secrets
+#        emptyDir:
+#          medium: "Memory"
 
 ---
 apiVersion: v1
