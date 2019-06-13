@@ -25,6 +25,14 @@ pipeline {
       }
     }
 
+    stage('Install metrics-server') {
+      steps {
+        dir("${root_dir}/" + '2_metrics_server') {
+          sh 'make sync'
+        }
+      }
+    }
+
   }
 
   post {

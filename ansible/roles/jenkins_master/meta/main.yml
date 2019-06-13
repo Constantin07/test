@@ -1,3 +1,5 @@
 ---
 dependencies:
   - role: jenkins_shared
+  - role: helm
+  - role: helmfile
