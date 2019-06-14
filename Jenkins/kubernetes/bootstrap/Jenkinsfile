@@ -17,11 +17,21 @@ pipeline {
 
   stages {
 
+    stage('Install Calico Overlay') {
+      steps {
+        dir("${root_dir}/" + '0_overlay_network') {
+          sh 'make install'
+        }
+        milestone(ordinal: 1)
+      }
+    }
+
     stage('Install helm') {
       steps {
         dir("${root_dir}/" + '1_helm_install') {
           sh 'make install'
         }
+        milestone(ordinal: 2)
       }
     }
 
