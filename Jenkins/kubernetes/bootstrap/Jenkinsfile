@@ -13,6 +13,7 @@ pipeline {
 
   environment {
     PATH = "$PATH:/usr/local/bin"
+    KUBECONFIG = "$HOME/.kube/config"
   }
 
   stages {
