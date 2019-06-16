@@ -25,7 +25,7 @@ def call(String nodeName='', int keep_images=1) {
         sh '''
           #docker ps --filter "status=exited" -q | xargs -r docker rm
           #docker volume ls --filter "dangling=true" -q | xargs -r docker volume rm
-          docker system prune -f
+          docker system prune -f --filter "until=48h"
         '''
       }
     }

@@ -17,28 +17,28 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="b5f6a1e642971af1363cadbe1f7f37c029c11dd93813151b521c0dbeacfbdaa9"
 
-ARG HELMFILE_VERSION=0.77.0
+ARG HELMFILE_VERSION=0.78.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="07c6c2f2b7f15b757c8ed8cc1c31ae4532da7347123d20ba2464f65cb6431bb8"
+ARG HELMFILE_SHA256="de56e6346437418cee4fb17e17d17a68ac2f5e187dd32207480bbaf9bb97bf7c"
 
 RUN apk --no-cache add curl unzip
 
-RUN set -exo pipefail; curl -sSL -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
+RUN set -exo pipefail; curl -sSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-RUN set -exo pipefail; curl -sSL -o ${PACKER_FILE} ${PACKER_URL}; \
+RUN set -exo pipefail; curl -sSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
 
-RUN set -exo pipefail; curl -sSL -o ${HELM_FILE} ${HELM_URL}; \
+RUN set -exo pipefail; curl -sSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-RUN set -exo pipefail; curl -sSL -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
+RUN set -exo pipefail; curl -sSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
@@ -46,7 +46,7 @@ RUN set -exo pipefail; curl -sSL -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
 
 FROM alpine:3.9.4
 
-ARG AWSCLI_VERSION=1.16.178
+ARG AWSCLI_VERSION=1.16.179
 
 RUN apk --no-cache add ca-certificates python3 && \
     pip3 install --upgrade pip setuptools && \
