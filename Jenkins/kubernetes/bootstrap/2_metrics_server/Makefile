@@ -2,6 +2,7 @@
 export NAMESPACE ?= default
 
 .PHONY: template lint sync status destroy
+
 template:
 	helmfile template
 
