@@ -1,7 +1,5 @@
 #!goovy
 
-String root_dir = 'Jenkins/kubernetes/bootstrap'
-
 pipeline {
 
   agent any
@@ -14,13 +12,14 @@ pipeline {
   environment {
     PATH = "$PATH:/usr/local/bin"
     KUBECONFIG = "$HOME/.kube/config"
+    ROOT_DIR = "Jenkins/kubernetes/bootstrap/"
   }
 
   stages {
 
     stage('Install Calico Overlay') {
       steps {
-        dir("${root_dir}/" + '0_overlay_network') {
+        dir(env.ROOT_DIR + '0_overlay_network') {
           sh 'make install'
         }
         milestone(ordinal: 1)
@@ -29,7 +28,7 @@ pipeline {
 
     stage('Install helm') {
       steps {
-        dir("${root_dir}/" + '1_helm_install') {
+        dir(env.ROOT_DIR + '1_helm_install') {
           sh 'make install'
         }
         milestone(ordinal: 2)
@@ -40,7 +39,7 @@ pipeline {
       parallel {
         stage('Install metrics-server') {
           steps {
-            dir("${root_dir}/" + '2_metrics_server') {
+            dir(env.ROOT_DIR + '2_metrics_server') {
               sh 'make lint sync'
             }
           }
@@ -48,7 +47,7 @@ pipeline {
 
         stage('Install nginx-ingress') {
           steps {
-            dir("${root_dir}/" + '3_nginx_ingress') {
+            dir(env.ROOT_DIR + '3_nginx_ingress') {
               sh 'make lint sync'
             }
           }
