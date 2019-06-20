@@ -12,15 +12,15 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="b713ea79a6fb131e27d65ec3f2227f36932540e71820288c3c5ad770b565ecd7"
 
-ARG HELM_VERSION=2.14.0
+ARG HELM_VERSION=2.14.1
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="b5f6a1e642971af1363cadbe1f7f37c029c11dd93813151b521c0dbeacfbdaa9"
+ARG HELM_SHA256="804f745e6884435ef1343f4de8940f9db64f935cd9a55ad3d9153d064b7f5896"
 
-ARG HELMFILE_VERSION=0.78.0
+ARG HELMFILE_VERSION=0.79.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="de56e6346437418cee4fb17e17d17a68ac2f5e187dd32207480bbaf9bb97bf7c"
+ARG HELMFILE_SHA256="74db22afd1bab6d2dbd424fe524713dc5a05750bca135cce0bf41963d4f18201"
 
 RUN apk --no-cache add curl unzip
 
