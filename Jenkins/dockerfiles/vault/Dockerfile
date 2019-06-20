@@ -1,4 +1,5 @@
-FROM vault:1.1.3
+ARG VAULT_VERSION
+FROM vault:${VAULT_VERSION}
 
 COPY config.hcl /vault/config/
 
