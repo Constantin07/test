@@ -1,7 +1,7 @@
 ## Kubernetes
 
 provider "kubernetes" {
-  version                  = "~> 1.5.2"
+  version                  = "~> 1.6.2"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
 }
@@ -36,6 +36,11 @@ resource "kubernetes_cluster_role_binding" "vault_auth" {
     create_before_destroy = false
   }
 }
+
+provider "external" {
+  version = "~> 1.2.0"
+}
+
 
 # Get Kubernetes CA cert and cluster endpoint
 data "external" "kube_config" {
