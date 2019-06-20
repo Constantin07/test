@@ -66,6 +66,7 @@ pipeline {
                 // Configuration options
                 String description = ''
                 String properties = ''
+                String parameters = ''
                 String extensions = ''
 
                 // Read job config file
@@ -89,6 +90,22 @@ pipeline {
                     properties += '\n}'
                   }
 
+                  // Parameters
+                  if (jobConfig.containsKey('parameters')) {
+                    parameters += 'parameters {'
+                    jobConfig.parameters.each { param ->
+                      String parameterDefinition
+                      if (param.type == 'stringParam') {
+                        parameterDefinition = '\n$type("$name", "$defaultValue", "$description")'
+                      }
+                      if (param.type == 'booleanParam') {
+                        parameterDefinition = '\n$type("$name", $defaultValue, "$description")'
+                      }
+                      parameters += renderJobConfig(parameterDefinition, ['type': param.type, 'name': param.name, 'defaultValue': param.defaultValue, 'description': param.description])
+                    }
+                    parameters += '\n}'
+                  }
+
                   // Git extensions
                   if (jobConfig.containsKey('extensions')) {
                     extensions = 'extensions {\n' + jobConfig.extensions +'\n}'
@@ -102,6 +119,7 @@ pipeline {
                   pipelineJob('$job_name') {
                     $description
                     $properties
+                    $parameters
                     definition {
                       cpsScm {
                         scm {
@@ -126,6 +144,7 @@ pipeline {
                   'job_name': jobName,
                   'description': description,
                   'properties': properties,
+                  'parameters': parameters,
                   'branch': repo['branch'],
                   'credentials': repo['credentials'],
                   'url': repo['url'],
