@@ -12,7 +12,7 @@
   docker_volume:
     name: vault_data
 
-- name: Run vault docker container | {{ vault_version }}
+- name: Run vault docker version {{ vault_version }}
   docker_container:
     name: "{{ image_name }}"
     image: "{{ docker_host }}/{{ image_name }}:{{ vault_version }}"
