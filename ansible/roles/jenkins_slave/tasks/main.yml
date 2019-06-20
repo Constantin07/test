@@ -30,7 +30,7 @@
     group: "{{ jenkins_group }}"
     mode: 0755
 
-- name: Download Jenkins agent
+- name: Download Jenkins remoting agent {{ jenkins_remoting_version }}
   get_url:
     url: "{{ jenkins_remoting_url }}"
     dest: "{{ jenkins_bin_path }}/slave.jar"
