@@ -1,0 +1,13 @@
+---
+
+# https://docs.projectcalico.org/v3.7/maintenance/troubleshooting#configure-networkmanager
+- name: Tune conn_tracking for Calico
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+    ignoreerrors: yes
+    sysctl_set: yes
+  with_items:
+    - { name: net.netfilter.nf_conntrack_max, value: 1000000 }

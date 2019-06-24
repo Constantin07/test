@@ -1,14 +1,10 @@
 ---
 # Required by Calico (https://docs.projectcalico.org/v3.6/maintenance/troubleshooting#configure-networkmanager)
 
-- name: get the rpm or apt package facts
-  package_facts:
-    manager: "auto"
-
 - name: Check if Network Manager is installed (Ubuntu)
   shell: apt list --installed | grep 'network-manager'
   ignore_errors: True
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family|lower == "debian"
   register: is_network_manager
 
 - name: Create config file for NM
