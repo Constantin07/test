@@ -1,9 +1,9 @@
 {
 {# Required by Kubernetes #}
   "exec-opts": [ "native.cgroupdriver=systemd" ],
-{% if ansible_os_family == 'Debian' %}
+{% if ansible_os_family|lower == 'debian' %}
   "storage-driver": "overlay2",
-{% elif ansible_os_family == 'RedHat' %}
+{% elif ansible_os_family|lower == 'redhat' %}
   "storage-driver": "btrfs",
 {% endif %}
   "log-driver": "json-file",

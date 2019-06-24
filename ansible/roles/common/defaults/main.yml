@@ -1,0 +1,8 @@
+---
+
+redhat_packages:
+  - epel-release
+  - python2-pip
+  - libselinux-python
+  - libsemanage-python
+  - socat

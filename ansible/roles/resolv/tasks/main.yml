@@ -1,7 +1,6 @@
 ---
 
-- include_tasks: "{{ ansible_os_family }}.yml"
-  when: ansible_os_family == 'RedHat'
+- include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: Update /etc/resolv.conf file
   copy:
