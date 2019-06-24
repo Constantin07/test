@@ -2,6 +2,8 @@
 
 - include_tasks: disable_swap.yml
 
+- include_tasks: tune_conntrack.yml
+
 # TODO: Run only once per node
 #- include_tasks: unique-machine-id.yml
 

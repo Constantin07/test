@@ -2,14 +2,9 @@
 
 - name: Install required packages
   apt:
-    name: "{{ item  }}"
+    name: "{{ debian_packages }}"
     state: present
     update_cache: yes
-  loop:
-    - apt-transport-https
-    - bash-completion
-    - curl
-    - socat
 
 - name: Add GPG key
   apt_key:
@@ -24,13 +19,9 @@
 
 - name: Install required Kubernetes packages
   apt:
-    name: "{{ item.name  }}={{ item.version }}"
+    name: "{{ kubernetes_packages }}"
     state: present
     update_cache: yes
-  loop:
-    - { name: 'kubelet', version: "{{ k8s_version }}" }
-    - { name: 'kubeadm', version: "{{ k8s_version }}" }
-    - { name: 'kubectl', version: "{{ k8s_version }}" }
 
 - name: Exclude tools from upgrade
   command: apt-mark hold kubelet kubeadm kubectl
