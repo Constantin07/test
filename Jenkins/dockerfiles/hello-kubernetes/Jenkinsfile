@@ -1,0 +1,49 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'Jenkins/dockerfiles/hello-kubernetes'
+  }
+
+  stages {
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make build'
+        }
+      }
+    }
+
+    stage('Tag image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make tag'
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make publish clean'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
