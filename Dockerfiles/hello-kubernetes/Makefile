@@ -12,7 +12,7 @@ else
 endif
 
 .PHONY: all
-all: build publish
+all: build tag publish clean
 
 .PHONY: build
 build:

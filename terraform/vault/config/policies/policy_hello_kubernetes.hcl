@@ -1,7 +1,8 @@
-path "secret/hello-kubernetes/*" {
-  capabilities = ["read", "list"]
+path "secret/hello-kubernetes" {
+  capabilities = ["read"]
 }
 
-path "secret/hello-kubernetes/" {
+# Allow to list top level
+path "secret/" {
   capabilities = ["list"]
 }
