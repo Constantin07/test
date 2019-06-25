@@ -10,4 +10,4 @@
   retries: 3
   delay: 3
   register: res
-  until: res.rc == 0
+  until: res is succeeded
