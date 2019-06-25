@@ -7,3 +7,7 @@
     remote_src: yes
     extra_opts:
       - "--strip-components=1"
+  retries: 3
+  delay: 3
+  register: res
+  until: res.rc == 0
