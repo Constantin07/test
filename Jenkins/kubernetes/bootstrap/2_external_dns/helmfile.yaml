@@ -14,7 +14,11 @@ releases:
     values:
       - image:
           pullPolicy: Always
+      - rbac:
+          create: true
       - provider: rfc2136
       - rfc2136:
           host: centos7.internal
           zone: internal
+          tsigKeyname: kube-cluster.internal.
+          tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
