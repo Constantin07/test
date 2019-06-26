@@ -127,11 +127,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: internal
+    external-dns.alpha.kubernetes.io/hostname: hello-kubernetes.internal.
+    external-dns.alpha.kubernetes.io/ttl: "120"
   name: hello-kubernetes-ingress
   namespace: default
 spec:
   rules:
-    - host: ingress.internal
+    - host: hello-kubernetes.internal
       http:
         paths:
           - backend:

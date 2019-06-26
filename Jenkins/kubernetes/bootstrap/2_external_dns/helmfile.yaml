@@ -16,9 +16,16 @@ releases:
           pullPolicy: Always
       - rbac:
           create: true
+      - sources:
+          - ingress
+      - domainFilters:
+          - internal
+#      - interval: 30s
+#      - logLevel: debug
       - provider: rfc2136
       - rfc2136:
           host: centos7.internal
           zone: internal
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
+      - txtOwnerId: Kubernetes
