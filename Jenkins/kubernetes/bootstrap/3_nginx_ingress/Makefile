@@ -1,13 +1,16 @@
 
 export NAMESPACE ?= default
 
-.PHONY: template lint sync status destroy
+.PHONY: template lint diff sync status destroy
 
 template:
 	helmfile template
 
 lint:
 	helmfile lint
+
+diff:
+	helmfile diff
 
 sync:
 	helmfile sync

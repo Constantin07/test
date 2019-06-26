@@ -12,15 +12,21 @@ releases:
     chart: stable/nginx-ingress
     version: 1.7.0
     values:
+      - podSecurityPolicy:
+          enabled: true
       - controller:
           image:
             pullPolicy: Always
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          reportNodeInternalIp: true
           ingressClass: internal
           kind: DaemonSet
           publishService:
-            enabled: true
+            enabled: false
           service:
             type: NodePort
             nodePorts:
               http: 30000
               https: 30001
+            externalTrafficPolicy: Local
