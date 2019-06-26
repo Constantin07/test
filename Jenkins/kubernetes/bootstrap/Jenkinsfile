@@ -58,7 +58,10 @@ pipeline {
         stage('Install external-dns') {
           steps {
             dir(env.ROOT_DIR + '2_external_dns') {
-              sh 'make lint sync'
+              sh '''
+                git crypt unlock
+                make lint sync
+              '''
             }
           }
         }
