@@ -1,0 +1,20 @@
+---
+
+helmDefaults:
+  verify: false
+  wait: true
+  timeout: 120
+  recreatePods: true
+
+releases:
+  - name: external-dns
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    chart: stable/external-dns
+    version: 1.8.2
+    values:
+      - image:
+          pullPolicy: Always
+      - provider: rfc2136
+      - rfc2136:
+          host: centos7.internal
+          zone: internal

@@ -55,7 +55,15 @@ pipeline {
           }
         }
 
-        stage('Add vault-auth') {
+        stage('Install external-dns') {
+          steps {
+            dir(env.ROOT_DIR + '2_external_dns') {
+              sh 'make lint sync'
+            }
+          }
+        }
+
+        stage('Config vault-auth') {
           steps {
             dir(env.ROOT_DIR + '4_vault_auth') {
               sh 'make install'
