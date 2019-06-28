@@ -23,7 +23,6 @@ pipeline {
         dir(env.ROOT_DIR + '0_overlay_network') {
           sh '''
             make install
-            kubectl set resources ds calico-node -n kube-system --limits='cpu=250m,memory=128Mi' --requests='cpu=250m,memory=128Mi' || true
           '''
         }
         milestone(ordinal: 1)
