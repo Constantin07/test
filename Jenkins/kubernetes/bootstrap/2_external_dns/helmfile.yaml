@@ -29,3 +29,10 @@ releases:
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
       - txtOwnerId: Kubernetes
+      - resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
