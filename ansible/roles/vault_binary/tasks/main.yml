@@ -1,0 +1,28 @@
+---
+
+- name: Make sure unzip is installed v{{ vault_version }}
+  package:
+    name: unzip
+    update_cache: yes
+
+- name: Install
+  block:
+
+  - name: Download vault and verify checksum v{{ vault_version }}
+    get_url:
+      url: "{{ vault_url }}"
+      dest: "/tmp/{{ vault_package }}"
+      checksum: "{{ vault_checksum }}"
+
+  - name: Install vault v{{ vault_version }}
+    unarchive:
+      src: "/tmp/{{ vault_package }}"
+      dest: "{{ vault_install_dir }}"
+      remote_src: yes
+      mode: 0555
+
+  always:
+  - name: Remove temp file v{{ vault_version }}
+    file:
+      path: "/tmp/{{ vault_package }}"
+      state: absent
