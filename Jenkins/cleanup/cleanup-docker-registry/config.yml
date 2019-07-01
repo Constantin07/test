@@ -3,4 +3,5 @@
 description: "Clean up docker registry from old images."
 
 extensions:
-  'cleanBeforeCheckout()'
+  cleanBeforeCheckout: true
+
