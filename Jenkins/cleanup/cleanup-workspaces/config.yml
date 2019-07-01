@@ -4,6 +4,6 @@ description: "Clean up orphaned Jenkins workspaces for which job does not exist.
 
 extensions:
   cleanBeforeCheckout: true
-  cloneOption:
+  cloneOptions:
     shallow: true
     noTags: true

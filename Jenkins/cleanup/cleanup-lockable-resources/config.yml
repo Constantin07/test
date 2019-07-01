@@ -4,6 +4,6 @@ description: "Clean up unusable Jenkins lockable resources."
 
 extensions:
   cleanBeforeCheckout: true
-  cloneOption:
+  cloneOptions:
     shallow: true
     noTags: true
