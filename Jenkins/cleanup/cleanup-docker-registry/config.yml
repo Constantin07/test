@@ -4,6 +4,6 @@ description: "Clean up docker registry from old images."
 
 extensions:
   cleanBeforeCheckout: true
-  cloneOption:
+  cloneOptions:
     shallow: true
     noTags: true
