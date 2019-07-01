@@ -12,7 +12,7 @@
   docker_volume:
     name: vault_data
 
-- name: Run vault docker version {{ vault_version }}
+- name: Run vault container version {{ vault_version }}
   docker_container:
     name: "{{ image_name }}"
     image: "{{ docker_host }}/{{ image_name }}:{{ vault_version }}"
@@ -30,10 +30,23 @@
     volumes:
       - vault_logs:/vault/logs:rw
       - vault_data:/vault/file:rw
-    env:
-      ES_JAVA_OPTS: "-Xms1g -Xmx1g -Des.enforce.bootstrap.checks=true -XX:UseAVX=2"
     restart_policy: always
     trust_image_content: true
     ulimits:
       - "core:0"
     log_driver: journald
+
+- name: Install Vault unseal unit file
+  template:
+    src: vault-unseal.service.j2
+    dest: /etc/systemd/system/vault-unseal.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and start vault-unseal
+  systemd:
+    name: vault-unseal.service
+    enabled: yes
+    state: started
+    daemon_reload: yes
