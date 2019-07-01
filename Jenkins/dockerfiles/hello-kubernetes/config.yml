@@ -3,4 +3,5 @@
 description: 'Build and publish a simple hello-kubernetes app.'
 
 extensions:
-  'cleanBeforeCheckout()'
+  cleanBeforeCheckout: true
+

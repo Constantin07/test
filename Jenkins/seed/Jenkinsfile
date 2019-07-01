@@ -124,7 +124,13 @@ pipeline {
 
                   // Git extensions
                   if (jobConfig.containsKey('extensions')) {
-                    extensions = 'extensions {\n' + jobConfig.extensions +'\n}'
+                    extensions += 'extensions {'
+                    if (jobConfig.extensions.containsKey('cleanBeforeCheckout')) {
+                      if (jobConfig.extensions.cleanBeforeCheckout) {
+                        extensions += '\ncleanBeforeCheckout()'
+                      }
+                    }
+                    extensions += '\n}'
                   }
 
                 }

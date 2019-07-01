@@ -12,4 +12,5 @@ parameters:
     description: 'The version of Vault.'
 
 extensions:
-  'cleanBeforeCheckout()'
+  cleanBeforeCheckout: true
+

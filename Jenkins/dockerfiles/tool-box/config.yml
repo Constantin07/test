@@ -6,4 +6,5 @@ properties:
   githubProjectUrl: 'https://github.com/Constantin07/test'
 
 extensions:
-  'cleanBeforeCheckout()'
+  cleanBeforeCheckout: true
+
