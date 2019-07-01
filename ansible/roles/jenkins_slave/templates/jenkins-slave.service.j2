@@ -9,7 +9,7 @@ WorkingDirectory={{ jenkins_work_dir }}
 User={{ jenkins_user }}
 Group={{ jenkins_group }}
 PermissionsStartOnly=true
-Environment="JAVA_OPTS=-Xms1000m -Xmx1500m"
+Environment="JAVA_OPTS=-Xms512m -Xmx{{ (ansible_memtotal_mb-512)|int|abs }}m"
 ExecStartPre=/usr/bin/mkdir -p {{ jenkins_work_dir }}
 ExecStartPre=/usr/bin/chown -R {{ jenkins_user }}:{{ jenkins_group }} {{ jenkins_work_dir }}
 ExecStart=/usr/bin/java $JAVA_OPTS -jar {{ jenkins_bin_path }}/slave.jar \
