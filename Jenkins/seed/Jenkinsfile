@@ -130,6 +130,24 @@ pipeline {
                         extensions += '\ncleanBeforeCheckout()'
                       }
                     }
+                    if (jobConfig.extensions.containsKey('cloneOption')) {
+                      extensions += '\ncloneOption{'
+                      if (jobConfig.extensions.cloneOption.containsKey('shallow')) {
+                        if (jobConfig.extensions.cloneOption.shallow) {
+                          extensions += '\nshallow(true)'
+                        } else {
+                          extensions += '\nshallow(false)'
+                        }
+                      }
+                      if (jobConfig.extensions.cloneOption.containsKey('noTags')) {
+                        if (jobConfig.extensions.cloneOption.noTags) {
+                          extensions += '\nnoTags(true)'
+                        } else {
+                          extensions += '\nnoTags(false)'
+                        }
+                      }
+                      extensions += '\nreference("")\ntimeout(10)\n}'
+                    }
                     extensions += '\n}'
                   }
 
