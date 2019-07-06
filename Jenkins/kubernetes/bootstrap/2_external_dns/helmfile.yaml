@@ -10,26 +10,26 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/external-dns
-    version: 1.8.2
+    version: 1.9.0
     values:
       - image:
           pullPolicy: Always
-      - rbac:
+        rbac:
           create: true
-      - sources:
+        sources:
           - ingress
-      - domainFilters:
+        domainFilters:
           - internal
-#      - interval: 30s
-#      - logLevel: debug
-      - provider: rfc2136
-      - rfc2136:
+#        interval: 30s
+#        logLevel: debug
+        provider: rfc2136
+        rfc2136:
           host: centos7.internal
           zone: internal
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
-      - txtOwnerId: Kubernetes
-      - resources:
+        txtOwnerId: Kubernetes
+        resources:
           requests:
             memory: "64Mi"
             cpu: "100m"
