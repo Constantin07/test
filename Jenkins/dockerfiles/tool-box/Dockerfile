@@ -17,10 +17,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="804f745e6884435ef1343f4de8940f9db64f935cd9a55ad3d9153d064b7f5896"
 
-ARG HELMFILE_VERSION=0.79.3
+ARG HELMFILE_VERSION=0.79.4
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="c471661a95139a6904b72505671685d220c033df5639c3a80010649c829631a1"
+ARG HELMFILE_SHA256="a8b6a71bcfe35577993a0096b2e16711b366211e5929d0e37b1d7a7f4f751cf6"
 
 RUN apk --no-cache add curl unzip
 
