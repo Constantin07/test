@@ -10,10 +10,8 @@ releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/nginx-ingress
-    version: 1.7.0
+    version: 1.8.1
     values:
-      - podSecurityPolicy:
-          enabled: true
       - controller:
           image:
             pullPolicy: Always
@@ -21,6 +19,8 @@ releases:
           dnsPolicy: ClusterFirstWithHostNet
           reportNodeInternalIp: true
           ingressClass: internal
+          config:
+            use-forwarded-headers: "true"
           kind: DaemonSet
           publishService:
             enabled: false
@@ -30,3 +30,5 @@ releases:
               http: 30000
               https: 30001
             externalTrafficPolicy: Local
+        podSecurityPolicy:
+          enabled: true
