@@ -1,6 +1,6 @@
 ---
 
-description: "Clean up orphaned Jenkins workspaces for which job does not exist."
+description: Clean up orphaned Jenkins workspaces for which job does not exist.
 
 extensions:
   cleanBeforeCheckout: true

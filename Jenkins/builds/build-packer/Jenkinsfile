@@ -5,42 +5,45 @@ def git_hub_project = 'https://github.com/hashicorp/packer/'
 
 node(nodeName){
 
-    properties([
-	buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
-        //pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
-        // Allow only one job at a time
-        disableConcurrentBuilds(),
-        [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
-    ])
+  properties([
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
+    //pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
+    // Allow only one job at a time
+    disableConcurrentBuilds(),
+    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: git_hub_project],
+  ])
 
-    env.GOHOME = '/usr/local/go'
-    env.PATH = "${env.PATH}:${env.GOHOME}/bin:/usr/local/bin/"
-    def workspace = pwd()
-    env.GOPATH = "${workspace}/go"
+  env.GOHOME = '/usr/local/go'
+  env.PATH = "${env.PATH}:${env.GOHOME}/bin:/usr/local/bin/"
+  def workspace = pwd()
+  env.GOPATH = "${workspace}/go"
 
-    ansiColor('xterm') {
+  ansiColor('xterm') {
 
-	stage('Checkout') {
-	    checkout scm: [$class: 'GitSCM',
-		branches: [[name: '*/master']],
-		userRemoteConfigs: [[url: git_url ]],
-		extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir]]
-	    ]
-	}
-
-	milestone label: 'Checkout'
-
-	dir(sub_dir) {
-	    stage('Build') {
-		sh 'env GOOS=linux GOARCH=amd64 go build -v -ldflags -s -o bin/packer .'
-	    }
-
-	    milestone label: 'Build'
-
-	    stage('Install') {
-		sh 'sudo cp -f bin/packer /usr/local/bin/packer.io'
-		sh 'packer.io version'
-	    }
-	}
+    stage('Checkout') {
+      checkout scm: [$class: 'GitSCM',
+        branches: [[name: '*/master']],
+	userRemoteConfigs: [[url: git_url ]],
+	extensions: [
+	  [$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir],
+	  [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true]
+	]
+      ]
     }
+
+    milestone label: 'Checkout'
+
+    dir(sub_dir) {
+      stage('Build') {
+        sh 'env GOOS=linux GOARCH=amd64 go build -v -ldflags -s -o bin/packer .'
+      }
+
+      milestone label: 'Build'
+
+      stage('Install') {
+        sh 'sudo cp -f bin/packer /usr/local/bin/packer.io'
+	sh 'packer.io version'
+      }
+    }
+  }
 }

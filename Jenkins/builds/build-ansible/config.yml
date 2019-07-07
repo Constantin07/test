@@ -1,6 +1,9 @@
 ---
 
-description: 'Builds and installs locally the latest Ansible from dev branch.'
+description: Builds and installs locally the latest Ansible from dev branch.
 
 properties:
   githubProjectUrl: 'https://github.com/ansible/ansible/'
+
+extensions:
+  cleanBeforeCheckout: true
