@@ -1,6 +1,6 @@
 ---
 
-description: "Clean up unusable Jenkins lockable resources."
+description: Clean up unusable Jenkins lockable resources.
 
 extensions:
   cleanBeforeCheckout: true

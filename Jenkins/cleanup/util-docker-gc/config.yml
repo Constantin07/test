@@ -1,6 +1,6 @@
 ---
 
-description: 'Clean up old docker images and containers.'
+description: Clean up old docker images and containers.
 
 extensions:
   cleanBeforeCheckout: true

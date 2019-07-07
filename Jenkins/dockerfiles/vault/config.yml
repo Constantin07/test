@@ -1,6 +1,6 @@
 ---
 
-description: 'Build and publish Hashi Vault image.'
+description: Build and publish Hashi Vault image.
 
 properties:
   githubProjectUrl: 'https://github.com/hashicorp/terraform'
@@ -13,4 +13,6 @@ parameters:
 
 extensions:
   cleanBeforeCheckout: true
-
+  cloneOptions:
+    shallow: true
+    noTags: true

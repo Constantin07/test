@@ -1,7 +1,5 @@
 ---
 
-description: 'Builds and installs packer.'
-
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:

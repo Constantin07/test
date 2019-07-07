@@ -30,6 +30,7 @@ pipeline {
           userRemoteConfigs: [[credentialsId: 'Git', url: 'git@github.com:docker/distribution-library-image.git']],
           extensions: [
             [$class: 'CleanBeforeCheckout'],
+            [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: 'tmp']
           ]
         ])
