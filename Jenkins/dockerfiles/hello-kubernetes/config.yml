@@ -4,4 +4,6 @@ description: 'Build and publish a simple hello-kubernetes app.'
 
 extensions:
   cleanBeforeCheckout: true
-
+  cloneOptions:
+    shallow: true
+    noTags: true
