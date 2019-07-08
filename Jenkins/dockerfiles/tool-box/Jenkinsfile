@@ -1,5 +1,3 @@
-String project_dir='Jenkins/dockerfiles/tool-box'
-
 pipeline {
 
   agent any
@@ -10,19 +8,25 @@ pipeline {
     ansiColor('xterm')
   }
 
+  environment {
+    DIRECTORY = "Jenkins/dockerfiles/tool-box"
+  }
+
   stages {
 
     stage('Build image') {
       steps {
-        dir("${project_dir}") {
-          sh 'make build'
+        dir(env.DIRECTORY) {
+          retry(2) { // Handle sporadic errors
+            sh 'make build'
+          }
         }
       }
     }
 
     stage('Tag image') {
       steps {
-        dir("${project_dir}") {
+        dir(env.DIRECTORY) {
           sh 'make tag'
         }
       }
@@ -30,7 +34,7 @@ pipeline {
 
     stage('Publish image') {
       steps {
-        dir("${project_dir}") {
+        dir(env.DIRECTORY) {
           sh 'make publish'
         }
       }

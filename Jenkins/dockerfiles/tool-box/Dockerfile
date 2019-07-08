@@ -1,4 +1,4 @@
-FROM alpine:3.9.4 AS BUILDER
+FROM alpine:3.10.0 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -44,9 +44,9 @@ RUN set -exo pipefail; curl -sSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; 
     chmod +x ${INSTALL_DIR}/helmfile
 
 
-FROM alpine:3.9.4
+FROM alpine:3.10.0
 
-ARG AWSCLI_VERSION=1.16.179
+ARG AWSCLI_VERSION=1.16.193
 
 RUN apk --no-cache add ca-certificates python3 && \
     pip3 install --upgrade pip setuptools && \
