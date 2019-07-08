@@ -40,12 +40,16 @@ var message = process.env.MESSAGE || "Hello world!";
 //var creds = JSON.parse(fs.readFileSync('/secrets/creds.json'));
 
 app.get('/', function (req, res) {
+    // Get client IP
+    var x_forwarded_for = req.get('X-Forwarded-For') || 'Header not set';
+
     res.render('home', {
 	message: message,
 	platform: os.type(),
 	release: os.release(),
 	hostName: os.hostname(),
 	vaultRole: vault_role,
+	xForwardedFor: x_forwarded_for,
 	creds: JSON.stringify(creds)
 	//creds: JSON.stringify(creds['data'])
     });
