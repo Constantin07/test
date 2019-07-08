@@ -22,4 +22,4 @@ def test_ctop(host, binary):
 def test_ctop_version(host, binary):
     cmd = host.check_output(
             binary + " -v | sed  s/,// | awk '{print $3}'")
-    assert re.match("^0.7.1", cmd)
+    assert re.match("^0.7.2", cmd)

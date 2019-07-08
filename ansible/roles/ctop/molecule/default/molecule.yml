@@ -5,6 +5,10 @@ driver:
 lint:
   name: yamllint
 platforms:
+  - name: alpine
+    image: alpine:latest
+    pull: True
+    privileged: true
   - name: centos
     image: centos:latest
     pull: True
