@@ -5,7 +5,7 @@
   register: ctop
 
 - name: Check ctop version
-  shell: "{{ local_dir }}/ctop -v | sed  s/,// | awk '{print $3}'"
+  shell: "set -o pipefail {{ local_dir }}/ctop -v | sed  s/,// | awk '{print $3}'"
   register: ctop_ver
   changed_when: False
 
