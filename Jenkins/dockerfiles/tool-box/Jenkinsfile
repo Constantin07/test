@@ -2,6 +2,10 @@ pipeline {
 
   agent any
 
+  triggers {
+    pollSCM('H/15 * * * *')
+  }
+
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
@@ -9,7 +13,7 @@ pipeline {
   }
 
   environment {
-    DIRECTORY = "Jenkins/dockerfiles/tool-box"
+    DIRECTORY = 'Jenkins/dockerfiles/tool-box'
   }
 
   stages {
