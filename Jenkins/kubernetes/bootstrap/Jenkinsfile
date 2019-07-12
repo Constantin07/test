@@ -13,12 +13,20 @@ pipeline {
   environment {
     PATH = "$PATH:/usr/local/bin"
     KUBECONFIG = "$HOME/.kube/config"
-    ROOT_DIR = "Jenkins/kubernetes/bootstrap/"
+    ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
+    REGISTRY = 'http://centos7.internal:5000'
   }
 
   stages {
 
     stage('Install Calico Overlay') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image 'tool-box:latest'
+          args '-e PATH=/usr/local/bin:$PATH'
+        }
+      }
       steps {
         dir(env.ROOT_DIR + '0_overlay_network') {
           sh '''
