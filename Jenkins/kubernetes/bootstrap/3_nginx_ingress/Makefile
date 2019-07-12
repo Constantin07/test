@@ -1,7 +1,10 @@
 
 export NAMESPACE ?= default
 
-.PHONY: template lint diff sync status destroy
+.PHONY: init template lint diff sync status destroy
+
+init:
+	helm init --client-only
 
 template:
 	helmfile template

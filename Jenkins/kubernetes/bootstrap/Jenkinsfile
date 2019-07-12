@@ -11,12 +11,12 @@ pipeline {
   }
 
   environment {
-    PATH = "$PATH:/usr/local/bin"
-    KUBECONFIG = "$HOME/.kube/config"
+    KUBECONFIG = '/home/toolbox/.kube/config'
     HELM_HOME = '/tmp/.helm'
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
-    ARGS = '-e PATH=/usr/local/bin:$PATH -v /var/lib/jenkins/.kube/config:$HOME/.kube/config'
+    DOCKER_IMAGE = 'tool-box:latest'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
   }
 
   stages {
@@ -25,15 +25,14 @@ pipeline {
       agent {
         docker {
           registryUrl env.REGISTRY
-          image 'tool-box:latest'
+          image env.DOCKER_IMAGE
+          alwaysPull true
           args env.ARGS
         }
       }
       steps {
         dir(env.ROOT_DIR + '0_overlay_network') {
-          sh '''
-            make install
-          '''
+          sh 'make install'
         }
         milestone(ordinal: 1)
       }
@@ -43,7 +42,8 @@ pipeline {
       agent {
         docker {
           registryUrl env.REGISTRY
-          image 'tool-box:latest'
+          image env.DOCKER_IMAGE
+          alwaysPull true
           args env.ARGS
         }
       }
@@ -59,7 +59,8 @@ pipeline {
       agent {
         docker {
           registryUrl env.REGISTRY
-          image 'tool-box:latest'
+          image env.DOCKER_IMAGE
+          alwaysPull true
           args env.ARGS
         }
       }
@@ -73,24 +74,19 @@ pipeline {
 
     stage('Bootstrap') {
 
-      steps {
-
-      }
-
       parallel {
         stage('Install metrics-server') {
           agent {
             docker {
               registryUrl env.REGISTRY
-              image 'tool-box:latest'
+              image env.DOCKER_IMAGE
+              alwaysPull true
               args env.ARGS
             }
           }
           steps {
             dir(env.ROOT_DIR + '2_metrics_server') {
-              sh '''
-                make lint sync
-              '''
+              sh 'make init lint sync'
             }
           }
         }
@@ -99,13 +95,14 @@ pipeline {
           agent {
             docker {
               registryUrl env.REGISTRY
-              image 'tool-box:latest'
+              image env.DOCKER_IMAGE
+              alwaysPull true
               args env.ARGS
             }
           }
           steps {
             dir(env.ROOT_DIR + '3_nginx_ingress') {
-              sh 'make lint sync'
+              sh 'make init lint sync'
             }
           }
         }
@@ -114,7 +111,8 @@ pipeline {
           agent {
             docker {
               registryUrl env.REGISTRY
-              image 'tool-box:latest'
+              image env.DOCKER_IMAGE
+              alwaysPull true
               args env.ARGS
             }
           }
@@ -122,7 +120,7 @@ pipeline {
             dir(env.ROOT_DIR + '2_external_dns') {
               sh '''
                 git crypt unlock
-                make lint sync
+                make init lint sync
               '''
             }
           }
@@ -132,7 +130,8 @@ pipeline {
           agent {
             docker {
               registryUrl env.REGISTRY
-              image 'tool-box:latest'
+              image env.DOCKER_IMAGE
+              alwaysPull true
               args env.ARGS
             }
           }
