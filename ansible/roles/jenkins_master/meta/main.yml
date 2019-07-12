@@ -1,5 +1,4 @@
 ---
 dependencies:
+  - role: git-crypt
   - role: jenkins_shared
-  - role: helm
-  - role: helmfile

@@ -5,3 +5,10 @@ git_crypt_dir: "git-crypt-{{ git_crypt_version }}"
 git_crypt_url: "https://www.agwa.name/projects/git-crypt/downloads/{{ git_crypt_dir }}.tar.gz"
 tmp_dir: '/tmp'
 install_dir: '/usr/local'
+
+redhat_packages:
+  - make
+  - gcc
+  - gcc-c++
+  - openssl-devel
+  - openssl-libs

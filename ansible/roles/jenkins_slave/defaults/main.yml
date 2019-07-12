@@ -1,9 +1,9 @@
 ---
 
 jenkins_user: jenkins
-jenkins_user_uid: 2000
+jenkins_user_uid: 995
 jenkins_group: jenkins
-jenkins_group_gid: 2000
+jenkins_group_gid: 992
 jenkins_work_dir: '/var/lib/jenkins'
 jenkins_bin_path: '/usr/local/bin'
 jenkins_service_name: "jenkins-slave.service"
