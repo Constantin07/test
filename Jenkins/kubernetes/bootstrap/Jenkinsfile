@@ -73,6 +73,10 @@ pipeline {
 
     stage('Bootstrap') {
 
+      steps {
+        git crypt unlock
+      }
+
       parallel {
         stage('Install metrics-server') {
           agent {
@@ -117,7 +121,6 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '2_external_dns') {
               sh '''
-                git crypt unlock
                 make lint sync
               '''
             }
