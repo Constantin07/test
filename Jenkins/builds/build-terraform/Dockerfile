@@ -1,4 +1,4 @@
-FROM golang:1.12.5
+FROM golang:1.12.7
 
 ARG PROJ_ROOT=github.com/hashicorp/terraform
 ARG GOOS
