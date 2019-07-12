@@ -2,10 +2,10 @@
 IMAGE_NAME ?= terraform:latest
 INSTALL_DIR ?= /usr/local/bin
 
-GOARCH := amd64
-GOOS := linux
+GOARCH ?= amd64
+GOOS ?= linux
 
-.PHONY: all build clean
+.PHONY: all build install clean
 
 all: build clean
 

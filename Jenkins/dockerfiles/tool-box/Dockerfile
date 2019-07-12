@@ -62,9 +62,9 @@ RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg && \
     pip3 install --upgrade pip setuptools && \
     pip3 install awscli==${AWSCLI_VERSION}
 
-RUN set -ex curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub; \
-    curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk; \
-    apk add --allow-untrusted git-crypt-0.6.0-r1.apk && rm -f git-crypt-0.6.0-r1.apk; \
+RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
+    curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk && \
+    apk add git-crypt-0.6.0-r1.apk && rm -f git-crypt-0.6.0-r1.apk && \
     ln -s /bin/git-crypt /usr/local/bin/git-crypt
 
 # Nonprivileged user
