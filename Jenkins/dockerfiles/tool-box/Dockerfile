@@ -22,10 +22,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0"
 
-ARG HELMFILE_VERSION=0.80.0
+ARG HELMFILE_VERSION=0.80.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="0709893ed10bcf708e746bcb3ae40f59027352390e186c3f05b56d913566bf88"
+ARG HELMFILE_SHA256="9ec756d0a315d83ca29dcb345e538ef661d8fd8c81ebb3865502644439b0b237"
 
 RUN apk --no-cache add curl unzip
 
@@ -58,8 +58,12 @@ FROM alpine:3.10.0
 
 ARG AWSCLI_VERSION=1.16.197
 
-RUN apk --no-cache add ca-certificates python3 make && \
+RUN apk --no-cache add ca-certificates curl python3 make git && \
     pip3 install --upgrade pip setuptools && \
     pip3 install awscli==${AWSCLI_VERSION}
+
+RUN set -ex curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub; \
+    curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk; \
+    apk add --allow-untrusted git-crypt-0.6.0-r1.apk && rm -f git-crypt-0.6.0-r1.apk
 
 COPY --from=BUILDER /usr/local/bin /usr/local/bin
