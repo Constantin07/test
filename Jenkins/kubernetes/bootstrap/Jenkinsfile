@@ -13,8 +13,10 @@ pipeline {
   environment {
     PATH = "$PATH:/usr/local/bin"
     KUBECONFIG = "$HOME/.kube/config"
+    HELM_HOME = '/tmp/.helm'
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
+    ARGS = '-e PATH=/usr/local/bin:$PATH -v /var/lib/jenkins/.kube/config:$HOME/.kube/config'
   }
 
   stages {
@@ -24,7 +26,7 @@ pipeline {
         docker {
           registryUrl env.REGISTRY
           image 'tool-box:latest'
-          args '-e PATH=/usr/local/bin:$PATH'
+          args env.ARGS
         }
       }
       steps {
@@ -38,6 +40,13 @@ pipeline {
     }
 
     stage('Protect critical resources') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image 'tool-box:latest'
+          args env.ARGS
+        }
+      }
       steps {
         sh '''
           kubectl set resources deployment coredns -n kube-system --limits='cpu=100m,memory=170Mi' --requests='cpu=100m,memory=170Mi' || true
@@ -47,6 +56,13 @@ pipeline {
     }
 
     stage('Install helm') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image 'tool-box:latest'
+          args env.ARGS
+        }
+      }
       steps {
         dir(env.ROOT_DIR + '1_helm_install') {
           sh 'make install'
@@ -59,6 +75,13 @@ pipeline {
 
       parallel {
         stage('Install metrics-server') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image 'tool-box:latest'
+              args env.ARGS
+            }
+          }
           steps {
             dir(env.ROOT_DIR + '2_metrics_server') {
               sh '''
@@ -69,6 +92,13 @@ pipeline {
         }
 
         stage('Install nginx-ingress') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image 'tool-box:latest'
+              args env.ARGS
+            }
+          }
           steps {
             dir(env.ROOT_DIR + '3_nginx_ingress') {
               sh 'make lint sync'
@@ -77,6 +107,13 @@ pipeline {
         }
 
         stage('Install external-dns') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image 'tool-box:latest'
+              args env.ARGS
+            }
+          }
           steps {
             dir(env.ROOT_DIR + '2_external_dns') {
               sh '''
@@ -88,6 +125,13 @@ pipeline {
         }
 
         stage('Config vault-auth') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image 'tool-box:latest'
+              args env.ARGS
+            }
+          }
           steps {
             dir(env.ROOT_DIR + '4_vault_auth') {
               sh 'make install'

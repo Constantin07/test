@@ -12,6 +12,11 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="b713ea79a6fb131e27d65ec3f2227f36932540e71820288c3c5ad770b565ecd7"
 
+ARG KUBECTL_VERSION=v1.15.0
+ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+ARG KUBECTL_FILE="kubectl"
+ARG KUBECTL_SHA256="ecec7fe4ffa03018ff00f14e228442af5c2284e57771e4916b977c20ba4e5b39"
+
 ARG HELM_VERSION=2.14.2
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
@@ -33,6 +38,11 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
+
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
+    sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
+    mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
+    chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
