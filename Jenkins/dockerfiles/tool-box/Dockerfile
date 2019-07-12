@@ -12,10 +12,10 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="b713ea79a6fb131e27d65ec3f2227f36932540e71820288c3c5ad770b565ecd7"
 
-ARG HELM_VERSION=2.14.1
+ARG HELM_VERSION=2.14.2
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="804f745e6884435ef1343f4de8940f9db64f935cd9a55ad3d9153d064b7f5896"
+ARG HELM_SHA256="0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
 
 ARG HELMFILE_VERSION=0.80.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
@@ -46,7 +46,7 @@ RUN set -exo pipefail; curl -sSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; 
 
 FROM alpine:3.10.0
 
-ARG AWSCLI_VERSION=1.16.193
+ARG AWSCLI_VERSION=1.16.197
 
 RUN apk --no-cache add ca-certificates python3 && \
     pip3 install --upgrade pip setuptools && \
