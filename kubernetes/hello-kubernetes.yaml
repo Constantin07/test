@@ -17,6 +17,8 @@ kind: Deployment
 metadata:
   name: hello-kubernetes
   namespace: default
+  labels:
+    app: hello-kubernetes
 spec:
   replicas: 2
   strategy:
@@ -64,6 +66,7 @@ spec:
           value: secret/hello-kubernetes
         resources:
           requests:
+            cpu: 50m
             memory: 64Mi
           limits:
             memory: 128Mi
@@ -140,3 +143,27 @@ spec:
               serviceName: hello-kubernetes
               servicePort: 8080
             path: /
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hello-kubernetes
+  namespace: default
+  labels:
+    app: hello-kubernetes
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hello-kubernetes
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 50
+#  metrics:
+#    - type: Resource
+#      resource:
+#        name: cpu
+#        target:
+#          type: Utilization
+#          averageUtilization: 50
