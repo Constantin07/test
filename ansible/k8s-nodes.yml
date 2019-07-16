@@ -10,4 +10,5 @@
    - resolv
    - docker
    - ctop
+   - automatic_updates
    - kube_common
