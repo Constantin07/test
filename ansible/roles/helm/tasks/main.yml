@@ -1,6 +1,6 @@
 ---
 
-- name: Download and install helm {{ version }}
+- name: Download and install helm {{ helm_version }}
   unarchive:
     src: "{{ helm_url }}"
     dest: "{{ install_dir }}"

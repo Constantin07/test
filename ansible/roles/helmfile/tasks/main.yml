@@ -1,6 +1,6 @@
 ---
 
-- name: Download and install helmfile {{ version }}
+- name: Download and install helmfile {{ helmfile_version }}
   get_url:
     url: "{{ helmfile_url }}"
     dest: "{{ install_dir }}/helmfile"
