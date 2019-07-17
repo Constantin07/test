@@ -38,6 +38,23 @@ pipeline {
       }
     }
 
+    stage('Update CoreDNS ConfigMap') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '0_update_coredns') {
+          sh 'make apply'
+        }
+        milestone(ordinal: 2)
+      }
+    }
+
     stage('Protect critical resources') {
       agent {
         docker {
@@ -51,7 +68,7 @@ pipeline {
         sh '''
           kubectl set resources deployment coredns -n kube-system --limits='cpu=100m,memory=170Mi' --requests='cpu=100m,memory=170Mi' || true
         '''
-        milestone(ordinal: 2)
+        milestone(ordinal: 3)
       }
     }
 
@@ -68,7 +85,7 @@ pipeline {
         dir(env.ROOT_DIR + '1_helm_install') {
           sh 'make install'
         }
-        milestone(ordinal: 3)
+        milestone(ordinal: 4)
       }
     }
 
