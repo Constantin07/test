@@ -20,7 +20,8 @@ var vault_secret_path = process.env.VAULT_SECRET_PATH;
 var vault = require("node-vault")();
 var creds;
 
-//process.env.DEBUG = 'node-vault'; // switch on debug mode
+// switch on debug mode
+//process.env.DEBUG = 'node-vault';
 
 process.env.VAULT_SKIP_VERIFY = 'true';
 vault.kubernetesLogin({role: vault_role, jwt: serviceAccountSecretToken, ca_cert: kubernetesCaCert})
