@@ -21,23 +21,6 @@ pipeline {
 
   stages {
 
-    stage('Install Calico Overlay') {
-      agent {
-        docker {
-          registryUrl env.REGISTRY
-          image env.DOCKER_IMAGE
-          alwaysPull true
-          args env.ARGS
-        }
-      }
-      steps {
-        dir(env.ROOT_DIR + '0_overlay_network') {
-          sh 'make install'
-        }
-        milestone(ordinal: 1)
-      }
-    }
-
     stage('Update CoreDNS ConfigMap') {
       agent {
         docker {
@@ -50,6 +33,23 @@ pipeline {
       steps {
         dir(env.ROOT_DIR + '0_update_coredns') {
           sh 'make apply'
+        }
+        milestone(ordinal: 1)
+      }
+    }
+
+    stage('Install Calico Overlay') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '1_overlay_network') {
+          sh 'make install'
         }
         milestone(ordinal: 2)
       }
@@ -82,7 +82,7 @@ pipeline {
         }
       }
       steps {
-        dir(env.ROOT_DIR + '1_helm_install') {
+        dir(env.ROOT_DIR + '2_helm_install') {
           sh 'make install'
         }
         milestone(ordinal: 4)
@@ -102,7 +102,7 @@ pipeline {
             }
           }
           steps {
-            dir(env.ROOT_DIR + '2_metrics_server') {
+            dir(env.ROOT_DIR + '3_metrics_server') {
               sh 'make init lint sync'
             }
           }
@@ -118,7 +118,7 @@ pipeline {
             }
           }
           steps {
-            dir(env.ROOT_DIR + '3_nginx_ingress') {
+            dir(env.ROOT_DIR + '4_nginx_ingress') {
               sh 'make init lint sync'
             }
           }
@@ -134,7 +134,7 @@ pipeline {
             }
           }
           steps {
-            dir(env.ROOT_DIR + '2_external_dns') {
+            dir(env.ROOT_DIR + '5_external_dns') {
               sh '''
                 git crypt unlock
                 make init lint sync
@@ -153,7 +153,7 @@ pipeline {
             }
           }
           steps {
-            dir(env.ROOT_DIR + '4_vault_auth') {
+            dir(env.ROOT_DIR + '6_vault_auth') {
               sh 'make install'
             }
           }

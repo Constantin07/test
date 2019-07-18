@@ -2,20 +2,20 @@ FROM alpine:3.10.0 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.4
+ARG TERRAFORM_VERSION=0.12.5
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="0231562f26262de233e8e8fac668196af21b7aff355bb04f3ee1606cca239c0a"
+ARG TERRAFORM_SHA256="babb4a30b399fb6fc87a6aa7435371721310c2e2102a95a763ef2c979ab06ce2"
 
 ARG PACKER_VERSION=1.4.1
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="b713ea79a6fb131e27d65ec3f2227f36932540e71820288c3c5ad770b565ecd7"
 
-ARG KUBECTL_VERSION=v1.15.0
+ARG KUBECTL_VERSION=v1.15.1
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="ecec7fe4ffa03018ff00f14e228442af5c2284e57771e4916b977c20ba4e5b39"
+ARG KUBECTL_SHA256="f4f4b855ab16ef295bc74f07edc77482d43e8fe81abc7cf92c476c4344788aa6"
 
 ARG HELM_VERSION=2.14.2
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
@@ -56,7 +56,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
 
 FROM alpine:3.10.0
 
-ARG AWSCLI_VERSION=1.16.197
+ARG AWSCLI_VERSION=1.16.199
 
 RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg && \
     pip3 install --upgrade pip setuptools && \
