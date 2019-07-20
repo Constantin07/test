@@ -1,0 +1,9 @@
+---
+
+- name: Download and install gomplate {{ gomplate_version }}
+  get_url:
+    url: "{{ gomplate_url }}"
+    dest: "{{ install_dir }}/gomplate"
+    force: yes
+    mode: 0755
+    tmp_dest: /tmp

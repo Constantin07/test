@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Env.CONFIGMAP_NAME }}
+  namespace: {{ .Env.NAMESPACE }}
+  labels:
+    app: nginx-ingress
+data:
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: "1; mode=block"
+  X-Content-Type-Options: nosniff

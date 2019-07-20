@@ -27,6 +27,11 @@ ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFI
 ARG HELMFILE_FILE="helmfile_linux_amd64"
 ARG HELMFILE_SHA256="9ec756d0a315d83ca29dcb345e538ef661d8fd8c81ebb3865502644439b0b237"
 
+ARG GOMPLATE_VERSION=3.5.0
+ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
+ARG GOMPLATE_FILE="gomplate_linux-amd64"
+ARG GOMPLATE_SHA256="bab28cab8cc4ef81015090f4deb6a81559d5a36e33dc7805ddd18bda62b0b0f4"
+
 RUN apk --no-cache add curl unzip
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
@@ -53,10 +58,15 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
+    sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
+    mv ${GOMPLATE_FILE} ${INSTALL_DIR}/gomplate; \
+    chmod +x ${INSTALL_DIR}/gomplate
+
 
 FROM alpine:3.10.0
 
-ARG AWSCLI_VERSION=1.16.199
+ARG AWSCLI_VERSION=1.16.201
 
 RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg && \
     pip3 install --upgrade pip setuptools && \

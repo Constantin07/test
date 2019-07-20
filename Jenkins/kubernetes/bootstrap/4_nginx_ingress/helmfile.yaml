@@ -20,6 +20,9 @@ releases:
           reportNodeInternalIp: true
           ingressClass: internal
           config:
+            add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "CONFIGMAP_NAME" }}
+            enable-modsecurity: "true"
+            enable-owasp-modsecurity-crs: "true"
             use-forwarded-headers: "true"
           kind: DaemonSet
           publishService:
