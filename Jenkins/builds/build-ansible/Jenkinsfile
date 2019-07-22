@@ -53,7 +53,7 @@ ansiColor('xterm') {
         node(nodeName) {
           sh '''
             make clean
-            make -j 2 rpm
+            make rpm
           '''
           stash(name: 'ansible', includes: package_path)
         }
