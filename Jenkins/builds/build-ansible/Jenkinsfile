@@ -52,6 +52,7 @@ ansiColor('xterm') {
       stage('Build') {
         node(nodeName) {
           sh '''
+            sudo pip install straight.plugin
             make clean
             make rpm
           '''

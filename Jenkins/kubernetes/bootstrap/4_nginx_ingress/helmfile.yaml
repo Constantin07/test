@@ -23,6 +23,8 @@ releases:
             add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "CONFIGMAP_NAME" }}
             enable-modsecurity: "true"
             enable-owasp-modsecurity-crs: "true"
+            http-snippet: |
+              more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
           kind: DaemonSet
           publishService:
