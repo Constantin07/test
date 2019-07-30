@@ -17,10 +17,10 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="f4f4b855ab16ef295bc74f07edc77482d43e8fe81abc7cf92c476c4344788aa6"
 
-ARG HELM_VERSION=2.14.2
+ARG HELM_VERSION=2.14.3
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0"
+ARG HELM_SHA256="38614a665859c0f01c9c1d84fa9a5027364f936814d1e47839b05327e400bf55"
 
 ARG HELMFILE_VERSION=0.80.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
