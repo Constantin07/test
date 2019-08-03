@@ -130,6 +130,11 @@ pipeline {
                         extensions += '\ncleanBeforeCheckout()'
                       }
                     }
+                    if (jobConfig.extensions.containsKey('disableRemotePoll')) {
+                      if (jobConfig.extensions.disableRemotePoll) {
+                        extensions += '\ndisableRemotePoll()'
+                      }
+                    }
                     if (jobConfig.extensions.containsKey('cloneOptions')) {
                       extensions += '\ncloneOptions{'
                       if (jobConfig.extensions.cloneOptions.containsKey('shallow')) {
