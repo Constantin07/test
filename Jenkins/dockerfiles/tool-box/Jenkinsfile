@@ -1,3 +1,5 @@
+@Library('global-shared-library') _
+
 pipeline {
 
   agent any
@@ -13,6 +15,19 @@ pipeline {
   }
 
   stages {
+
+    stage('Check for changes'){
+      steps {
+        script {
+          if (checkFolderForDiffs(env.DIRECTORY)) {
+            echo "Changes detected in directory ${env.DIRECTORY} so continuing"
+          } else {
+            echo 'No changes detected'
+            currentBuild.result = 'ABORTED'
+          }
+        }
+      }
+    }
 
     stage('Build image') {
       steps {
@@ -35,7 +50,7 @@ pipeline {
     stage('Publish image') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make publish'
+          sh 'make publish clean'
         }
       }
     }
