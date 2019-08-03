@@ -6,7 +6,7 @@ properties:
   githubProjectUrl: 'https://github.com/Constantin07/test'
 
 triggers:
-  scm: "H/1 * * * *"
+  scm: "H/2 * * * *"
 
 extensions:
   cleanBeforeCheckout: true
