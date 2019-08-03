@@ -1,8 +1,7 @@
 #!groovy
 
-/*
-Checks a folder if changed in the latest commit.
-Returns true if changed, or false if no changes.
+/* Checks a folder if changed in the latest commit.
+   Returns true if changed, or false if no changes.
 */
 
 def call(String path) {
