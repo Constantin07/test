@@ -5,9 +5,16 @@ description: 'Build and publish docker image with tools.'
 properties:
   githubProjectUrl: 'https://github.com/Constantin07/test'
 
+triggers:
+  scm: "H/5 * * * *"
+
 extensions:
   cleanBeforeCheckout: true
   disableRemotePoll: true
-  cloneOptions:
-    shallow: true
-    noTags: true
+  pathRestriction:
+    includedRegions: |
+      Jenkins/dockerfiles/tool-box/.*
+
+#  cloneOptions:
+#    shallow: true
+#    noTags: true

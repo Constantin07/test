@@ -125,16 +125,13 @@ pipeline {
                   // Git extensions
                   if (jobConfig.containsKey('extensions')) {
                     extensions += 'extensions {'
+
                     if (jobConfig.extensions.containsKey('cleanBeforeCheckout')) {
                       if (jobConfig.extensions.cleanBeforeCheckout) {
                         extensions += '\ncleanBeforeCheckout()'
                       }
                     }
-                    if (jobConfig.extensions.containsKey('disableRemotePoll')) {
-                      if (jobConfig.extensions.disableRemotePoll) {
-                        extensions += '\ndisableRemotePoll()'
-                      }
-                    }
+
                     if (jobConfig.extensions.containsKey('cloneOptions')) {
                       extensions += '\ncloneOptions{'
                       if (jobConfig.extensions.cloneOptions.containsKey('shallow')) {
@@ -149,6 +146,28 @@ pipeline {
                       }
                       extensions += '\n}'
                     }
+
+                    if (jobConfig.extensions.containsKey('disableRemotePoll')) {
+                      if (jobConfig.extensions.disableRemotePoll) {
+                        extensions += '\ndisableRemotePoll()'
+                      }
+                    }
+
+                    if (jobConfig.extensions.containsKey('pathRestriction')) {
+                      extensions += '\npathRestriction{'
+                      if (jobConfig.extensions.pathRestriction.containsKey('includedRegions')) {
+                        extensions += '\nincludedRegions("' + jobConfig.extensions.pathRestriction.includedRegions.trim() + '")'
+                      } else {
+                        extensions += '\nincludedRegions("")'
+                      }
+                      if (jobConfig.extensions.pathRestriction.containsKey('excludedRegions')) {
+                        extensions += '\nexcludedRegions("' + jobConfig.extensions.pathRestriction.excludedRegions.trim() + '")'
+                      } else {
+                        extensions += '\nexcludedRegions("")'
+                      }
+                      extensions += '\n}'
+                    }
+
                     extensions += '\n}'
                   }
 
