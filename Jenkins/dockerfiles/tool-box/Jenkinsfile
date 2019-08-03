@@ -24,9 +24,9 @@ pipeline {
           } else {
             echo 'No changes detected'
             currentBuild.result = 'ABORTED'
-            return;
           }
         }
+        error('Nothing to do, exiting.')
       }
     }
 
