@@ -10,7 +10,7 @@ triggers:
 
 extensions:
   cleanBeforeCheckout: true
-  disableRemotePoll: true
+#  disableRemotePoll: true
   pathRestriction:
     includedRegions: |
       Jenkins/dockerfiles/tool-box/.*
