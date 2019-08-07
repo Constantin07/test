@@ -17,6 +17,23 @@
   with_items:
     - systemd-journald
 
+- name: Create systemd drop-in directory for docker
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 755
+
+- name: Add custom settings to docker drop-in file
+  template:
+    src: docker.conf.j2
+    dest: /etc/systemd/system/docker.service.d/docker.conf
+    owner: root
+    group: root
+    mode: 644
+  notify: restart docker
+
 - name: Create docker config directory
   file:
     path: "/etc/docker"

@@ -53,6 +53,7 @@ ansiColor('xterm') {
         node(nodeName) {
           sh '''
             sudo pip3 install straight.plugin
+            sudo yum -y install python36-devel
             make clean
             make rpm
           '''
@@ -89,6 +90,7 @@ ansiColor('xterm') {
           """
           unstash(name: 'ansible')
           sh "sudo yum -y install ${package_path}"
+          cleanWs()
         }
       }
     }

@@ -1,0 +1,3 @@
+---
+
+kubelet_dropin_file: /etc/systemd/system/kubelet.service.d/20-kubelet.conf
