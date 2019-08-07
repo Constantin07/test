@@ -1,0 +1,11 @@
+---
+
+- name: Create kubelet systemd dropin file
+  template:
+    src: 20-kubelet.conf.j2
+    dest: "{{ kubelet_dropin_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart kubelet

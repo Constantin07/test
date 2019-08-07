@@ -8,8 +8,8 @@
 {% endif %}
   "log-driver": "json-file",
   "log-opts": {
-    "max-size": "20m",
-    "max-file": "5",
+    "max-size": "10m",
+    "max-file": "4",
     "mode": "non-blocking",
     "max-buffer-size": "4m"
   },

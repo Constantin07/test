@@ -16,6 +16,7 @@ pipeline {
 
   stages {
 
+/*
     stage('Check for changes'){
       steps {
         script {
@@ -29,7 +30,7 @@ pipeline {
         error('Nothing to do, exiting.')
       }
     }
-
+*/
     stage('Build image') {
       steps {
         dir(env.DIRECTORY) {

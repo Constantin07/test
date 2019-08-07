@@ -1,7 +1,10 @@
 ---
 
 - name: restart docker
-  service: name=docker state=restarted
+  systemd:
+    name: docker.service
+    daemon_reload: yes
+    state: restarted
 
 - name: reload sysctl.conf
   command: /sbin/sysctl -p
