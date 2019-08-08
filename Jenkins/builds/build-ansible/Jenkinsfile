@@ -1,97 +1,79 @@
-@Library('global-shared-library') _
+String git_url = 'https://github.com/ansible/ansible.git'
+boolean update = false
 
-import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
+pipeline {
 
-def nodeName        = 'master'
-def git_url         = 'https://github.com/ansible/ansible.git'
+  agent none
 
-String package_path = 'rpm-build/ansible-*.el7.noarch.rpm'
-boolean update      = false
-
-String jobName      = "${env.JOB_NAME}"
-
-node(nodeName){
-
-  properties([
-    buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
-    //pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH H(9-18) * * *")]),
-    // Allow to run only one job at a time
-    //disableConcurrentBuilds(),
-  ])
-
-}
-
-ansiColor('xterm') {
-
-  stage('Checkout') {
-    node(nodeName) {
-      checkout scm: [$class: 'GitSCM',
-        branches: [[name: '*/devel']],
-        userRemoteConfigs: [[url: git_url ]],
-        extensions: [[$class: 'CleanCheckout']]
-      ]
-
-      println "Compare Ansible versions"
-      String current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
-      println "current_version=${current_version}"
-      String new_version = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-      println "new_version=${new_version}"
-
-      if(current_version == new_version) {
-        println "No changes in version"
-      } else {
-        update = true
-      }
-    }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
   }
 
-  milestone label: 'Checkout'
+  environment {
+    DIRECTORY = 'Jenkins/builds/build-ansible'
+  }
 
-  if(update) {
-    lock("${jobName}") {
-      stage('Build') {
-        node(nodeName) {
-          sh '''
-            sudo pip3 install straight.plugin
-            sudo yum -y install python36-devel
-            make clean
-            make rpm
-          '''
-          stash(name: 'ansible', includes: package_path)
-        }
-      }
+  stages {
 
-      milestone label: 'Build'
+    stage('Checkout') {
+      agent { label 'master' }
+      steps {
+        checkout scm: [$class: 'GitSCM',
+          branches: [[name: 'devel']],
+          userRemoteConfigs: [[url: git_url ]],
+          extensions: [
+            [$class: 'CleanCheckout'],
+            [$class: 'CloneOption', noTags: true, reference: '', shallow: true],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'ansible']
+          ]
+        ]
 
-    }
+        dir('ansible') {
+          script {
+            println "Compare Ansible versions"
+            String current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
+            println "current_version=${current_version}"
+            String new_version = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+            println "new_version=${new_version}"
 
-    lock("${jobName}") {
-      stage('Approve') {
-        try {
-          timeout(time: 120, activity: false, unit: 'MINUTES') {
-            input(message: "Do you want to install?")
+            if(current_version == new_version) {
+              println "No changes in version"
+            } else {
+              update = true
+            }
           }
-        } catch (FlowInterruptedException e) {
-          currentBuild.result = 'ABORTED'
-          return
         }
       }
-
-      milestone label: 'Approve'
-
     }
 
-    lock("${jobName}") {
-      stage('Install') {
-        node(nodeName) {
-          sh """
-            sudo yum -y remove ansible
-            rm -f ${package_path}
-          """
-          unstash(name: 'ansible')
-          sh "sudo yum -y install ${package_path}"
-          cleanWs()
+    stage('Build') {
+      agent { label 'master' }
+      when { equals expected: true, actual: update }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make build'
         }
+      }
+    }
+
+    stage('Install') {
+      agent { label 'master' }
+      when { equals expected: true, actual: update }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make copy install clean'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      node('master') {
+        cleanWs()
       }
     }
   }
