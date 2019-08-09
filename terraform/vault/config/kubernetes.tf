@@ -1,40 +1,9 @@
-## Kubernetes
+# Kubernetes
 
 provider "kubernetes" {
-  version                  = "~> 1.8.0"
+  version                  = "~> 1.8.1"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
-}
-
-resource "kubernetes_service_account" "vault_auth" {
-  metadata {
-    name      = "vault-auth"
-    namespace = "default"
-  }
-
-  automount_service_account_token = true
-}
-
-resource "kubernetes_cluster_role_binding" "vault_auth" {
-  metadata {
-    name = "role-tokenreview-binding"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "system:auth-delegator"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = "vault-auth"
-    namespace = "default"
-  }
-
-  lifecycle {
-    create_before_destroy = false
-  }
 }
 
 provider "external" {
@@ -44,10 +13,27 @@ provider "external" {
 
 # Get Kubernetes CA cert and cluster endpoint
 data "external" "kube_config" {
-  program = [".venv/bin/python", "${path.module}/get_kubeconfig.py"]
+  program = [".venv/bin/python3", "${path.module}/get_kubeconfig.py"]
 
   query = {
     config_file = "${var.kube_config_file}"
+  }
+}
+
+# Get secret token name associated with vault-auth service account
+data "external" "secret_name" {
+  program = [".venv/bin/python3", "${path.module}/get_secret_name.py"]
+
+  query = {
+    namespace            = "default"
+    service_account_name = "vault-auth"
+  }
+}
+
+data "kubernetes_secret" "vault_auth" {
+  metadata {
+    name      = "${data.external.secret_name.result.token_name}"
+    namespace = "default"
   }
 }
 
@@ -56,7 +42,7 @@ resource "vault_kubernetes_auth_backend_config" "kubernetes" {
   backend            = "${vault_auth_backend.kubernetes.path}"
   kubernetes_host    = "${data.external.kube_config.result.server}"
   kubernetes_ca_cert = "${base64decode(data.external.kube_config.result.certificate-authority-data)}"
-  token_reviewer_jwt = "${var.token_reviewer_jwt}"
+  token_reviewer_jwt = "${data.kubernetes_secret.vault_auth.data.token}"
 }
 
 resource "vault_kubernetes_auth_backend_role" "vault_auth" {
