@@ -1,3 +1,4 @@
-PyYAML==5.1.1
-terraform-external-data==0.1.0
+PyYAML==5.1.2
+terraform-external-data==1.0.1
 kubernetes==10.0.0
+pylint==2.3.1
