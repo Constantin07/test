@@ -1,12 +1,15 @@
-from terraform_external_data import terraform_external_data
+"""
+Gets the secret token name for a service account
+"""
 
-import os, json, yaml
+from terraform_external_data import terraform_external_data
 from kubernetes import client, config
 
-# Returns a map of:
+# pylint: disable=no-value-for-parameter,invalid-name
 
 @terraform_external_data
 def get_secret_name(query):
+    """ Returns a secret token name associated with service account """
     namespace = query['namespace']
     name = query['service_account_name']
 
@@ -18,9 +21,7 @@ def get_secret_name(query):
         print("Service account %s does not exist. Exiting ..." % name)
         exit(1)
 
-    token_name = sa.secrets[0].name
-
-    return { 'token_name': token_name }
+    return {'token_name': sa.secrets[0].name}
 
 if __name__ == '__main__':
-     get_secret_name()
+    get_secret_name()
