@@ -1,2 +1,3 @@
 PyYAML==5.1.1
 terraform-external-data==0.1.0
+kubernetes==10.0.0
