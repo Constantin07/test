@@ -168,5 +168,17 @@ spec:
     kind: Deployment
     name: hello-kubernetes
   minReplicas: 2
-  maxReplicas: 3
+  maxReplicas: 8
   targetCPUUtilizationPercentage: 90
+
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: hello-kubernetes
+  namespace: default
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: hello-kubernetes
