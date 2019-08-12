@@ -16,6 +16,10 @@ releases:
           pullPolicy: Always
         args:
           - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+          - --v=2
+        hostNetwork:
+          enabled: true
         resources:
           requests:
             memory: "64Mi"
