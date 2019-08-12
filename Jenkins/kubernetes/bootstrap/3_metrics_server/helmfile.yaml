@@ -14,16 +14,16 @@ releases:
     values:
       - image:
           pullPolicy: Always
-      - args:
+        args:
           - --kubelet-insecure-tls
-      - resources:
+        resources:
           requests:
             memory: "64Mi"
             cpu: "100m"
           limits:
             memory: "64Mi"
             cpu: "100m"
-      - service:
+        service:
           labels:
             kubernetes.io/cluster-service: "true"
             kubernetes.io/name: metrics-server

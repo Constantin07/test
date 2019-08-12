@@ -2,8 +2,7 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 var app = express();
 var os = require("os");
-var sleep = require('sleep');
-var morgan  = require('morgan');
+var morgan = require('morgan');
 var router = express.Router();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -11,17 +10,6 @@ app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));
 
-
-function retry(maxRetries, fn) {
-  return fn().catch(function(err) {
-    if (maxRetries <= 0) {
-      throw err;
-    }
-    console.error(err.message)
-    sleep.sleep(3)
-    return retry(maxRetries - 1, fn);
-  });
-}
 
 // Vault
 const fs = require('fs');
@@ -35,8 +23,8 @@ var creds;
 
 // switch on debug mode
 //process.env.DEBUG = 'node-vault';
-
 process.env.VAULT_SKIP_VERIFY = 'true';
+
 vault.kubernetesLogin({role: vault_role, jwt: serviceAccountSecretToken, ca_cert: kubernetesCaCert})
 .then((result) => {
   //console.log(result);
