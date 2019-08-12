@@ -8,7 +8,7 @@ properties:
 parameters:
   - name: VAULT_VERSION
     type: stringParam
-    defaultValue: '1.1.3'
+    defaultValue: '1.2.1'
     description: 'The version of Vault.'
 
 extensions:
