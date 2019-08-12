@@ -83,29 +83,56 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 5
           timeoutSeconds: 3
-#        volumeMounts:
-#        - name: secrets
-#          mountPath: "/secrets"
-      # This container is run during pod initialization
-#      initContainers:
-#      - name: hello-kubernetes-init
-#        image: centos7.internal:5000/hello-kubernetes-init:1.0
-#        imagePullPolicy: Always
-#        command: [ "/pull_creds.sh" ]
-#        args:
-#          - "hello-kubernetes"           # Vault role associated with this pod/service account
-#          - "secret/hello-kubernetes"    # Secrets path to read from in Vault
-#          - "/secrets/creds.json"        # Location to store credentials
-#        env:
-#        - name: VAULT_ADDR
-#          value: "http://vault.internal:8200"
-#        volumeMounts:
-#        - name: secrets
-#          mountPath: "/secrets"
-#      volumes:
-#      - name: secrets
-#        emptyDir:
-#          medium: "Memory"
+
+      - name: vault-agent
+        image: vault:1.2.1
+        imagePullPolicy: Always
+        args:
+          - "agent"
+          - "-config=/etc/vault/config.hcl"
+        securityContext:
+          capabilities:
+            add:
+              - IPC_LOCK
+        env:
+          - name: VAULT_ADDR
+            value: "http://vault.internal:8200"
+          - name: VAULT_SKIP_VERIFY
+            value: "true"
+        volumeMounts:
+          - name: vault-config
+            mountPath: /etc/vault/config.hcl
+            subPath: config.hcl
+      volumes:
+        - name: vault-config
+          configMap:
+            name: vault-agent-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-agent-config
+  namespace: default
+data:
+  config.hcl: |
+    exit_after_auth = false
+    pid_file = "/home/vault/pidfile"
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = "hello-kubernetes"
+        }
+      }
+    }
+    cache {
+      use_auto_auth_token = true
+    }
+    listener "tcp" {
+      address = "127.0.0.1:8200"
+      tls_disable = true
+    }
 
 ---
 apiVersion: v1
