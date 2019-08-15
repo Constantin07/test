@@ -66,9 +66,9 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL};
 
 FROM alpine:3.10.1
 
-ARG AWSCLI_VERSION=1.16.201
+ARG AWSCLI_VERSION=1.16.219
 
-RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg && \
+RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
     pip3 install awscli==${AWSCLI_VERSION}
 
