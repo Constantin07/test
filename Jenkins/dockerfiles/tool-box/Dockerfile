@@ -1,4 +1,4 @@
-FROM alpine:3.10.0 AS BUILDER
+FROM alpine:3.10.1 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -7,10 +7,10 @@ ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_SHA256="6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"
 
-ARG PACKER_VERSION=1.4.2
+ARG PACKER_VERSION=1.4.3
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"
+ARG PACKER_SHA256="c89367c7ccb50ca3fa10129bbbe89273fba0fa6a75b44e07692a32f92b1cbf55"
 
 ARG KUBECTL_VERSION=v1.15.2
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
@@ -22,10 +22,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="38614a665859c0f01c9c1d84fa9a5027364f936814d1e47839b05327e400bf55"
 
-ARG HELMFILE_VERSION=0.80.2
+ARG HELMFILE_VERSION=0.81.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="b00b7ede6a8eaf40def455fb2b1085902f14151780471a8a620f6b3b4cc58f26"
+ARG HELMFILE_SHA256="d56b5e530b6cd2b7c187c373f2b2796e299d8eeac2df623805f291638ce1a9d9"
 
 ARG GOMPLATE_VERSION=3.5.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -64,7 +64,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL};
     chmod +x ${INSTALL_DIR}/gomplate
 
 
-FROM alpine:3.10.0
+FROM alpine:3.10.1
 
 ARG AWSCLI_VERSION=1.16.201
 
