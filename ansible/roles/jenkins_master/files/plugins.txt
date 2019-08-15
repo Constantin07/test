@@ -24,6 +24,7 @@ next-build-number
 pipeline-multibranch-defaults
 pipeline-rest-api
 pipeline-utility-steps
+ssh-agent
 timestamper
 workflow-aggregator
 workflow-remote-loader
