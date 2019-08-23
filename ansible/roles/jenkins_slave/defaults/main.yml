@@ -10,6 +10,6 @@ jenkins_service_name: "jenkins-slave.service"
 
 jenkins_master_host: "centos7.internal"
 jenkins_master_port: 8080
-jenkins_remoting_version: "3.33"
+jenkins_remoting_version: "3.34"
 jenkins_remoting_package: "remoting-{{ jenkins_remoting_version }}.jar"
 jenkins_remoting_url: "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/{{ jenkins_remoting_version }}/{{ jenkins_remoting_package }}"
