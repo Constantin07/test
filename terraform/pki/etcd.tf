@@ -6,17 +6,17 @@ resource "tls_private_key" "etcd-1_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-1_server_cert_req" {
-  key_algorithm   = "${tls_private_key.etcd-1_server_priv_key.algorithm}"
-  private_key_pem = "${tls_private_key.etcd-1_server_priv_key.private_key_pem}"
+  key_algorithm   = tls_private_key.etcd-1_server_priv_key.algorithm
+  private_key_pem = tls_private_key.etcd-1_server_priv_key.private_key_pem
 
   subject {
     common_name  = "etcd-1.internal"
-    organization = "${var.organisation}"
+    organization = var.organisation
   }
 
   dns_names = [
     "etcd-1.internal",
-    "${var.etcd_cluster_name}",
+    var.etcd_cluster_name,
     "localhost",
   ]
 
@@ -27,10 +27,10 @@ resource "tls_cert_request" "etcd-1_server_cert_req" {
 }
 
 resource "tls_locally_signed_cert" "etcd-1_server_cert" {
-  cert_request_pem   = "${tls_cert_request.etcd-1_server_cert_req.cert_request_pem}"
-  ca_key_algorithm   = "${local.ca_key_algorithm}"
-  ca_private_key_pem = "${local.ca_private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  cert_request_pem   = tls_cert_request.etcd-1_server_cert_req.cert_request_pem
+  ca_key_algorithm   = local.ca_key_algorithm
+  ca_private_key_pem = local.ca_private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   is_ca_certificate     = false
   validity_period_hours = 87600
@@ -53,17 +53,17 @@ resource "tls_private_key" "etcd-2_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-2_server_cert_req" {
-  key_algorithm   = "${tls_private_key.etcd-2_server_priv_key.algorithm}"
-  private_key_pem = "${tls_private_key.etcd-2_server_priv_key.private_key_pem}"
+  key_algorithm   = tls_private_key.etcd-2_server_priv_key.algorithm
+  private_key_pem = tls_private_key.etcd-2_server_priv_key.private_key_pem
 
   subject {
     common_name  = "etcd-2.internal"
-    organization = "${var.organisation}"
+    organization = var.organisation
   }
 
   dns_names = [
     "etcd-2.internal",
-    "${var.etcd_cluster_name}",
+    var.etcd_cluster_name,
     "localhost",
   ]
 
@@ -74,10 +74,10 @@ resource "tls_cert_request" "etcd-2_server_cert_req" {
 }
 
 resource "tls_locally_signed_cert" "etcd-2_server_cert" {
-  cert_request_pem   = "${tls_cert_request.etcd-2_server_cert_req.cert_request_pem}"
-  ca_key_algorithm   = "${local.ca_key_algorithm}"
-  ca_private_key_pem = "${local.ca_private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  cert_request_pem   = tls_cert_request.etcd-2_server_cert_req.cert_request_pem
+  ca_key_algorithm   = local.ca_key_algorithm
+  ca_private_key_pem = local.ca_private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   is_ca_certificate     = false
   validity_period_hours = 87600
@@ -100,17 +100,17 @@ resource "tls_private_key" "etcd-3_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-3_server_cert_req" {
-  key_algorithm   = "${tls_private_key.etcd-3_server_priv_key.algorithm}"
-  private_key_pem = "${tls_private_key.etcd-3_server_priv_key.private_key_pem}"
+  key_algorithm   = tls_private_key.etcd-3_server_priv_key.algorithm
+  private_key_pem = tls_private_key.etcd-3_server_priv_key.private_key_pem
 
   subject {
     common_name  = "etcd-3.internal"
-    organization = "${var.organisation}"
+    organization = var.organisation
   }
 
   dns_names = [
     "etcd-3.internal",
-    "${var.etcd_cluster_name}",
+    var.etcd_cluster_name,
     "localhost",
   ]
 
@@ -121,10 +121,10 @@ resource "tls_cert_request" "etcd-3_server_cert_req" {
 }
 
 resource "tls_locally_signed_cert" "etcd-3_server_cert" {
-  cert_request_pem   = "${tls_cert_request.etcd-3_server_cert_req.cert_request_pem}"
-  ca_key_algorithm   = "${local.ca_key_algorithm}"
-  ca_private_key_pem = "${local.ca_private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  cert_request_pem   = tls_cert_request.etcd-3_server_cert_req.cert_request_pem
+  ca_key_algorithm   = local.ca_key_algorithm
+  ca_private_key_pem = local.ca_private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   is_ca_certificate     = false
   validity_period_hours = 87600
@@ -147,20 +147,20 @@ resource "tls_private_key" "etcd-client_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-client_cert_req" {
-  key_algorithm   = "${tls_private_key.etcd-client_priv_key.algorithm}"
-  private_key_pem = "${tls_private_key.etcd-client_priv_key.private_key_pem}"
+  key_algorithm   = tls_private_key.etcd-client_priv_key.algorithm
+  private_key_pem = tls_private_key.etcd-client_priv_key.private_key_pem
 
   subject {
     common_name  = "etcd-client"
-    organization = "${var.organisation}"
+    organization = var.organisation
   }
 }
 
 resource "tls_locally_signed_cert" "etcd-client_cert" {
-  cert_request_pem   = "${tls_cert_request.etcd-client_cert_req.cert_request_pem}"
-  ca_key_algorithm   = "${local.ca_key_algorithm}"
-  ca_private_key_pem = "${local.ca_private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  cert_request_pem   = tls_cert_request.etcd-client_cert_req.cert_request_pem
+  ca_key_algorithm   = local.ca_key_algorithm
+  ca_private_key_pem = local.ca_private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   is_ca_certificate     = false
   validity_period_hours = 87600
@@ -173,3 +173,4 @@ resource "tls_locally_signed_cert" "etcd-client_cert" {
     "key_encipherment",
   ]
 }
+

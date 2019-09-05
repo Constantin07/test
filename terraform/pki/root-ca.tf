@@ -1,13 +1,13 @@
 /* Trusted root CA */
 
 locals {
-  ca_private_key_pem = "${file("${path.module}/files/ca-priv-key.pem")}"
+  ca_private_key_pem = file("${path.module}/files/ca-priv-key.pem")
   ca_key_algorithm   = "RSA"
 }
 
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm   = "${local.ca_key_algorithm}"
-  private_key_pem = "${local.ca_private_key_pem}"
+  key_algorithm   = local.ca_key_algorithm
+  private_key_pem = local.ca_private_key_pem
 
   subject {
     common_name         = "Trusted Root CA"
@@ -33,14 +33,15 @@ resource "tls_self_signed_cert" "ca" {
 
 output "ca_cert_pem" {
   description = "The ROOT CA certificate in PEM format"
-  value       = "${tls_self_signed_cert.ca.cert_pem}"
+  value       = tls_self_signed_cert.ca.cert_pem
 }
 
 output "ca_validity" {
   description = "The ROOT CA certificates validity timeframe"
 
   value = {
-    start = "${tls_self_signed_cert.ca.validity_start_time}"
-    end   = "${tls_self_signed_cert.ca.validity_end_time}"
+    start = tls_self_signed_cert.ca.validity_start_time
+    end   = tls_self_signed_cert.ca.validity_end_time
   }
 }
+

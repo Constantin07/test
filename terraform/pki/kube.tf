@@ -27,4 +27,3 @@ resource "tls_cert_request" "k8s_api_server_cert_req" {
 }
 
 */
-
