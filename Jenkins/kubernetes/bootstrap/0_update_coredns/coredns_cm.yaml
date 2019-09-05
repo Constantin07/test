@@ -6,7 +6,7 @@ metadata:
   namespace: kube-system
 data:
   Corefile: |
-    .:53 {
+    cluster.local:53 {
         errors
         health
         kubernetes cluster.local in-addr.arpa ip6.arpa {
@@ -22,6 +22,9 @@ data:
         reload
         loadbalance
     }
-    internal. {
+    internal {
         forward . 10.0.2.4
+    }
+    . {
+        forward . 10.0.2.1:53
     }
