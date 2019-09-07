@@ -1,4 +1,4 @@
-FROM alpine:3.10.1 AS BUILDER
+FROM alpine:3.10.2 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -64,9 +64,9 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL};
     chmod +x ${INSTALL_DIR}/gomplate
 
 
-FROM alpine:3.10.1
+FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.219
+ARG AWSCLI_VERSION=1.16.234
 
 RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
