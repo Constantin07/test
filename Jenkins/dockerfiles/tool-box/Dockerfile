@@ -12,10 +12,10 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="c89367c7ccb50ca3fa10129bbbe89273fba0fa6a75b44e07692a32f92b1cbf55"
 
-ARG KUBECTL_VERSION=v1.15.2
+ARG KUBECTL_VERSION=v1.15.3
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="a737000af13f9c8c347945bc581b819659c464eae92056424bdddae735e2e888"
+ARG KUBECTL_SHA256="6e805054a1fb2280abb53f75b57a1b92bf9c66ffe0d2cdcd46e81b079d93c322"
 
 ARG HELM_VERSION=2.14.3
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
@@ -31,6 +31,9 @@ ARG GOMPLATE_VERSION=3.5.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
 ARG GOMPLATE_SHA256="bab28cab8cc4ef81015090f4deb6a81559d5a36e33dc7805ddd18bda62b0b0f4"
+
+ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
+ARG SHUNIT2_FILE="shunit2"
 
 RUN apk --no-cache add curl unzip
 
@@ -62,6 +65,8 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL};
     sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
     mv ${GOMPLATE_FILE} ${INSTALL_DIR}/gomplate; \
     chmod +x ${INSTALL_DIR}/gomplate
+
+RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
 FROM alpine:3.10.2
