@@ -7,6 +7,7 @@
 #    - resolv
 #    - ctop
 #    - docker
+#    - shunit2
 #    - helm
 #    - helmfile
 #    - gomplate

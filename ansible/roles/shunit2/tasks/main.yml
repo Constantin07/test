@@ -1,0 +1,9 @@
+---
+
+- name: Download and install shunit2
+  get_url:
+    url: "{{ download_url }}"
+    dest: "{{ install_dir }}/shunit2"
+    force: yes
+    mode: 0644
+    tmp_dest: /tmp

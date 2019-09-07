@@ -1,13 +1,10 @@
-#!groovy
-
-// https://github.com/andrey-pohilko/registry-cli
-
 pipeline {
 
-  agent any
+  agent { label 'master' }
 
   triggers {
     pollSCM('H H(8-23) * * *')
+    upstream(upstreamProjects: 'dockerfiles/tool-box', threshold: hudson.model.Result.SUCCESS)
   }
 
   options {
