@@ -1,0 +1,5 @@
+---
+
+version: '0.2.3'
+url: "https://github.com/gerald1248/validate-yaml/releases/download/v{{ version }}/validate-yaml-linux-amd64.zip"
+install_dir: '/usr/local/bin'

@@ -32,6 +32,11 @@ ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
 ARG GOMPLATE_SHA256="bab28cab8cc4ef81015090f4deb6a81559d5a36e33dc7805ddd18bda62b0b0f4"
 
+ARG VALIDATEYAML_VERSION=v0.2.3
+ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/download/${VALIDATEYAML_VERSION}/validate-yaml-linux-amd64.zip"
+ARG VALIDATEYAML_FILE="validate-yaml-${VALIDATEYAML_VERSION}-linux-amd64.zip"
+ARG VALIDATEYAML_SHA256="9cc6be3b29d25ad79fd7e3ed4397a6320f8c31939c5a0575c077b47ee41b6db2"
+
 ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
 ARG SHUNIT2_FILE="shunit2"
 
@@ -61,10 +66,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
-RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
-    sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
-    mv ${GOMPLATE_FILE} ${INSTALL_DIR}/gomplate; \
-    chmod +x ${INSTALL_DIR}/gomplate
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYAML_URL}; \
+    sha256sum ${VALIDATEYAML_FILE} | grep ${VALIDATEYAML_SHA256}; \
+    mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
+    chmod +x ${INSTALL_DIR}/validate-yaml
 
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
