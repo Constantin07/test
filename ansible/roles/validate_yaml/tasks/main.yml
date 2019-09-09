@@ -1,0 +1,7 @@
+---
+
+- name: Download and install validate-yaml v{{ version }}
+  unarchive:
+    src: "{{ url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
