@@ -1,0 +1,45 @@
+pipeline {
+
+  agent { label 'master' }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'ansible'
+    PYTHONWARNINGS = 'ignore::UserWarning'
+  }
+
+  stages {
+
+    stage('Deploy vault service') {
+      agent {
+        docker {
+          registryUrl 'http://centos7.internal:5000'
+          image 'centos7.internal:5000/tool-box:latest'
+          alwaysPull true
+          args '-u toolbox -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'git crypt unlock'
+          sshagent (credentials: ['jenkins-ssh-key']) {
+            sh 'ansible-playbook vault.yml'
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

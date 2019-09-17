@@ -48,5 +48,5 @@
   systemd:
     name: vault-unseal.service
     enabled: yes
-    state: started
+    state: restarted
     daemon_reload: yes
