@@ -76,7 +76,7 @@ RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_UR
 
 FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.234
+ARG AWSCLI_VERSION=1.16.239
 
 RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
