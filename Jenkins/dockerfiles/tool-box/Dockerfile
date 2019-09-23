@@ -12,10 +12,10 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="c89367c7ccb50ca3fa10129bbbe89273fba0fa6a75b44e07692a32f92b1cbf55"
 
-ARG KUBECTL_VERSION=v1.15.3
+ARG KUBECTL_VERSION=v1.15.4
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="6e805054a1fb2280abb53f75b57a1b92bf9c66ffe0d2cdcd46e81b079d93c322"
+ARG KUBECTL_SHA256="ada48ed9160f83bda949546fd2c7e443b97a5212c4f99148d66866c65ceb9dab"
 
 ARG HELM_VERSION=2.14.3
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
@@ -66,6 +66,11 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
+    sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
+    mv ${GOMPLATE_FILE} ${INSTALL_DIR}/gomplate; \
+    chmod +x ${INSTALL_DIR}/gomplate
+
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYAML_URL}; \
     sha256sum ${VALIDATEYAML_FILE} | grep ${VALIDATEYAML_SHA256}; \
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
@@ -76,9 +81,10 @@ RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_UR
 
 FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.239
+ARG AWSCLI_VERSION=1.16.244
 
-RUN apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
+RUN apk update && apk upgrade && \
+    apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
     pip3 install awscli==${AWSCLI_VERSION}
 
