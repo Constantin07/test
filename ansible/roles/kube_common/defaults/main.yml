@@ -1,6 +1,6 @@
 ---
 
-k8s_version: '1.15.4-00'
+k8s_version: '1.16.0-00'
 
 debian_packages:
   - apt-transport-https
