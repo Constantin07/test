@@ -10,7 +10,7 @@ releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/nginx-ingress
-    version: 1.21.0
+    version: 1.22.1
     values:
       - controller:
           image:
