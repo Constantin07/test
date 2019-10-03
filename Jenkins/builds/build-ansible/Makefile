@@ -12,12 +12,12 @@ build:
 	docker build -t ${IMAGE_NAME} .
 
 copy:
-	$(eval export FILENAME=$(shell docker run --rm ${IMAGE_NAME} bash -c "cd ${BUILD_DIR}; ls -1 ansible-*.noarch.rpm"))
-	docker run --rm -v ${HOST_DIR}:/tmp -w ${BUILD_DIR} --entrypoint cp ${IMAGE_NAME} ${FILENAME} /tmp
+	$(eval export FILENAMES=$(shell docker run --rm ${IMAGE_NAME} bash -c "cd ${BUILD_DIR}; ls -1 ansible-*.noarch.rpm"))
+	docker run --rm -v ${HOST_DIR}:/tmp -w ${BUILD_DIR} --entrypoint cp ${IMAGE_NAME} ${FILENAMES} /tmp
 
 install:
 	sudo yum -y remove ansible
-	sudo yum -y install ${FILENAME}
+	sudo yum -y install ${FILENAMES}
 
 clean:
 	docker rmi ${IMAGE_NAME} || true
