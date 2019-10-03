@@ -13,7 +13,7 @@ pipeline {
     HELM_HOME = '/tmp/.helm'
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
-    DOCKER_IMAGE = 'tool-box:latest'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
     ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
   }
 

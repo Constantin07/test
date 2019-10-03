@@ -7,9 +7,5 @@
 #    - resolv
 #    - ctop
 #    - docker
-#    - shunit2
-#    - helm
-#    - helmfile
-#    - gomplate
-#    - validate_yaml
-    - { role: jenkins_master, jenkins_version: "2.198" }
+    - { role: jenkins_master, jenkins_version: "2.155" }
+
