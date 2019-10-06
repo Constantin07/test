@@ -7,5 +7,7 @@
 #    - resolv
 #    - ctop
 #    - docker
-    - { role: jenkins_master, jenkins_version: "2.155" }
+#    - helm
+#    - helmfile
+    - { role: jenkins_master, jenkins_version: "2.198" }
 
