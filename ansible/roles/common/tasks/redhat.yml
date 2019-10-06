@@ -1,13 +1,13 @@
 ---
 
-- name: Remove not required packages
+- name: Remove not required packages | RedHat
   yum:
     name: "{{item}}"
     state: absent
   loop:
     - postfix
 
-- name: Install required packages
+- name: Install required packages | Redhat
   yum:
     name: "{{ redhat_packages }}"
     state: latest

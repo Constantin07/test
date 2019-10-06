@@ -10,7 +10,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/external-dns
-    version: 2.6.5
+    version: 2.8.0
     values:
       - image:
           pullPolicy: Always

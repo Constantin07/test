@@ -7,6 +7,7 @@ $(eval export TSIG_SECRET=$(shell cat kube-cluster.internal.enc))
 
 init:
 	helm init --client-only
+	helm repo update
 
 template:
 	helmfile template

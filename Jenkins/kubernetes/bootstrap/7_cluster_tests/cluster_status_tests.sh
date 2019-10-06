@@ -7,7 +7,7 @@ oneTimeSetUp() {
   #status=`kubectl get componentstatuses`
 }
 
-test_ApiServerHealthCheck() {
+test_ApiServerEndpointHealthCheck() {
   cluster_conn=`curl -ksSL ${APISERVER}/healthz`
   assertEquals "Cluster API health returned non-ok state" 'ok' "${cluster_conn}"
 }

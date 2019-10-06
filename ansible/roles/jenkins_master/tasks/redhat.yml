@@ -37,5 +37,5 @@
   lineinfile:
     path: /etc/sysconfig/jenkins
     regexp: '^JENKINS_JAVA_OPTIONS='
-    line: 'JENKINS_JAVA_OPTIONS="-Xms512m -Xmx{{ (ansible_memtotal_mb*0.9-512)|int|abs }}m -Djava.awt.headless=true {{ jenkins_java_options }}"'
+    line: 'JENKINS_JAVA_OPTIONS="-Xms{{ ((ansible_memtotal_mb*0.9-684)/2)|int|abs }}m -Xmx{{ (ansible_memtotal_mb*0.9-684)|int|abs }}m {{ jenkins_java_options }}"'
   notify: restart jenkins

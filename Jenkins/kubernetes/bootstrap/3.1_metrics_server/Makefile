@@ -5,6 +5,7 @@ export NAMESPACE ?= default
 
 init:
 	helm init --client-only
+	helm repo update
 
 template:
 	helmfile template

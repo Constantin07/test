@@ -5,6 +5,7 @@ export NAMESPACE ?= kube-system
 
 init:
 	helm init --client-only
+	helm repo update
 
 template:
 	helmfile template

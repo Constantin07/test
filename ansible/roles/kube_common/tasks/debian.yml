@@ -6,6 +6,14 @@
     state: present
     update_cache: yes
 
+- name: Enable/start required services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - systemd-timesyncd
+
 - name: Add GPG key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg

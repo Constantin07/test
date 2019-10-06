@@ -22,6 +22,7 @@ pipeline {
     stage('Update CoreDNS ConfigMap') {
       agent {
         docker {
+          reuseNode true
           registryUrl env.REGISTRY
           image env.DOCKER_IMAGE
           alwaysPull true
@@ -39,6 +40,7 @@ pipeline {
     stage('Install Calico Overlay') {
       agent {
         docker {
+          reuseNode true
           registryUrl env.REGISTRY
           image env.DOCKER_IMAGE
           alwaysPull true
@@ -56,6 +58,7 @@ pipeline {
     stage('Protect critical resources') {
       agent {
         docker {
+          reuseNode true
           registryUrl env.REGISTRY
           image env.DOCKER_IMAGE
           alwaysPull true
@@ -73,6 +76,7 @@ pipeline {
     stage('Install helm') {
       agent {
         docker {
+          reuseNode true
           registryUrl env.REGISTRY
           image env.DOCKER_IMAGE
           alwaysPull true
@@ -94,6 +98,7 @@ pipeline {
         stage('Config vault-auth') {
           agent {
             docker {
+              reuseNode true
               registryUrl env.REGISTRY
               image env.DOCKER_IMAGE
               alwaysPull true
@@ -110,6 +115,7 @@ pipeline {
         stage('Install metrics-server') {
           agent {
             docker {
+              reuseNode true
               registryUrl env.REGISTRY
               image env.DOCKER_IMAGE
               alwaysPull true
@@ -126,6 +132,7 @@ pipeline {
         stage('Install nginx-ingress') {
           agent {
             docker {
+              reuseNode true
               registryUrl env.REGISTRY
               image env.DOCKER_IMAGE
               alwaysPull true
@@ -142,6 +149,7 @@ pipeline {
         stage('Install external-dns') {
           agent {
             docker {
+              reuseNode true
               registryUrl env.REGISTRY
               image env.DOCKER_IMAGE
               alwaysPull true
@@ -161,6 +169,7 @@ pipeline {
         stage('Install node-problem-detector') {
           agent {
             docker {
+              reuseNode true
               registryUrl env.REGISTRY
               image env.DOCKER_IMAGE
               alwaysPull true
@@ -183,6 +192,7 @@ pipeline {
     stage('Test cluster health') {
       agent {
         docker {
+          reuseNode true
           registryUrl env.REGISTRY
           image env.DOCKER_IMAGE
           alwaysPull true

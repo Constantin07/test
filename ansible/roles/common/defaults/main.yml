@@ -6,3 +6,6 @@ redhat_packages:
   - libselinux-python
   - libsemanage-python
   - socat
+
+debian_packages:
+  - socat

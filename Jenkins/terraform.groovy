@@ -29,10 +29,10 @@ def build(nodeName = '', directory = '.') {
 
     properties([
       durabilityHint('MAX_SURVIVABILITY'),
-      buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '30')),
+      buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
       pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
       // Allow only one job at a time
-      //disableConcurrentBuilds(),
+      disableConcurrentBuilds(),
     ])
 
     // Set path to terraform
@@ -46,8 +46,8 @@ def build(nodeName = '', directory = '.') {
         checkout(scm)
 
         // Add comment to build description
-        comment = get_comment()
-        currentBuild.description = comment
+        //comment = get_comment()
+        //currentBuild.description = comment
 
         milestone label: 'Checkout'
       }

@@ -2,30 +2,30 @@ FROM alpine:3.10.2 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.8
+ARG TERRAFORM_VERSION=0.12.10
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="43806e68f7af396449dd4577c6e5cb63c6dc4a253ae233e1dddc46cf423d808b"
+ARG TERRAFORM_SHA256="2215208822f1a183fb57e24289de417c9b3157affbe8a5e520b768edbcb420b4"
 
-ARG PACKER_VERSION=1.4.3
+ARG PACKER_VERSION=1.4.4
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="c89367c7ccb50ca3fa10129bbbe89273fba0fa6a75b44e07692a32f92b1cbf55"
+ARG PACKER_SHA256="b4dc37877a0fd00fc72ebda98977c2133be9ba6b26bcdd13b1b14a369e508948"
 
 ARG KUBECTL_VERSION=v1.16.1
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="69cfb3eeaa0b77cc4923428855acdfc9ca9786544eeaff9c21913be830869d29"
 
-ARG HELM_VERSION=2.14.3
+ARG HELM_VERSION=2.15.0-rc.1
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="38614a665859c0f01c9c1d84fa9a5027364f936814d1e47839b05327e400bf55"
+ARG HELM_SHA256="e000bacd0089733bc55c4001e3f0c9e30991925e021fad4da14fab8903f1d045"
 
-ARG HELMFILE_VERSION=0.86.0
+ARG HELMFILE_VERSION=0.86.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="ccead00b360e304e0adf92381bc3203a6bddf0aaaf4c4124b402a6ea78bc734a"
+ARG HELMFILE_SHA256="0ffb19c112c3c75cb33cb4d67d4631e28be28808ca943162c2ebb0827deab7c3"
 
 ARG GOMPLATE_VERSION=3.5.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
