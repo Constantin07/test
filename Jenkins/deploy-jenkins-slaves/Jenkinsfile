@@ -18,6 +18,7 @@ pipeline {
     stage('Configure Jenkins Slaves') {
       agent {
         docker {
+          reuseNode true
           registryUrl 'http://centos7.internal:5000'
           image 'centos7.internal:5000/tool-box:latest'
           alwaysPull true

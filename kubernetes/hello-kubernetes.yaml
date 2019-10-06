@@ -21,33 +21,20 @@ metadata:
     app: hello-kubernetes
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: hello-kubernetes
   strategy:
    type: RollingUpdate
    rollingUpdate:
      maxUnavailable: 1
      maxSurge: 1
-  selector:
-    matchLabels:
-      app: hello-kubernetes
   template:
     metadata:
       labels:
         app: hello-kubernetes
     spec:
       serviceAccountName: hello-kubernetes
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              namespaces: [ "default" ]
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - hello-kubernetes
-              topologyKey: kubernetes.io/hostname
       containers:
       - name: hello-kubernetes
 #        image: paulbouwer/hello-kubernetes:1.5
@@ -59,38 +46,61 @@ spec:
         - name: MESSAGE
           value: Hello world app deployed on Kubernetes!
         - name: VAULT_ADDR
-          value: "http://vault.internal:8200"
-        - name: VAULT_ROLE
-          value: hello-kubernetes
+          value: "http://127.0.0.1:8200"
         - name: VAULT_SECRET_PATH
           value: secret/hello-kubernetes
         resources:
           requests:
             cpu: 50m
-            memory: 64Mi
+            memory: 100Mi
           limits:
+            cpu: 100m
             memory: 128Mi
         livenessProbe:
           tcpSocket:
             port: 8080
-          initialDelaySeconds: 3
+          initialDelaySeconds: 15
           periodSeconds: 5
           timeoutSeconds: 3
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 8080
-          initialDelaySeconds: 3
+          initialDelaySeconds: 15
           periodSeconds: 5
           timeoutSeconds: 3
+        securityContext:
+          allowPrivilegeEscalation: false
 
       - name: vault-agent
-        image: vault:1.2.1
+        image: vault:1.2.3
         imagePullPolicy: Always
+        command: [ "vault" ]
         args:
           - "agent"
           - "-config=/etc/vault/config.hcl"
+          - "-log-level=info"
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - "ps -ef | grep 'vault agent' | grep -v grep"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 1
+          timeoutSeconds: 3
+        resources:
+          requests:
+            cpu: 20m
+            memory: 20Mi
+          limits:
+            cpu: 50m
+            memory: 64Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 100
+          runAsGroup: 1000
           capabilities:
             add:
               - IPC_LOCK
@@ -103,6 +113,7 @@ spec:
           - name: vault-config
             mountPath: /etc/vault/config.hcl
             subPath: config.hcl
+
       volumes:
         - name: vault-config
           configMap:
@@ -182,7 +193,7 @@ spec:
             path: /
 
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: hello-kubernetes
@@ -195,8 +206,16 @@ spec:
     kind: Deployment
     name: hello-kubernetes
   minReplicas: 2
-  maxReplicas: 8
-  targetCPUUtilizationPercentage: 90
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 90
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 95
 
 ---
 apiVersion: policy/v1beta1

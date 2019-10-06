@@ -1,8 +1,6 @@
-#!groovy
-
 pipeline {
 
-  agent any
+  agent { label 'master' }
 
   triggers {
     pollSCM('H H(9-18) * * *')
@@ -35,18 +33,18 @@ pipeline {
           ]
         ])
 
-        echo('Overwrite default config files')
-        sh('''
+        echo 'Overwrite default config files'
+        sh '''
           cp -f Jenkins/builds/build-docker-registry/Dockerfile tmp/amd64/
           cp -f Jenkins/builds/build-docker-registry/config-example.yml tmp/amd64/
-        ''')
+        '''
       }
     }
 
     stage('Build image') {
       steps {
         dir('tmp/amd64') {
-          sh('''
+          sh '''
             GIT_URL=$(git config --get remote.origin.url)
             COMMIT=$(git rev-parse HEAD)
             docker build --pull --tag ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER} \
@@ -55,24 +53,24 @@ pipeline {
             --label COMMIT=${COMMIT} \
             --label GIT_URL=${GIT_URL} \
             .
-          ''')
+          '''
         }
       }
     }
 
     stage('Publish image') {
       steps {
-        sh('''
+        sh'''
           docker push ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER}
           docker tag ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER} ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:latest
           docker push ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:latest
-        ''')
+        '''
       }
     }
 
     stage('Deploy image') {
       steps {
-        sh('''
+        sh'''
           docker stop ${IMAGE_NAME} || true
           docker rm ${IMAGE_NAME} || true
           docker run -d \
@@ -83,7 +81,7 @@ pipeline {
             --cpus "0.5" \
             --restart unless-stopped \
             ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER}
-        ''')
+        '''
       }
     }
 

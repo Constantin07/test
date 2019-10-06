@@ -7,6 +7,7 @@ export CONFIGMAP_NAME ?= nginx-ingress-headers
 
 init:
 	helm init --client-only
+	helm repo update
 
 template:
 	helmfile template
