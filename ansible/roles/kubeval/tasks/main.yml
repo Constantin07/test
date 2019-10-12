@@ -1,0 +1,13 @@
+---
+
+- name: Download and install kubeval {{ kubeval_version }}
+  unarchive:
+    src: "{{ kubeval_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+    extra_opts:
+      - "kubeval"
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded

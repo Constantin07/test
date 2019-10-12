@@ -1,12 +1,16 @@
 
 NAMESPACE ?= kube-system
 SERVICE_ACCOUNT ?= tiller
+CONFIG_FILE ?= rbac-config.yaml
 
 # Install tiller in K8s
-.PHONY: install upgrade delete
+.PHONY: validate install upgrade delete
 
-install:
-	kubectl apply -f rbac-config.yaml
+validate:
+	kubeval --strict ${CONFIG_FILE}
+
+install: validate
+	kubectl apply -f ${CONFIG_FILE}
 	helm init --client-only
 	helm repo update
 	helm init --upgrade --service-account ${SERVICE_ACCOUNT} --tiller-namespace ${NAMESPACE} --history-max 200 --wait
@@ -18,4 +22,4 @@ upgrade:
 # Remove tiller from K8s
 delete:
 	helm reset --tiller-namespace ${NAMESPACE} || true
-	kubectl delete -f rbac-config.yaml || true
+	kubectl delete -f ${CONFIG_FILE} || true

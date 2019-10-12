@@ -1,7 +1,7 @@
 
 export NAMESPACE ?= kube-system
 
-.PHONY: init template lint diff sync status destroy
+.PHONY: init template validate lint diff sync status destroy
 
 init:
 	helm init --client-only
@@ -10,13 +10,16 @@ init:
 template:
 	helmfile template
 
+validate:
+	helmfile template | kubeval --strict
+
 lint:
 	helmfile lint
 
 diff:
 	helmfile diff
 
-sync:
+sync: validate
 	helmfile sync
 
 status:

@@ -1,13 +1,16 @@
 
 export NAMESPACE ?= default
 
-.PHONY: init template lint diff sync status destroy
+.PHONY: init validate template lint diff sync status destroy
 
 $(eval export TSIG_SECRET=$(shell cat kube-cluster.internal.enc))
 
 init:
 	helm init --client-only
 	helm repo update
+
+validate:
+	helmfile template | kubeval --strict
 
 template:
 	helmfile template
@@ -18,7 +21,7 @@ lint:
 diff:
 	helmfile diff
 
-sync:
+sync: validate
 	helmfile sync
 
 status:
