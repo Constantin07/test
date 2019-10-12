@@ -1,12 +1,17 @@
 # Add vault-auth service account for Vault integration (auth)
 
-.PHONY: install diff delete
+CONFIG_FILE ?= vault-auth.yaml
 
-install:
-	kubectl apply -f vault-auth.yaml --wait=true
+.PHONY: validate install diff delete
+
+validate:
+	kubeval --strict ${CONFIG_FILE}
+
+install: validate
+	kubectl apply -f ${CONFIG_FILE} --wait=true
 
 diff:
-	kubectl diff -f vault-auth.yaml
+	kubectl diff -f ${CONFIG_FILE}
 
 delete:
-	kubectl delete -f vault-auth.yaml --wait=true || true
+	kubectl delete -f ${CONFIG_FILE} --wait=true || true

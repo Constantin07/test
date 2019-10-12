@@ -37,6 +37,11 @@ ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/downl
 ARG VALIDATEYAML_FILE="validate-yaml-${VALIDATEYAML_VERSION}-linux-amd64.zip"
 ARG VALIDATEYAML_SHA256="9cc6be3b29d25ad79fd7e3ed4397a6320f8c31939c5a0575c077b47ee41b6db2"
 
+ARG KUBEVAL_VERSION=0.14.0
+ARG KUBEVAL_URL="https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL_VERSION}/kubeval-linux-amd64.tar.gz"
+ARG KUBEVAL_FILE="kubeval-linux-amd64.tar.gz"
+ARG KUBEVAL_SHA256="8b1b8c63df9ee3206113a3352e07474ea071610cfacf40a64db74c56e163f1e2"
+
 ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
 ARG SHUNIT2_FILE="shunit2"
 
@@ -76,12 +81,16 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
+    sha256sum ${KUBEVAL_FILE} | grep ${KUBEVAL_SHA256}; \
+    tar xvzf ${KUBEVAL_FILE} -C ${INSTALL_DIR} kubeval
+
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
 FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.253
+ARG AWSCLI_VERSION=1.16.258
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \

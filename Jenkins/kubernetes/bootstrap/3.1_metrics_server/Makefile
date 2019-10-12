@@ -1,14 +1,17 @@
 
 export NAMESPACE ?= default
 
-.PHONY: init template lint diff sync status destroy
+.PHONY: init template validate lint diff sync status destroy
 
 init:
 	helm init --client-only
 	helm repo update
 
-template:
+template: validate
 	helmfile template
+
+validate:
+	helmfile template | kubeval --strict
 
 lint:
 	helmfile lint
@@ -16,7 +19,7 @@ lint:
 diff:
 	helmfile diff
 
-sync:
+sync: validate
 	helmfile sync
 
 status:

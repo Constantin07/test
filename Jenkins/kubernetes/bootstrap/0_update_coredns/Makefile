@@ -1,9 +1,15 @@
 
 # Update coredns configmap to make it work with local DNS
-.PHONY: apply diff
 
-apply:
-	kubectl apply -f coredns_cm.yaml --wait=true
+CONFIGMAP_FILE ?= coredns_cm.yaml
+
+.PHONY: validate apply diff
+
+validate:
+	kubeval --strict ${CONFIGMAP_FILE}
+
+apply: validate
+	kubectl apply -f ${CONFIGMAP_FILE} --wait=true
 
 diff:
-	kubectl diff -f coredns_cm.yaml
+	kubectl diff -f ${CONFIGMAP_FILE}
