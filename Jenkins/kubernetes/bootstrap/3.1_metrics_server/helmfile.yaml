@@ -16,10 +16,12 @@ releases:
           pullPolicy: Always
         args:
           - --kubelet-insecure-tls
-          - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
           - --v=2
-        hostNetwork:
+        rbac:
+          pspEnabled: true
+        podDisruptionBudget:
           enabled: true
+          minAvailable: 1
         resources:
           requests:
             memory: "64Mi"

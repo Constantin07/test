@@ -91,6 +91,27 @@ pipeline {
       }
     }
 
+    stage('Install metrics-server') {
+      agent {
+        docker {
+          reuseNode true
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+           args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '3.1_metrics_server') {
+          sh '''
+            make init lint sync
+            ./wait.sh
+          '''
+        }
+        milestone(ordinal: 5)
+      }
+    }
+
     stage('Bootstrap') {
 
       parallel {
@@ -108,23 +129,6 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '3.0_vault_auth') {
               sh 'make install'
-            }
-          }
-        }
-
-        stage('Install metrics-server') {
-          agent {
-            docker {
-              reuseNode true
-              registryUrl env.REGISTRY
-              image env.DOCKER_IMAGE
-              alwaysPull true
-              args env.ARGS
-            }
-          }
-          steps {
-            dir(env.ROOT_DIR + '3.1_metrics_server') {
-              sh 'make init lint sync'
             }
           }
         }
@@ -203,7 +207,7 @@ pipeline {
         dir(env.ROOT_DIR + '7_cluster_tests') {
           sh './cluster_status_tests.sh'
         }
-        milestone(ordinal: 5)
+        milestone(ordinal: 6)
       }
     }
 
