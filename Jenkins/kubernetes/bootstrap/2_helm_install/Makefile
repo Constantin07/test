@@ -17,7 +17,7 @@ install: validate
 
 # Upgrade tiller to helm version
 upgrade:
-	helm init --upgrade --tiller-namespace ${NAMESPACE}
+	helm init --upgrade --force-upgrade --tiller-namespace ${NAMESPACE}
 
 # Remove tiller from K8s
 delete:
