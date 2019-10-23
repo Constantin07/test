@@ -17,10 +17,10 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="69cfb3eeaa0b77cc4923428855acdfc9ca9786544eeaff9c21913be830869d29"
 
-ARG HELM_VERSION=2.15.0
+ARG HELM_VERSION=2.15.1
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="50936867d24431a98777828f399b48063c3f66af1ec3ba96ef5a8fc8326ebe74"
+ARG HELM_SHA256="b4d366bd6625477b2954941aeb7b601946aa4226af6728e3a84eac4e62a84042"
 
 ARG HELMFILE_VERSION=0.87.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
@@ -90,7 +90,7 @@ RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_UR
 
 FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.258
+ARG AWSCLI_VERSION=1.16.264
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
