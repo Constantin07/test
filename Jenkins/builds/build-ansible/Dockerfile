@@ -1,4 +1,4 @@
-FROM centos:latest AS BUILDER
+FROM centos:7 AS BUILDER
 
 ARG REPOSITORY=https://github.com/ansible/ansible.git
 

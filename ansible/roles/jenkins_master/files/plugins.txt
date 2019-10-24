@@ -5,11 +5,11 @@ aws-credentials
 blueocean
 build-timestamp
 cctray-xml
-compress-buildlog
 credentials
 custom-tools-plugin
 docker-plugin
 docker-workflow
+durable-task:1.30
 git
 github
 greenballs
