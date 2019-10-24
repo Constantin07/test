@@ -19,12 +19,6 @@ pipeline {
 
   stages {
 
-    stage('test'){
-      steps {
-        sh 'env'
-      }
-    }
-
     stage('Update CoreDNS ConfigMap') {
       agent {
         docker {
