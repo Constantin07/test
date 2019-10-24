@@ -22,10 +22,10 @@ ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSIO
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="b4d366bd6625477b2954941aeb7b601946aa4226af6728e3a84eac4e62a84042"
 
-ARG HELMFILE_VERSION=0.87.0
+ARG HELMFILE_VERSION=0.87.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="e0d56d26ea97856c4b2dc41ea58c6912e0c19787ad55283fe9f72f0687244353"
+ARG HELMFILE_SHA256="7eb9c41a5230659453a2156cf4cc4db0080e73dfd2498f3cd53d9b515c93087d"
 
 ARG GOMPLATE_VERSION=3.5.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -90,7 +90,7 @@ RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_UR
 
 FROM alpine:3.10.2
 
-ARG AWSCLI_VERSION=1.16.264
+ARG AWSCLI_VERSION=1.16.265
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
