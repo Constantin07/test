@@ -1,0 +1,9 @@
+---
+
+description: Configure Kubernetes nodes.
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true
