@@ -3,12 +3,12 @@
 - hosts: centos7.internal
 
   roles:
-    - common
-    - resolv
-    - chronyd
-    - ctop
-    - docker
+#    - common
+#    - resolv
+#    - chronyd
+#    - ctop
+#    - docker
     - helm
     - helmfile
     - kubeval
-    - { role: jenkins_master, jenkins_version: "2.201" }
+    - { role: jenkins_master, jenkins_version: "2.202" }

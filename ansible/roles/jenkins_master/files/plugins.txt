@@ -9,7 +9,7 @@ credentials
 custom-tools-plugin
 docker-plugin
 docker-workflow
-durable-task:1.30
+durable-task
 git
 github
 greenballs
