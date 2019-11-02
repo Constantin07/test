@@ -2,6 +2,14 @@
 
 description: "Clean up docker registry from old images."
 
+triggers:
+  upstream:
+    threshold: SUCCESS
+    projects:
+      - dockerfiles/tool-box
+      - dockerfiles/vault
+      - builds/build-docker-registry
+
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:
