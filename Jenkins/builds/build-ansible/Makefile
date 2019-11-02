@@ -1,4 +1,3 @@
-SHELL := /bin/bash
 
 IMAGE_NAME = ansible:latest
 BUILD_DIR = /ansible/rpm-build

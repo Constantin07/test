@@ -68,7 +68,7 @@ pipeline {
       }
     }
 
-    stage('Deploy image') {
+    stage('Deploy container') {
       steps {
         sh'''
           docker stop ${IMAGE_NAME} || true
@@ -85,6 +85,12 @@ pipeline {
       }
     }
 
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
   }
 
 }
