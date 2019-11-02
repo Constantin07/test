@@ -17,8 +17,8 @@ storage:
   maintenance:
     uploadpurging:
       enabled: true
-      age: 168h
-      interval: 24h
+      age: 96h
+      interval: 12h
       dryrun: false
 http:
   addr: 0.0.0.0:5000

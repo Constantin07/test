@@ -2,10 +2,6 @@ pipeline {
 
   agent { label 'master' }
 
-  triggers {
-    pollSCM('H H(9-18) * * *')
-  }
-
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
@@ -13,9 +9,8 @@ pipeline {
   }
 
   environment {
-    REGISTRY     = 'centos7.internal'
-    IMAGE_NAME   = 'docker-registry'
-    SERVICE_PORT = '5000'
+    DIRECTORY = 'Jenkins/builds/build-docker-registry'
+    REMOTE_TAG = "${BUILD_NUMBER}-${GIT_COMMIT.substring(0, 8)}"
   }
 
   stages {
@@ -35,8 +30,9 @@ pipeline {
 
         echo 'Overwrite default config files'
         sh '''
-          cp -f Jenkins/builds/build-docker-registry/Dockerfile tmp/amd64/
-          cp -f Jenkins/builds/build-docker-registry/config-example.yml tmp/amd64/
+          cp -f ${DIRECTORY}/Dockerfile tmp/amd64/
+          cp -f ${DIRECTORY}/config-example.yml tmp/amd64/
+          cp -f ${DIRECTORY}/Makefile tmp/amd64/
         '''
       }
     }
@@ -44,44 +40,32 @@ pipeline {
     stage('Build image') {
       steps {
         dir('tmp/amd64') {
-          sh '''
-            GIT_URL=$(git config --get remote.origin.url)
-            COMMIT=$(git rev-parse HEAD)
-            docker build --pull --tag ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER} \
-            --label IMAGE_NAME=${IMAGE_NAME} \
-            --label BUILD_NUMBER=${BUILD_NUMBER} \
-            --label COMMIT=${COMMIT} \
-            --label GIT_URL=${GIT_URL} \
-            .
-          '''
+          sh 'make build tag'
         }
       }
     }
 
     stage('Publish image') {
       steps {
-        sh'''
-          docker push ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER}
-          docker tag ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER} ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:latest
-          docker push ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:latest
-        '''
+        dir(env.DIRECTORY) {
+          sh 'make push'
+        }
       }
     }
 
     stage('Deploy container') {
       steps {
-        sh'''
-          docker stop ${IMAGE_NAME} || true
-          docker rm ${IMAGE_NAME} || true
-          docker run -d \
-            --name ${IMAGE_NAME} \
-            -p 5000:5000 \
-            -v /var/lib/registry:/var/lib/registry \
-            --memory 256m \
-            --cpus "0.5" \
-            --restart unless-stopped \
-            ${REGISTRY}:${SERVICE_PORT}/${IMAGE_NAME}:${BUILD_NUMBER}
-        '''
+        dir(env.DIRECTORY) {
+          sh 'make deploy'
+        }
+      }
+    }
+
+    stage('Test') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make test'
+        }
       }
     }
 
