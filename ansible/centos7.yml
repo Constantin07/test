@@ -8,7 +8,7 @@
 #    - chronyd
 #    - ctop
 #    - docker
-    - helm
-    - helmfile
-    - kubeval
-    - { role: jenkins_master, jenkins_version: "2.202" }
+#    - helm
+#    - helmfile
+#    - kubeval
+    - { role: jenkins_master, jenkins_version: "2.203" }
