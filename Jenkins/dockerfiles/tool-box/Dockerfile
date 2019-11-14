@@ -1,31 +1,31 @@
-FROM alpine:3.10.2 AS BUILDER
+FROM alpine:3.10.3 AS BUILDER
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.13
+ARG TERRAFORM_VERSION=0.12.14
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="63f765a3f83987b67b046a9c31acff1ec9ee618990d0eab4db34eca6c0d861ec"
+ARG TERRAFORM_SHA256="8db6b396eb2626f18bf5e98af824645bb96d8290e2ab761b2dace3a2574b8cee"
 
-ARG PACKER_VERSION=1.4.4
+ARG PACKER_VERSION=1.4.5
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="b4dc37877a0fd00fc72ebda98977c2133be9ba6b26bcdd13b1b14a369e508948"
+ARG PACKER_SHA256="30da8dab9c526a6d15b037e2234f6f12cf3accfad77eb2c130738ec1a54cab6d"
 
-ARG KUBECTL_VERSION=v1.16.1
+ARG KUBECTL_VERSION=v1.16.2
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="69cfb3eeaa0b77cc4923428855acdfc9ca9786544eeaff9c21913be830869d29"
+ARG KUBECTL_SHA256="3ff48e12f9c768ad548e4221d805281ea28dfcda5c18b3cd1797fe37aee3012e"
 
 ARG HELM_VERSION=2.16.1
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="7eebaaa2da4734242bbcdced62cc32ba8c7164a18792c8acdf16c77abffce202"
 
-ARG HELMFILE_VERSION=0.90.8
+ARG HELMFILE_VERSION=0.90.9
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="03d07f7c4ceabb1592a5fdd1c9c97cf45618bc46f795f739232246131808d46b"
+ARG HELMFILE_SHA256="5fd5c87341dba9aa0e6439cd69bfc303696c700f87a4ac8c17044a6311f5e8a1"
 
 ARG GOMPLATE_VERSION=3.5.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -88,9 +88,9 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.10.2
+FROM alpine:3.10.3
 
-ARG AWSCLI_VERSION=1.16.265
+ARG AWSCLI_VERSION=1.16.282
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
