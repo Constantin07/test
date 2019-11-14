@@ -1,6 +1,6 @@
 variable "vpc_cidr" {
   description = "The CIDR IP block allocated for VPC"
-  type        = "string"
+  type        = string
 }
 
 variable "internal_dns_domain" {
@@ -10,17 +10,17 @@ variable "internal_dns_domain" {
 
 variable "environment" {
   description = "Environment name"
-  type        = "string"
+  type        = string
 }
 
 variable "availability_zones_count" {
   description = "Number of avalability zones to use"
-  type        = "string"
+  type        = string
   default     = "2"
 }
 
 variable "extra_tags" {
   description = "Extra tags to apply to the provisioned resources"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }

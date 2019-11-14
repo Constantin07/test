@@ -1,17 +1,17 @@
 resource "aws_network_acl" "private" {
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id = aws_vpc.default.id
 
-  subnet_ids = "${aws_subnet.private.*.id}"
+  subnet_ids = aws_subnet.private.*.id
 
-  tags = "${merge(map(
+  tags = merge(map(
     "Name", "${var.environment}-private-nacl"
-  ), var.extra_tags)}"
+  ), var.extra_tags)
 }
 
 /* Outbound rules */
 
 resource "aws_network_acl_rule" "private_egress" {
-  network_acl_id = "${aws_network_acl.private.id}"
+  network_acl_id = aws_network_acl.private.id
   rule_number    = 100
   egress         = true
   protocol       = "-1"
@@ -24,7 +24,7 @@ resource "aws_network_acl_rule" "private_egress" {
 /* Inbound rules */
 
 resource "aws_network_acl_rule" "private_ingress_ephemeral_tcp" {
-  network_acl_id = "${aws_network_acl.private.id}"
+  network_acl_id = aws_network_acl.private.id
   rule_number    = 100
   egress         = false
   protocol       = "tcp"
@@ -35,7 +35,7 @@ resource "aws_network_acl_rule" "private_ingress_ephemeral_tcp" {
 }
 
 resource "aws_network_acl_rule" "private_ingress_ephemeral_udp" {
-  network_acl_id = "${aws_network_acl.private.id}"
+  network_acl_id = aws_network_acl.private.id
   rule_number    = 200
   egress         = false
   protocol       = "udp"
