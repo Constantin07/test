@@ -6,38 +6,42 @@
   become_user: root
 
   vars:
-    version: 1.16.0-00
+    version: 1.16.3-00
 
   tasks:
 
-#    - name: Unhold kubeadm
-#      command: apt-mark unhold kubeadm
-
-#    - name: Upgrade kubeadm to {{ version }}
-#      apt:
-#        name: kubeadm={{ version }}
-#        update_cache: yes
-
-#    - name: Hold kubeadm
-#      command: apt-mark hold kubeadm
-
-
-    - name: Unhold kubelet kubectl
-      command: apt-mark unhold kubelet kubectl
-
-    - name: Upgrade kubelet kubectl {{ version }}
+    - name: Run apt update
       apt:
-        name: "{{ item }}={{ version }}"
         update_cache: yes
-      loop:
-        - kubelet
-        - kubectl
 
-    - name: Hold kubelet kubectl
-      command: apt-mark hold kubelet kubectl
+    - name: Unhold kubeadm
+      command: apt-mark unhold kubeadm
 
-    - name: Restart kubelet
-      systemd:
-        name: kubelet
-        state: restarted
-        daemon_reload: yes
+    - name: Upgrade kubeadm to {{ version }}
+      apt:
+        name: kubeadm={{ version }}
+        update_cache: yes
+
+    - name: Hold kubeadm
+      command: apt-mark hold kubeadm
+
+
+#    - name: Unhold kubelet kubectl
+#      command: apt-mark unhold kubelet kubectl
+
+#    - name: Upgrade kubelet kubectl {{ version }}
+#      apt:
+#        name: "{{ item }}={{ version }}"
+#        update_cache: yes
+#      loop:
+#        - kubelet
+#        - kubectl
+
+#    - name: Hold kubelet kubectl
+#      command: apt-mark hold kubelet kubectl
+
+#    - name: Restart kubelet
+#      systemd:
+#        name: kubelet
+#        state: restarted
+#        daemon_reload: yes
