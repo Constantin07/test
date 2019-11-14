@@ -1,0 +1,67 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'Jenkins/kubernetes/kube-bench'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+  }
+
+  stages {
+
+    stage('Run kube-bench') {
+
+      parallel {
+
+        stage('Run kube-bench on node') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image env.DOCKER_IMAGE
+              alwaysPull true
+              args env.ARGS
+            }
+          }
+          steps {
+            dir(env.ROOT_DIR) {
+              sh './kube-bench.sh node'
+            }
+          }
+        }
+
+        stage('Run kube-bench on master') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image env.DOCKER_IMAGE
+              alwaysPull true
+              args env.ARGS
+            }
+          }
+          steps {
+            dir(env.ROOT_DIR) {
+              sh './kube-bench.sh master'
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
