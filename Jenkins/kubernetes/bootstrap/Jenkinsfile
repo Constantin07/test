@@ -10,7 +10,7 @@ pipeline {
 
   environment {
     KUBECONFIG = '/home/toolbox/.kube/config'
-    HELM_HOME = '/tmp/.helm'
+    //HELM_HOME = '/tmp/.helm'
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'

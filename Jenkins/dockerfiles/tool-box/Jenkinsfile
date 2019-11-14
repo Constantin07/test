@@ -35,7 +35,7 @@ pipeline {
     stage('Publish image') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make publish clean'
+          sh 'make publish'
         }
       }
     }

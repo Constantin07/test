@@ -17,8 +17,8 @@ resource "aws_vpc" "default" {
   assign_generated_ipv6_cidr_block = true
 
   tags = "${merge(map(
-      "Name", "${var.environment}-vpc"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-vpc"
+  ), var.extra_tags)}"
 }
 
 locals {
@@ -30,8 +30,8 @@ resource "aws_vpc_dhcp_options" "default" {
   domain_name_servers = ["AmazonProvidedDNS"]
 
   tags = "${merge(map(
-      "Name", "${var.environment}-dhcp-options"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-dhcp-options"
+  ), var.extra_tags)}"
 }
 
 resource "aws_vpc_dhcp_options_association" "default" {
@@ -44,7 +44,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  availability_zones = "${slice(data.aws_availability_zones.available.names, length(data.aws_availability_zones.available.names)-var.availability_zones_count, length(data.aws_availability_zones.available.names))}"
+  availability_zones = "${slice(data.aws_availability_zones.available.names, length(data.aws_availability_zones.available.names) - var.availability_zones_count, length(data.aws_availability_zones.available.names))}"
   newbits            = "${ceil(log(2 * var.availability_zones_count, 2))}"
 }
 
@@ -56,9 +56,9 @@ resource "aws_subnet" "private" {
   availability_zone = "${element(local.availability_zones, count.index)}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}",
-      "kubernetes.io/role/internal-elb", "1"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}",
+    "kubernetes.io/role/internal-elb", "1"
+  ), var.extra_tags)}"
 }
 
 resource "aws_subnet" "public" {
@@ -70,17 +70,17 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = "${merge(map(
-      "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
-      "kubernetes.io/role/elb", "1"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
+    "kubernetes.io/role/elb", "1"
+  ), var.extra_tags)}"
 }
 
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-gw"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-gw"
+  ), var.extra_tags)}"
 }
 
 resource "aws_egress_only_internet_gateway" "default" {
@@ -128,8 +128,8 @@ resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-public-rt"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-public-rt"
+  ), var.extra_tags)}"
 }
 
 resource "aws_route" "outer_igw" {
@@ -154,8 +154,8 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
+  ), var.extra_tags)}"
 }
 
 /*
