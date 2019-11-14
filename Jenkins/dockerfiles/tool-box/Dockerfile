@@ -92,6 +92,8 @@ FROM alpine:3.10.3
 
 ARG AWSCLI_VERSION=1.16.282
 
+ENV HELM_HOME=/tmp/.helm
+
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \

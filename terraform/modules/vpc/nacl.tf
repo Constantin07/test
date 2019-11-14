@@ -4,8 +4,8 @@ resource "aws_network_acl" "private" {
   subnet_ids = "${aws_subnet.private.*.id}"
 
   tags = "${merge(map(
-      "Name", "${var.environment}-private-nacl"
-    ), var.extra_tags)}"
+    "Name", "${var.environment}-private-nacl"
+  ), var.extra_tags)}"
 }
 
 /* Outbound rules */
