@@ -2,6 +2,9 @@
 
 description: Clean up old docker images and containers.
 
+triggers:
+  cron: 'TZ=Europe/London\nH H/2 * * *'
+
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:

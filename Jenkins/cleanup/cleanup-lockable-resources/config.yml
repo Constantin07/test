@@ -2,6 +2,9 @@
 
 description: Clean up unusable Jenkins lockable resources.
 
+triggers:
+  cron: 'H H(8-22) * * *'
+
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:
