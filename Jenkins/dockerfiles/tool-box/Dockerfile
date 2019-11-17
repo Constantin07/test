@@ -27,10 +27,10 @@ ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFI
 ARG HELMFILE_FILE="helmfile_linux_amd64"
 ARG HELMFILE_SHA256="5fd5c87341dba9aa0e6439cd69bfc303696c700f87a4ac8c17044a6311f5e8a1"
 
-ARG GOMPLATE_VERSION=3.5.0
+ARG GOMPLATE_VERSION=3.6.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
-ARG GOMPLATE_SHA256="bab28cab8cc4ef81015090f4deb6a81559d5a36e33dc7805ddd18bda62b0b0f4"
+ARG GOMPLATE_SHA256="0ec9907db0e31842d954e7644c928d1b5e0eaf0f112096a0fc0d923de34cb704"
 
 ARG VALIDATEYAML_VERSION=v0.2.3
 ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/download/${VALIDATEYAML_VERSION}/validate-yaml-linux-amd64.zip"
