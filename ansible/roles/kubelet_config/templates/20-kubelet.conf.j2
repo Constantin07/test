@@ -1,11 +1,14 @@
 [Service]
 CPUAccounting=true
 MemoryAccounting=true
-Environment="KUBELET_SYSTEM_PODS_ARGS=--anonymous-auth=false --read-only-port=0 --streaming-connection-idle-timeout=5m --protect-kernel-defaults=true --event-qps=0"
+Environment="KUBELET_SYSTEM_PODS_ARGS=--anonymous-auth=false --streaming-connection-idle-timeout=5m"
 Environment="KUBELET_AUTHZ_ARGS=--authorization-mode=Webhook"
-Environment="KUBELET_CERTIFICATE_ARGS=--rotate-certificates=true --feature-gates=RotateKubeletServerCertificate=true"
 Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=systemd"
 Environment="KUBELET_EXTRA_ARGS=\
+--read-only-port=0 \
+--protect-kernel-defaults=true \
+--event-qps=0 \
+--rotate-certificates=true --feature-gates=RotateKubeletServerCertificate=true \
 --system-reserved cpu=200m,memory=200Mi,ephemeral-storage=1Gi \
 --kube-reserved cpu=200m,memory=200Mi,ephemeral-storage=1Gi \
 --eviction-hard memory.available<100Mi,nodefs.available<10%,nodefs.inodesFree<5%,imagefs.available<5%,imagefs.inodesFree<5% \
