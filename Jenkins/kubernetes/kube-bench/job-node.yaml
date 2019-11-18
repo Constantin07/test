@@ -2,14 +2,20 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: kube-bench-node
+  labels:
+    app: kube-bench-node
 spec:
   template:
+    metadata:
+      labels:
+        app: kube-bench-node
     spec:
       hostPID: true
       containers:
       - name: kube-bench
         image: aquasec/kube-bench:latest
-        command: ["kube-bench","node"]
+        imagePullPolicy: Always
+        args: ["node", "--version", "1.15"]
         volumeMounts:
         - name: var-lib-kubelet
           mountPath: /var/lib/kubelet
@@ -17,13 +23,9 @@ spec:
           mountPath: /etc/systemd
         - name: etc-kubernetes
           mountPath: /etc/kubernetes
-          # /usr/bin is mounted to access kubectl / kubelet, for auto-detecting the Kubernetes version.
-          # You can omit this mount if you specify --version as part of the command.
-        - name: usr-bin
-          mountPath: /usr/bin
-        env:
-        - name: KUBE_BENCH_VERSION
-          value: "1.13"
+        - name: opt-kube-bench-config
+          mountPath: /opt/kube-bench/cfg/cis-1.4/node.yaml
+          subPath: node.yaml
       restartPolicy: Never
       volumes:
       - name: var-lib-kubelet
@@ -35,6 +37,6 @@ spec:
       - name: etc-kubernetes
         hostPath:
           path: "/etc/kubernetes"
-      - name: usr-bin
-        hostPath:
-          path: "/usr/bin"
+      - name: opt-kube-bench-config
+        configMap:
+          name: kube-bench-node-configmap
