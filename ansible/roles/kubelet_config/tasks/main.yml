@@ -3,9 +3,33 @@
 - name: Create kubelet systemd dropin file
   template:
     src: 20-kubelet.conf.j2
-    dest: "{{ kubelet_dropin_file }}"
+    dest: /etc/systemd/system/kubelet.service.d/20-kubelet.conf
     owner: root
     group: root
     mode: 0644
   notify:
     - restart kubelet
+
+- name: Create kubelet extra args file
+  template:
+    src: kubelet.j2
+    dest: /etc/default/kubelet
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart kubelet
+
+- name: Protect kernel defaults
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+    ignoreerrors: yes
+    sysctl_set: yes
+  with_items:
+    - { name: vm.overcommit_memory, value: 1 }
+    - { name: kernel.panic, value: 10 }
+    - { name: kernel.panic_on_oops, value: 1 }
+

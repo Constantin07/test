@@ -1,20 +1,3 @@
 [Service]
 CPUAccounting=true
 MemoryAccounting=true
-Environment="KUBELET_SYSTEM_PODS_ARGS=--anonymous-auth=false --streaming-connection-idle-timeout=5m"
-Environment="KUBELET_AUTHZ_ARGS=--authorization-mode=Webhook"
-Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=systemd"
-Environment="KUBELET_EXTRA_ARGS=\
---read-only-port=0 \
---protect-kernel-defaults=true \
---event-qps=0 \
---rotate-certificates=true --feature-gates=RotateKubeletServerCertificate=true \
---system-reserved cpu=200m,memory=200Mi,ephemeral-storage=1Gi \
---kube-reserved cpu=200m,memory=200Mi,ephemeral-storage=1Gi \
---eviction-hard memory.available<100Mi,nodefs.available<10%,nodefs.inodesFree<5%,imagefs.available<5%,imagefs.inodesFree<5% \
---eviction-soft memory.available<150Mi,nodefs.available<30%,nodefs.inodesFree<10%,imagefs.available<30%,imagefs.inodesFree<10% \
---eviction-soft-grace-period memory.available=1m30s,nodefs.available=1m30s,nodefs.inodesFree=1m30s,imagefs.available=1m30s,imagefs.inodesFree=1m30s \
---eviction-minimum-reclaim nodefs.available=100Mi,imagefs.available=100Mi \
---eviction-max-pod-grace-period 30 \
---minimum-image-ttl-duration 48h \
-"
