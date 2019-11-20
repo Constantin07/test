@@ -1,6 +1,6 @@
 ---
 
-- name: Make sure unzip is installed v{{ vault_version }}
+- name: Make sure unzip is installed
   package:
     name: unzip
     update_cache: yes

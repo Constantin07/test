@@ -12,6 +12,10 @@ pipeline {
     DIRECTORY = 'Jenkins/dockerfiles/vault'
   }
 
+  parameters {
+    string(name: 'VAULT_VERSION', defaultValue: '1.3.0', description: 'The version of Vault.')
+  }
+
   stages {
 
     stage('Build image') {

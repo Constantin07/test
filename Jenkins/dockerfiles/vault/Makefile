@@ -6,7 +6,7 @@ IMAGE ?= vault
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 ifndef VAULT_VERSION
-  $(error VAULT_VERSION environment variable must be defined!)
+$(error VAULT_VERSION environment variable must be defined!)
 endif
 
 .PHONY: all build tag publish clean
