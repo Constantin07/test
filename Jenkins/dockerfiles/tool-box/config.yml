@@ -10,10 +10,6 @@ properties:
 
 extensions:
   cleanBeforeCheckout: true
-#  disableRemotePoll: true
-#  pathRestriction:
-#    includedRegions: |
-#      Jenkins/dockerfiles/tool-box/.*
   cloneOptions:
     shallow: true
     noTags: true
