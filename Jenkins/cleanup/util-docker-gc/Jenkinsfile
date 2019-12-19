@@ -25,7 +25,7 @@ node() {
     pipelineTriggers([cron("TZ=Europe/London\nH H/2 * * *")]),
     disableConcurrentBuilds()
   ])
-
+  skipDefaultCheckout()
 }
 
 def builders = [:]
