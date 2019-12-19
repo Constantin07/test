@@ -1,0 +1,40 @@
+pipeline {
+
+  agent none
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    DIRECTORY = 'Jenkins/kubernetes/dashboard'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
+  }
+
+  stages {
+
+    stage('Install Dashboard') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'echo Hello'
+        }
+        cleanWs()
+      }
+    }
+
+  }
+
+}
