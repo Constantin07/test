@@ -1,0 +1,12 @@
+---
+
+helmDefaults:
+  verify: false
+  wait: true
+  timeout: 120
+  recreatePods: true
+
+releases:
+  - name: kubernetes-dashboard
+    chart: ./kubernetes-dashboard
+    namespace: {{ requiredEnv "NAMESPACE" }}

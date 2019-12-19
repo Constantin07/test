@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubernetes-dashboard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    k8s-app: {{ template "kubernetes-dashboard.name" . }}
+    chart: {{ template "kubernetes-dashboard.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  annotations:
+    kubernetes.io/ingress.class: internal
+    external-dns.alpha.kubernetes.io/hostname: dashboard.internal.
+spec:
+  rules:
+    - host: dashboard.internal
+      http:
+        paths:
+          - backend:
+              serviceName: kubernetes-dashboard
+              servicePort: 9090
+            path: /
