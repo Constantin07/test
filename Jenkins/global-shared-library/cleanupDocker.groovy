@@ -22,11 +22,7 @@ def call(String nodeName='', int keep_images=1) {
                         /* do nothing */
                       }
 
-        sh '''
-          docker image prune -a -f
-          docker system prune -f --filter "until=48h"
-        '''
-
+        sh 'docker system prune --all --force --filter "until=48h"'
         cleanWs()
       }
     }

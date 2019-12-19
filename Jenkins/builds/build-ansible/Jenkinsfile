@@ -2,7 +2,9 @@ boolean update = false
 
 pipeline {
 
-  agent { label 'master' }
+  agent {
+    label 'master'
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
