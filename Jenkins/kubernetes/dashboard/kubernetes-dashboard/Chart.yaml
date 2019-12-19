@@ -1,0 +1,11 @@
+apiVersion: v1
+name: kubernetes-dashboard
+version: 1.0.0
+appVersion: 2.0.0-beta8
+description: Kubernetes dashboard
+keywords:
+- kubernetes
+- dashboard
+home: https://github.com/kubernetes/dashboard
+sources:
+- https://github.com/kubernetes/dashboard

@@ -35,5 +35,7 @@ releases:
               http: 30000
               https: 30001
             externalTrafficPolicy: Local
+          scope:
+            enabled: false
         podSecurityPolicy:
           enabled: true

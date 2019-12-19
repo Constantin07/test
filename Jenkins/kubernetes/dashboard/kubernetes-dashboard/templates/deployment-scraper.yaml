@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kubernetes-metrics-scraper
+  namespace: {{ .Release.Namespace }}
+  labels:
+    k8s-app: kubernetes-metrics-scraper
+    chart: {{ template "kubernetes-dashboard.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: kubernetes-metrics-scraper
+  template:
+    metadata:
+      labels:
+        k8s-app: kubernetes-metrics-scraper
+    spec:
+      containers:
+        - name: kubernetes-metrics-scraper
+          image: kubernetesui/metrics-scraper:v1.0.2
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          args:
+            - --metric-duration=30m
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          securityContext:
+            allowPrivilegeEscalation: false
+#            readOnlyRootFilesystem: true
+#            runAsUser: 1001
+#            runAsGroup: 2001
+      serviceAccountName: kubernetes-dashboard-scraper

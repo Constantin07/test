@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ .Env.NAMESPACE }}"
+  labels:
+    k8s-app: kubernetes-dashboard

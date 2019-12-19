@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dashboard-metrics-scraper
+  namespace: {{ .Release.Namespace }}
+  labels:
+    k8s-app: kubernetes-metrics-scraper
+    chart: {{ template "kubernetes-dashboard.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    k8s-app: kubernetes-metrics-scraper
