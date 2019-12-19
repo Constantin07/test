@@ -12,6 +12,7 @@ def repos = [
 ]
 
 pipeline {
+
   agent any
 
   options {
