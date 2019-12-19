@@ -6,6 +6,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
     ansiColor('xterm')
+    parallelsAlwaysFailFast()
   }
 
   environment {
@@ -13,7 +14,7 @@ pipeline {
     ROOT_DIR = 'Jenkins/kubernetes/kube-bench'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
   }
 
   stages {

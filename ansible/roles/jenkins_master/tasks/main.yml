@@ -35,7 +35,7 @@
     group: jenkins
     mode: 0644
   with_fileglob:
-    - ../templates/*.j2
+    - ../templates/*.groovy.j2
   notify: restart jenkins
 
 - name: Upload list of plugins and install script
@@ -71,8 +71,18 @@
   become: yes
   become_user: jenkins
 
+- name: Install Jenkins systemd unit file
+  template:
+    src: jenkins.service.j2
+    dest: /etc/systemd/system/jenkins.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart jenkins
+
 - name: Ensure Jenkins service is started and enabled
-  service:
-    name: jenkins
-    state: started
+  systemd:
+    name: jenkins.service
+    state: restarted
     enabled: yes
+    daemon_reload: yes

@@ -6,6 +6,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
     ansiColor('xterm')
+    parallelsAlwaysFailFast()
   }
 
   environment {
@@ -160,25 +161,6 @@ pipeline {
             }
           }
         }
-
-        stage('Install node-problem-detector') {
-          agent {
-            docker {
-              registryUrl env.REGISTRY
-              image env.DOCKER_IMAGE
-              alwaysPull true
-              args env.ARGS
-            }
-          }
-          steps {
-            dir(env.ROOT_DIR + '3.4_node_problem_detector') {
-              sh '''
-                make init lint sync
-              '''
-            }
-          }
-        }
-
 
       }
     }
