@@ -7,11 +7,19 @@
     owner: root
     group: root
     mode: 0644
+  retries: 5
+  delay: 3
+  register: result
+  until: result is not failed
 
 - name: Add Jenkins GPG key.
   rpm_key:
     key: "{{ jenkins_yum_gpg_key }}"
     state: present
+  retries: 5
+  delay: 3
+  register: result
+  until: result is not failed
 
 - name: Install Jenkins
   yum:

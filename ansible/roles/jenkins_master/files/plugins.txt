@@ -30,3 +30,10 @@ timestamper
 workflow-aggregator
 workflow-remote-loader
 ws-cleanup
+# Updates for builtins
+command-launcher
+external-monitor-job
+jdk-tool
+antisamy-markup-formatter
+pam-auth
+windows-slaves
