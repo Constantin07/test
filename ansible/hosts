@@ -5,18 +5,6 @@ centos7.internal
 jenkins-slave.internal
 jenkins-slave2.internal
 
-[elasticsearch]
-elasticsearch-1.internal
-elasticsearch-2.internal
-elasticsearch-3.internal
-
-[elasticsearch:vars]
-
-[etcd]
-etcd-1.internal
-etcd-2.internal
-etcd-3.internal
-
 [kube_masters]
 master-node1.internal
 master-node2.internal
@@ -32,14 +20,9 @@ kube_slaves
 [kube:vars]
 ansible_user=ubuntu
 
-[monitoring:children]
-elasticsearch
-etcd
-
 [all:children]
 local
-elasticsearch
-etcd
+jenkins_slaves
 
 [all:vars]
 ansible_user=root
