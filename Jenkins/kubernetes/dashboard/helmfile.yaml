@@ -5,6 +5,7 @@ helmDefaults:
   wait: true
   timeout: 120
   recreatePods: true
+  historyMax: 5
 
 releases:
   - name: kubernetes-dashboard
