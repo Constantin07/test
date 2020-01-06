@@ -21,15 +21,33 @@ rules:
     # Allow Dashboard to get metrics.
   - apiGroups: [""]
     resources: ["services"]
-    resourceNames: ["heapster", "dashboard-metrics-scraper"]
+    resourceNames: ["dashboard-metrics-scraper"]
     verbs: ["proxy"]
   - apiGroups: [""]
     resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
+    resourceNames: ["dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
+
   # Allow Dashboard read-only access
   - apiGroups: [""]
-    resources: ["*"]
+    resources: ["secrets"]
+    verbs: ["list"]
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - namespaces
+      - events
+      - services
+      - pods
+      - deployments
+      - jobs
+      - limitranges
+      - resourcequotas
+      - persistentvolumes
+      - replicationcontrollers
+      - endpoints
+      - configmaps
+      - persistentvolumeclaims
     verbs: ["get", "list", "watch"]
   - apiGroups: ["extensions"]
     resources: ["*"]

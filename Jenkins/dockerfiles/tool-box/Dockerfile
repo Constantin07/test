@@ -1,4 +1,4 @@
-FROM alpine:3.10.3 AS BUILDER
+FROM alpine:3.11.2 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -12,20 +12,20 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="6cffd17ee02767fe6533c1fde61b59437bb1e2f5c922d977f739be20dae6bf4a"
 
-ARG KUBECTL_VERSION=v1.16.2
+ARG KUBECTL_VERSION=v1.17.0
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="3ff48e12f9c768ad548e4221d805281ea28dfcda5c18b3cd1797fe37aee3012e"
+ARG KUBECTL_SHA256="6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c"
 
 ARG HELM_VERSION=2.16.1
 ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="7eebaaa2da4734242bbcdced62cc32ba8c7164a18792c8acdf16c77abffce202"
 
-ARG HELMFILE_VERSION=0.97.0
+ARG HELMFILE_VERSION=0.98.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="e4ea74c706ea514cd6df9a4bfa71e3247d3671a40954178406586cd10cd1ea65"
+ARG HELMFILE_SHA256="ebec0efb302b0675f7b2c0aa1ff3fe1163973109ed3a1ece580ab69218eed8c6"
 
 ARG GOMPLATE_VERSION=3.6.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -88,14 +88,14 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.10.3
+FROM alpine:3.11.2
 
 ENV HELM_HOME=/tmp/.helm
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.16.309 && \
+    pip3 install awscli==1.16.312 && \
     setcap cap_net_raw+ep /bin/busybox
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
@@ -109,4 +109,4 @@ RUN addgroup -g 992 toolbox && \
 
 USER toolbox
 
-COPY --from=BUILDER /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/bin /usr/local/bin

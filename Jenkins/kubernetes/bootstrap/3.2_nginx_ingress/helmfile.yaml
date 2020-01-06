@@ -5,12 +5,13 @@ helmDefaults:
   wait: true
   timeout: 120
   recreatePods: true
+  historyMax: 5
 
 releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/nginx-ingress
-    version: 1.27.0
+    version: 1.27.1
     values:
       - controller:
           image:
