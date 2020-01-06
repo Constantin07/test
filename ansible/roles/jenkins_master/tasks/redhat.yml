@@ -24,6 +24,7 @@
 - name: Install Jenkins
   yum:
     name: "jenkins-{{ jenkins_version }}-*.noarch"
+    allow_downgrade: yes
     state: present
     update_cache: yes
 
