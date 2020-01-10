@@ -17,15 +17,15 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c"
 
-ARG HELM_VERSION=2.16.1
-ARG HELM_URL="https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="7eebaaa2da4734242bbcdced62cc32ba8c7164a18792c8acdf16c77abffce202"
+ARG HELM_VERSION=v3.0.2
+ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
+ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
+ARG HELM_SHA256="c6b7aa7e4ffc66e8abb4be328f71d48c643cb8f398d95c74d075cfb348710e1d"
 
-ARG HELMFILE_VERSION=0.98.1
+ARG HELMFILE_VERSION=0.98.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="ebec0efb302b0675f7b2c0aa1ff3fe1163973109ed3a1ece580ab69218eed8c6"
+ARG HELMFILE_SHA256="0e3000dc9689addabf6c880affc52566c84888802d79e523288cf3a6ec0e93d7"
 
 ARG GOMPLATE_VERSION=3.6.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -110,3 +110,6 @@ RUN addgroup -g 992 toolbox && \
 USER toolbox
 
 COPY --from=builder /usr/local/bin /usr/local/bin
+
+RUN helm repo add stable https://kubernetes-charts.storage.googleapis.com && \
+    helm repo update

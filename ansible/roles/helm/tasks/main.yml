@@ -1,6 +1,6 @@
 ---
 
-- name: Download and install helm v{{ helm_version }}
+- name: Download and install helm {{ helm_version }}
   unarchive:
     src: "{{ helm_url }}"
     dest: "{{ install_dir }}"
@@ -11,3 +11,15 @@
   delay: 3
   register: res
   until: res is succeeded
+
+- name: Install helm-diff
+  command: helm plugin install https://github.com/databus23/helm-diff --version master
+  environment:
+    HELM_HOME: '/tmp/.helm'
+
+- name: Add helm repositories
+  command: helm repo add stable {{ item }}
+  loop:
+    - https://kubernetes-charts.storage.googleapis.com
+  environment:
+    HELM_HOME: '/tmp/.helm'

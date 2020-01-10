@@ -10,7 +10,7 @@ pipeline {
 
   environment {
     KUBECONFIG = '/home/toolbox/.kube/config'
-    DIRECTORY = 'Jenkins/kubernetes/dashboard'
+    DIRECTORY = 'Jenkins/kubernetes/kubernetes-dashboard'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
     ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
@@ -18,7 +18,7 @@ pipeline {
 
   stages {
 
-    stage('Install dashboard') {
+    stage('Deploy dashboard') {
       agent {
         docker {
           registryUrl env.REGISTRY
