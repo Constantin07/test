@@ -4,7 +4,6 @@ export NAMESPACE ?= default
 .PHONY: init template validate lint diff sync status destroy
 
 init:
-	helm init --client-only
 	helm repo update
 
 template: validate

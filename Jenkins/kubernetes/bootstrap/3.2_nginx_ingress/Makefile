@@ -6,7 +6,6 @@ export CONFIGMAP_NAME ?= nginx-ingress-headers
 .PHONY: init validate template lint diff sync status destroy
 
 init:
-	helm init --client-only
 	helm repo update
 
 validate:
