@@ -1,0 +1,37 @@
+# Default values for hello-kubernetes application
+
+replicaCount: 2
+revisionHistoryLimit: 5
+
+image:
+  repository: centos7.internal:5000/hello-kubernetes
+  tag: latest
+  pullPolicy: IfNotPresent
+
+container:
+  port: 8080
+
+env: {}
+
+resources: {}
+
+securityContext: {}
+
+vaultAgent:
+  enabled: false
+  role: test
+  env: {}
+  resources: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  host: chart-example.local
+  path: /
+
+hpa:
+  enabled: false

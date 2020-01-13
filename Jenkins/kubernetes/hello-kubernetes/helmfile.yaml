@@ -1,0 +1,50 @@
+---
+
+helmDefaults:
+  verify: false
+  wait: true
+  timeout: 180
+  historyMax: 5
+
+releases:
+  - name: hello-kubernetes
+    chart: ./hello-kubernetes
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    values:
+      - image:
+          pullPolicy: Always
+        env:
+          MESSAGE: "Hello world app deployed on Kubernetes!"
+          VAULT_ADDR: "http://127.0.0.1:8200"
+          VAULT_SECRET_PATH: secret/hello-kubernetes
+        resources:
+          limits:
+            cpu: 120m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+        vaultAgent:
+          enabled: true
+          role: hello-kubernetes
+          env:
+            VAULT_ADDR: "http://vault.internal:8200"
+            VAULT_SKIP_VERIFY: "true"
+          resources:
+            requests:
+              cpu: 20m
+              memory: 20Mi
+            limits:
+              cpu: 50m
+              memory: 64Mi
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: internal
+            external-dns.alpha.kubernetes.io/hostname: hello-kubernetes.internal.
+            external-dns.alpha.kubernetes.io/ttl: "120"
+          host: hello-kubernetes.internal
+        hpa:
+          enabled: true

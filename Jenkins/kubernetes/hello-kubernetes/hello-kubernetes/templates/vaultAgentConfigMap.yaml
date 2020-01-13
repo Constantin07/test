@@ -1,0 +1,26 @@
+{{- if .Values.vaultAgent.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-vault-agent-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.hcl: |
+    exit_after_auth = false
+    pid_file = "/home/vault/pidfile"
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = {{ .Values.vaultAgent.role | quote }}
+        }
+      }
+    }
+    cache {
+      use_auto_auth_token = true
+    }
+    listener "tcp" {
+      address = "127.0.0.1:8200"
+      tls_disable = true
+    }
+{{- end }}

@@ -1,0 +1,8 @@
+apiVersion: v2
+name: hello-kubernetes
+version: "1.0.0"
+description: A Helm chart for a simple Hello Kubernetes application
+keywords:
+  - hello-kubernetes
+icon: https://github.com/paulbouwer/hello-kubernetes/blob/master/static/images/kubernetes.png
+appVersion: "1.5"

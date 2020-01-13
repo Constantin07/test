@@ -1,0 +1,65 @@
+pipeline {
+
+  agent none
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    DIRECTORY = 'Jenkins/kubernetes/hello-kubernetes'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
+  }
+
+  stages {
+
+    stage('Deploy hello-kubernetes app') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make template sync'
+        }
+        cleanWs()
+      }
+    }
+
+    stage('Approve to delete') {
+      options {
+        timeout(time: 1, unit: 'HOURS')
+      }
+      steps {
+        input(message: 'Do you want to proceed?', ok: 'Yes')
+      }
+    }
+
+    stage('Remove hello-kubernetes app') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make destroy'
+        }
+        cleanWs()
+      }
+    }
+
+  }
+
+}
