@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "hello-kubernetes.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.container.port }}
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.env }}
+          env:
+            {{- range $index, $element := .Values.env }}
+            - name: {{ $index | quote }}
+              value: {{ $element | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+        {{- if .Values.vaultAgent.enabled }}
+        - name: vault-agent
+          image: vault:1.3.0
+          imagePullPolicy: Always
+          command: [ "vault" ]
+          args:
+            - "agent"
+            - "-config=/etc/vault/config.hcl"
+            - "-log-level=info"
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "ps -ef | grep 'vault agent' | grep -v grep"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 1
+            timeoutSeconds: 3
+          {{- if .Values.vaultAgent.resources }}
+          resources:
+            {{- toYaml .Values.vaultAgent.resources | nindent 12 }}
+          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 100
+            runAsGroup: 1000
+            capabilities:
+              add:
+                - IPC_LOCK
+          {{- if .Values.vaultAgent.env }}
+          env:
+            {{- range $index, $element := .Values.vaultAgent.env }}
+            - name: {{ $index | quote }}
+              value: {{ $element | quote }}
+            {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: vault-config
+              mountPath: /etc/vault/config.hcl
+              subPath: config.hcl
+      volumes:
+        - name: vault-config
+          configMap:
+            name: {{ include "hello-kubernetes.fullname" . }}-vault-agent-config
+        {{- end }}
