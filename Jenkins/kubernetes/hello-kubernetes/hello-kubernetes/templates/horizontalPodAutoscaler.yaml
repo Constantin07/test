@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: {{ include "hello-kubernetes.fullname" . }}
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:

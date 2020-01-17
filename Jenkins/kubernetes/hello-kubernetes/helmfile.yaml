@@ -24,8 +24,6 @@ releases:
           requests:
             cpu: 50m
             memory: 100Mi
-        securityContext:
-          allowPrivilegeEscalation: false
         vaultAgent:
           enabled: true
           role: hello-kubernetes
