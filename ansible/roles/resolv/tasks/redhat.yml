@@ -9,4 +9,3 @@
   notify: restart network_manager
 
 - meta: flush_handlers
-

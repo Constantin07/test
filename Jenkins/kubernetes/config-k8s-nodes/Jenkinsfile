@@ -23,7 +23,7 @@ pipeline {
           registryUrl 'http://centos7.internal:5000'
           image 'centos7.internal:5000/tool-box:latest'
           alwaysPull true
-          args '-u toolbox --network host -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+          args '-u toolbox -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
         }
       }
       steps {
