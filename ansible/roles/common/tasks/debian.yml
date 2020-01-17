@@ -2,7 +2,7 @@
 
 - name: Remove not required packages | Debian
   apt:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: absent
   loop:
     - postfix
