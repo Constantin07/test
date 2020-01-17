@@ -1,7 +1,17 @@
-FROM paulbouwer/hello-kubernetes:1.5
+FROM node:10.18.1-alpine3.11
 
-RUN npm install node-vault
+RUN apk update && \
+    apk add --no-cache jq vault && \
+    chmod +x /usr/sbin/vault
 
-# Overwrite original files
-COPY server.js /usr/src/app/
-COPY home.handlebars /usr/src/app/views/
+RUN mkdir -p /usr/src/app
+COPY . /usr/src/app
+RUN chown -R node:node /usr/src/app
+
+WORKDIR /usr/src/app
+
+USER node
+RUN npm install
+
+CMD [ "npm", "start" ]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

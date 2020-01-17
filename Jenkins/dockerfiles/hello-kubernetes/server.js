@@ -10,24 +10,9 @@ app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));
 
-var vault_secret_path = process.env.VAULT_SECRET_PATH;
-var options = { token: ''};
-var vault = require("node-vault")(options);
-var creds;
-
-// switch on debug mode
-//process.env.DEBUG = 'node-vault';
-
 console.log('Reading Vault secrets');
-setTimeout(function() {
-  vault.read(vault_secret_path)
-  .then((result) => {
-    creds = result.data
-  })
-  .catch((err) => console.error(err.message));
-}, 5000);
+var creds = process.env.SECRET_DATA;
 
-// Configuration
 var port = process.env.PORT || 8080;
 var message = process.env.MESSAGE || "Hello world!";
 

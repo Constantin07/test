@@ -15,7 +15,14 @@ env: {}
 
 resources: {}
 
-securityContext: {}
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  capabilities:
+    add:
+      - IPC_LOCK
 
 vaultAgent:
   enabled: false
