@@ -19,16 +19,16 @@ spec:
         effect: NoSchedule
       containers:
       - name: kube-bench
-        image: aquasec/kube-bench:latest
+        image: aquasec/kube-bench:0.2.3
         imagePullPolicy: Always
-        args: ["master", "--version", "1.15"]
+        args: ["master", "--version", "1.17"]
         volumeMounts:
         - name: var-lib-etcd
           mountPath: /var/lib/etcd
         - name: etc-kubernetes
           mountPath: /etc/kubernetes
         - name: opt-kube-bench-config
-          mountPath: /opt/kube-bench/cfg/cis-1.4/master.yaml
+          mountPath: /opt/kube-bench/cfg/cis-1.5/master.yaml
           subPath: master.yaml
       restartPolicy: Never
       volumes:
