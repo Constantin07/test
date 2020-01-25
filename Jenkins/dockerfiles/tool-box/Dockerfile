@@ -2,10 +2,10 @@ FROM alpine:3.11.3 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.19
+ARG TERRAFORM_VERSION=0.12.20
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="a549486112f5350075fb540cfd873deb970a9baf8a028a86ee7b4472fc91e167"
+ARG TERRAFORM_SHA256="46bd906f8cb9bbb871905ecb23ae7344af8017d214d735fbb6d6c8e0feb20ff3"
 
 ARG PACKER_VERSION=1.5.1
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
