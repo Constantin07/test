@@ -17,10 +17,10 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="7732548b9c353114b0dfa173bc7bcdedd58a607a5b4ca49d867bdb4c05dc25a1"
 
-ARG HELM_VERSION=v3.0.2
+ARG HELM_VERSION=v3.0.3
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="c6b7aa7e4ffc66e8abb4be328f71d48c643cb8f398d95c74d075cfb348710e1d"
+ARG HELM_SHA256="fc75d62bafec2c3addc87b715ce2512820375ab812e6647dc724123b616586d6"
 
 ARG HELMFILE_VERSION=0.98.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
@@ -95,7 +95,7 @@ ENV HELM_HOME=/tmp/.helm
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.17.7 && \
+    pip3 install awscli==1.17.9 && \
     setcap cap_net_raw+ep /bin/busybox
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \

@@ -16,6 +16,14 @@
   command: helm plugin install https://github.com/databus23/helm-diff --version master
   environment:
     HELM_HOME: '/tmp/.helm'
+  register: result_install
+  ignore_errors: yes
+
+- name: Update helm-diff
+  command: helm plugin update diff
+  environment:
+    HELM_HOME: '/tmp/.helm'
+  when: "'plugin already exists' in result_install.stderr"
 
 - name: Add helm repositories
   command: helm repo add stable {{ item }}
