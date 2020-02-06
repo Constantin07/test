@@ -10,6 +10,7 @@ metadata:
     release: {{ .Release.Name }}
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       k8s-app: kubernetes-metrics-scraper
@@ -17,6 +18,8 @@ spec:
     metadata:
       labels:
         k8s-app: kubernetes-metrics-scraper
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
       containers:
         - name: kubernetes-metrics-scraper
@@ -25,7 +28,7 @@ spec:
             - containerPort: 8000
               protocol: TCP
           args:
-            - --metric-duration=30m
+            - --metric-duration=15m
           livenessProbe:
             httpGet:
               scheme: HTTP
@@ -33,9 +36,17 @@ spec:
               port: 8000
             initialDelaySeconds: 30
             timeoutSeconds: 30
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
           securityContext:
             allowPrivilegeEscalation: false
-#            readOnlyRootFilesystem: true
-#            runAsUser: 1001
-#            runAsGroup: 2001
+            readOnlyRootFilesystem: true
+            runAsUser: 1001
+            runAsGroup: 2001
       serviceAccountName: kubernetes-dashboard-scraper
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}

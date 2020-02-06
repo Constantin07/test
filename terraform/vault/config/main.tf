@@ -1,5 +1,5 @@
 provider "vault" {
-  version = "~> 2.6.0"
+  version = "~> 2.8.0"
 }
 
 resource "vault_audit" "file" {
@@ -20,15 +20,21 @@ resource "vault_mount" "secret" {
 ## Auth
 
 resource "vault_auth_backend" "aws" {
-  type                      = "aws"
-  description               = "AWS authentication"
-  default_lease_ttl_seconds = "3600"
-  max_lease_ttl_seconds     = "3600"
+  type        = "aws"
+  description = "AWS authentication"
+  tune {
+    default_lease_ttl  = "3600s"
+    max_lease_ttl      = "3600s"
+    listing_visibility = "unauth"
+  }
 }
 
 resource "vault_auth_backend" "kubernetes" {
-  type                      = "kubernetes"
-  description               = "Kubernetes authentication"
-  default_lease_ttl_seconds = "3600"
-  max_lease_ttl_seconds     = "3600"
+  type        = "kubernetes"
+  description = "Kubernetes authentication"
+  tune {
+    default_lease_ttl  = "3600s"
+    max_lease_ttl      = "3600s"
+    listing_visibility = "unauth"
+  }
 }
