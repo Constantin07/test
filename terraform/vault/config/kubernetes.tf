@@ -1,7 +1,7 @@
 # Kubernetes
 
 provider "kubernetes" {
-  version                  = "~> 1.10.0"
+  version                  = "~> 1.11.0"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
 }
