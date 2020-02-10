@@ -1,0 +1,64 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'terraform/vault/config'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+  }
+
+  stages {
+
+    stage('Make') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh 'make'
+          sh 'git crypt unlock'
+          withCredentials([
+            [
+              $class: 'AmazonWebServicesCredentialsBinding',
+              credentialsId: 'Amazon Credentials',
+              accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+              secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+            ]
+         ])
+         {
+            sh '''
+              rm -rf .terraform
+              terraform init -upgrade=true
+              terraform validate
+              plan=$(mktemp)
+              terraform plan -out=${plan} -detailed-exitcode
+              rm -f ${plan}
+            '''
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
