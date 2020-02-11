@@ -3,13 +3,13 @@
 - hosts: jenkins_slaves
   become: yes
   become_user: root
-  serial: 2
-  max_fail_percentage: 10
+  any_errors_fatal: true
 
   roles:
     - common
     - resolv
     - chronyd
     - docker
+    - ctop
     - { role: jenkins_slave }
     - gnupg2

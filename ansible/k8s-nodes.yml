@@ -4,6 +4,7 @@
 - hosts: kube
   become: yes
   become_user: root
+  any_errors_fatal: true
 
   roles:
    - common
