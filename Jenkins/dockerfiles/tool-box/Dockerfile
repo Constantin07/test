@@ -2,10 +2,10 @@ FROM alpine:3.11.3 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.21
+ARG TERRAFORM_VERSION=0.12.23
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9"
+ARG TERRAFORM_SHA256="78fd53c0fffd657ee0ab5decac604b0dea2e6c0d4199a9f27db53f081d831a45"
 
 ARG PACKER_VERSION=1.5.4
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="cdd7ad304e2615c583dde0ffb0cb38fc1336cd7ce8ff3b5f237434dcadb28c98"
 
-ARG HELMFILE_VERSION=0.100.1
+ARG HELMFILE_VERSION=0.102.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="29e13f8dab4cbfcdc2d06b00e10872f6a869d36cb3124f4493a36bd84ea3d2d6"
+ARG HELMFILE_SHA256="183cd8ec345b905da2c1aa97116ed508890d49c09ce7e030bcfe89c2585b1a42"
 
 ARG GOMPLATE_VERSION=3.6.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -95,7 +95,7 @@ ENV HELM_HOME=/tmp/.helm
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.18.3 && \
+    pip3 install awscli==1.18.16 && \
     setcap cap_net_raw+ep /bin/busybox
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
