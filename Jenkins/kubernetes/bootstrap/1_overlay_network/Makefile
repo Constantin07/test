@@ -1,4 +1,3 @@
-
 CONFIG_FILE ?= calico.yaml
 
 .PHONY: validate install diff delete
@@ -16,5 +15,5 @@ diff:
 	kubectl diff -f ${CONFIG_FILE}
 
 # Remove Calico from K8s
-delete:
+destroy:
 	kubectl delete -f ${CONFIG_FILE} --wait=true || true
