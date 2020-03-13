@@ -13,11 +13,11 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      k8s-app: kubernetes-dashboard
+      k8s-app: {{ template "kubernetes-dashboard.name" . }}
   template:
     metadata:
       labels:
-        k8s-app: kubernetes-dashboard
+        k8s-app: {{ template "kubernetes-dashboard.name" . }}
     spec:
       containers:
         - name: kubernetes-dashboard
