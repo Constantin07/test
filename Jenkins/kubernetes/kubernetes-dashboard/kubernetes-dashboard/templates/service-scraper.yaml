@@ -4,7 +4,7 @@ metadata:
   name: dashboard-metrics-scraper
   namespace: {{ .Release.Namespace }}
   labels:
-    k8s-app: kubernetes-metrics-scraper
+    k8s-app: dashboard-metrics-scraper
     chart: {{ template "kubernetes-dashboard.chart" . }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
@@ -13,4 +13,4 @@ spec:
     - port: 8000
       targetPort: 8000
   selector:
-    k8s-app: kubernetes-metrics-scraper
+    k8s-app: dashboard-metrics-scraper

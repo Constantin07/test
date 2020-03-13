@@ -1,7 +1,7 @@
 apiVersion: v2
 name: kubernetes-dashboard
-version: 1.0.2
-appVersion: 2.0.0-rc5
+version: 1.0.3
+appVersion: 2.0.0-rc6
 description: Kubernetes dashboard
 keywords:
 - kubernetes
