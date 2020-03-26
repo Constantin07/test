@@ -7,15 +7,15 @@ ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_SHA256="602d2529aafdaa0f605c06adb7c72cfb585d8aa19b3f4d8d189b42589e27bf11"
 
-ARG PACKER_VERSION=1.5.4
+ARG PACKER_VERSION=1.5.5
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="c7277f64d217c7d9ccfd936373fe352ea935454837363293f8668f9e42d8d99d"
+ARG PACKER_SHA256="07f28a1a033f4bcd378a109ec1df6742ac604e7b122d0316d2cddb3c2f6c24d1"
 
-ARG KUBECTL_VERSION=v1.17.4
+ARG KUBECTL_VERSION=v1.18.0
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="465b2d2bd7512b173860c6907d8127ee76a19a385aa7865608e57a5eebe23597"
+ARG KUBECTL_SHA256="bb16739fcad964c197752200ff89d89aad7b118cb1de5725dc53fe924c40e3f7"
 
 ARG HELM_VERSION=v3.1.2
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
@@ -95,7 +95,7 @@ ENV HELM_HOME=/tmp/.helm
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.18.25 && \
+    pip3 install awscli==1.18.30 && \
     setcap cap_net_raw+ep /bin/busybox
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
@@ -111,5 +111,7 @@ USER toolbox
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
+# Add helm repositories
 RUN helm repo add stable https://kubernetes-charts.storage.googleapis.com && \
+    helm repo add bitnami https://charts.bitnami.com/bitnami && \
     helm repo update

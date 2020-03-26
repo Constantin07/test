@@ -4,14 +4,13 @@ helmDefaults:
   verify: false
   wait: true
   timeout: 120
-  recreatePods: true
   historyMax: 5
 
 releases:
   - name: metrics-server
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: stable/metrics-server
-    version: 2.10.0
+    version: 2.10.1
     values:
       - image:
           pullPolicy: Always
