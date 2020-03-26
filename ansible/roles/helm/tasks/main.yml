@@ -26,8 +26,9 @@
   when: "'plugin already exists' in result_install.stderr"
 
 - name: Add helm repositories
-  command: helm repo add stable {{ item }}
+  command: helm repo add "{{ item.name }}" "{{ item.url }}"
   loop:
-    - https://kubernetes-charts.storage.googleapis.com
+    - { name: bitnami, url: 'https://charts.bitnami.com/bitnami' }
+    - { name: stable, url: 'https://kubernetes-charts.storage.googleapis.com' }
   environment:
     HELM_HOME: '/tmp/.helm'

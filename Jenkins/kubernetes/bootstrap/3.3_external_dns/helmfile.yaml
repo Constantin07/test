@@ -4,14 +4,13 @@ helmDefaults:
   verify: false
   wait: true
   timeout: 120
-  recreatePods: true
   historyMax: 5
 
 releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
-    chart: stable/external-dns
-    version: 2.20.2
+    chart: bitnami/external-dns
+    version: 2.20.7
     values:
       - image:
           pullPolicy: Always
@@ -28,12 +27,20 @@ releases:
         rbac:
           create: true
           serviceAccountName: external-dns
+          pspEnabled: true
         domainFilters:
           - internal
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        podSecurityContext:
+          runAsNonRoot: true
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "100m"
+            memory: "50Mi"
+            cpu: "10m"
           limits:
-            memory: "64Mi"
-            cpu: "100m"
+            memory: "50Mi"
+            cpu: "50m"
