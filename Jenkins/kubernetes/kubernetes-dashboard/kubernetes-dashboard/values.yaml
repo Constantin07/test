@@ -1,3 +1,6 @@
 image:
   repository:  kubernetesui/dashboard
   tag: v2.0.0-rc7
+
+host: dashboard
+domain: internal

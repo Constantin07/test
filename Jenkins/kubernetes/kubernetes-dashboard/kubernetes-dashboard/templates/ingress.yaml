@@ -10,10 +10,10 @@ metadata:
     release: {{ .Release.Name }}
   annotations:
     kubernetes.io/ingress.class: internal
-    external-dns.alpha.kubernetes.io/hostname: dashboard.internal.
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.host }}.{{ .Values.domain }}.
 spec:
   rules:
-    - host: dashboard.internal
+    - host: {{ .Values.host }}.{{ .Values.domain }}
       http:
         paths:
           - backend:

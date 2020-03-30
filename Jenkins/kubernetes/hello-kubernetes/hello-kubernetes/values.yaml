@@ -1,7 +1,6 @@
 # Default values for hello-kubernetes application
 
 replicaCount: 2
-revisionHistoryLimit: 5
 
 image:
   repository: centos7.internal:5000/hello-kubernetes

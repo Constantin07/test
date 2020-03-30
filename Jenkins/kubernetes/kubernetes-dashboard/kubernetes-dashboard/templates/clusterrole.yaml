@@ -39,6 +39,7 @@ rules:
       - events
       - services
       - pods
+      - pods/log
       - deployments
       - jobs
       - limitranges
@@ -48,6 +49,7 @@ rules:
       - endpoints
       - configmaps
       - persistentvolumeclaims
+      - horizontalpodautoscalers
     verbs: ["get", "list", "watch"]
   - apiGroups: ["extensions"]
     resources: ["*"]
