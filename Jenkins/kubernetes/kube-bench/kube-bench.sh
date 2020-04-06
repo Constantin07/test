@@ -10,7 +10,14 @@ fi
 TARGET=$1
 NAMESPACE="${NAMESPACE:-default}"
 JOB_NAME="kube-bench-${TARGET}"
-TIMEOUT="90s"
+TIMEOUT="120s"
+
+function cleanup() {
+    kubectl -n "${NAMESPACE}" delete -f ./job-${TARGET}.yaml --ignore-not-found=true
+    kubectl -n "${NAMESPACE}" delete -f ./kube-bench-${TARGET}-configmap.yaml --ignore-not-found=true
+}
+
+trap cleanup ERR
 
 # Validate definition files
 kubeval --strict ./kube-bench-${TARGET}-configmap.yaml
@@ -27,5 +34,4 @@ kubectl -n "${NAMESPACE}" wait --for=condition=complete --timeout=${TIMEOUT} job
 kubectl -n "${NAMESPACE}" logs job/${JOB_NAME}
 
 # Delete job
-kubectl -n "${NAMESPACE}" delete -f ./job-${TARGET}.yaml
-kubectl -n "${NAMESPACE}" delete -f ./kube-bench-${TARGET}-configmap.yaml
+cleanup

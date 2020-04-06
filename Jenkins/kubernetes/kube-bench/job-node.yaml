@@ -13,9 +13,9 @@ spec:
       hostPID: true
       containers:
       - name: kube-bench
-        image: aquasec/kube-bench:0.2.3
+        image: aquasec/kube-bench:0.3.0
         imagePullPolicy: Always
-        args: ["node", "--version", "1.17"]
+        args: ["node", "--version", "1.18"]
         volumeMounts:
         - name: var-lib-kubelet
           mountPath: /var/lib/kubelet
