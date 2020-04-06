@@ -6,7 +6,7 @@
   become_user: root
 
   vars:
-    version: 1.17.4-00
+    version: 1.18.1-00
 
   tasks:
 
