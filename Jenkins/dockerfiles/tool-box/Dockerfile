@@ -37,10 +37,10 @@ ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/downl
 ARG VALIDATEYAML_FILE="validate-yaml-${VALIDATEYAML_VERSION}-linux-amd64.zip"
 ARG VALIDATEYAML_SHA256="9cc6be3b29d25ad79fd7e3ed4397a6320f8c31939c5a0575c077b47ee41b6db2"
 
-ARG KUBEVAL_VERSION=0.14.0
+ARG KUBEVAL_VERSION=0.15.0
 ARG KUBEVAL_URL="https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL_VERSION}/kubeval-linux-amd64.tar.gz"
 ARG KUBEVAL_FILE="kubeval-linux-amd64.tar.gz"
-ARG KUBEVAL_SHA256="8b1b8c63df9ee3206113a3352e07474ea071610cfacf40a64db74c56e163f1e2"
+ARG KUBEVAL_SHA256="70bff2642a2886c0d9ebea452ffb81f333a956e26bbe0826fd7c6797e343e5aa"
 
 ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
 ARG SHUNIT2_FILE="shunit2"
