@@ -1,4 +1,4 @@
-FROM alpine:3.11.3 AS builder
+FROM alpine:3.11.5 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -88,7 +88,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.11.3
+FROM alpine:3.11.5
 
 ENV HELM_HOME=/tmp/.helm
 

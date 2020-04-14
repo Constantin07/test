@@ -1,3 +1,4 @@
 # Link to docs
 
-  https://docs.projectcalico.org/getting-started/kubernetes/installation/calico
+  https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises#install-calico-with-kubernetes-api-datastore-50-nodes-or-less
+
