@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="e6be589df85076108c33e12e60cfb85dcd82c5d756a6f6ebc8de0ee505c9fd4c"
 
-ARG HELMFILE_VERSION=0.108.0
+ARG HELMFILE_VERSION=0.109.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="d1432b2d7a44fb738dd52ba6caceae10cac167b91e74c8073dbdfcd0867db989"
+ARG HELMFILE_SHA256="19c94acf059c9dec164fe70b0c909014a62aceb9ed7ea0533a0964480cba40fe"
 
 ARG GOMPLATE_VERSION=3.6.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -95,7 +95,7 @@ ENV HELM_HOME=/tmp/.helm
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
     pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.18.39 && \
+    pip3 install awscli==1.18.40 && \
     setcap cap_net_raw+ep /bin/busybox
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
