@@ -3,7 +3,7 @@
 jenkins_yum_repo_url: "http://pkg.jenkins-ci.org/redhat/jenkins.repo"
 jenkins_yum_gpg_key:  "https://jenkins-ci.org/redhat/jenkins-ci.org.key"
 jenkins_home:         "/var/lib/jenkins"
-jenkins_version:      "2.230"
+jenkins_version:      "2.233"
 jenkins_port:         "8080"
 jenkins_slave_port:   "50000"
 
@@ -15,5 +15,3 @@ jenkins_java_options: >-
   -XX:+UseG1GC
   -XX:+ExplicitGCInvokesConcurrent
   -XX:+ParallelRefProcEnabled
-
-#  -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
