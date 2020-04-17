@@ -1,12 +1,11 @@
 ---
-# Playbook to upgrade Kubernetes cluster, both master & slaves
+# Playbook to upgrade Kubernetes cluster, both master & slave nodes
+
+# Usage: ansible-playbook k8s-upgrade.yml -e k8s_version=1.18.2
 
 - hosts: kube
   become: yes
   become_user: root
-
-  vars:
-    version: 1.18.1-00
 
   tasks:
 
@@ -17,31 +16,87 @@
     - name: Unhold kubeadm
       command: apt-mark unhold kubeadm
 
-    - name: Upgrade kubeadm to {{ version }}
+    - name: Upgrade kubeadm to {{ k8s_version }}
       apt:
-        name: kubeadm={{ version }}
+        name: kubeadm={{ k8s_version }}-00
         update_cache: yes
 
     - name: Hold kubeadm
       command: apt-mark hold kubeadm
 
+# First upgrade one master
+- hosts: master-node1.internal
+  become: yes
+  become_user: root
 
-#    - name: Unhold kubelet kubectl
-#      command: apt-mark unhold kubelet kubectl
+  tasks:
 
-#    - name: Upgrade kubelet kubectl {{ version }}
-#      apt:
-#        name: "{{ item }}={{ version }}"
-#        update_cache: yes
-#      loop:
-#        - kubelet
-#        - kubectl
+    - name: Run kubeadm upgrade plan {{ k8s_version }}
+      command: kubeadm upgrade plan {{ k8s_version }}
+      register: plan
 
-#    - name: Hold kubelet kubectl
-#      command: apt-mark hold kubelet kubectl
+    - debug: msg="{{ plan.stdout_lines }}"
 
-#    - name: Restart kubelet
-#      systemd:
-#        name: kubelet
-#        state: restarted
-#        daemon_reload: yes
+    - pause:
+        prompt: "Do you want to proceed with upgrade?"
+
+    - name: Run kubeadm upgrade apply {{ k8s_version }}
+      command: kubeadm upgrade apply {{ k8s_version }} --force
+      register: apply
+
+    - debug: msg="{{ apply.stdout_lines }}"
+
+# Upgrade other master nodes
+- hosts: kube_masters:!master-node1.internal
+  serial: 1
+  order: sorted
+  become: yes
+  become_user: root
+
+  tasks:
+
+    - name: Run kubeadm upgrade node
+      command: kubeadm upgrade node
+      register: upgrade
+
+    - debug: msg="{{ upgrade.stdout_lines }}"
+
+# Upgrade worker nodes
+- hosts: kube_slaves
+  become: yes
+  become_user: root
+
+  tasks:
+
+    - name: Run kubeadm upgrade node
+      command: kubeadm upgrade node
+      register: upgrade
+
+    - debug: msg="{{ upgrade.stdout_lines }}"
+
+# Upgrade kubelet on allw nodes
+- hosts: kube
+  become: yes
+  become_user: root
+
+  tasks:
+
+    - name: Unhold kubelet kubectl
+      command: apt-mark unhold kubelet kubectl
+
+    - name: Upgrade kubelet kubectl to {{ k8s_version }}
+      apt:
+        name: "{{ item }}={{ k8s_version }}-00"
+        update_cache: yes
+      loop:
+        - kubelet
+        - kubectl
+
+    - name: Hold kubelet kubectl
+      command: apt-mark hold kubelet kubectl
+
+    - name: Restart kubelet
+      systemd:
+        name: kubelet
+        state: restarted
+        daemon_reload: yes
