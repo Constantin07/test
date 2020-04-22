@@ -1,5 +1,5 @@
 ---
 
-helm_version: 'v3.1.2'
+helm_version: 'v3.2.0'
 helm_url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz"
 install_dir: "/usr/local/bin"
