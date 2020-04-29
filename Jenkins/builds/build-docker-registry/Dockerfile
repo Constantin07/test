@@ -1,6 +1,6 @@
 # Build a minimal distribution container
 
-FROM alpine:latest
+FROM alpine:3.11.6
 
 RUN set -ex && \
     apk add --no-cache ca-certificates apache2-utils && \

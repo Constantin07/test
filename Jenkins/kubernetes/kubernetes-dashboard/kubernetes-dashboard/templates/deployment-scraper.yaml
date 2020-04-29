@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.4
+          image: "{{ .Values.scraper.repository }}:{{ .Values.scraper.tag }}"
           ports:
             - containerPort: 8000
               protocol: TCP
