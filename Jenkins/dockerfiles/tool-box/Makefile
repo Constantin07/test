@@ -11,6 +11,11 @@ else
   TAG=${GIT_COMMIT}
 endif
 
+.DEFAULT_GOAL := default
+
+.PHONY: default
+default: build tag publish
+
 .PHONY: all
 all: build tag publish clean
 

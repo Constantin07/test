@@ -1,7 +1,7 @@
 ---
 # Playbook to upgrade Kubernetes cluster, both master & slave nodes
 
-# Usage: ansible-playbook k8s-upgrade.yml -e k8s_version=1.18.2
+# Usage: ansible-playbook k8s-upgrade.yml -e k8s_version=1.18.3
 
 - hosts: kube
   become: yes
@@ -74,7 +74,7 @@
 
     - debug: msg="{{ upgrade.stdout_lines }}"
 
-# Upgrade kubelet on allw nodes
+# Upgrade kubelet on allowed nodes
 - hosts: kube
   become: yes
   become_user: root

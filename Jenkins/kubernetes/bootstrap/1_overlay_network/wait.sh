@@ -3,8 +3,10 @@
 set -eu
 
 NAMESPACE="${NAMESPACE:-kube-system}"
-NAME="calico-node"
-TIMEOUT="120s"
+TIMEOUT="180s"
 
-# Wait for Calico to be deployed
-kubectl -n "${NAMESPACE}" rollout status "ds/${NAME}" --watch=true --timeout=${TIMEOUT}
+echo "Wait for calico-node to be deployed"
+kubectl -n "${NAMESPACE}" rollout status "ds/calico-node" --watch=true --timeout=${TIMEOUT}
+
+echo "Wait for calico-kube-controllers to be deployed"
+kubectl -n "${NAMESPACE}" rollout status "deployment/calico-kube-controllers" --watch=true --timeout=${TIMEOUT}

@@ -1,36 +1,36 @@
-FROM alpine:3.11.5 AS builder
+FROM alpine:3.11.6 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.24
+ARG TERRAFORM_VERSION=0.12.25
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="602d2529aafdaa0f605c06adb7c72cfb585d8aa19b3f4d8d189b42589e27bf11"
+ARG TERRAFORM_SHA256="-e95daabd1985329f87e6d40ffe7b9b973ff0abc07a403f767e8658d64d733fb0"
 
-ARG PACKER_VERSION=1.5.5
+ARG PACKER_VERSION=1.5.6
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="07f28a1a033f4bcd378a109ec1df6742ac604e7b122d0316d2cddb3c2f6c24d1"
+ARG PACKER_SHA256="2abb95dc3a5fcfb9bf10ced8e0dd51d2a9e6582a1de1cab8ccec650101c1f9df"
 
-ARG KUBECTL_VERSION=v1.18.2
+ARG KUBECTL_VERSION=v1.18.3
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="6ea8261b503c6c63d616878837dc70b758d4a3aeb9996ade8e83b51aedac9698"
+ARG KUBECTL_SHA256="6fcf70aae5bc64870c358fac153cdfdc93f55d8bae010741ecce06bb14c083ea"
 
-ARG HELM_VERSION=v3.2.0
+ARG HELM_VERSION=v3.2.1
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="4c3fd562e64005786ac8f18e7334054a24da34ec04bbd769c206b03b8ed6e457"
+ARG HELM_SHA256="018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b"
 
-ARG HELMFILE_VERSION=0.111.0
+ARG HELMFILE_VERSION=0.116.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="60f0474e3eab5f0dc01aa46e348aa5c6f0721c7c6df94e2d4d9f3a32325500e4"
+ARG HELMFILE_SHA256="0d45e0d57a46134c7a0342e184f43aaa420b1ed6479052ef89152a56b30b45ef"
 
-ARG GOMPLATE_VERSION=3.6.0
+ARG GOMPLATE_VERSION=3.7.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
-ARG GOMPLATE_SHA256="0ec9907db0e31842d954e7644c928d1b5e0eaf0f112096a0fc0d923de34cb704"
+ARG GOMPLATE_SHA256="27b0792309b78cd872ffe72a040475b2704f72e055a774079c9fcc5ac23543f6"
 
 ARG VALIDATEYAML_VERSION=v0.2.3
 ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/download/${VALIDATEYAML_VERSION}/validate-yaml-linux-amd64.zip"
@@ -88,15 +88,18 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.11.5
+FROM alpine:3.11.6
 
+ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
 
 RUN apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
-    pip3 install --upgrade pip setuptools && \
-    pip3 install awscli==1.18.40 && \
     setcap cap_net_raw+ep /bin/busybox
+
+COPY requirements.txt /
+RUN pip3 install --upgrade pip setuptools && \
+    pip3 install -r /requirements.txt
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
     curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk && \
@@ -104,10 +107,10 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
     ln -s /bin/git-crypt /usr/local/bin/git-crypt
 
 # Nonprivileged user
-RUN addgroup -g 992 toolbox && \
-    adduser -D -u 995 -G toolbox toolbox
+RUN addgroup -g 992 ${USERNAME} && \
+    adduser -D -u 995 -G ${USERNAME} ${USERNAME}
 
-USER toolbox
+USER ${USERNAME}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
