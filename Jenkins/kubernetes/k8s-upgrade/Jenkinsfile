@@ -1,0 +1,51 @@
+pipeline {
+
+  agent {
+    label 'master'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  parameters {
+    string(name: 'K8S_VERSION', defaultValue: '1.18.3', description: 'The version of Kubernetes to upgrade to.')
+  }
+
+  environment {
+    DIRECTORY = 'ansible'
+    PYTHONWARNINGS = 'ignore::UserWarning'
+  }
+
+  stages {
+
+    stage('Upgrade K8s cluster') {
+      agent {
+        docker {
+          registryUrl 'http://centos7.internal:5000'
+          image 'centos7.internal:5000/tool-box:latest'
+          alwaysPull true
+          args '-u toolbox -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'git crypt unlock'
+          sshagent (credentials: ['jenkins-ssh-key']) {
+            sh 'ansible-playbook k8s-upgrade.yml -e k8s_version=$K8S_VERSION -e non_interactive=true'
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
