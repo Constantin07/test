@@ -2,10 +2,10 @@ FROM alpine:3.11.6 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.12.25
+ARG TERRAFORM_VERSION=0.12.26
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="-e95daabd1985329f87e6d40ffe7b9b973ff0abc07a403f767e8658d64d733fb0"
+ARG TERRAFORM_SHA256="607bc802b1c6c2a5e62cc48640f38aaa64bef1501b46f0ae4829feb51594b257"
 
 ARG PACKER_VERSION=1.5.6
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b"
 
-ARG HELMFILE_VERSION=0.116.0
+ARG HELMFILE_VERSION=0.118.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="0d45e0d57a46134c7a0342e184f43aaa420b1ed6479052ef89152a56b30b45ef"
+ARG HELMFILE_SHA256="176edb78abbf76c8020d8f7dc7af9176396cf02013902dadb08fb7f5a151c324"
 
 ARG GOMPLATE_VERSION=3.7.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
