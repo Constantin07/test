@@ -23,6 +23,7 @@ node() {
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
     pipelineTriggers([cron("TZ=Europe/London\nH H/2 * * *")]),
+    durabilityHint('PERFORMANCE_OPTIMIZED'),
     disableConcurrentBuilds()
   ])
   skipDefaultCheckout()

@@ -9,6 +9,7 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '20'))
     disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
     timestamps()
     ansiColor('xterm')
     durabilityHint('PERFORMANCE_OPTIMIZED')

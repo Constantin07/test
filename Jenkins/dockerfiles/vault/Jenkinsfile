@@ -5,6 +5,7 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
     ansiColor('xterm')
   }
 
