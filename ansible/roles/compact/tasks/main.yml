@@ -1,0 +1,15 @@
+---
+
+- name: Remove zerofile if present
+  file:
+    path: /zerofillfile
+    state: absent
+
+- name: Install required package(s)
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Fill filesystem with zero
+  shell: dd if=/dev/zero of=/zerofillfile bs=2M; rm -f /zerofillfile
+
+- name: Sync filesystem
+  shell: sync

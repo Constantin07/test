@@ -23,6 +23,7 @@ ansible_user=ubuntu
 [all:children]
 local
 jenkins_slaves
+kube
 
 [all:vars]
 ansible_user=root

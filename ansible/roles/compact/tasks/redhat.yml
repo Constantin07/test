@@ -1,0 +1,6 @@
+---
+
+- name: Install required package(s) | Redhat
+  yum:
+    name: coreutils
+    state: present

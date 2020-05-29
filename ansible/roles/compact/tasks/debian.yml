@@ -1,0 +1,6 @@
+---
+
+- name: Install required package(s) | Debian
+  apt:
+    name: coreutils
+    state: present
