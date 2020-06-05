@@ -13,6 +13,7 @@ durable-task
 git
 github
 greenballs
+hashicorp-vault-plugin
 htmlpublisher
 http_request
 job-dsl
