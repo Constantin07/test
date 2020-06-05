@@ -1,4 +1,4 @@
-FROM alpine:3.11.6 AS builder
+FROM alpine:3.12.0 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -17,15 +17,15 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="6fcf70aae5bc64870c358fac153cdfdc93f55d8bae010741ecce06bb14c083ea"
 
-ARG HELM_VERSION=v3.2.1
+ARG HELM_VERSION=v3.2.4
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b"
+ARG HELM_SHA256="8eb56cbb7d0da6b73cd8884c6607982d0be8087027b8ded01d6b2759a72e34b1"
 
-ARG HELMFILE_VERSION=0.118.0
+ARG HELMFILE_VERSION=0.119.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="176edb78abbf76c8020d8f7dc7af9176396cf02013902dadb08fb7f5a151c324"
+ARG HELMFILE_SHA256="97b62b3c42e8cf535dce7fb1449b3cc85ed25da4b9bbcd8707ecf0939d728fed"
 
 ARG GOMPLATE_VERSION=3.7.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -88,13 +88,13 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.11.6
+FROM alpine:3.12.0
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
 
 RUN apk update && apk upgrade && \
-    apk --no-cache add ca-certificates curl bash python3 make git gnupg ansible && \
+    apk --no-cache add ca-certificates curl bash python3 py-pip make git gnupg ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
