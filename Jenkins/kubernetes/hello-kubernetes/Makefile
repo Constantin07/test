@@ -1,6 +1,17 @@
 export NAMESPACE ?= default
 
-.PHONY: template validate lint diff sync status destroy
+export GIT_COMMIT ?= $(shell git rev-parse HEAD)
+
+ifndef BUILD_NUMBER
+  export TAG=$(GIT_COMMIT)
+else
+  export TAG=$(BUILD_NUMBER)-$(GIT_COMMIT)
+endif
+
+.PHONY: build template validate lint diff sync status destroy
+
+build:
+	$(MAKE) -C dockerfile
 
 template: validate
 	helmfile template

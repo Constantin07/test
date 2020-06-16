@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "hello-kubernetes.labels" . | indent 4 }}
+  annotations:
+    kubernetes.io/change-cause: "{{ .Values.image.tag }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 10
@@ -15,8 +17,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 0
       maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:

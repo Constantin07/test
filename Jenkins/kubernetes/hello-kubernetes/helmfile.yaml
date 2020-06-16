@@ -13,6 +13,7 @@ releases:
     values:
       - image:
           pullPolicy: Always
+          tag: {{ requiredEnv "TAG" }}
         env:
           MESSAGE: "Hello world app deployed on Kubernetes!"
           VAULT_ADDR: "http://127.0.0.1:8200"
