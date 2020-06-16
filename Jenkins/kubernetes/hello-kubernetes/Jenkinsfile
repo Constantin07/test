@@ -17,6 +17,16 @@ pipeline {
 
   stages {
 
+    stage('Build and publish image') {
+      agent any
+      steps {
+        dir(env.DIRECTORY + '/dockerfile') {
+          sh 'make build tag publish clean'
+        }
+        cleanWs()
+      }
+    }
+
     stage('Deploy hello-kubernetes app') {
       agent {
         docker {

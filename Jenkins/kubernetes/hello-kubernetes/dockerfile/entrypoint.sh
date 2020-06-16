@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -eu -o pipefail
 
 if [ -z "${VAULT_SECRET_PATH}" ]; then
     echo "VAULT_SECRET_PATH environment variable is not defined. Exiting ..."
