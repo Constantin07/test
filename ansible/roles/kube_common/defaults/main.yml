@@ -1,6 +1,6 @@
 ---
 
-k8s_version: '1.18.4-00'
+k8s_version: '1.18.5-00'
 
 debian_packages:
   - apt-transport-https
@@ -12,3 +12,4 @@ kubernetes_packages:
   - kubelet={{ k8s_version }}
   - kubeadm={{ k8s_version }}
   - kubectl={{ k8s_version }}
+  - kubernetes-cni
