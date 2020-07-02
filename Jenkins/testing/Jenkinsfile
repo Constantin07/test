@@ -1,3 +1,5 @@
+def skipStage = false
+
 pipeline {
 
   agent any
@@ -8,15 +10,24 @@ pipeline {
     ansiColor('xterm')
   }
 
-  parameters {
-    booleanParam(name: 'SKIP_STAGE', defaultValue: false, description: 'Whether to skip a stage.')
-  }
-
   stages {
+
+    stage('Skip') {
+      steps {
+        script {
+          skipStage = input(
+            message: 'Should we skip stages?',
+            ok: 'Yes',
+            parameters: [booleanParam(name: 'SKIP_STAGE', defaultValue: false, description: 'Whether to skip a stage.')]
+          )
+          println(skipStage)
+        }
+      }
+    }
 
     stage('Build') {
       when {
-        expression { params.SKIP_STAGE == false }
+        expression { skipStage == false }
       }
       steps {
         echo 'Building'
@@ -25,10 +36,16 @@ pipeline {
 
     stage('Push') {
       when {
-        expression { params.SKIP_STAGE == false }
+        expression { skipStage == false }
       }
       steps {
         echo 'Push'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Test'
       }
     }
 
