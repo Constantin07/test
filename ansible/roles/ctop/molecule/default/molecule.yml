@@ -2,21 +2,22 @@
 
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  yamllint .
 platforms:
   - name: centos
-    image: centos:latest
+    image: centos:8
     pull: True
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    command: "/usr/sbin/init"
+    tty: True
     privileged: true
-  - name: ubuntu
-    image: ubuntu:bionic
-    pull: True
-    privileged: true
+    environment:
+      container: docker
 provisioner:
   name: ansible
-  options:
-    v: True
+  log: True
   playbooks:
     converge: playbook.yml
   lint:

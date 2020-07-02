@@ -7,7 +7,7 @@
   loop:
     - postfix
 
-- name: Install required packages | Redhat
+- name: Install required packages | RedHat
   yum:
     name: "{{ redhat_packages }}"
     state: latest
