@@ -6,7 +6,7 @@ metadata:
   labels:
 {{ include "hello-kubernetes.labels" . | indent 4 }}
   annotations:
-    kubernetes.io/change-cause: "{{ .Values.image.tag }}"
+    kubernetes.io/change-cause: {{ .Values.image.tag | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 10
@@ -64,7 +64,7 @@ spec:
         {{- if .Values.vaultAgent.enabled }}
 
         - name: vault-agent
-          image: vault:1.3.2
+          image: vault:1.5.0
           imagePullPolicy: Always
           command: [ "vault" ]
           args:

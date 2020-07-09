@@ -41,6 +41,11 @@ resource "aws_vpc_dhcp_options_association" "default" {
 
 data "aws_availability_zones" "available" {
   state = "available"
+
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }
 
 locals {

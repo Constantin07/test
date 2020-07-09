@@ -19,7 +19,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: kube-bench
-        image: aquasec/kube-bench:0.3.0
+        image: aquasec/kube-bench:0.3.1
         imagePullPolicy: Always
         args: ["master", "--version", "1.18"]
         volumeMounts:

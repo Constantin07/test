@@ -3,6 +3,12 @@ export NAMESPACE ?= default
 export HEADERS_FILE ?= headers-configmap.yaml
 export CONFIGMAP_NAME ?= nginx-ingress-headers
 
+# Check for required binaries
+EXECUTABLES = helm helmfile gomplate kubectl kubeval
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
+
 .PHONY: init validate template lint diff sync status destroy
 
 init:

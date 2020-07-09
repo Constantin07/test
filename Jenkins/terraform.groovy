@@ -20,7 +20,7 @@ def build(nodeName = '', directory = '.') {
   def needUpdate = false
   def apply      = false
   def comment    = ''
-  def tf_options = '-lock-timeout=2m'
+  def tf_options = '-input=false -lock-timeout=2m'
 
   // Used for locks
   String jobName = "${env.JOB_NAME}"

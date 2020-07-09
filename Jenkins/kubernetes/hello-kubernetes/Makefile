@@ -1,5 +1,11 @@
 export NAMESPACE ?= default
 
+# Check for required binaries
+EXECUTABLES = git helmfile kubeval
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
+
 export GIT_COMMIT ?= $(shell git rev-parse HEAD)
 
 ifndef BUILD_NUMBER

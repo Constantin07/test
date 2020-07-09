@@ -2,6 +2,7 @@
 Gets the secret token name for a service account
 """
 
+import sys
 from terraform_external_data import terraform_external_data
 from kubernetes import client, config
 
@@ -19,9 +20,10 @@ def get_secret_name(query):
     sa = v1.read_namespaced_service_account(name, namespace)
     if not sa:
         print("Service account %s does not exist. Exiting ..." % name)
-        exit(1)
+        sys.exit(1)
 
     return {'token_name': sa.secrets[0].name}
+
 
 if __name__ == '__main__':
     get_secret_name()

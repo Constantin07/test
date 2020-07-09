@@ -1,5 +1,11 @@
 export NAMESPACE ?= kubernetes-dashboard
 
+# Check for required binaries
+EXECUTABLES = gomplate telmfile kubectl kubeval
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
+
 .PHONY: init template validate lint diff sync status destroy
 
 template: validate

@@ -17,5 +17,6 @@ def get_kubeconfig(query):
     with open(os.path.expanduser(query['config_file']), 'r') as infile:
         return yaml.load(infile.read())['clusters'][0]['cluster']
 
+
 if __name__ == '__main__':
     get_kubeconfig()

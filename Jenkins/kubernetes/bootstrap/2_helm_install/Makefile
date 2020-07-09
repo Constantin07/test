@@ -3,6 +3,11 @@ NAMESPACE ?= kube-system
 SERVICE_ACCOUNT ?= tiller
 CONFIG_FILE ?= rbac-config.yaml
 
+# Check for required binaries
+EXECUTABLES = helm kubectl
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
 # Install tiller in K8s
 .PHONY: validate install upgrade delete
 

@@ -3,6 +3,11 @@ SHELL := /bin/bash
 DOCKER_REGISTRY ?= centos7.internal:5000
 IMAGE ?= hello-kubernetes
 
+# Check for required binaries
+EXECUTABLES = git docker
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
 GIT_COMMIT ?= $(shell git rev-parse HEAD)
 
 ifdef BUILD_NUMBER
