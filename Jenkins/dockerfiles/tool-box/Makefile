@@ -6,7 +6,7 @@ IMAGE ?= tool-box
 # Check for required binaries
 EXECUTABLES = git docker
 K := $(foreach exec,$(EXECUTABLES),\
-  $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)

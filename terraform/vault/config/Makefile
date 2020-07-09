@@ -11,7 +11,7 @@ pip3-install:
 	.venv/bin/pip3 install --no-cache-dir -r requirements.txt
 
 lint:
-	.venv/bin/pylint *.py
+	.venv/bin/pylint ./*.py
 
 clean:
 	@rm -rf .venv

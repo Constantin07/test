@@ -1,3 +1,5 @@
+def skipDelete = false
+
 pipeline {
 
   agent none
@@ -21,7 +23,7 @@ pipeline {
       agent any
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
-          sh 'make build tag publish clean'
+          sh 'make build tag publish'
         }
         cleanWs()
       }
@@ -44,16 +46,26 @@ pipeline {
       }
     }
 
-    stage('Approve to delete') {
+    stage('Skip delete') {
       options {
         timeout(time: 1, unit: 'HOURS')
       }
       steps {
-        input(message: 'Do you want to proceed?', ok: 'Yes')
+        script {
+          skipDelete = input(
+            message: 'Should we skip delete?',
+            ok: 'Yes',
+            parameters: [booleanParam(name: 'SKIP_DELETE', defaultValue: true, description: 'Whether to skip delete stage.')]
+          )
+          println(skipDelete)
+        }
       }
     }
 
-    stage('Remove hello-kubernetes app') {
+    stage('Delete hello-kubernetes app') {
+      when {
+        expression { skipDelete == false }
+      }
       agent {
         docker {
           registryUrl env.REGISTRY

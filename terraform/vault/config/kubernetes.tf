@@ -1,13 +1,13 @@
 # Kubernetes
 
 provider "kubernetes" {
-  version                  = "~> 1.11.3"
+  version                  = "~> 1.12.0"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
 }
 
 provider "external" {
-  version = "1.2.0"
+  version = "~> 1.2.0"
 }
 
 

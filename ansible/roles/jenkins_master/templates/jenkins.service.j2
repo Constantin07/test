@@ -1,6 +1,6 @@
 [Unit]
 Description=Jenkins Server Daemon
-Require=network-online.target
+Requires=network-online.target
 After=network-online.target
 
 [Service]
@@ -9,6 +9,7 @@ ExecStop=/etc/rc.d/init.d/jenkins stop
 Restart=always
 RestartSec=5
 Type=forking
+CPUAccounting=true
 
 [Install]
 WantedBy=multi-user.target

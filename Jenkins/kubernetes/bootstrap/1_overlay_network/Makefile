@@ -1,5 +1,10 @@
 CONFIG_FILE ?= calico.yaml
 
+# Check for required binaries
+EXECUTABLES = kubeval kubectl
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
+
 .PHONY: validate install diff delete
 
 validate:
