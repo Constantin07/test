@@ -17,31 +17,9 @@ pipeline {
 
   stages {
 
-    stage('Prepare') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: 'master']],
-          userRemoteConfigs: [[credentialsId: 'Git', url: 'git@github.com:docker/distribution-library-image.git']],
-          extensions: [
-            [$class: 'CleanBeforeCheckout'],
-            [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'tmp']
-          ]
-        ])
-
-        echo 'Overwrite default config files'
-        sh '''
-          cp -f ${DIRECTORY}/Dockerfile tmp/amd64/
-          cp -f ${DIRECTORY}/config-example.yml tmp/amd64/
-          cp -f ${DIRECTORY}/Makefile tmp/amd64/
-        '''
-      }
-    }
-
     stage('Build image') {
       steps {
-        dir('tmp/amd64') {
+        dir(env.DIRECTORY) {
           sh 'make build tag'
         }
       }

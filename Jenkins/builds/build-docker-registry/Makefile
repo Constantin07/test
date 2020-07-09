@@ -1,7 +1,13 @@
-
 REGISTRY ?= centos7.internal:5000
 IMAGE_NAME ?= docker-registry
 SERVICE_PORT ?= 5000
+DOCKER_REGISTRY = https://github.com/docker/distribution-library-image.git
+TMP_DIR = tmp
+
+# Check for required binaries
+EXECUTABLES = git docker
+K := $(foreach exec,$(EXECUTABLES),\
+  $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
@@ -13,7 +19,10 @@ endif
 
 .PHONY: build tag push clean deploy
 
-build:
+tmp:
+	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
+
+build: tmp
 	docker build --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
 
 tag:
@@ -26,6 +35,7 @@ push:
 clean:
 	docker rmi ${REGISTRY}/${IMAGE_NAME}:${TAG} || true
 	docker rmi ${REGISTRY}/${IMAGE_NAME}:latest || true
+	@rm -rf ${TMP_DIR}
 
 deploy:
 	docker stop ${IMAGE_NAME} || true
