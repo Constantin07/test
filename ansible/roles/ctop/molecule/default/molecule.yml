@@ -1,5 +1,6 @@
 ---
-
+dependency:
+  name: galaxy
 driver:
   name: docker
 lint: |
@@ -7,6 +8,7 @@ lint: |
 platforms:
   - name: centos
     image: centos:8
+    pre_build_image: true
     pull: True
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw

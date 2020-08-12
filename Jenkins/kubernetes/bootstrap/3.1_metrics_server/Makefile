@@ -19,7 +19,8 @@ validate:
 	helmfile template | kubeval --strict
 
 lint:
-	helmfile lint
+#	helmfile lint
+	helmfile template | kubectl apply --dry-run=server -f -
 
 diff:
 	helmfile diff

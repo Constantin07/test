@@ -10,7 +10,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 3.2.6
+    version: 3.3.0
     values:
       - image:
           pullPolicy: Always

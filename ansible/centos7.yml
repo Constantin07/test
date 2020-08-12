@@ -12,4 +12,5 @@
     - helmfile
     - gomplate
     - kubeval
-    - { role: jenkins_master, jenkins_version: "2.252" }
+    - krew
+    - { role: jenkins_master, jenkins_version: "2.254" }

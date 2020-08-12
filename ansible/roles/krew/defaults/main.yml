@@ -1,0 +1,10 @@
+---
+
+krew_version: v0.4.0
+krew_url: "https://github.com/kubernetes-sigs/krew/releases/download/{{ krew_version }}/krew.tar.gz"
+tmp_dir: /tmp/krew
+install_dir: /usr/local/bin
+
+krew_plugins:
+  - access-matrix
+  - ingress-nginx

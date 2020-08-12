@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import re
 import pytest
@@ -15,8 +17,7 @@ def test_ctop(host, binary):
     assert f.is_file
     assert f.user == 'root'
     assert f.group == 'root'
-    assert oct(f.mode) == '0755'
-
+    assert oct(f.mode) == '0o755'
 
 @pytest.mark.parametrize('binary', ['/usr/local/bin/ctop'])
 def test_ctop_version(host, binary):
