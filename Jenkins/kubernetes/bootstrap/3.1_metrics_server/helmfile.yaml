@@ -13,10 +13,12 @@ releases:
     version: 2.11.1
     values:
       - image:
+          repository: k8s.gcr.io/metrics-server/metrics-server
+          tag: v0.3.7
           pullPolicy: Always
         args:
           - --kubelet-insecure-tls
-          - --v=2
+          - --v=1
         rbac:
           pspEnabled: true
         podDisruptionBudget:
@@ -29,7 +31,3 @@ releases:
           limits:
             memory: "64Mi"
             cpu: "100m"
-        service:
-          labels:
-            kubernetes.io/cluster-service: "true"
-            kubernetes.io/name: metrics-server
