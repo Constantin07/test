@@ -11,10 +11,20 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: validate apply diff
 
 validate:
-	kubeval --strict ${CONFIGMAP_FILE}
+	kubeval --strict "${CONFIGMAP_FILE}"
 
 apply: validate
-	kubectl apply -f ${CONFIGMAP_FILE} --wait=true
+	@kubectl diff -f "${CONFIGMAP_FILE}"; \
+	if [ $$? -eq 0 ]; then \
+	    echo "No changes in CoreDNS configmap."; \
+	else \
+	    kubectl apply -f ${CONFIGMAP_FILE} --wait=true; \
+	    kubectl -n kube-system patch deploy/coredns -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"`date +'%s'`\"}}}}}"; \
+	    kubectl -n kube-system rollout status deploy/coredns --timeout=120s --watch=true; \
+	fi
 
 diff:
 	kubectl diff -f ${CONFIGMAP_FILE}
+
+test:
+	./coredns_tests.sh

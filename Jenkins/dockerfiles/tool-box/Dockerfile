@@ -2,35 +2,35 @@ FROM alpine:3.12.0 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.13.0
+ARG TERRAFORM_VERSION=0.13.3
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="9ed437560faf084c18716e289ea712c784a514bdd7f2796549c735d439dbe378"
+ARG TERRAFORM_SHA256="35c662be9d32d38815cde5fa4c9fa61a3b7f39952ecd50ebf92fd1b2ddd6109b"
 
-ARG PACKER_VERSION=1.6.1
+ARG PACKER_VERSION=1.6.2
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="8dcf97610e8c3907c23e25201dce20b498e1939e89878dec01de6975733c7729"
+ARG PACKER_SHA256="089fc9885263bb283f20e3e7917f85bb109d9335f24d59c81e6f3a0d4a96a608"
 
-ARG KUBECTL_VERSION=v1.18.8
+ARG KUBECTL_VERSION=v1.19.1
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="a076f5eff0710de94d1eb77bee458ea43b8f4d9572bbb3a3aec1edf0dde0a3e7"
+ARG KUBECTL_SHA256="da4de99d4e713ba0c0a5ef6efe1806fb09c41937968ad9da5c5f74b79b3b38f5"
 
-ARG HELM_VERSION=v3.3.0
+ARG HELM_VERSION=v3.3.1
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="ff4ac230b73a15d66770a65a037b07e08ccbce6833fbd03a5b84f06464efea45"
+ARG HELM_SHA256="81e3974927b4f76e9f679d1f6d6b45748f8c84081a571741d48b2902d816e14c"
 
-ARG HELMFILE_VERSION=0.125.7
+ARG HELMFILE_VERSION=0.129.3
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="497f6b2b0f979d7c41e846fd0b5999c95cd518cf064e0090a7e21b7bb0da7bee"
+ARG HELMFILE_SHA256="26f2ccd86d743c766db6bde04e15d9cb4d55f01df91255ea1a106585c397909d"
 
-ARG GOMPLATE_VERSION=3.7.0
+ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
-ARG GOMPLATE_SHA256="27b0792309b78cd872ffe72a040475b2704f72e055a774079c9fcc5ac23543f6"
+ARG GOMPLATE_SHA256="13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e"
 
 ARG VALIDATEYAML_VERSION=v0.2.3
 ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/download/${VALIDATEYAML_VERSION}/validate-yaml-linux-amd64.zip"
@@ -115,6 +115,7 @@ USER ${USERNAME}
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Add helm repositories
-RUN helm repo add stable https://kubernetes-charts.storage.googleapis.com && \
+RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
     helm repo add bitnami https://charts.bitnami.com/bitnami && \
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com && \
     helm repo update

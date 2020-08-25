@@ -27,8 +27,6 @@
 
 - name: Add helm repositories
   command: helm repo add "{{ item.name }}" "{{ item.url }}"
-  loop:
-    - { name: bitnami, url: 'https://charts.bitnami.com/bitnami' }
-    - { name: stable, url: 'https://kubernetes-charts.storage.googleapis.com' }
+  loop: "{{ helm_repos }}"
   environment:
     HELM_HOME: '/tmp/.helm'

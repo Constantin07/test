@@ -15,8 +15,8 @@ variable "environment" {
 
 variable "availability_zones_count" {
   description = "Number of avalability zones to use"
-  type        = string
-  default     = "2"
+  type        = number
+  default     = 2
 }
 
 variable "extra_tags" {
