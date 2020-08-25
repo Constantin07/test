@@ -7,6 +7,7 @@
 - hosts: kube
   become: yes
   become_user: root
+  any_errors_fatal: true
 
   tasks:
 
@@ -29,11 +30,15 @@
 - hosts: master-node1.internal
   become: yes
   become_user: root
+  any_errors_fatal: true
 
   tasks:
 
-    - name: Run kubeadm upgrade plan {{ k8s_version }}
-      command: kubeadm upgrade plan {{ k8s_version }}
+    - name: Drain the control plane node
+      command: "kubectl drain {{ ansible_fqdn }} --ignore-daemonsets"
+
+    - name: Run kubeadm upgrade plan
+      command: kubeadm upgrade plan
       register: plan
 
     - debug: msg="{{ plan.stdout_lines }}"
@@ -48,12 +53,16 @@
 
     - debug: msg="{{ apply.stdout_lines }}"
 
+    - name: Uncordon the control plane node
+      command: "kubectl uncordon {{ ansible_fqdn }}"
+
 # Upgrade other master nodes
 - hosts: kube_masters:!master-node1.internal
   serial: 1
   order: sorted
   become: yes
   become_user: root
+  any_errors_fatal: true
 
   tasks:
 
@@ -80,6 +89,7 @@
 - hosts: kube
   become: yes
   become_user: root
+  any_errors_fatal: true
 
   tasks:
 

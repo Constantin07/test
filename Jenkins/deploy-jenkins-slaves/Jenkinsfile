@@ -23,14 +23,20 @@ pipeline {
           registryUrl 'http://centos7.internal:5000'
           image 'centos7.internal:5000/tool-box:latest'
           alwaysPull true
-          args '-u toolbox -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg --network host'
+          args '''
+            -u toolbox \
+            -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg \
+            --network host \
+            -e ANSIBLE_HOST_KEY_CHECKING=False
+          '''
         }
       }
       steps {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
           sshagent (credentials: ['jenkins-ssh-key']) {
-            sh 'ansible jenkins_slaves -m shell -a "yum -y update; yum clean all"'
+            sh 'ansible jenkins_slaves -m shell -a "cmd=\'yum clean all\' warn=false"'
+            sh 'ansible jenkins_slaves -m shell -a "cmd=\'yum -y update\' warn=false"'
             sh 'ansible-playbook jenkins_slaves.yml'
           }
         }

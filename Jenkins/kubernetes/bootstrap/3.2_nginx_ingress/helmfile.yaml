@@ -3,23 +3,18 @@
 helmDefaults:
   verify: false
   wait: true
-  timeout: 120
-  recreatePods: true
+  timeout: 180
   historyMax: 5
 
 releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
-    chart: stable/nginx-ingress
-    version: 1.41.3
+    chart: ingress-nginx/ingress-nginx
+    version: 3.1.0
     values:
       - controller:
           image:
             pullPolicy: Always
-          hostNetwork: true
-          dnsPolicy: ClusterFirstWithHostNet
-          reportNodeInternalIp: true
-          ingressClass: internal
           config:
             add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "CONFIGMAP_NAME" }}
             enable-modsecurity: "true"
@@ -27,9 +22,17 @@ releases:
             http-snippet: |
               more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
-          kind: DaemonSet
+          dnsPolicy: ClusterFirstWithHostNet
+          hostNetwork: true
+          reportNodeInternalIp: true
+          ingressClass: internal
           publishService:
             enabled: false
+          kind: DaemonSet
+          updateStrategy:
+            rollingUpdate:
+              maxUnavailable: 1
+          minReadySeconds: 5
           service:
             type: NodePort
             nodePorts:

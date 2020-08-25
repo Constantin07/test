@@ -26,12 +26,12 @@ lint:
 	helmfile template | kubectl apply --dry-run=server -f -
 
 diff:
-	gomplate -f ${HEADERS_FILE} | kubectl diff -n ${NAMESPACE} -f -
+	gomplate -f ${HEADERS_FILE} | kubectl diff -f -
 	helmfile diff
 
 sync: validate
 	gomplate -f ${HEADERS_FILE}
-	gomplate -f ${HEADERS_FILE} | kubectl apply -n ${NAMESPACE} -f -
+	gomplate -f ${HEADERS_FILE} | kubectl apply -f -
 	helmfile sync
 
 status:
@@ -39,4 +39,4 @@ status:
 
 destroy:
 	helmfile destroy
-	kubectl delete -f ${HEADERS_FILE} -n ${NAMESPACE}
+	gomplate -f ${HEADERS_FILE} | kubectl delete --ignore-not-found=true -f -

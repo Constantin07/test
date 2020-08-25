@@ -1,4 +1,8 @@
-provider "tls" {
-  version = "~> 2.2.0"
+terraform {
+  required_providers {
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 2.2.0"
+    }
+  }
 }
-

@@ -30,7 +30,7 @@ pipeline {
       }
       steps {
         dir(env.ROOT_DIR + '0_update_coredns') {
-          sh 'make apply'
+          sh 'make apply test'
         }
         milestone(ordinal: 1)
       }
