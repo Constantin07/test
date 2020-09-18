@@ -1,5 +1,8 @@
 ---
 
+- name: Wait for any possibly running unattended upgrade to finish
+  raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
+
 - name: Remove not required packages | Debian
   apt:
     name: "{{ item }}"

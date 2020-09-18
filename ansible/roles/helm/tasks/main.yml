@@ -26,7 +26,7 @@
   when: "'plugin already exists' in result_install.stderr"
 
 - name: Add helm repositories
-  command: helm repo add "{{ item.name }}" "{{ item.url }}"
+  command: helm repo add "{{ item.name }}" "{{ item.url }}" --force-update
   loop: "{{ helm_repos }}"
   environment:
     HELM_HOME: '/tmp/.helm'

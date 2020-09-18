@@ -1,5 +1,8 @@
 ---
 
+- name: Complete unfinished/pending transactions on the target host
+  command: yum-complete-transaction --cleanup-only
+
 - name: Remove not required packages | RedHat
   yum:
     name: "{{item}}"

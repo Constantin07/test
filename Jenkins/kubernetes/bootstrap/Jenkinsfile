@@ -14,7 +14,7 @@ pipeline {
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube:ro -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg:ro'
   }
 
   stages {
