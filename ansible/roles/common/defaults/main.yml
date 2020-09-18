@@ -1,6 +1,7 @@
 ---
 
 redhat_packages:
+  - yum-utils
   - epel-release
   - python2-pip
   - libselinux-python
