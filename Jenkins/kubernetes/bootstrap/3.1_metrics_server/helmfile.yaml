@@ -9,21 +9,15 @@ helmDefaults:
 releases:
   - name: metrics-server
     namespace: {{ requiredEnv "NAMESPACE" }}
-    chart: stable/metrics-server
-    version: 2.11.2
+    chart: bitnami/metrics-server
+    version: 4.3.2
     values:
       - image:
-          repository: k8s.gcr.io/metrics-server/metrics-server
-          tag: v0.3.7
           pullPolicy: Always
-        args:
-          - --kubelet-insecure-tls
-          - --v=1
-        rbac:
-          pspEnabled: true
-        podDisruptionBudget:
-          enabled: true
-          minAvailable: 1
+        extraArgs:
+          kubelet-insecure-tls: true
+        apiService:
+          create: true
         resources:
           requests:
             memory: "64Mi"
