@@ -27,4 +27,5 @@ diff:
 	kubectl diff -f ${CONFIGMAP_FILE}
 
 test:
+	@echo "Running CoreDNS tests..."
 	./coredns_tests.sh

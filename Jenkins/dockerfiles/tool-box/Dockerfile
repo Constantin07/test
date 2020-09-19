@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="246d58b6b353e63ae8627415a7340089015e3eb542ff7b5ce124b0b1409369cc"
 
-ARG HELMFILE_VERSION=0.129.3
+ARG HELMFILE_VERSION=0.130.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="26f2ccd86d743c766db6bde04e15d9cb4d55f01df91255ea1a106585c397909d"
+ARG HELMFILE_SHA256="c3eae590f3436ebc3498414e60229a449157d577a5af18ac02794ca08f989eaf"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -94,7 +94,7 @@ ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
 
 RUN apk update && apk upgrade && \
-    apk --no-cache add ca-certificates curl bash python3 py-pip make git gnupg ansible && \
+    apk --no-cache add ca-certificates curl bash jq python3 py-pip make git gnupg ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
