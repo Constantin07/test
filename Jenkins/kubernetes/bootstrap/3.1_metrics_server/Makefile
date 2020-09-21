@@ -7,12 +7,12 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init template validate lint diff apply status destroy
+.PHONY: init template validate lint diff sync status destroy
 
 init:
 	helm repo update
 
-template: validate
+template:
 	helmfile template
 
 validate:
@@ -25,7 +25,7 @@ lint:
 diff:
 	helmfile diff
 
-apply: validate
+sync: validate
 	helmfile sync
 
 status:

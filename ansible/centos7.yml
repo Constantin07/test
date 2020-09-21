@@ -14,4 +14,4 @@
     - kubeval
     - krew
     - fzf
-    - { role: jenkins_master, jenkins_version: "2.257" }
+    - { role: jenkins_master, jenkins_version: "2.258" }

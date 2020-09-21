@@ -14,7 +14,7 @@ pipeline {
     DIRECTORY = 'Jenkins/kubernetes/hello-kubernetes'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
+    ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {
@@ -26,6 +26,7 @@ pipeline {
           sh 'make build tag publish'
         }
         cleanWs()
+        milestone(ordinal: 1)
       }
     }
 
@@ -39,10 +40,13 @@ pipeline {
         }
       }
       steps {
-        dir(env.DIRECTORY) {
-          sh 'make template sync'
+        lock('kubernetes/hello-kubernetes') {
+          dir(env.DIRECTORY) {
+            sh 'make lint sync'
+          }
+          cleanWs()
+          milestone(ordinal: 2)
         }
-        cleanWs()
       }
     }
 
@@ -59,6 +63,7 @@ pipeline {
           )
           println(skipDelete)
         }
+        milestone(ordinal: 3)
       }
     }
 
@@ -75,10 +80,13 @@ pipeline {
         }
       }
       steps {
-        dir(env.DIRECTORY) {
-          sh 'make destroy'
+        lock('kubernetes/hello-kubernetes') {
+          dir(env.DIRECTORY) {
+            sh 'make destroy'
+          }
+          cleanWs()
+          milestone(ordinal: 4)
         }
-        cleanWs()
       }
     }
 

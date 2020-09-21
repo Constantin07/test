@@ -18,5 +18,8 @@ install: validate
 diff:
 	kubectl diff -f ${CONFIG_FILE}
 
+test:
+	./vault_auth_tests.sh
+
 delete:
 	kubectl delete -f ${CONFIG_FILE} --wait=true || true

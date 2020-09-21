@@ -8,7 +8,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 .PHONY: init template validate lint diff sync status destroy
 
-template: validate
+template:
 	gomplate -f namespace.yaml | kubectl apply --dry-run -f -
 	helmfile template
 
