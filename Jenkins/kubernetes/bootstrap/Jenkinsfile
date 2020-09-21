@@ -14,7 +14,12 @@ pipeline {
     ROOT_DIR = 'Jenkins/kubernetes/bootstrap/'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube:ro -v /var/lib/jenkins/.gnupg:/home/toolbox/.gnupg'
+    ARGS = '''
+             -u toolbox \
+             -t \
+             --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly \
+             --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg
+           '''
   }
 
   stages {
@@ -84,7 +89,7 @@ pipeline {
       steps {
         dir(env.ROOT_DIR + '3.1_metrics_server') {
           sh '''
-            make init lint apply
+            make init lint sync
             ./wait.sh
           '''
         }
@@ -108,6 +113,7 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '3.0_vault_auth') {
               sh 'make install'
+              sh 'make test'
             }
           }
         }
@@ -123,7 +129,7 @@ pipeline {
           }
           steps {
             dir(env.ROOT_DIR + '3.2_nginx_ingress') {
-              sh 'make init lint apply'
+              sh 'make init lint sync'
             }
           }
         }
@@ -141,7 +147,7 @@ pipeline {
             dir(env.ROOT_DIR + '3.3_external_dns') {
               sh '''
                 git crypt unlock
-                make init lint apply
+                make init lint sync
               '''
             }
           }

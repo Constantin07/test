@@ -14,7 +14,7 @@ pipeline {
     ROOT_DIR = 'Jenkins/kubernetes/kube-bench'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
+    ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {

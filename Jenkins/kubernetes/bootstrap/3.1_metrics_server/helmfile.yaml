@@ -1,14 +1,16 @@
 ---
 
 helmDefaults:
+  cleanupOnFail: false
   verify: false
   wait: true
   timeout: 120
-  historyMax: 5
+  historyMax: 10
 
 releases:
   - name: metrics-server
     namespace: {{ requiredEnv "NAMESPACE" }}
+    createNamespace: false
     chart: bitnami/metrics-server
     version: 4.3.2
     values:

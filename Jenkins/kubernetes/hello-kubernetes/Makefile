@@ -19,7 +19,7 @@ endif
 build:
 	$(MAKE) -C dockerfile
 
-template: validate
+template:
 	helmfile template
 
 validate:

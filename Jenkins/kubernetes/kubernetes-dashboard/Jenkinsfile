@@ -4,8 +4,9 @@ pipeline {
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    disableConcurrentBuilds()
+    //disableConcurrentBuilds()
     ansiColor('xterm')
+    timeout(time: 1, unit: 'HOURS')
   }
 
   environment {
@@ -13,7 +14,7 @@ pipeline {
     DIRECTORY = 'Jenkins/kubernetes/kubernetes-dashboard'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-v /var/lib/jenkins/.kube:/home/toolbox/.kube'
+    ARGS = '-u toolbox -t --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {
@@ -28,21 +29,25 @@ pipeline {
         }
       }
       steps {
-        dir(env.DIRECTORY) {
-          sh 'make sync'
+        lock('kubernetes/kubernetes-dashboard') {
+          dir(env.DIRECTORY) {
+            sh 'make validate lint sync'
+          }
         }
         cleanWs()
+        milestone(ordinal: 1)
       }
     }
 
-   stage('Approve to delete') {
-     options {
-       timeout(time: 1, unit: 'HOURS')
-     }
-     steps {
-       input(message: 'Do you want to proceed?', ok: 'Yes')
-     }
-   }
+    stage('Approve to delete') {
+      options {
+        timeout(time: 1, unit: 'HOURS')
+      }
+      steps {
+        input(message: 'Do you want to proceed?', ok: 'Yes')
+        milestone(ordinal: 2)
+      }
+    }
 
     stage('Remove dashboard') {
       agent {
@@ -58,6 +63,7 @@ pipeline {
           sh 'make destroy'
         }
         cleanWs()
+        milestone(ordinal: 3)
       }
     }
 
