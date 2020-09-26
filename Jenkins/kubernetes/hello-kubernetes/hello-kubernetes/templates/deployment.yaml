@@ -64,8 +64,8 @@ spec:
         {{- if .Values.vaultAgent.enabled }}
 
         - name: vault-agent
-          image: vault:1.5.0
-          imagePullPolicy: Always
+          image: "{{ .Values.vaultAgent.image.repository }}:{{ .Values.vaultAgent.image.tag }}"
+          imagePullPolicy: {{ .Values.vaultAgent.image.pullPolicy }}
           command: [ "vault" ]
           args:
             - "agent"

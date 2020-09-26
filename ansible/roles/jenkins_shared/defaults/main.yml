@@ -10,6 +10,7 @@ redhat_packages:
   - unzip
   - curl
   - gnupg2
+  - ansible.noarch
 # These should be only required on slaves ?
 # required to build ansible
   - make
