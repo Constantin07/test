@@ -25,6 +25,10 @@ securityContext:
 
 vaultAgent:
   enabled: false
+  image:
+    repository: vault
+    tag: latest
+    pullPolicy: IfNotPresent
   role: test
   env: {}
   resources: {}

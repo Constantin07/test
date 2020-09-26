@@ -32,12 +32,12 @@ test_CoreDnsPodsAreRunning() {
   assertEquals "At least 2 CoreDNS pods are running" '2' "$result"
 }
 
-test_CoreDnsPodsNoErrorsInLogs() {
-  for pod in `kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name`; do
-    logs=`kubectl logs --namespace=kube-system $pod`
-    assertNotContains "No errors in pod logs" "$logs" 'ERROR'
-  done
-}
+#test_CoreDnsPodsNoErrorsInLogs() {
+#  for pod in `kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name`; do
+#    logs=`kubectl logs --namespace=kube-system $pod`
+#    assertNotContains "No errors in pod logs" "$logs" 'ERROR'
+#  done
+#}
 
 oneTimeTearDown() {
   kubectl delete --ignore-not-found=true -f ./busybox.yaml
