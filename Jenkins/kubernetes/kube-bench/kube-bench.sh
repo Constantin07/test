@@ -7,7 +7,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-TARGET=$1
+TARGET="$1"
 NAMESPACE="${NAMESPACE:-default}"
 JOB_NAME="kube-bench-${TARGET}"
 TIMEOUT="120s"
