@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -19,16 +20,23 @@ spec:
         effect: NoSchedule
       containers:
       - name: kube-bench
-        image: aquasec/kube-bench:0.3.1
+        image: aquasec/kube-bench:0.4.0
         imagePullPolicy: Always
-        args: ["master", "--version", "1.18"]
+        args: ["master", "--version", "1.19"]
         volumeMounts:
         - name: var-lib-etcd
           mountPath: /var/lib/etcd
+          readOnly: true
         - name: etc-kubernetes
           mountPath: /etc/kubernetes
+          readOnly: true
+        # /usr/local/mount-from-host/bin is mounted to access kubectl / kubelet, for auto-detecting the Kubernetes version.
+        # You can omit this mount if you specify --version as part of the command.
+        - name: usr-bin
+          mountPath: /usr/bin
+          readOnly: true
         - name: opt-kube-bench-config
-          mountPath: /opt/kube-bench/cfg/cis-1.5/master.yaml
+          mountPath: /opt/kube-bench/cfg/cis-1.6/master.yaml
           subPath: master.yaml
       restartPolicy: Never
       volumes:
@@ -38,6 +46,9 @@ spec:
       - name: etc-kubernetes
         hostPath:
           path: "/etc/kubernetes"
+      - name: usr-bin
+        hostPath:
+          path: "/usr/bin"
       - name: opt-kube-bench-config
         configMap:
           name: kube-bench-master-configmap
