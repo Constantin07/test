@@ -1,0 +1,52 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/tool-box'
+  }
+
+  stages {
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          retry(2) { // Handle sporadic errors
+            sh 'make build'
+          }
+        }
+      }
+    }
+
+    stage('Tag image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make tag'
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make publish'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

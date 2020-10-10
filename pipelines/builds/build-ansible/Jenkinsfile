@@ -1,0 +1,77 @@
+boolean update = false
+
+pipeline {
+
+  agent {
+    label 'master'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/builds/build-ansible'
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm: [$class: 'GitSCM',
+          branches: [[name: 'devel']],
+          userRemoteConfigs: [[url: 'https://github.com/ansible/ansible.git' ]],
+          extensions: [
+            [$class: 'CleanCheckout'],
+            [$class: 'CloneOption', noTags: true, reference: '', shallow: true],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'ansible']
+          ]
+        ]
+
+        dir('ansible') {
+          script {
+            println "Compare Ansible versions"
+            String current_version = sh(script: "rpm -q ansible | cut -d. -f5", returnStdout: true).trim()
+            println "current_version=${current_version}"
+            String new_version = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+            println "new_version=${new_version}"
+
+            if(current_version == new_version) {
+              println "No changes in version"
+            } else {
+              update = true
+            }
+          }
+        }
+      }
+    }
+
+    stage('Build') {
+      when { equals expected: true, actual: update }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make build'
+        }
+      }
+    }
+
+    stage('Install') {
+      when { equals expected: true, actual: update }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make copy install clean'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

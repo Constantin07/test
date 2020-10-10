@@ -1,0 +1,184 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+    parallelsAlwaysFailFast()
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'pipelines/kubernetes/bootstrap/'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '''
+             -u toolbox \
+             -t \
+             --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly \
+             --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg
+           '''
+  }
+
+  stages {
+
+    stage('Update CoreDNS ConfigMap') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '0_update_coredns') {
+          sh 'make apply'
+          sh 'make test'
+        }
+        milestone(ordinal: 1)
+      }
+    }
+
+    stage('Install Calico Overlay') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '1_overlay_network') {
+          sh 'make install'
+        }
+        milestone(ordinal: 2)
+      }
+    }
+
+    stage('Protect critical resources') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '2_protect_resources') {
+          sh 'make protect'
+          sh 'make test'
+          milestone(ordinal: 3)
+        }
+      }
+    }
+
+    stage('Install metrics-server') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '3.1_metrics_server') {
+          sh '''
+            make init lint sync
+            ./wait.sh
+          '''
+        }
+        milestone(ordinal: 5)
+      }
+    }
+
+    stage('Bootstrap') {
+
+      parallel {
+
+        stage('Config vault-auth') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image env.DOCKER_IMAGE
+              alwaysPull true
+              args env.ARGS
+            }
+          }
+          steps {
+            dir(env.ROOT_DIR + '3.0_vault_auth') {
+              sh 'make install'
+              sh 'make test'
+            }
+          }
+        }
+
+        stage('Install nginx-ingress') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image env.DOCKER_IMAGE
+              alwaysPull true
+              args env.ARGS
+            }
+          }
+          steps {
+            dir(env.ROOT_DIR + '3.2_nginx_ingress') {
+              sh 'make init lint sync'
+            }
+          }
+        }
+
+        stage('Install external-dns') {
+          agent {
+            docker {
+              registryUrl env.REGISTRY
+              image env.DOCKER_IMAGE
+              alwaysPull true
+              args env.ARGS
+            }
+          }
+          steps {
+            dir(env.ROOT_DIR + '3.3_external_dns') {
+              sh '''
+                git crypt unlock
+                make init lint sync
+              '''
+            }
+          }
+        }
+
+      }
+    }
+
+    stage('Test cluster health') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '7_cluster_tests') {
+          sh './cluster_status_tests.sh'
+        }
+        milestone(ordinal: 6)
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

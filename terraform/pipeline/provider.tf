@@ -3,7 +3,7 @@ provider "aws" {
   version = "~> 3.3.0"
 
   allowed_account_ids = [
-    "${lookup(module.env.accounts[var.environment], "account")}",
+    lookup(module.env.accounts[var.environment], "account"),
   ]
 
   assume_role {
