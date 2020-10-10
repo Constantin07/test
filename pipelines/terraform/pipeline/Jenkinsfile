@@ -1,0 +1,10 @@
+def nodeName = ''
+
+def terraform = fileLoader.fromGit(
+  'pipelines/terraform.groovy',
+  'git@github.com:Constantin07/test.git',
+  'master',
+  'Git',
+  nodeName)
+
+terraform.build(nodeName, 'terraform/pipeline')

@@ -22,7 +22,7 @@ resource "aws_vpc" "default" {
 }
 
 locals {
-  domain_name = "${var.internal_dns_domain == "" ? "${data.aws_region.current.name}.compute.internal" : var.internal_dns_domain}"
+  domain_name = var.internal_dns_domain == "" ? "${data.aws_region.current.name}.compute.internal" : var.internal_dns_domain
 }
 
 resource "aws_vpc_dhcp_options" "default" {

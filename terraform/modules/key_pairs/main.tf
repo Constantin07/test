@@ -3,8 +3,8 @@
 */
 
 locals {
-  key_name_prefix    = "${var.key_name_prefix == "" ? terraform.workspace : var.key_name_prefix}"
-  timestamp_yyyymmdd = "${replace(substr(timestamp(), 0, 10), "-", "")}"
+  key_name_prefix    = var.key_name_prefix == "" ? terraform.workspace : var.key_name_prefix
+  timestamp_yyyymmdd = replace(substr(timestamp(), 0, 10), "-", "")
 }
 
 /* Key used in public subnets */
