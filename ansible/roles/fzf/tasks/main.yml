@@ -1,0 +1,7 @@
+---
+
+- name: Download and install fzf {{ fzf_version }}
+  unarchive:
+    src: "{{ fzf_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
