@@ -33,10 +33,20 @@ pipeline {
       }
     }
 
+    stage('Push image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make push'
+        }
+      }
+    }
+
     stage('Publish image') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make publish'
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make publish'
+          }
         }
       }
     }

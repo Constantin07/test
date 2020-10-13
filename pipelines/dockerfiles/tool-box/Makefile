@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 
 REGISTRY ?= centos7.internal:5000
+DOCKER_REGISTRY ?= constantin07/tool-box
 IMAGE ?= tool-box
 
 # Check for required binaries
@@ -25,6 +26,10 @@ default: build tag publish
 .PHONY: all
 all: build tag publish clean
 
+.PHONY: login
+login:
+	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
+
 .PHONY: build
 build:
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
@@ -32,11 +37,19 @@ build:
 .PHONY: tag
 tag:
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}:${TAG}
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}:latest
 
-.PHONY: publish
-publish:
+.PHONY: push
+push:
 	docker push ${REGISTRY}/${IMAGE}:${TAG}
 	docker push ${REGISTRY}/${IMAGE}:latest
+
+# Publish to DockerHub
+.PHONY: publish
+publish: login
+	docker push ${DOCKER_REGISTRY}:${TAG}
+	docker push ${DOCKER_REGISTRY}:latest
 
 .PHONY: clean
 clean:
