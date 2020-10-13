@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="b664632683c36446deeb85c406871590d879491e3de18978b426769e43a1e82c"
 
-ARG HELMFILE_VERSION=0.130.1
+ARG HELMFILE_VERSION=0.130.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="606beae471f856a67933767f971423fd31e109728e83771f7a4bf5c6c191f346"
+ARG HELMFILE_SHA256="82127044bbf86f4ab0e89832da64cbaed80c59c3cdd80f322257ee296aeb97e8"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
