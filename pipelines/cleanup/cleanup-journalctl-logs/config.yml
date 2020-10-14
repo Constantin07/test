@@ -1,0 +1,9 @@
+---
+
+description: "Clean up journalctl logs."
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true

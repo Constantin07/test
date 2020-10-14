@@ -1,0 +1,14 @@
+---
+# Used to vacuum journalctl logs
+
+- hosts: all
+  become: yes
+  become_user: root
+  gather_facts: no
+  ignore_unreachable: true
+
+  tasks:
+
+    - name: Vacuum journalctl logs
+      command: journalctl --vacuum-size=50M
+

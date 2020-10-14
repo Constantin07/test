@@ -1,0 +1,44 @@
+pipeline {
+
+  agent any
+
+  triggers {
+    cron('H */3 * * *')
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  stages {
+
+    stage('Clean journalctl logs') {
+      agent {
+        docker {
+          registryUrl 'http://centos7.internal:5000'
+          image 'centos7.internal:5000/tool-box:latest'
+          alwaysPull true
+          args '-u toolbox'
+        }
+      }
+      steps {
+        dir('ansible') {
+          sshagent (credentials: ['jenkins-ssh-key']) {
+            sh 'ansible-playbook journalctl-cleanup.yml'
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
