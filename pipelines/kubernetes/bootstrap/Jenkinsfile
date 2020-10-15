@@ -69,10 +69,29 @@ pipeline {
         }
       }
       steps {
-        dir(env.ROOT_DIR + '2_protect_resources') {
+        dir(env.ROOT_DIR + '2.0_protect_resources') {
           sh 'make protect'
           sh 'make test'
           milestone(ordinal: 3)
+        }
+      }
+    }
+
+    stage('Docker-registry creds') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '2.1_docker_credentials') {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh './regcred.sh'
+          }
+          milestone(ordinal: 4)
         }
       }
     }
