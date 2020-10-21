@@ -39,6 +39,24 @@ pipeline {
       }
     }
 
+    stage('Test dashboard') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh './test.sh'
+        }
+        cleanWs()
+        milestone(ordinal: 2)
+      }
+    }
+
     stage('Approve to delete') {
       options {
         timeout(time: 1, unit: 'HOURS')
@@ -51,7 +69,7 @@ pipeline {
             parameters: [booleanParam(name: 'SKIP_DELETE', defaultValue: true, description: 'Whether to skip delete stage.')]
           )
         }
-        milestone(ordinal: 2)
+        milestone(ordinal: 3)
       }
     }
 
@@ -72,7 +90,7 @@ pipeline {
           sh 'make destroy'
         }
         cleanWs()
-        milestone(ordinal: 3)
+        milestone(ordinal: 4)
       }
     }
 
