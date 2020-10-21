@@ -28,7 +28,8 @@ spec:
             - containerPort: 8000
               protocol: TCP
           args:
-            - --metric-duration=15m
+            - --metric-resolution=1m
+            - --metric-duration=30m
           livenessProbe:
             httpGet:
               scheme: HTTP

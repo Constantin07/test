@@ -2,4 +2,4 @@
 *** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
 *********************************************************************************
 
-The Kubernetes-dashboard can be accessed at http://{{ .Values.host }}.{{ .Values.domain }}
+The Kubernetes-dashboard can be accessed at http://{{ .Values.host }}.{{ .Values.domain }}:{{ .Values.loadbalancerPort }}

@@ -1,12 +1,12 @@
+def skipDelete = false
+
 pipeline {
 
   agent none
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    //disableConcurrentBuilds()
     ansiColor('xterm')
-    timeout(time: 1, unit: 'HOURS')
   }
 
   environment {
@@ -44,12 +44,21 @@ pipeline {
         timeout(time: 1, unit: 'HOURS')
       }
       steps {
-        input(message: 'Do you want to proceed?', ok: 'Yes')
+        script {
+          skipDelete = input(
+            message: 'Should we skip delete?',
+            ok: 'Yes',
+            parameters: [booleanParam(name: 'SKIP_DELETE', defaultValue: true, description: 'Whether to skip delete stage.')]
+          )
+        }
         milestone(ordinal: 2)
       }
     }
 
     stage('Remove dashboard') {
+      when {
+        expression { skipDelete == false }
+      }
       agent {
         docker {
           registryUrl env.REGISTRY
