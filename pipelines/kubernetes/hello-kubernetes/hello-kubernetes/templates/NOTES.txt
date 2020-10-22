@@ -1,7 +1,7 @@
-*********************************************************************************
-*** PLEASE BE PATIENT: {{ .Release.Name }}  may take a few minutes to install ***
-*********************************************************************************
+********************************************************************************
+*** PLEASE BE PATIENT: {{ .Release.Name }} may take a few minutes to install ***
+********************************************************************************
 
 {{- if .Values.ingress.enabled }}
-The {{ .Release.Name }} can be accessed at http://{{ .Values.ingress.host }}:30000
+The {{ .Release.Name }} can be accessed at http://{{ .Values.ingress.host }}:3000
 {{- end }}
