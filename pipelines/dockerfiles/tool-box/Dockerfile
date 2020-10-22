@@ -1,4 +1,4 @@
-FROM alpine:3.12.0 AS builder
+FROM alpine:3.12.1 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -17,15 +17,15 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="84eeb8237448e4f431fef0f0ec0ba8b07558d8e52d5a7e89b4ae64dadcffbe66"
 
-ARG HELM_VERSION=v3.3.4
+ARG HELM_VERSION=v3.4.0
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="b664632683c36446deeb85c406871590d879491e3de18978b426769e43a1e82c"
+ARG HELM_SHA256="270acb0f085b72ec28aee894c7443739271758010323d72ced0e92cd2c96ffdb"
 
-ARG HELMFILE_VERSION=0.132.0
+ARG HELMFILE_VERSION=0.132.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="90a62907b4d98ebaba695b6d328f82259f32f0925c9838b7443bc5c871d3b056"
+ARG HELMFILE_SHA256="57c87855087c9ae013ef2f9a8d933d3bd698d8ed5299621d38ecbca1606e3d4b"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -88,7 +88,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.12.0
+FROM alpine:3.12.1
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
@@ -117,5 +117,5 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Add helm repositories
 RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
     helm repo add bitnami https://charts.bitnami.com/bitnami && \
-    helm repo add stable https://kubernetes-charts.storage.googleapis.com && \
+    helm repo add stable https://charts.helm.sh/stable && \
     helm repo update
