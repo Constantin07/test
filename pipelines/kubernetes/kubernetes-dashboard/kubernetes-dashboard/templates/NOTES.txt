@@ -1,5 +1,5 @@
 *********************************************************************************
-*** PLEASE BE PATIENT: kubernetes-dashboard may take a few minutes to install ***
+*** PLEASE BE PATIENT: {{ .Release.Name }} may take a few minutes to install ***
 *********************************************************************************
 
-The Kubernetes-dashboard can be accessed at http://{{ .Values.host }}.{{ .Values.domain }}:{{ .Values.loadbalancerPort }}
+The {{ .Release.Name }} can be accessed at http://{{ .Values.host }}.{{ .Values.domain }}:{{ .Values.loadbalancerPort }}
