@@ -1,6 +1,13 @@
 pipeline {
 
-  agent any
+  agent {
+    docker {
+      registryUrl 'http://centos7.internal:5000'
+      image 'centos7.internal:5000/tool-box:latest'
+      alwaysPull true
+      args '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
+    }
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -11,25 +18,28 @@ pipeline {
   environment {
     KUBECONFIG = '/home/toolbox/.kube/config'
     DIRECTORY = 'pipelines/kubernetes/kube-stresscheck'
-    REGISTRY = 'http://centos7.internal:5000'
-    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
-    ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {
 
-    stage('Run kube-bench on node') {
-      agent {
-        docker {
-          registryUrl env.REGISTRY
-          image env.DOCKER_IMAGE
-          alwaysPull true
-          args env.ARGS
-        }
-      }
+    stage('Run kube-stresscheck') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make validate'
+          sh 'make sync'
+        }
+      }
+    }
+
+    stage('Sleep') {
+      steps {
+        sleep(time: 1, unit: "MINUTES")
+      }
+    }
+
+    stage('Destroy kube-stresscheck') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make destroy'
         }
       }
     }

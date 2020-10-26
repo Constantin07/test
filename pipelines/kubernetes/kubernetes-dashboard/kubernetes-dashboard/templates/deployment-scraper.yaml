@@ -19,11 +19,12 @@ spec:
       labels:
         k8s-app: dashboard-metrics-scraper
       annotations:
-        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
+        "seccomp.security.alpha.kubernetes.io/pod": 'runtime/default'
     spec:
       containers:
         - name: dashboard-metrics-scraper
           image: "{{ .Values.scraper.repository }}:{{ .Values.scraper.tag }}"
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -47,7 +48,7 @@ spec:
             runAsGroup: 2001
       serviceAccountName: dashboard-metrics-scraper
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       volumes:
         - name: tmp-volume
           emptyDir: {}
