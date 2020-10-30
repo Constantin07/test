@@ -7,10 +7,10 @@ ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_SHA256="f7b7a7b1bfbf5d78151cfe3d1d463140b5fd6a354e71a7de2b5644e652ca5147"
 
-ARG PACKER_VERSION=1.6.4
+ARG PACKER_VERSION=1.6.5
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="a20ec68e9eb6e1d6016481003f705babbecc28e234f8434f3a35f675cb200ea8"
+ARG PACKER_SHA256="a49f6408a50c220fe3f1a6192ea21134e2e8f31092c507614cd27ad4f913234b"
 
 ARG KUBECTL_VERSION=v1.19.3
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
