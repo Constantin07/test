@@ -48,6 +48,7 @@
   loop:
     - { name: 'install-plugins.sh', mode: '0755' }
     - { name: 'plugins.txt', mode: '0644' }
+    - { name: 'jenkins.yaml', mode: '0644' }
   notify: restart jenkins
 
 - name: Cleanup /var/lib/jenkins/plugins directory
