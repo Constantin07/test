@@ -23,7 +23,7 @@ template:
 	helmfile template
 
 validate:
-	helmfile template | kubeval --strict
+	helmfile template | kubeval
 
 lint:
 	helmfile lint
