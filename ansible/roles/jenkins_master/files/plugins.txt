@@ -5,6 +5,7 @@ aws-credentials
 blueocean
 build-timestamp
 cctray-xml
+configuration-as-code
 credentials
 custom-tools-plugin
 docker-plugin

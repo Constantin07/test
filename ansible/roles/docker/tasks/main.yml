@@ -23,7 +23,7 @@
     state: directory
     owner: root
     group: root
-    mode: 755
+    mode: 0755
 
 - name: Add custom settings to docker drop-in file
   template:
@@ -31,7 +31,7 @@
     dest: /etc/systemd/system/docker.service.d/docker.conf
     owner: root
     group: root
-    mode: 644
+    mode: 0644
   notify: restart docker
 
 - name: Create docker config directory
