@@ -20,8 +20,12 @@ securityContext:
   runAsGroup: 1000
   runAsNonRoot: true
   capabilities:
+    drop:
+      - all
     add:
-      - IPC_LOCK
+      - IPC_LOCK   # required for vault binary
+  seccompProfile:
+    type: RuntimeDefault
 
 vaultAgent:
   enabled: false
