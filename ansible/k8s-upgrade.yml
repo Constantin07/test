@@ -46,7 +46,8 @@
 
     - debug: msg="{{ plan.stdout_lines }}"
 
-    - pause:
+    - name: Wait for approval
+      pause:
         prompt: "Do you want to proceed with upgrade?"
       when: non_interactive is undefined
 
