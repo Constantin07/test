@@ -18,9 +18,7 @@ pipeline {
     stage('Build image') {
       steps {
         dir(env.DIRECTORY) {
-          retry(2) { // Handle sporadic errors
-            sh 'make build'
-          }
+          sh 'make build'
         }
       }
     }

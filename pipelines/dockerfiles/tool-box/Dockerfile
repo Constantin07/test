@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="270acb0f085b72ec28aee894c7443739271758010323d72ced0e92cd2c96ffdb"
 
-ARG HELMFILE_VERSION=0.132.2
+ARG HELMFILE_VERSION=0.133.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="dc8e1ee64de1d4bf4a1b34082b1aa311c2542ae2254a7161288a4364cfa731ff"
+ARG HELMFILE_SHA256="3c1c7244c54d5733f428df006144c46d26c86809e92cd793a61ff4d406cfa2de"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -94,7 +94,7 @@ ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
 
 RUN apk update && apk upgrade && \
-    apk --no-cache add ca-certificates curl bash jq python3 py-pip make git gnupg ansible && \
+    apk --no-cache add ca-certificates curl bash jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
