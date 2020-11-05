@@ -1,2 +1,6 @@
 jenkins:
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+
+unclassified:
+  ansiColorBuildWrapper:
+    globalColorMapName: "xterm"
