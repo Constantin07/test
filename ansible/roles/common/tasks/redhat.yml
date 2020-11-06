@@ -5,7 +5,7 @@
 
 - name: Remove not required packages | RedHat
   yum:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: absent
   loop:
     - postfix
@@ -13,7 +13,7 @@
 - name: Install required packages | RedHat
   yum:
     name: "{{ redhat_packages }}"
-    state: latest
+    state: present
 
 - name: Disable SELinux at next reboot
   selinux:
