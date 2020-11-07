@@ -1,6 +1,7 @@
 ---
 
-- include_vars: main.enc.yml
+- name: Include variables
+  include_vars: main.enc.yml
   no_log: True
 
 - include_tasks: "{{ ansible_os_family|lower }}.yml"
