@@ -1,0 +1,51 @@
+pipeline {
+
+  agent any
+
+  triggers {
+    pollSCM('H/2 * * * *')
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    ansiColor('xterm')
+    parallelsAlwaysFailFast()
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    REGISTRY = 'http://centos7.internal:5000'
+    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    ARGS = '''
+            -u toolbox \
+            -t \
+            --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly \
+            --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg
+    '''
+  }
+
+  stages {
+    stage('Ansible lint') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir('ansible') {
+          sh 'make lint'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
