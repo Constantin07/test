@@ -42,9 +42,14 @@
     line: 'JENKINS_LISTEN_ADDRESS="0.0.0.0"'
   notify: restart jenkins
 
+- name: Calculate memory for JVM
+  set_fact:
+    mem_xms: "{{ ((ansible_memtotal_mb*0.9-700)/2)|int|abs  }}"
+    mem_xmx: "{{ (ansible_memtotal_mb*0.9-700)|int|abs }}"
+
 - name: Jenkins config - JAVA_OPTIONS
   lineinfile:
     path: /etc/sysconfig/jenkins
     regexp: '^JENKINS_JAVA_OPTIONS='
-    line: 'JENKINS_JAVA_OPTIONS="-Xms{{ ((ansible_memtotal_mb*0.9-700)/2)|int|abs }}m -Xmx{{ (ansible_memtotal_mb*0.9-700)|int|abs }}m {{ jenkins_java_options }}"'
+    line: 'JENKINS_JAVA_OPTIONS="-Xms{{ mem_xms }}m -Xmx{{ mem_xmx }}m {{ jenkins_java_options }}"'
   notify: restart jenkins

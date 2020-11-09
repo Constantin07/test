@@ -3,6 +3,7 @@
 - name: Create temp dir
   file:
     path: "{{ tmp_dir }}"
+    mode: 0755
     state: directory
 
 - name: Download krew {{ krew_version }}

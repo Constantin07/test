@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - role: git-crypt
+  - role: git_crypt
   - role: jenkins_shared

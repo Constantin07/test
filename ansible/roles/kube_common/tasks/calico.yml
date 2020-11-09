@@ -19,6 +19,7 @@
 - name: Ansible create file with content example
   copy:
     dest: /etc/NetworkManager/conf.d/calico.conf
+    mode: 0644
     content: |
       [keyfile]
       unmanaged-devices=interface-name:cali*;interface-name:tunl*
