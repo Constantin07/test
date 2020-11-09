@@ -9,7 +9,7 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: Fill filesystem with zero
-  shell: dd if=/dev/zero of=/zerofillfile bs=2M; rm -f /zerofillfile
+  shell: dd if=/dev/zero of=/zerofillfile bs=2M; rm -f /zerofillfile  # noqa 305
 
 - name: Sync filesystem
-  shell: sync
+  command: sync

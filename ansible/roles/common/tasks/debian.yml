@@ -13,4 +13,4 @@
 - name: Install required packages | Debian
   apt:
     name: "{{ debian_packages }}"
-    state: latest
+    state: present
