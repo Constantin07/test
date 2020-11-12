@@ -12,20 +12,20 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="a49f6408a50c220fe3f1a6192ea21134e2e8f31092c507614cd27ad4f913234b"
 
-ARG KUBECTL_VERSION=v1.19.3
+ARG KUBECTL_VERSION=v1.19.4
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="84eeb8237448e4f431fef0f0ec0ba8b07558d8e52d5a7e89b4ae64dadcffbe66"
+ARG KUBECTL_SHA256="7df333f1fc1207d600139fe8196688303d05fbbc6836577808cda8fe1e3ea63f"
 
-ARG HELM_VERSION=v3.4.0
+ARG HELM_VERSION=v3.4.1
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="270acb0f085b72ec28aee894c7443739271758010323d72ced0e92cd2c96ffdb"
+ARG HELM_SHA256="538f85b4b73ac6160b30fd0ab4b510441aa3fa326593466e8bf7084a9c288420"
 
-ARG HELMFILE_VERSION=0.134.0
+ARG HELMFILE_VERSION=0.134.1
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="da17927fc1b83f580dcb0f1a4c681c20e535fc7c59b91160c56f350db810a770"
+ARG HELMFILE_SHA256="f08e960c6caf6394f2b2b3484d7472c1457c5d278fb29adffc6c4f9186b6f8aa"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
