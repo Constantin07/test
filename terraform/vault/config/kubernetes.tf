@@ -1,13 +1,13 @@
 # Kubernetes
 
 provider "kubernetes" {
-  version                  = "~> 1.12.0"
+  version                  = "1.13.3"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
 }
 
 provider "external" {
-  version = "~> 1.2.0"
+  version = "2.0.0"
 }
 
 
@@ -61,4 +61,18 @@ resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
   bound_service_account_namespaces = ["default"]
   token_ttl                        = 3600
   token_policies                   = ["default", "hello-kubernetes"]
+}
+
+## Rate-limit quotas
+
+resource "vault_quota_rate_limit" "secret" {
+  name = "hello-kubernetes-secret"
+  path = "secret/hello-kubernetes/"
+  rate = 50
+}
+
+resource "vault_quota_rate_limit" "auth" {
+  name = "hello-kubernetes-auth"
+  path = "auth/kubernetes/role/hello-kubernetes/"
+  rate = 50
 }
