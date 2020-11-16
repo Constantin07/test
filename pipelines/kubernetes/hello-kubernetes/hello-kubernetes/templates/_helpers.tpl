@@ -1,5 +1,8 @@
 {{/* vim: set filetype=mustache: */}}
-{{/* Expand the name of the chart. */}}
+
+{{/*
+Expand the name of the chart.
+*/}}
 {{- define "hello-kubernetes.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -22,18 +25,20 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
-{{/* Create chart name and version as used by the chart label. */}}
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
 {{- define "hello-kubernetes.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/* Common labels */}}
+{{/*
+Common labels
+*/}}
 {{- define "hello-kubernetes.labels" -}}
 app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
 helm.sh/chart: {{ include "hello-kubernetes.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end -}}
