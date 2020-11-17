@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="538f85b4b73ac6160b30fd0ab4b510441aa3fa326593466e8bf7084a9c288420"
 
-ARG HELMFILE_VERSION=0.134.1
+ARG HELMFILE_VERSION=0.135.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="f08e960c6caf6394f2b2b3484d7472c1457c5d278fb29adffc6c4f9186b6f8aa"
+ARG HELMFILE_SHA256="d8aaea6c07401f9e32bc09f8fb601458cbf2d5d8d196e4e06935358e76d46d05"
 
 ARG GOMPLATE_VERSION=3.8.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -45,7 +45,10 @@ ARG KUBEVAL_SHA256="70bff2642a2886c0d9ebea452ffb81f333a956e26bbe0826fd7c6797e343
 ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
 ARG SHUNIT2_FILE="shunit2"
 
-RUN apk --no-cache add curl unzip
+# Use HTTPS endpoint for the apk repositories
+# https://github.com/gliderlabs/docker-alpine/issues/184
+RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
+    apk --no-cache add curl unzip
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -93,7 +96,10 @@ FROM alpine:3.12.1
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
 
-RUN apk update && apk upgrade && \
+# Use HTTPS endpoint for the apk repositories
+# https://github.com/gliderlabs/docker-alpine/issues/184
+RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
+    apk update && apk upgrade && \
     apk --no-cache add ca-certificates curl bash jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev && \
     setcap cap_net_raw+ep /bin/busybox
 

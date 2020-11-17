@@ -1,0 +1,45 @@
+pipeline {
+
+  agent {
+    label 'master'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    ansiColor('xterm')
+  }
+
+  stages {
+    stage('Checkout and build') {
+      steps {
+        checkout scm: [$class: 'GitSCM',
+          branches: [[name: 'master']],
+          userRemoteConfigs: [[url: 'https://github.com/docker/docker-bench-security.git' ]],
+          extensions: [
+            [$class: 'CleanCheckout'],
+            [$class: 'CloneOption', noTags: true, reference: '', shallow: true],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'repo']
+          ]
+        ]
+        dir('repo') {
+          sh 'docker build --no-cache -t docker-bench-security .'
+        }
+      }
+    }
+
+    stage('Run docker-bench-secirity') {
+      steps {
+        dir('pipelines/security/docker-bench-security') {
+          sh './docker-bench-security.sh'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

@@ -1,0 +1,10 @@
+---
+
+- name: Install required packages
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - audit
+    - audit-libs
