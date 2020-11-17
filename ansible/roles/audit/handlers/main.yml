@@ -1,0 +1,6 @@
+---
+
+- name: restart auditd
+  command: service auditd restart
+  args:
+    warn: false

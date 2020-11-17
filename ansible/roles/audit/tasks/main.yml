@@ -1,0 +1,21 @@
+---
+
+- name: Include OS specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Ensure auditd is started and enabled
+  systemd:
+    name: auditd
+    enabled: yes
+    state: started
+
+- name: Copy audit.rules file
+  copy:
+    src: audit.rules
+    dest: /etc/audit/rules.d/audit.rules
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart auditd
+
+- meta: flush_handlers

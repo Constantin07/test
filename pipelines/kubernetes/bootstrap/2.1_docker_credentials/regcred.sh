@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Create docker-registry crednetials to allow K8s to pull images from private registries.
+# Creates docker-registry crednetials to allow K8s to pull images from private registries.
 
 set -eu -o pipefail
 

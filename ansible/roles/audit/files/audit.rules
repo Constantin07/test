@@ -1,0 +1,14 @@
+# First rule - delete all
+-D
+
+# Increase the buffers to survive stress events.
+# Make this bigger for busy systems
+-b 320
+
+-w /usr/bin/dockerd -k docker
+#-w /var/lib/docker -k docker
+-w /etc/docker -k docker
+-w /usr/lib/systemd/system/docker.service -k docker
+-w /usr/lib/systemd/system/docker.socket -k docker
+-w /etc/docker/daemon.json -k docker
+-w /usr/bin/containerd -k docker
