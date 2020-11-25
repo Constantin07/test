@@ -123,5 +123,6 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Add helm repositories
 RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
     helm repo add bitnami https://charts.bitnami.com/bitnami && \
+    helm repo add deliveryhero https://charts.deliveryhero.io && \
     helm repo add stable https://charts.helm.sh/stable && \
     helm repo update
