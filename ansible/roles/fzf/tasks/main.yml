@@ -5,3 +5,4 @@
     src: "{{ fzf_url }}"
     dest: "{{ install_dir }}"
     remote_src: yes
+  tags: fzf

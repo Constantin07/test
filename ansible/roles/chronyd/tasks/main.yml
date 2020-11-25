@@ -3,6 +3,7 @@
 - name: Set timezone to Europe/London
   timezone:
     name: Europe/London
+  tags: chronyd
 
 - name: Install chronyd package
   package:
@@ -11,6 +12,7 @@
     update_cache: yes
   loop:
     - chrony
+  tags: chronyd
 
 - name: Update /etc/chrony.conf file
   copy:
@@ -20,5 +22,7 @@
     group: root
     mode: 0644
   notify: restart chronyd
+  tags: chronyd
 
 - meta: flush_handlers
+  tags: chronyd
