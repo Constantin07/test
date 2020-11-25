@@ -43,7 +43,9 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make publish'
+            retry(2) {
+              sh 'make publish'
+            }
           }
         }
       }
