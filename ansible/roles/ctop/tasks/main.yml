@@ -3,11 +3,13 @@
 - name: Check if ctop is installed
   stat: path="{{ local_dir }}/ctop"
   register: ctop
+  tags: ctop
 
 - name: Check ctop version
   shell: "set -o pipefail {{ local_dir }}/ctop -v | sed  s/,// | awk '{print $3}'"
   register: ctop_ver
   changed_when: False
+  tags: ctop
 
 - name: Download and install ctop
   get_url:
@@ -21,3 +23,4 @@
     timeout: 20
     validate_certs: yes
   when: (ctop_ver.stdout != ctop_version and ctop.stat.exists) or not ctop.stat.exists
+  tags: ctop

@@ -11,7 +11,7 @@
   delay: 3
   register: res
   until: res is succeeded
-  tags: [ helm ]
+  tags: helm
 
 - name: Install helm-diff
   command: helm plugin install https://github.com/databus23/helm-diff --version master
@@ -19,18 +19,18 @@
     HELM_HOME: '/tmp/.helm'
   register: result_install
   ignore_errors: yes
-  tags: [ helm ]
+  tags: helm
 
 - name: Update helm-diff
   command: helm plugin update diff
   environment:
     HELM_HOME: '/tmp/.helm'
   when: "'plugin already exists' in result_install.stderr"
-  tags: [ helm ]
+  tags: helm
 
 - name: Add helm repositories
   command: helm repo add "{{ item.name }}" "{{ item.url }}" --force-update
   loop: "{{ helm_repos }}"
   environment:
     HELM_HOME: '/tmp/.helm'
-  tags: [ helm ]
+  tags: helm

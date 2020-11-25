@@ -7,4 +7,4 @@
     force: yes
     mode: 0755
     tmp_dest: /tmp
-  tags: [ helmfile ]
+  tags: helmfile

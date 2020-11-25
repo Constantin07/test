@@ -2,12 +2,14 @@
 
 - name: Include OS specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: docker
 
 - name: Install Docker
   package:
     name: "{{ item }}"
     state: "{{ docker_package_state }}"
   loop: "{{ docker_packages }}"
+  tags: docker
 
 - name: Ensure dependant services are started
   service:
@@ -16,6 +18,7 @@
     enabled: yes
   with_items:
     - systemd-journald
+  tags: docker
 
 - name: Create systemd drop-in directory for docker
   file:
@@ -24,6 +27,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: docker
 
 - name: Add custom settings to docker drop-in file
   template:
@@ -33,6 +37,7 @@
     group: root
     mode: 0644
   notify: restart docker
+  tags: docker
 
 - name: Create docker config directory
   file:
@@ -41,6 +46,7 @@
     group: root
     mode: 0755
     state: directory
+  tags: docker
 
 #- name: Add sysctl configurations
 #  include_tasks: sysctl.yml
@@ -53,11 +59,14 @@
     group: root
     mode: 0644
   notify: restart docker
+  tags: docker
 
 - name: Ensure Docker is started and enabled at boot
   service:
     name: docker
     state: started
     enabled: yes
+  tags: docker
 
 - meta: flush_handlers
+  tags: docker

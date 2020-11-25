@@ -11,3 +11,4 @@
   delay: 3
   register: res
   until: res is succeeded
+  tags: kubeval
