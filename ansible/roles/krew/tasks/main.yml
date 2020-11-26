@@ -5,25 +5,30 @@
     path: "{{ tmp_dir }}"
     mode: 0755
     state: directory
+  tags: krew
 
 - name: Download krew {{ krew_version }}
   unarchive:
     src: "{{ krew_url }}"
     dest: "{{ tmp_dir }}"
     remote_src: yes
+  tags: krew
 
 - name: Set fact amd64 fact for x86_64 platforms
   set_fact:
     linux_platform: amd64
   when: ansible_architecture == "x86_64"
+  tags: krew
 
 - name: Install krew
   command: "{{ tmp_dir }}/krew-{{ ansible_system|lower }}_{{ linux_platform }} install krew"
+  tags: krew
 
 - name: Update krew
   command: "kubectl krew update"
   environment:
     PATH: "{{ lookup('env','HOME') }}/.krew/bin:/usr/local/bin:{{ lookup('env','PATH') }}"
+  tags: krew
 
 - name: Install krew plugins
   command: "kubectl krew install {{ item }}"
@@ -31,3 +36,4 @@
     PATH: "{{ lookup('env','HOME') }}/.krew/bin:/usr/local/bin:{{ lookup('env','PATH') }}"
   loop: "{{ krew_plugins }}"
   when: krew_plugins is defined
+  tags: krew

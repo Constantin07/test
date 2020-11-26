@@ -4,11 +4,13 @@
   pip:
     name: docker-py
     state: absent
+  tags: docker
 
 - name: Install docker python package
   pip:
     name: docker
     version: 4.2.0
+  tags: docker
 
 - name: Install epel-release
   yum:
@@ -17,6 +19,7 @@
     update_cache: yes
   loop:
     - epel-release
+  tags: docker
 
 - name: Install required packages
   yum:
@@ -25,6 +28,7 @@
     update_cache: yes
   loop:
     - python2-pip
+  tags: docker
 
 - name: Ensure old versions of Docker are not installed
   package:
@@ -34,11 +38,13 @@
     - docker
     - docker-common
     - docker-engine
+  tags: docker
 
 - name: Add Docker GPG key.
   rpm_key:
     key: "https://download.docker.com/linux/centos/gpg"
     state: present
+  tags: docker
 
 - name: Add Docker repository
   get_url:
@@ -47,6 +53,7 @@
     owner: root
     group: root
     mode: 0644
+  tags: docker
 
 - name: Configure Docker Edge repo
   ini_file:
@@ -55,6 +62,7 @@
     option: enabled
     value: "{{ docker_yum_repo_enable_edge }}"
     mode: 0644
+  tags: docker
 
 - name: Ensure firewalld.service is stopped and disabled
   systemd:
@@ -62,3 +70,4 @@
     state: stopped
     daemon_reload: yes
     enabled: no
+  tags: docker

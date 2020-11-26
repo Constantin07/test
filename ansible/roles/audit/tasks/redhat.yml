@@ -8,3 +8,4 @@
   loop:
     - audit
     - audit-libs
+  tags: auditd

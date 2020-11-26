@@ -5,3 +5,4 @@
     name: jenkins-slave.service
     state: restarted
     daemon_reload: yes
+  tags: jenkins_slave

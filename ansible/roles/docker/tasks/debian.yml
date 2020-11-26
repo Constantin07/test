@@ -8,11 +8,13 @@
     - docker
     - docker-engine
     - docker.io
+  tags: docker
 
 - name: Run apt-get update
   apt:
     upgrade: dist
     update_cache: yes
+  tags: docker
 
 - name: Install required packages
   apt:
@@ -24,14 +26,17 @@
     - ca-certificates
     - curl
     - software-properties-common
+  tags: docker
 
 - name: Add Docker official GPG key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  tags: docker
 
 - name: Add Docker repository
   apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     update_cache: yes
     state: present
+  tags: docker

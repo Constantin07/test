@@ -6,12 +6,14 @@
     state: present
     regexp: '^JAVA_HOME='
     line: 'JAVA_HOME=/usr/lib/jvm/jre-openjdk'
+  tags: jenkins_slave
 
 - name: Add Jenkins group
   group:
     name: "{{ jenkins_group }}"
     gid: "{{ jenkins_group_gid }}"
     state: present
+  tags: jenkins_slave
 
 - name: Add Jenkins user
   user:
@@ -21,6 +23,7 @@
     group: "{{ jenkins_group }}"
     groups: docker
     home: "{{ jenkins_work_dir }}"
+  tags: jenkins_slave
 
 - name: Create Jenkins work directory
   file:
@@ -29,6 +32,7 @@
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
     mode: 0755
+  tags: jenkins_slave
 
 - name: Download Jenkins remoting agent {{ jenkins_remoting_version }}
   get_url:
@@ -38,6 +42,7 @@
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
     mode: 0644
+  tags: jenkins_slave
 
 - name: Create Jenkins systemd service drop-in directory
   file:
@@ -46,6 +51,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: jenkins_slave
 
 - name: Install Jenkins systemd unit file
   template:
@@ -55,6 +61,7 @@
     group: root
     mode: 0644
   notify: restart jenkins-slave
+  tags: jenkins_slave
 
 - name: Enable Jenkins slave service
   systemd:
@@ -62,3 +69,4 @@
     enabled: yes
     state: started
     daemon_reload: yes
+  tags: jenkins_slave

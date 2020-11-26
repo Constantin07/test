@@ -9,5 +9,7 @@
     ignoreerrors: yes
   with_items: "{{ sysctl_config }}"
   notify: reload sysctl.conf
+  tags: docker
 
 - meta: flush_handlers
+  tags: docker

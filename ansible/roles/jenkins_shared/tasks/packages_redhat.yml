@@ -5,3 +5,4 @@
     name: "{{ redhat_packages }}"
     update_cache: yes
     state: present
+  tags: jenkins_shared
