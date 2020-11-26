@@ -4,3 +4,4 @@
   command: service auditd restart
   args:
     warn: false
+  tags: audit

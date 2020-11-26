@@ -2,3 +2,4 @@
 
 - name: restart jenkins
   systemd: name=jenkins state=restarted
+  tags: jenkins_master

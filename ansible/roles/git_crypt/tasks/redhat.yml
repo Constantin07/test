@@ -5,3 +5,4 @@
     name: "{{ redhat_packages }}"
     state: present
     update_cache: yes
+  tags: git_crypt

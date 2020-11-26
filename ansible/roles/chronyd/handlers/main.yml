@@ -2,3 +2,4 @@
 
 - name: restart chronyd
   service: name=chronyd.service state=restarted
+  tags: chronyd

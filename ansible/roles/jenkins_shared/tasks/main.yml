@@ -2,9 +2,11 @@
 
 - name: Include Linux distribution specific tasks
   include_tasks: "packages_{{ ansible_os_family|lower }}.yml"
+  tags: jenkins_shared
 
 - name: Add Kubeconfig file
   include_tasks: "kubeconfig.yml"
+  tags: jenkins_shared
 
 - name: Install required pip packages
   pip:
@@ -14,10 +16,12 @@
     - packaging
     - Jinja2
     - PyYAML
+  tags: jenkins_shared
 
 - name: Load sensitive variables
   include_vars: jenkins.enc.yml
   no_log: True
+  tags: jenkins_shared
 
 - name: Add user "jenkins" to sudoers.d
   lineinfile:
@@ -27,6 +31,7 @@
     mode: 0440
     create: yes
     validate: 'visudo -cf %s'
+  tags: jenkins_shared
 
 - name: Create Kubernetes config directory
   file:
@@ -35,6 +40,7 @@
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
     mode: 0755
+  tags: jenkins_shared
 
 - name: Add Kubernetes config file
   copy:
@@ -43,3 +49,4 @@
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
     mode: 0644
+  tags: jenkins_shared

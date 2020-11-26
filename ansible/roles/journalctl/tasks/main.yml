@@ -9,11 +9,14 @@
     mode: 0644
   notify:
     - restart journald
+  tags: journalctl
 
 - meta: flush_handlers
+  tags: journalctl
 
 - name: Ensure journald is started and enabled
   service:
     name: "systemd-journald"
     state: started
     enabled: yes
+  tags: journalctl

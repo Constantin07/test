@@ -10,6 +10,7 @@
     - gpg_home
     - gpg_private_key
     - gpg_ownertrust
+  tags: gnupg2
 
 - name: Create .gnupg directory
   file:
@@ -18,6 +19,7 @@
     owner: "{{ gpg_user }}"
     mode:  0700
     state: directory
+  tags: gnupg2
 
 - name: Copy gpg key
   copy:
@@ -31,6 +33,7 @@
   with_items:
     - { name: "{{ gpg_private_key }}" }
     - { name: "{{ gpg_ownertrust }}" }
+  tags: gnupg2
 
 - name: Import gpg private key
   command: "gpg --batch --import {{ gpg_home }}/.gnupg/{{ gpg_private_key }}"
@@ -38,11 +41,13 @@
     creates: "{{ gpg_home }}/.gnupg/secring.gpg"
   become: yes
   become_user: "{{ gpg_user }}"
+  tags: gnupg2
 
 - name: Import gpg ownertrust
   command: "gpg --import-ownertrust {{ gpg_home }}/.gnupg/{{ gpg_ownertrust }}"
   become: yes
   become_user: "{{ gpg_user }}"
+  tags: gnupg2
 
 - name: Delete temporary gpg file(s)
   command: shred -u "{{ item }}"
@@ -51,3 +56,4 @@
   with_items:
     - "{{ gpg_home }}/.gnupg/{{ gpg_private_key }}"
     - "{{ gpg_home }}/.gnupg/{{ gpg_ownertrust }}"
+  tags: gnupg2
