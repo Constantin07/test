@@ -1,15 +1,12 @@
 # Kubernetes
 
 provider "kubernetes" {
-  version                  = "1.13.3"
   config_context_auth_info = "kubernetes-admin"
   config_context_cluster   = "kubernetes"
 }
 
 provider "external" {
-  version = "2.0.0"
 }
-
 
 # Get Kubernetes CA cert and cluster endpoint
 data "external" "kube_config" {

@@ -1,5 +1,8 @@
 /* etcd-1 server certificate */
 
+provider "tls" {
+}
+
 resource "tls_private_key" "etcd-1_server_priv_key" {
   algorithm = "RSA"
   rsa_bits  = "2048"
