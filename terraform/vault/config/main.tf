@@ -1,5 +1,4 @@
 provider "vault" {
-  version = "2.15.0"
 }
 
 resource "vault_audit" "file" {
