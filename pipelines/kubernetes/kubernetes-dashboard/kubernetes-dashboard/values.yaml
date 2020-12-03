@@ -1,6 +1,6 @@
 image:
   repository: kubernetesui/dashboard
-  tag: v2.0.4
+  tag: v2.0.5
 
 scraper:
   repository: kubernetesui/metrics-scraper
