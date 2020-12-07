@@ -72,7 +72,7 @@ def build(nodeName = '', directory = '.') {
         {
           stage("Validate") {
             println "Print terraform version"
-            sh 'terraform --version'
+            sh 'terraform -version'
 
             println "Remove the .terraform directory"
             dir('.terraform') {
@@ -80,10 +80,7 @@ def build(nodeName = '', directory = '.') {
             }
 
             println "Ensure we always start from a clean state"
-            sh '''
-              rm -f plan.out
-              rm -f terraform.tfstate.backup
-            '''
+            sh 'rm -f plan.out terraform.tfstate.backup'
 
             println "Initialise configuration"
             retry(3) {

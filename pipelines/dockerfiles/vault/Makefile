@@ -14,8 +14,11 @@ ifndef VAULT_VERSION
 $(error VAULT_VERSION environment variable must be defined!)
 endif
 
-.PHONY: all build tag publish clean
+.PHONY: all login build tag publish clean
 all: build tag publish
+
+login:
+	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
 
 build:
 	docker build --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REGISTRY}/${IMAGE}:${VAULT_VERSION} .
