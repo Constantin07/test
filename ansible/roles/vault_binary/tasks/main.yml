@@ -4,11 +4,13 @@
   package:
     name: unzip
     update_cache: yes
+  tags: vault_binary
 
 - name: Install
+  tags: vault_binary
   block:
 
-  - name: Download vault and verify checksum v{{ vault_version }}
+  - name: Download vault v{{ vault_version }} and verify checksum
     get_url:
       url: "{{ vault_url }}"
       dest: "/tmp/{{ vault_package }}"

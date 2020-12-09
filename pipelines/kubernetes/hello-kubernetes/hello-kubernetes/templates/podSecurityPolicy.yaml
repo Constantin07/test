@@ -5,3 +5,11 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
 spec:
   privileged: false  # Don't allow privileged pods!
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
