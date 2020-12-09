@@ -16,5 +16,3 @@ jenkins_remoting_url: "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/re
 
 jenkins_system_properties: >-
   -Dhudson.remoting.Launcher.pingIntervalSec=300
-  -Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=true
-

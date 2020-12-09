@@ -12,10 +12,10 @@ ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_$
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_SHA256="a49f6408a50c220fe3f1a6192ea21134e2e8f31092c507614cd27ad4f913234b"
 
-ARG KUBECTL_VERSION=v1.19.4
+ARG KUBECTL_VERSION=v1.19.5
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 ARG KUBECTL_FILE="kubectl"
-ARG KUBECTL_SHA256="7df333f1fc1207d600139fe8196688303d05fbbc6836577808cda8fe1e3ea63f"
+ARG KUBECTL_SHA256="5f5a0bebde8a8782b2d9de9bd314dce722f9f960bee090b121ea5ac38cf4377d"
 
 ARG HELM_VERSION=v3.4.2
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
