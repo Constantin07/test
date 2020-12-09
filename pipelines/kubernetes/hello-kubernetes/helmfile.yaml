@@ -25,6 +25,8 @@ releases:
           requests:
             cpu: 50m
             memory: 100Mi
+        psp:
+          enabled: true
         vaultAgent:
           enabled: true
           image:

@@ -14,6 +14,9 @@ env: {}
 
 resources: {}
 
+psp:
+  enabled: false
+
 securityContext:
   allowPrivilegeEscalation: false
   runAsUser: 1000
