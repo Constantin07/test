@@ -23,7 +23,7 @@ template:
 	helmfile template
 
 validate:
-	helmfile template | kubeval
+	helmfile template | kubeval --ignore-missing-schemas
 
 lint:
 	helmfile lint

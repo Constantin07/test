@@ -14,7 +14,7 @@ template:
 
 validate:
 	gomplate -f namespace.yaml | kubeval --strict
-	helmfile template | kubeval --strict
+	helmfile template | kubeval --ignore-missing-schemas --strict
 
 lint:
 	helmfile lint

@@ -2,15 +2,15 @@ FROM alpine:3.12.1 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.14.2
+ARG TERRAFORM_VERSION=0.14.3
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="6f380c0c7a846f9e0aedb98a2073d2cbd7d1e2dc0e070273f9325f1b69e668b2"
+ARG TERRAFORM_SHA256="aa7b6cb6f366ffb920083b2a9739079ee560240ca31b580fe422af4af28cbb5a"
 
-ARG PACKER_VERSION=1.6.5
+ARG PACKER_VERSION=1.6.6
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
 ARG PACKER_FILE="packer_${PACKER_VERSION}_linux_amd64.zip"
-ARG PACKER_SHA256="a49f6408a50c220fe3f1a6192ea21134e2e8f31092c507614cd27ad4f913234b"
+ARG PACKER_SHA256="721d119fd70e38d6f2b4ccd8a39daf6b4d36bf5f7640036acafcaaa967b00c3b"
 
 ARG KUBECTL_VERSION=v1.19.5
 ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
