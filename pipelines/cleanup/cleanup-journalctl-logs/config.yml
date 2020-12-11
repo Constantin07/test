@@ -2,6 +2,9 @@
 
 description: "Clean up journalctl logs."
 
+triggers:
+  cron: 'H */3 * * *'
+
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:

@@ -4,13 +4,6 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: audit
 
-- name: Ensure auditd is started and enabled
-  systemd:
-    name: auditd
-    enabled: yes
-    state: started
-  tags: audit
-
 - name: Copy audit.rules file
   copy:
     src: audit.rules
@@ -21,5 +14,12 @@
   notify: restart auditd
   tags: audit
 
-- meta: flush_handlers
+- name: Ensure auditd is started and enabled
+  systemd:
+    name: auditd
+    enabled: no
+    state: stopped
   tags: audit
+
+#- meta: flush_handlers
+#  tags: audit
