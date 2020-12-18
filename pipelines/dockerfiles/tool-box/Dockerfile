@@ -1,4 +1,4 @@
-FROM alpine:3.12.1 AS builder
+FROM alpine:3.12.3 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -91,7 +91,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.12.1
+FROM alpine:3.12.3
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
@@ -100,7 +100,7 @@ ENV HELM_HOME=/tmp/.helm
 # https://github.com/gliderlabs/docker-alpine/issues/184
 RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
     apk update && apk upgrade && \
-    apk --no-cache add ca-certificates curl bash jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev && \
+    apk --no-cache add ca-certificates curl bash procps jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /

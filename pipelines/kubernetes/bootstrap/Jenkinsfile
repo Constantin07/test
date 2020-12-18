@@ -202,7 +202,7 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '3.5_kube_state_metrics') {
               sh '''
-                make init lint sync
+                make init lint sync tests
               '''
             }
           }
