@@ -1,0 +1,27 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 10
+
+releases:
+  - name: kube-state-metrics
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    createNamespace: false
+    chart: bitnami/kube-state-metrics
+    version: 1.1.2
+    values:
+      - rbac:
+          apiVersion: v1
+        image:
+          pullPolicy: Always
+        resources:
+          requests:
+            memory: 30Mi
+            cpu: 20m
+          limits:
+            memory: 200M
+            cpu: 100m

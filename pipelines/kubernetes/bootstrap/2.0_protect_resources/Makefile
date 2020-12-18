@@ -1,4 +1,3 @@
-
 export NAMESPACE ?= kube-system
 
 # Check for required binaries
