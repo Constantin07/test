@@ -16,23 +16,22 @@ else
   TAG=${GIT_COMMIT}
 endif
 
-.PHONY: all
-all: |build tag publish
+.PHONY: all login build tag publish clean
+all: |login build tag publish
 
-.PHONY: build
+login:
+	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
+
 build:
 	docker build -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
-.PHONY: tag
 tag:
 	docker tag ${DOCKER_REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}/${IMAGE}:latest
 
-.PHONY: publish
 publish:
 	docker push ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
 	docker push ${DOCKER_REGISTRY}/${IMAGE}:latest
 
-.PHONY: clean
 clean:
 	docker rmi ${DOCKER_REGISTRY}/${IMAGE}:${TAG} || true
 	docker rmi ${DOCKER_REGISTRY}/${IMAGE}:latest || true
