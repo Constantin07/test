@@ -1,4 +1,3 @@
-
 # Update coredns configmap to make it work with local DNS
 
 CONFIGMAP_FILE ?= coredns_cm.yaml
