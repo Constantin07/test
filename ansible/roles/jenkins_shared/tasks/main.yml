@@ -48,5 +48,5 @@
     dest: "{{ jenkins_work_dir }}/.kube/config"
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
-    mode: 0644
+    mode: 0400
   tags: jenkins_shared
