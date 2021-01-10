@@ -1,10 +1,6 @@
+@Library('global-shared-library')_
+
 def nodeName = ''
+def terraform_dir = 'terraform/pki'
 
-def terraform = fileLoader.fromGit(
-  'pipelines/terraform.groovy',
-  'git@github.com:Constantin07/test.git',
-  'master',
-  'Git',
-  nodeName)
-
-terraform.build(nodeName, 'terraform/pki')
+terraform(nodeName, terraform_dir)

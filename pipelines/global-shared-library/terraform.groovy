@@ -1,7 +1,8 @@
 #!groovy
+
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
-def build(nodeName = '', directory = '.') {
+def call(String nodeName = '', String directory = '.') {
 
   // Global state
   def needUpdate = false
@@ -16,7 +17,7 @@ def build(nodeName = '', directory = '.') {
     properties([
       durabilityHint('MAX_SURVIVABILITY'),
       buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
-      pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
+      //pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
       // Allow only one job at a time
       disableConcurrentBuilds(),
     ])
@@ -30,9 +31,7 @@ def build(nodeName = '', directory = '.') {
 
       stage('Checkout') {
         checkout(scm)
-
-        // Add comment to build description
-        // currentBuild.description = getComment()
+        //currentBuild.description = getComment() // Add comment to build description
 
         milestone label: 'Checkout'
       }
@@ -46,14 +45,12 @@ def build(nodeName = '', directory = '.') {
       dir(path: directory) {
 
         // Terraform AWS credentials wrapper
-        withCredentials([
-          [
+        withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'Amazon Credentials',
             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-          ]
-        ])
+          ]])
         {
           stage("Validate") {
             println "Print terraform version"
@@ -68,7 +65,7 @@ def build(nodeName = '', directory = '.') {
             sh 'rm -f plan.out terraform.tfstate.backup'
 
             println "Initialise configuration"
-            retry(3) {
+            retry(2) {
               echo 'Initialize S3 backend'
               sh "terraform init ${tf_options} -upgrade=true"
             }
@@ -82,23 +79,25 @@ def build(nodeName = '', directory = '.') {
 
           lock("${jobName}") {
               stage(name: 'Plan') {
-              def exitCode = sh(script: "terraform plan ${tf_options} -out=plan.out -detailed-exitcode", returnStatus: true)
-              echo "Terraform plan exit code: ${exitCode}"
-              switch (exitCode) {
-                case 0:
-                  echo 'No changes to apply.'
-                  currentBuild.result = 'SUCCESS'
-                  break
-                case 1:
-                  echo 'Plan Failed.'
-                  currentBuild.result = 'FAILURE'
-                  break
-                case 2:
-                  echo 'Plan Awaiting Approval.'
-                  needUpdate = true
-                  stash(name: 'plan', includes: 'plan.out')
-                  break
-              }
+                def exitCode = sh(script: "terraform plan ${tf_options} -out=plan.out -detailed-exitcode", returnStatus: true)
+                echo "Terraform plan exit code: ${exitCode}"
+                switch (exitCode) {
+                  case 0:
+                    echo 'No changes to apply.'
+                    currentBuild.result = 'SUCCESS'
+                    cleanWs()
+                    break
+                  case 1:
+                    echo 'Plan Failed.'
+                    currentBuild.result = 'FAILURE'
+                    cleanWs()
+                    break
+                  case 2:
+                    echo 'Plan Awaiting Approval.'
+                    needUpdate = true
+                    stash(name: 'plan', includes: 'plan.out')
+                    break
+                }
 
               milestone label: 'Plan'
             }
@@ -137,17 +136,14 @@ def build(nodeName = '', directory = '.') {
             dir(path: directory) {
 
               // Terraform AWS credentials wrapper
-              withCredentials([
-                [
+              withCredentials([[
                   $class: 'AmazonWebServicesCredentialsBinding',
                   credentialsId: 'Amazon Credentials',
                   accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                   secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]
-              ])
+                ]])
               {
                // Apply stage
-               // - unstash plan.out
                // - Execute `terraform apply` against the stashed plan
                 stage(name: 'Apply') {
                   unstash 'plan'
@@ -160,6 +156,7 @@ def build(nodeName = '', directory = '.') {
                     currentBuild.result = 'FAILURE'
                   }
 
+                  cleanWs()
                   milestone label: 'Apply'
                 }
               } //withCredentials
@@ -173,5 +170,3 @@ def build(nodeName = '', directory = '.') {
 
   }
 }
-
-return this;
