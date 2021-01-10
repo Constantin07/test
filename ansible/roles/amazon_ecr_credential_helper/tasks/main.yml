@@ -1,0 +1,10 @@
+---
+
+- name: Add aws ecr credential helper {{ version }}
+  get_url:
+    url: "{{ url }}"
+    dest: "{{ install_dir }}/docker-credential-ecr-login"
+    force: yes
+    mode: 0755
+    tmp_dest: /tmp
+  tags: amazon_ecr_credential_helper
