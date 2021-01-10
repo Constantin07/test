@@ -1,0 +1,4 @@
+---
+
+dependencies:
+  - role: amazon_ecr_credential_helper
