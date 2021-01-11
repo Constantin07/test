@@ -4,9 +4,9 @@
 
 - include_tasks: tune_conntrack.yml
 
-# TODO: Run only once per node
-#- include_tasks: unique-machine-id.yml
-
 - include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - include_tasks: calico.yml
+
+# TODO: Run only once per node
+#- include_tasks: unique-machine-id.yml
