@@ -14,15 +14,6 @@
   loop:
     - systemd-timesyncd
 
-- name: Disable/stop unnecessary services
-  systemd:
-    name: "{{ item }}"
-    state: stopped
-    enabled: no
-  loop:
-    - lxcfs
-    - postfix
-
 - name: Add GPG key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
