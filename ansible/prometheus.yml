@@ -1,0 +1,11 @@
+---
+
+- hosts: prometheus
+  become: yes
+  become_user: root
+
+  roles:
+    - common
+    - resolv
+    - prometheus/node_exporter
+    - prometheus/prometheus

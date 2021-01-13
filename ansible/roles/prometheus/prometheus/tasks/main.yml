@@ -1,0 +1,73 @@
+---
+
+- name: Create prometheus group
+  group:
+    name: "{{ prometheus_group }}"
+    gid: 2001
+    system: yes
+  tags: prometheus
+
+- name: Create prometheus user
+  user:
+    name: "{{ prometheus_user }}"
+    comment: "Prometheus User"
+    group: "{{ prometheus_group }}"
+    uid: 2001
+    system: yes
+    create_home: no
+    shell: /bin/false
+  tags: prometheus
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: 0755
+    state: directory
+  loop:
+    - "{{ prometheus_config_dir }}"
+    - "{{ prometheus_storage_dir }}"
+  tags: prometheus
+
+- name: Download and install prometheus v{{ prometheus_version }}
+  unarchive:
+    src: "{{ download_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    extra_opts:
+      - "--strip-components=1"
+  tags: prometheus
+
+- name: Upload config file
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: 0644
+  notify: restart prometheus
+  tags: prometheus
+
+- name: Create systemd unit file
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart prometheus
+  tags: prometheus
+
+- name: Ensure promethus is enabled and started
+  systemd:
+    name: prometheus
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: prometheus
+
+- meta: flush_handlers
+  tags: prometheus
