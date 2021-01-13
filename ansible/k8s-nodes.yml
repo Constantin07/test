@@ -14,3 +14,4 @@
    - automatic_updates
    - kube_common
    - kubelet_config
+   - role: prometheus/node_exporter

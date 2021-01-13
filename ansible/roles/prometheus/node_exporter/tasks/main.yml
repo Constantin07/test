@@ -18,7 +18,7 @@
     shell: /bin/false
   tags: node_exporter
 
-- name: Download and install node_exporter {{ node_exporter_version }}
+- name: Download and install node_exporter v{{ node_exporter_version }}
   unarchive:
     src: "{{ download_url }}"
     dest: "{{ install_dir }}"

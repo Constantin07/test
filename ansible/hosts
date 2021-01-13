@@ -21,6 +21,12 @@ kube_slaves
 [kube:vars]
 ansible_user=ubuntu
 
+[prometheus]
+prometheus.internal
+
+[prometheus:vars]
+ansible_user=ubuntu
+
 [all:children]
 local
 jenkins_slaves
