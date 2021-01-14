@@ -12,7 +12,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/kube-state-metrics
-    version: 1.1.4
+    version: 1.1.5
     values:
       - rbac:
           apiVersion: v1
