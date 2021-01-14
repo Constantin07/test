@@ -1,12 +1,11 @@
 # Build a minimal distribution container
 
-FROM alpine:3.12.1
+FROM alpine:3.13.0
 
 ARG DIR=tmp/amd64/
 
-RUN set -ex && \
+RUN set -ex; apk --no-cache update && apk --no-cache upgrade && \
     apk add --no-cache ca-certificates apache2-utils && \
-    apk update && apk upgrade && \
     rm -rf /usr/share/man/* /tmp/* /var/cache/apk/*
 
 COPY ${DIR}/registry /bin/registry

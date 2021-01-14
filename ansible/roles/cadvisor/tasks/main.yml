@@ -1,0 +1,32 @@
+---
+
+- name: Run cAdvisor docker container {{ cadvisor_version }}
+  docker_container:
+    name: cadvisor
+    image: "gcr.io/cadvisor/cadvisor:{{ cadvisor_version }}"
+    pull: yes
+    state: started
+    recreate: yes
+    oom_killer: no
+    privileged: yes
+    pid_mode: host
+    exposed_ports:
+      - "8080"
+    network_mode: host
+    memory: "{{ memory }}"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro
+    devices:
+      - /dev/kmsg:/dev/kmsg:ro
+    command:
+      - --max_procs=1
+    restart_policy: always
+    trust_image_content: true
+    log_driver: journald
+  tags: cadvisor

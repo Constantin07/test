@@ -1,4 +1,4 @@
-FROM alpine:3.12.3 AS builder
+FROM alpine:3.13.0 AS builder
 
 # Use HTTPS endpoint for the apk repositories
 # https://github.com/gliderlabs/docker-alpine/issues/184
@@ -8,7 +8,7 @@ RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl
     unzip vault.zip && chmod +x vault
 
 
-FROM node:12.20.1-alpine3.12
+FROM node:14.15.4-alpine3.12
 
 # Use HTTPS endpoint for the apk repositories
 # https://github.com/gliderlabs/docker-alpine/issues/184
