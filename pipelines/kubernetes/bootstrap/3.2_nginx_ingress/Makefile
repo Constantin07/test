@@ -21,8 +21,7 @@ template:
 	helmfile template
 
 lint:
-#	helmfile lint
-	helmfile template | kubectl apply --dry-run=server -f -
+	helmfile lint
 
 diff:
 	gomplate -f ${HEADERS_FILE} | kubectl diff -f -

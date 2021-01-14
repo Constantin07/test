@@ -18,9 +18,9 @@ oneTimeTearDown() {
 }
 
 test_KubeStateMetricsIsWorking() {
-  sleep 2
+  sleep 4
   result=`curl -sSf http://127.0.0.1:9100`
-  assertContains "kube-state-metrics contains metrics" "${result}" 'metrics'
+  assertContains "kube-state-metrics metrics" "${result}" 'metrics'
 }
 
 # Load shUnit2
