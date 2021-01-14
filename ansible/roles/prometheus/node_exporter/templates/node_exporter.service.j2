@@ -8,6 +8,9 @@ User={{ node_exporter_user }}
 Group={{ node_exporter_group }}
 Type=simple
 ExecStart=/usr/local/bin/node_exporter
+TimeoutStartSec=30
+Restart=always
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target

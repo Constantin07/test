@@ -17,10 +17,10 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="d8a46600bcdcd01f39c11e609e8277975f04c0593f79b2a7b5c67646e1c792d8"
 
-ARG HELM_VERSION=v3.5.0-rc.2
+ARG HELM_VERSION=v3.5.0
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="e0912608b41ccdeb6a30f0a28114aae9255f571a1c1954278f3bd9aa80d132db"
+ARG HELM_SHA256="3fff0354d5fba4c73ebd5db59a59db72f8a5bbe1117a0b355b0c2983e98db95b"
 
 ARG HELMFILE_VERSION=0.137.0
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
@@ -90,6 +90,11 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
 
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
+# Add ansible galaxy dependencies
+COPY requirements.yml .
+RUN apk --no-cache add ansible && \
+    ansible-galaxy collection install -r requirements.yml
+
 
 FROM alpine:3.12.3
 
@@ -112,13 +117,15 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
     apk add git-crypt-0.6.0-r1.apk && rm -f git-crypt-0.6.0-r1.apk && \
     ln -s /bin/git-crypt /usr/local/bin/git-crypt
 
-# Nonprivileged user
+# Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
     adduser -D -u 995 -G ${USERNAME} ${USERNAME}
 
 USER ${USERNAME}
+WORKDIR /home/${USERNAME}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder --chown=${USERNAME} /root/.ansible .ansible
 
 # Add helm repositories
 RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \

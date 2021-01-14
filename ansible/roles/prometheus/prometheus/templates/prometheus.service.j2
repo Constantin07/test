@@ -12,6 +12,8 @@ ExecStart={{ install_dir }}/prometheus \
   --storage.tsdb.path {{ prometheus_storage_dir }}/ \
   --web.console.templates={{ install_dir }}/consoles \
   --web.console.libraries={{ install_dir }}/console_libraries
+Restart=always
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target

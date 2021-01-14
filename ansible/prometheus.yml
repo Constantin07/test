@@ -7,5 +7,7 @@
   roles:
     - common
     - resolv
+    - docker
     - prometheus/node_exporter
     - prometheus/prometheus
+    - grafana

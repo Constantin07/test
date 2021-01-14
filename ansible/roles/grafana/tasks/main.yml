@@ -1,29 +1,27 @@
 ---
 
-- name: Run docker grafana container
+- name: Run grafana docker container v{{ grafana_version }}
   docker_container:
-    api_version: auto
-    name: "{{ image_name }}"
-    image: "{{ docker_host }}/{{ image_name }}:{{ version }}"
+    name: grafana
+    image: "grafana/grafana:{{ grafana_version }}"
     state: started
-    recreate: True
-    oom_killer: False
+    recreate: yes
+    oom_killer: no
     exposed_ports:
       - "3000"
     published_ports:
       - "3000:3000"
     pull: yes
     network_mode: bridge
-    state: started
     memory: "{{ memory|default('1gb') }}"
     volumes:
       - "grafana:/var/lib/grafana:rw"
     env:
       GF_SERVER_ROOT_URL: "http://grafana.internal"
-      GF_SECURITY_ADMIN_PASSWORD: "{{ GF_SECURITY_ADMIN_PASSWORD }}"
+      GF_SECURITY_ADMIN_PASSWORD: "changeme"
       GF_INSTALL_PLUGINS: "{{ plugins }}"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
-    restart_policy: on-failure
-    restart_retries: 10
+    restart_policy: always
     trust_image_content: true
     log_driver: journald
+  tags: grafana
