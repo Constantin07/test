@@ -29,7 +29,7 @@ pipeline {
           }
         }
         cleanWs()
-        milestone(ordinal: 1)
+        milestone null
       }
     }
 
@@ -48,7 +48,7 @@ pipeline {
             sh 'make lint sync'
           }
           cleanWs()
-          milestone(ordinal: 2)
+          milestone null
         }
       }
     }
@@ -67,7 +67,7 @@ pipeline {
           sh './test.sh'
         }
         cleanWs()
-        milestone(ordinal: 3)
+        milestone null
       }
     }
 
@@ -84,7 +84,7 @@ pipeline {
           )
           println(skipDelete)
         }
-        milestone(ordinal: 4)
+        milestone null
       }
     }
 
@@ -106,7 +106,7 @@ pipeline {
             sh 'make destroy'
           }
           cleanWs()
-          milestone(ordinal: 5)
+          milestone null
         }
       }
     }

@@ -1,5 +1,9 @@
 ---
 
+- name: Create a grafana volume
+  docker_volume:
+    name: grafana
+
 - name: Run grafana docker container v{{ grafana_version }}
   docker_container:
     name: grafana
@@ -15,11 +19,13 @@
     network_mode: bridge
     memory: "{{ memory|default('1gb') }}"
     volumes:
-      - "grafana:/var/lib/grafana:rw"
+      - grafana:/var/lib/grafana:rw
     env:
-      GF_SERVER_ROOT_URL: "http://grafana.internal"
-      GF_SECURITY_ADMIN_PASSWORD: "changeme"
       GF_INSTALL_PLUGINS: "{{ plugins }}"
+      GF_SERVER_ROOT_URL: "http://grafana.internal"
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: changeme
+      GF_USERS_ALLOW_SIGN_UP: "false"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
     trust_image_content: true

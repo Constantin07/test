@@ -1,0 +1,4 @@
+---
+
+cadvisor_version: "v0.37.0"
+memory: "80m"

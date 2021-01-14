@@ -1,4 +1,4 @@
-FROM alpine:3.12.3 AS builder
+FROM alpine:3.13.0 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -96,7 +96,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.12.3
+FROM alpine:3.13.0
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm

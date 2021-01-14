@@ -48,4 +48,4 @@ deploy:
 	${REGISTRY}/${IMAGE_NAME}:${TAG}
 
 test:
-	./test.sh
+	@./test.sh
