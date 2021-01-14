@@ -28,8 +28,17 @@
   when: "'plugin already exists' in result_install.stderr"
   tags: helm
 
+- name: Add necessary pip packages
+  pip:
+    name: PyYAML
+    version: 5.3.1
+  tags: helm
+
+# Requires galaxy community.kubernetes collection
 - name: Add helm repositories
-  command: helm repo add "{{ item.name }}" "{{ item.url }}" --force-update
+  community.kubernetes.helm_repository:
+    name: "{{ item.name }}"
+    repo_url: "{{ item.url }}"
   loop: "{{ helm_repos }}"
   environment:
     HELM_HOME: '/tmp/.helm'

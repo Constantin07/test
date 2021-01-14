@@ -1,6 +1,7 @@
 {
   "debug": false,
   "ipv6": false,
+  "live-restore": false,
 {# Required by Kubernetes #}
   "exec-opts": [ "native.cgroupdriver=systemd" ],
 {% if ansible_os_family|lower == 'debian' %}

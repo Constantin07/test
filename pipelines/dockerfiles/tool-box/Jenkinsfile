@@ -1,10 +1,9 @@
 pipeline {
 
-  agent any
+  agent none
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    disableConcurrentBuilds()
     durabilityHint('PERFORMANCE_OPTIMIZED')
     ansiColor('xterm')
   }
@@ -16,32 +15,53 @@ pipeline {
   stages {
 
     stage('Build image') {
+      agent { label 'master' }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make login build'
           }
         }
+        milestone null
       }
     }
 
     stage('Tag image') {
+      agent { label 'master' }
       steps {
         dir(env.DIRECTORY) {
           sh 'make tag'
         }
+      milestone null
       }
     }
 
     stage('Push image') {
+      agent { label 'master' }
       steps {
         dir(env.DIRECTORY) {
           sh 'make push'
         }
+        milestone null
+      }
+    }
+
+    stage('Proceed with publish') {
+      options {
+        timeout(time: 30, unit: 'MINUTES')
+      }
+      input {
+        message "Ready to publish?"
+        ok "Yes, we should."
+      }
+      steps {
+        echo "Approved."
+        milestone null
       }
     }
 
     stage('Publish image') {
+      agent { label 'master' }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -50,6 +70,7 @@ pipeline {
             }
           }
         }
+        milestone null
       }
     }
 
@@ -57,7 +78,9 @@ pipeline {
 
   post {
     always {
-      cleanWs()
+      node('master') {
+        cleanWs()
+      }
     }
   }
 

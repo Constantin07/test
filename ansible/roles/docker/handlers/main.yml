@@ -7,6 +7,13 @@
     state: restarted
   tags: docker
 
+- name: restart containerd
+  systemd:
+    name: containerd.service
+    daemon_reload: yes
+    state: restarted
+  tags: docker
+
 - name: reload sysctl.conf
   command: /sbin/sysctl -p
   tags: docker

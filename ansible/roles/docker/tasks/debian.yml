@@ -26,6 +26,12 @@
     - ca-certificates
     - curl
     - software-properties-common
+    - python3-pip
+  tags: docker
+
+- name: Install docker pip package
+  pip:
+    name: docker
   tags: docker
 
 - name: Add Docker official GPG key

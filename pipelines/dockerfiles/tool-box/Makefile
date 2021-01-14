@@ -21,10 +21,10 @@ endif
 .DEFAULT_GOAL := default
 
 .PHONY: default
-default: build tag publish
+default: build tag push
 
 .PHONY: all
-all: build tag publish clean
+all: build tag push publish clean
 
 .PHONY: login
 login:
@@ -32,7 +32,9 @@ login:
 
 .PHONY: build
 build:
+	@cp ../../../ansible/requirements.yml .
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
+	@rm -f requirements.yml
 
 .PHONY: tag
 tag:
