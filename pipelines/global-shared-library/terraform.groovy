@@ -17,7 +17,6 @@ def call(String nodeName = '', String directory = '.') {
     properties([
       durabilityHint('MAX_SURVIVABILITY'),
       buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '10')),
-      //pipelineTriggers([githubPush(), pollSCM("TZ=Europe/London\nH/2 * * * *")]),
       // Allow only one job at a time
       disableConcurrentBuilds(),
     ])
@@ -31,14 +30,11 @@ def call(String nodeName = '', String directory = '.') {
 
       stage('Checkout') {
         checkout(scm)
-        //currentBuild.description = getComment() // Add comment to build description
-
         milestone label: 'Checkout'
       }
 
-      stage('Unlock secrets'){
+      stage('Unlock secrets') {
         sh 'git crypt unlock'
-
         milestone label: 'Unlock secrets'
       }
 
@@ -72,7 +68,6 @@ def call(String nodeName = '', String directory = '.') {
 
             println "Syntax validation"
             sh 'terraform validate'
-
             milestone label: 'Validate'
           }
 
@@ -95,10 +90,9 @@ def call(String nodeName = '', String directory = '.') {
                   case 2:
                     echo 'Plan Awaiting Approval.'
                     needUpdate = true
-                    stash(name: 'plan', includes: 'plan.out')
+                    stash(name: 'plan', includes: 'plan.out,.terraform/*')
                     break
                 }
-
               milestone label: 'Plan'
             }
           }
