@@ -1,4 +1,8 @@
 terraform {
+  required_version = ">= 0.14"
+}
+
+terraform {
   backend "s3" {
     bucket = "costea2-states"
     key    = "terraform/pki.tfstate"
