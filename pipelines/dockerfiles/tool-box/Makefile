@@ -32,9 +32,11 @@ login:
 
 .PHONY: build
 build:
-	@cp ../../../ansible/requirements.yml .
+	@cp -a ../../../ansible/requirements.yml .
+	@cp -a ../../../bin .
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f requirements.yml
+	@rm -rf bin
 
 .PHONY: tag
 tag:

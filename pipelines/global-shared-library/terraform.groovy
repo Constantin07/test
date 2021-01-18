@@ -141,7 +141,6 @@ def call(String nodeName = '', String directory = '.') {
                // - Execute `terraform apply` against the stashed plan
                 stage(name: 'Apply') {
                   unstash 'plan'
-                  sh 'ls -la .; ls -la .terraform'
                   def exitCode = sh(script: "terraform apply ${tf_options} -auto-approve plan.out", returnStatus: true)
                   if (exitCode == 0) {
                     echo 'Changes Applied.'
