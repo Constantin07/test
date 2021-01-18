@@ -105,7 +105,7 @@ ENV HELM_HOME=/tmp/.helm
 # https://github.com/gliderlabs/docker-alpine/issues/184
 RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
     apk update && apk upgrade && \
-    apk --no-cache add ca-certificates curl bash procps jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev && \
+    apk --no-cache add ca-certificates curl bash procps jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
@@ -126,6 +126,9 @@ WORKDIR /home/${USERNAME}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder --chown=${USERNAME} /root/.ansible .ansible
+
+# Other common binaries
+COPY bin/* /usr/local/bin/
 
 # Add helm repositories
 RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \

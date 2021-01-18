@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# This is wrapper script used to execute terraform plans.
+
+set -euo pipefail
+
+usage() {
+  echo "${0} <workspace> <bucket_name> <backend_key> <command> [optional terraform options]"
+  echo "where:"
+  echo -e "\t <workspace> - Terraform workspace (required)"
+  echo -e "\t <bucket_name> - S3 bucket name used as backend store (required)"
+  echo -e "\t <backend_key> - backend key to store state to (reqired)"
+  echo -e "\t <command> - Terraform command (reqired)"
+  exit 1
+}
+
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+
+# Define variables.
+readonly WORKSPACE="{1}"
+readonly BUCKET_NAME="{2}"
+readonly BACKEND_KEY="{3}"
+shift 3
+
+
+# Make sure to clean .terraform as changing bucket name doesn't re-init.
+echo "Removing .terraform directory"
+rm -rf .terraform
+
+# Print terraform version.
+terraform -version
+
+# Initialise terraform.
+terraform init \
+ -upgrade=true \
+ -backend-config=region="${AWS_REGION:-eu-west-1}" \
+ -backend-config=bucket="${BUCKET_NAME}" \
+ -backend-config=key="${BACKEND_KEY}" \
+ -backend-config=encrypt=true \
+ -backend-config=dynamodb_table="terraform-lock"
+
+# Create new workspace if it doesn't exist and switch to it.
+terraform workspace select "${WORKSPACE}" || terraform workspace new "${WORKSPACE}"
+
+# Validate terraform plan.
+terraform validate
+
+# Run terraform.
+terraform "$@"
