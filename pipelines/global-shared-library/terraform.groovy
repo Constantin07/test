@@ -90,7 +90,7 @@ def call(String nodeName = '', String directory = '.') {
                   case 2:
                     echo 'Plan Awaiting Approval.'
                     needUpdate = true
-                    stash(name: 'plan', includes: 'plan.out,.terraform/*')
+                    stash(name: 'plan', includes: 'plan.out,.terraform/**')
                     break
                 }
               milestone label: 'Plan'

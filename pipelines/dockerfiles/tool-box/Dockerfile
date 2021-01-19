@@ -2,10 +2,10 @@ FROM alpine:3.13.0 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.14.4
+ARG TERRAFORM_VERSION=0.14.5
 ARG TERRAFORM_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 ARG TERRAFORM_FILE="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-ARG TERRAFORM_SHA256="042f1f4fb47696b3442eca12bce7cce6de0b477b299503ddad6b8bc3777a54b5"
+ARG TERRAFORM_SHA256="2899f47860b7752e31872e4d57b1c03c99de154f12f0fc84965e231bc50f312f"
 
 ARG PACKER_VERSION=1.6.6
 ARG PACKER_URL="https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
@@ -100,6 +100,9 @@ FROM alpine:3.13.0
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
+
+# Set default AWS region
+ENV AWS_DEFAULT_REGION eu-west-1
 
 # Use HTTPS endpoint for the apk repositories
 # https://github.com/gliderlabs/docker-alpine/issues/184

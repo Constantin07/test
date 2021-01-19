@@ -24,6 +24,7 @@ ldap
 matrix-auth
 matrix-project
 next-build-number
+pipeline-aws
 pipeline-multibranch-defaults
 pipeline-rest-api
 pipeline-utility-steps

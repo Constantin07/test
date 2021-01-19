@@ -1,0 +1,5 @@
+# Activates the project's "virtualenv".
+#
+# Usage: . bin/activate
+
+export PATH=$PWD/bin:$PATH
