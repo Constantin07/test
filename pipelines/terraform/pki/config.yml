@@ -1,0 +1,4 @@
+---
+
+extensions:
+  cleanBeforeCheckout: true

@@ -20,11 +20,10 @@ if [ $# -eq 0 ]; then
 fi
 
 # Define variables.
-readonly WORKSPACE="{1}"
-readonly BUCKET_NAME="{2}"
-readonly BACKEND_KEY="{3}"
+readonly WORKSPACE="$1"
+readonly BUCKET_NAME="$2"
+readonly BACKEND_KEY="$3"
 shift 3
-
 
 # Make sure to clean .terraform as changing bucket name doesn't re-init.
 echo "Removing .terraform directory"
@@ -33,17 +32,26 @@ rm -rf .terraform
 # Print terraform version.
 terraform -version
 
-# Initialise terraform.
+# Avoid override of Terraform workspace if set by environment variable
+unset TF_WORKSPACE
+
+# If run in automated environment (Jenkins), don't prompt for user input
+if [[ -n $JOB_NAME ]]; then
+    readonly TF_OPTIONS="-input=false"
+fi
+
+# Initialize terraform.
 terraform init \
+ "$TF_OPTIONS" \
  -upgrade=true \
- -backend-config=region="${AWS_REGION:-eu-west-1}" \
- -backend-config=bucket="${BUCKET_NAME}" \
- -backend-config=key="${BACKEND_KEY}" \
+ -backend-config=region="eu-west-1" \
+ -backend-config=bucket="$BUCKET_NAME" \
+ -backend-config=key="$BACKEND_KEY" \
  -backend-config=encrypt=true \
  -backend-config=dynamodb_table="terraform-lock"
 
 # Create new workspace if it doesn't exist and switch to it.
-terraform workspace select "${WORKSPACE}" || terraform workspace new "${WORKSPACE}"
+terraform workspace select "$WORKSPACE" || terraform workspace new "$WORKSPACE"
 
 # Validate terraform plan.
 terraform validate
