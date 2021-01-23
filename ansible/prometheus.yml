@@ -12,4 +12,5 @@
     - prometheus/prometheus
     - grafana
     - cadvisor
+    - containerd
 

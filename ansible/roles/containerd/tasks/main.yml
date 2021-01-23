@@ -1,0 +1,42 @@
+---
+
+- name: Copy containerd.conf to /etc/modules-load.d/ dir
+  copy:
+    src: containerd.conf
+    dest: /etc/modules-load.d
+    owner: root
+    group: root
+    mode: 0644
+  tags: containerd
+
+- name: Load kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+  tags: containerd
+
+- name: Copy 99-kubernetes-cri.conf to /etc/sysctl.d/ dir
+  copy:
+    src: 99-kubernetes-cri.conf
+    dest: /etc/sysctl.d
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload sysctl
+  tags: containerd
+
+- name: Include OS specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: containerd
+
+- name: Create config dir
+  file:
+    path: /etc/containerd
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  tags: containerd
