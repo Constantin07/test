@@ -8,7 +8,9 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: validate install diff delete
 
 validate:
-	kubeval --ignore-missing-schemas ${CONFIG_FILE}
+	kubeval --strict --ignore-missing-schemas \
+	--kubernetes-version 1.19.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master \
+	${CONFIG_FILE}
 
 # Install Calico overlay network in K8s
 install: validate
