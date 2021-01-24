@@ -42,4 +42,5 @@
   loop: "{{ helm_repos }}"
   environment:
     HELM_HOME: '/tmp/.helm'
+  notify: helm repo update
   tags: helm

@@ -1,0 +1,7 @@
+---
+
+- name: helm repo update
+  command: helm repo update
+  environment:
+    HELM_HOME: '/tmp/.helm'
+  tags: helm

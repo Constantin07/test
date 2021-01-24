@@ -11,17 +11,19 @@ releases:
   - name: kube-state-metrics
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
-    chart: bitnami/kube-state-metrics
-    version: 1.1.6
+#    chart: kube-state-metrics/kube-state-metrics
+    chart: ./kube-state-metrics
+    version: 2.9.8
     values:
-      - rbac:
-          apiVersion: v1
-        image:
+      - image:
+          repository: quay.io/coreos/kube-state-metrics
+#          repository: k8s.gcr.io/kube-state-metrics/kube-state-metrics
           pullPolicy: Always
+          tag: v2.0.0-beta
         resources:
           requests:
-            memory: 30Mi
-            cpu: 20m
+            cpu: 10m
+            memory: 32Mi
           limits:
-            memory: 200M
             cpu: 100m
+            memory: 64Mi
