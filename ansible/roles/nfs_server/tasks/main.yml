@@ -1,0 +1,16 @@
+---
+
+- include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: nfs_server
+
+- name: Ensure nfs service is stopped and disabled
+  systemd:
+    name: "{{ item }}"
+    state: started
+    daemon_reload: yes
+    enabled: yes
+  loop:
+    - nfs-server
+    - rpcbind
+  tags: nfs_server
+

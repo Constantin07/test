@@ -27,10 +27,10 @@ ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFI
 ARG HELMFILE_FILE="helmfile_linux_amd64"
 ARG HELMFILE_SHA256="cab81fd8a82141ff5e97ce68af178c198c2df753fa32eced2461a29bac124ab4"
 
-ARG GOMPLATE_VERSION=3.8.0
+ARG GOMPLATE_VERSION=3.9.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
 ARG GOMPLATE_FILE="gomplate_linux-amd64"
-ARG GOMPLATE_SHA256="13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e"
+ARG GOMPLATE_SHA256="7dbabe30095f822ec38f5f70711ff121c26e588227da4cc05208417cfaf929cd"
 
 ARG VALIDATEYAML_VERSION=v0.2.3
 ARG VALIDATEYAML_URL="https://github.com/gerald1248/validate-yaml/releases/download/${VALIDATEYAML_VERSION}/validate-yaml-linux-amd64.zip"
@@ -104,6 +104,7 @@ ENV HELM_HOME=/tmp/.helm
 # Set default AWS region
 ENV AWS_DEFAULT_REGION=eu-west-1
 
+# Keep Ansible output colorized
 ENV ANSIBLE_FORCE_COLOR=true
 
 # Use HTTPS endpoint for the apk repositories
