@@ -17,15 +17,15 @@ ARG KUBECTL_URL="https://storage.googleapis.com/kubernetes-release/release/${KUB
 ARG KUBECTL_FILE="kubectl"
 ARG KUBECTL_SHA256="d46eb3bbe2575e5b6bedbc6d3519424b4f2f57929d7da1ef7e11c09068f37297"
 
-ARG HELM_VERSION=v3.5.0
+ARG HELM_VERSION=v3.5.1
 ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG HELM_SHA256="3fff0354d5fba4c73ebd5db59a59db72f8a5bbe1117a0b355b0c2983e98db95b"
+ARG HELM_SHA256="cad8f2f55a87cfd4d79312625c6af62c1e22eb1dab750f00aa1d394c601a2e6b"
 
-ARG HELMFILE_VERSION=0.137.0
+ARG HELMFILE_VERSION=0.138.2
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="cab81fd8a82141ff5e97ce68af178c198c2df753fa32eced2461a29bac124ab4"
+ARG HELMFILE_SHA256="a13312e11092e8523f3f663f48863e660d0bfbcc4b9c726ad8c7a6788a2ff481"
 
 ARG GOMPLATE_VERSION=3.9.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"

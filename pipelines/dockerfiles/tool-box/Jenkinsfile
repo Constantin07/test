@@ -45,7 +45,7 @@ pipeline {
         milestone null
       }
     }
-
+/*
     stage('Proceed with publish') {
       options {
         timeout(time: 30, unit: 'MINUTES')
@@ -59,7 +59,7 @@ pipeline {
         milestone null
       }
     }
-
+*/
     stage('Publish image') {
       agent { label 'master' }
       steps {

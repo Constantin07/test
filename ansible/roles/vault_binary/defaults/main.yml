@@ -1,7 +1,7 @@
 ---
 
-vault_version: 1.6.1
-vault_checksum: sha256:75cd2b8c5527577c0da1105e11fba3c31f4112514a910c4f7ec527c9a8bf42d1
+vault_version: 1.6.2
+vault_checksum: sha256:8eaac42a3b41ec45bd6498c3dc5a1aa9be2c1723c0a43cc68ac25a8cfcb49ded
 vault_package: "vault_{{ vault_version }}_linux_amd64.zip"
 vault_url: "https://releases.hashicorp.com/vault/{{ vault_version }}/{{ vault_package }}"
 vault_install_dir: "/usr/local/bin"
