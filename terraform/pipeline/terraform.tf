@@ -4,14 +4,11 @@ terraform {
 
 terraform {
   backend "s3" {
-    bucket = "costea2-states"
-    key    = "test/core.tfstate"
+    bucket = "dev-710782875474-terraform-state"
+    key    = "pipeline.tfstate"
 
-    dynamodb_table = "costea2-states"
+    dynamodb_table = "terraform-lock"
     encrypt        = true
     region         = "eu-west-1"
-
-    role_arn     = "arn:aws:iam::705505438149:role/TerraformAdmin"
-    session_name = "Terraform"
   }
 }

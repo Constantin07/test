@@ -7,7 +7,6 @@ def call(String nodeName = '', String directory = '.') {
   // Global state
   def needUpdate = false
   def apply      = false
-  def tf_options = '-input=false -lock-timeout=2m'
 
   // Used for locks
   String jobName = "${env.JOB_NAME}"
@@ -63,7 +62,7 @@ def call(String nodeName = '', String directory = '.') {
             println "Initialise configuration"
             retry(2) {
               echo 'Initialize S3 backend'
-              sh "terraform init ${tf_options} -upgrade=true"
+              sh "terraform init -upgrade=true -input=false"
             }
 
             println "Syntax validation"
@@ -74,7 +73,7 @@ def call(String nodeName = '', String directory = '.') {
 
           lock("${jobName}") {
               stage(name: 'Plan') {
-                def exitCode = sh(script: "terraform plan ${tf_options} -out=plan.out -detailed-exitcode", returnStatus: true)
+                def exitCode = sh(script: "terraform plan -input=false -out=plan.out -detailed-exitcode", returnStatus: true)
                 echo "Terraform plan exit code: ${exitCode}"
                 switch (exitCode) {
                   case 0:
@@ -141,7 +140,7 @@ def call(String nodeName = '', String directory = '.') {
                // - Execute `terraform apply` against the stashed plan
                 stage(name: 'Apply') {
                   unstash 'plan'
-                  def exitCode = sh(script: "terraform apply ${tf_options} -auto-approve plan.out", returnStatus: true)
+                  def exitCode = sh(script: "terraform apply -input=false -auto-approve plan.out", returnStatus: true)
                   if (exitCode == 0) {
                     echo 'Changes Applied.'
                     currentBuild.result = 'SUCCESS'

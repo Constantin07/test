@@ -32,8 +32,7 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
           sshagent (credentials: ['jenkins-ssh-key']) {
-            sh 'ansible jenkins_slaves -m shell -a "cmd=\'yum clean all\' warn=false"'
-            sh 'ansible jenkins_slaves -m shell -a "cmd=\'yum -y update\' warn=false"'
+            sh 'ansible jenkins_slaves -m yum -a "name=* state=latest update_cache=yes"'
             sh 'ansible-playbook jenkins_slaves.yml'
           }
         }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This is wrapper script used to execute terraform plans.
+# Wrapper script used to execute terraform plans.
 
 set -euo pipefail
 

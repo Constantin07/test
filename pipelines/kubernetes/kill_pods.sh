@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Kill randomly pods in a K8s cluster
+
 NAMESPACE=${NAMESPACE:-default}
 
 while true; do

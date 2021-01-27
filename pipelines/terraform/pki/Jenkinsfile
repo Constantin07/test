@@ -1,8 +1,5 @@
 @Library('global-shared-library')_
 
-def nodeName = ''
-def terraform_dir = 'terraform/pki'
-
 pipeline {
 
   agent none
@@ -35,7 +32,7 @@ pipeline {
         dir(env.DIRECTORY) {
           withAWS(credentials: 'Amazon Credentials') {
             sh 'git crypt unlock'
-            sh 'make WORKSPACE=default BUCKET=dev-705505438149-terraform-state VARFILE=vars/dev.tfvars plan'
+            sh 'make WORKSPACE=default BUCKET=dev-710782875474-terraform-state VARFILE=vars/dev.tfvars plan'
           }
           stash(name: 'plan', includes: 'plan.out,.terraform/**')
         }
@@ -66,7 +63,7 @@ pipeline {
           withAWS(credentials: 'Amazon Credentials') {
             sh 'git crypt unlock'
             unstash(name: 'plan')
-            sh 'make WORKSPACE=default BUCKET=dev-705505438149-terraform-state VARFILE=vars/dev.tfvars apply'
+            sh 'make WORKSPACE=default BUCKET=dev-710782875474-terraform-state VARFILE=vars/dev.tfvars apply'
           }
         }
         milestone null
@@ -77,5 +74,3 @@ pipeline {
 
 
 }
-
-//terraform_deploy(nodeName, terraform_dir)
