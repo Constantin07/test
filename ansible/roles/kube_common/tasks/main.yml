@@ -1,12 +1,25 @@
 ---
 
+- name: Enable/start required service(s)
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - systemd-timesyncd
+  tags: kube_common
+
 - include_tasks: disable_swap.yml
+  tags: kube_common
 
 - include_tasks: tune_conntrack.yml
+  tags: kube_common
 
-- include_tasks: "{{ ansible_os_family|lower }}.yml"
+- include_tasks: "{{ ansible_distribution|lower }}.yml"
+  tags: kube_common
 
 - include_tasks: calico.yml
+  tags: kube_common
 
 # TODO: Run only once per node
 #- include_tasks: unique-machine-id.yml

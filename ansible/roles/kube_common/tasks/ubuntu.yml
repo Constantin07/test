@@ -1,0 +1,45 @@
+---
+
+- name: Install required packages | Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - bash-completion
+    - curl
+    - software-properties-common
+    - socat  # required for kubectl port-forward to work
+  tags: kube_common
+
+- name: Add GPG key | Ubuntu
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  tags: kube_common
+
+- name: Add repository source list | Ubuntu
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    filename: "kubernetes"
+    update_cache: yes
+    state: present
+  tags: kube_common
+
+- name: Install Kubernetes packages | Ubuntu
+  apt:
+    name: "{{ kubernetes_packages }}"
+    state: present
+    update_cache: yes
+  tags: kube_common
+
+- name: Exclude K8s tools from upgrade | Ubuntu
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
+  tags: kube_common

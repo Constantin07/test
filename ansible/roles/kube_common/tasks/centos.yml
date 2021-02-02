@@ -1,0 +1,25 @@
+---
+
+- name: Add Kubernetes repository and install gpg key | CentOS
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgcheck: yes
+    enabled: yes
+    repo_gpgcheck: yes
+    gpgkey:
+      - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+      - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+  tags: kube_common
+
+- name: Disable SELinux | CentOS
+  selinux:
+    state: disabled
+  tags: kube_common
+
+- name: Install Kubernetes packages | CentOS
+  yum:
+    state: present
+    name: "{{ kubernetes_packages }}"
+  tags: kube_common

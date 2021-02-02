@@ -34,7 +34,7 @@ vaultAgent:
   enabled: false
   image:
     repository: vault
-    tag: latest
+    tag: 1.6.2
     pullPolicy: IfNotPresent
   role: test
   env: {}

@@ -39,25 +39,6 @@
   notify: restart docker
   tags: docker
 
-- name: Create systemd drop-in directory for containerd
-  file:
-    path: /etc/systemd/system/containerd.service.d
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  tags: docker
-
-- name: Add custom settings to containerd drop-in file
-  copy:
-    src: containerd.conf
-    dest: /etc/systemd/system/containerd.service.d
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart containerd
-  tags: docker
-
 - name: Create docker config directory
   file:
     path: "/etc/docker"

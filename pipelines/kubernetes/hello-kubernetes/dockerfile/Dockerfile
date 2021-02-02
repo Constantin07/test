@@ -1,19 +1,13 @@
-FROM alpine:3.13.0 AS builder
+FROM alpine:3.13.1 AS builder
 
-# Use HTTPS endpoint for the apk repositories
-# https://github.com/gliderlabs/docker-alpine/issues/184
-RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
-    apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
-    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/1.6.1/vault_1.6.1_linux_amd64.zip -o vault.zip && \
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
+    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/1.6.2/vault_1.6.2_linux_amd64.zip -o vault.zip && \
     unzip vault.zip && chmod +x vault
 
 
 FROM node:14.15.4-alpine3.12
 
-# Use HTTPS endpoint for the apk repositories
-# https://github.com/gliderlabs/docker-alpine/issues/184
-RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
-    apk update && apk upgrade && apk add --no-cache jq
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq
 
 RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
