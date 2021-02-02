@@ -1,0 +1,14 @@
+---
+
+- name: Install required packages on Ubuntu
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unzip
+    - tar
+    - apt-transport-https
+    - btrfs-progs
+    - libseccomp2
+    - util-linux
+  tags: cri_containerd

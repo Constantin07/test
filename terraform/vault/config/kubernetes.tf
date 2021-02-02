@@ -1,8 +1,8 @@
 # Kubernetes
 
 provider "kubernetes" {
-  config_context_auth_info = "kubernetes-admin"
-  config_context_cluster   = "kubernetes"
+  config_path    = "~/.kube/config"
+  config_context = "kubernetes-admin@kubernetes"
 }
 
 provider "external" {
@@ -17,19 +17,17 @@ data "external" "kube_config" {
   }
 }
 
-# Get secret token name associated with vault-auth service account
-data "external" "secret_name" {
-  program = [".venv/bin/python3", "${path.module}/get_secret_name.py"]
-
-  query = {
-    namespace            = "default"
-    service_account_name = "vault-auth"
+data "kubernetes_service_account" "vault_auth" {
+  metadata {
+    name      = "vault-auth"
+    namespace = "default"
   }
 }
 
+# Get secret token name associated with vault-auth service account
 data "kubernetes_secret" "vault_auth" {
   metadata {
-    name      = data.external.secret_name.result.token_name
+    name      = data.kubernetes_service_account.vault_auth.default_secret_name
     namespace = "default"
   }
 }

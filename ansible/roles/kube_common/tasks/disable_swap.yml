@@ -7,7 +7,9 @@
     replace: '#\1\2\3swap\4'
     backup: yes
   register: swap_fstab
+  tags: kube_common
 
 - name: Disable swap
   command: swapoff -a
   when: ansible_swaptotal_mb > 0 or swap_fstab is changed
+  tags: kube_common

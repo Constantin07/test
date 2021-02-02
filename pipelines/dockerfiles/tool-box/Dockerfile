@@ -1,4 +1,4 @@
-FROM alpine:3.13.0 AS builder
+FROM alpine:3.13.1 AS builder
 
 ARG INSTALL_DIR="/usr/local/bin"
 
@@ -22,10 +22,10 @@ ARG HELM_URL="https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_FILE="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 ARG HELM_SHA256="cad8f2f55a87cfd4d79312625c6af62c1e22eb1dab750f00aa1d394c601a2e6b"
 
-ARG HELMFILE_VERSION=0.138.2
+ARG HELMFILE_VERSION=0.138.3
 ARG HELMFILE_URL="https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64"
 ARG HELMFILE_FILE="helmfile_linux_amd64"
-ARG HELMFILE_SHA256="a13312e11092e8523f3f663f48863e660d0bfbcc4b9c726ad8c7a6788a2ff481"
+ARG HELMFILE_SHA256="6567b42fcb8e930f71365e7c0f6700053aff1418c992478d06136ebdbc16eb0b"
 
 ARG GOMPLATE_VERSION=3.9.0
 ARG GOMPLATE_URL="https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64"
@@ -45,10 +45,7 @@ ARG KUBEVAL_SHA256="70bff2642a2886c0d9ebea452ffb81f333a956e26bbe0826fd7c6797e343
 ARG SHUNIT2_URL="https://raw.githubusercontent.com/kward/shunit2/master/shunit2"
 ARG SHUNIT2_FILE="shunit2"
 
-# Use HTTPS endpoint for the apk repositories
-# https://github.com/gliderlabs/docker-alpine/issues/184
-RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
-    apk --no-cache add curl unzip
+RUN apk --no-cache add curl unzip
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -96,7 +93,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.13.0
+FROM alpine:3.13.1
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
@@ -107,10 +104,7 @@ ENV AWS_DEFAULT_REGION=eu-west-1
 # Keep Ansible output colorized
 ENV ANSIBLE_FORCE_COLOR=true
 
-# Use HTTPS endpoint for the apk repositories
-# https://github.com/gliderlabs/docker-alpine/issues/184
-RUN set -eux; sed -i 's!http://dl-cdn.alpinelinux.org/!https://alpine.global.ssl.fastly.net/!g' /etc/apk/repositories && \
-    apk update && apk upgrade && \
+RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates curl bash procps jq python3 python3-dev py-pip make git gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 

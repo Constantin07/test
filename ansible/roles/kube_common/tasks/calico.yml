@@ -6,6 +6,7 @@
   ignore_errors: True
   when: ansible_os_family|lower == "debian"
   register: is_network_manager
+  tags: kube_common
 
 - name: Create config file for NM
   file:
@@ -15,6 +16,7 @@
     group: root
     mode: 0644
   when: is_network_manager.rc == 0
+  tags: kube_common
 
 - name: Ansible create file with content example
   copy:
@@ -25,3 +27,4 @@
       unmanaged-devices=interface-name:cali*;interface-name:tunl*
   when: is_network_manager.rc == 0
   notify: Restart NetworkManager
+  tags: kube_common

@@ -13,4 +13,5 @@
     - grafana
     - cadvisor
     - containerd
+    - cri_containerd
 

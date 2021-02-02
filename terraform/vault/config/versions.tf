@@ -6,12 +6,12 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.13.3"
+      version = "2.0.1"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "2.16.0"
+      version = "2.18.0"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.14"
 }

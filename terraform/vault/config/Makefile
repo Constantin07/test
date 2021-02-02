@@ -11,7 +11,7 @@ pip3-install:
 	.venv/bin/pip3 install --no-cache-dir -r requirements.txt
 
 lint:
-	.venv/bin/pylint get_kubeconfig.py get_secret_name.py
+	.venv/bin/pylint get_kubeconfig.py
 
 clean:
 	@rm -rf .venv

@@ -3,3 +3,10 @@
 - name: reload sysctl
   command: sysctl -p --system
   tags: containerd
+
+- name: restart containerd
+  systemd:
+    name: containerd.service
+    state: restarted
+    daemon_reload: yes
+  tags: containerd

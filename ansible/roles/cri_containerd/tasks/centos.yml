@@ -1,0 +1,14 @@
+---
+
+- name: Install required packages on CentOS
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unzip
+    - tar
+    - btrfs-progs
+    - libseccomp
+    - util-linux
+    - libselinux-python
+  tags: cri_containerd
