@@ -3,6 +3,7 @@
 - name: Create a grafana volume
   docker_volume:
     name: grafana
+  tags: grafana
 
 - name: Run grafana docker container v{{ grafana_version }}
   docker_container:
