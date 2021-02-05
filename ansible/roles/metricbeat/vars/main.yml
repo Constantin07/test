@@ -1,7 +1,0 @@
----
-
-version: "latest"
-
-docker_host: "centos7.internal:5000"
-image_name: "metricbeat"
-memory: "90m"
