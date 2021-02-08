@@ -20,7 +20,9 @@ http_request
 job-dsl
 jobConfigHistory
 jobcopy-builder
+kubernetes
 ldap
+mask-passwords
 matrix-auth
 matrix-project
 next-build-number

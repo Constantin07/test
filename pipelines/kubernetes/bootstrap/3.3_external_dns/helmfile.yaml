@@ -10,7 +10,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 4.6.0
+    version: 4.6.1
     values:
       - image:
           pullPolicy: Always
@@ -22,7 +22,7 @@ releases:
           zone: internal
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
-        interval: 30s
+        interval: 10s
         txtOwnerId: Kubernetes
         rbac:
           create: true

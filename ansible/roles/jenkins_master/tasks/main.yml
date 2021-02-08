@@ -54,8 +54,18 @@
   loop:
     - { name: 'install-plugins.sh', mode: '0755' }
     - { name: 'plugins.txt', mode: '0644' }
-    - { name: 'jenkins.yaml', mode: '0644' }
   notify: restart jenkins
+  tags: jenkins_master
+
+- name: Upload JCasC file
+  template:
+    src: jenkins.yaml.j2
+    dest: "{{ jenkins_home }}/jenkins.yaml"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  notify: restart jenkins
+  no_log: true
   tags: jenkins_master
 
 - name: Cleanup /var/lib/jenkins/plugins directory

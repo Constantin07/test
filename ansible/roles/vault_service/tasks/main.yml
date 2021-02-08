@@ -31,8 +31,6 @@
       - vault_logs:/vault/logs:rw
       - vault_data:/vault/file:rw
     restart_policy: always
-    ulimits:
-      - "core:0"
     log_driver: journald
     container_default_behavior: compatibility
 

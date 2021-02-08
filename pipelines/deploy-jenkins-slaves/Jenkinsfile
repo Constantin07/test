@@ -18,9 +18,10 @@ pipeline {
 
   stages {
 
-    stage('Configure Jenkins Slaves') {
+    stage('Configure Jenkins slaves') {
       agent {
         docker {
+          label 'master'
           reuseNode true
           registryUrl 'http://centos7.internal:5000'
           image 'centos7.internal:5000/tool-box:latest'
@@ -31,7 +32,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
-          sshagent (credentials: ['jenkins-ssh-key']) {
+          sshagent(credentials: ['jenkins-ssh-key']) {
             sh 'ansible jenkins_slaves -m yum -a "name=* state=latest update_cache=yes"'
             sh 'ansible-playbook jenkins_slaves.yml'
           }

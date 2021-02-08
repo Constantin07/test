@@ -3,7 +3,9 @@
   "ipv6": false,
   "live-restore": false,
 {# Required by Kubernetes #}
-  "exec-opts": [ "native.cgroupdriver=systemd" ],
+  "exec-opts": [
+    "native.cgroupdriver=systemd"
+  ],
 {% if ansible_os_family|lower == 'debian' %}
   "storage-driver": "overlay2",
   "storage-opts": [
