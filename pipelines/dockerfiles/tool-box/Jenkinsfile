@@ -32,7 +32,7 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make tag'
         }
-      milestone null
+        milestone null
       }
     }
 

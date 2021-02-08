@@ -8,10 +8,9 @@
     - common
     - resolv
     - docker
-    - prometheus/node_exporter
-    - prometheus/prometheus
+    - "prometheus/node_exporter"
+    - "prometheus/prometheus"
     - grafana
     - cadvisor
     - containerd
     - cri_containerd
-

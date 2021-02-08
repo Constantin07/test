@@ -50,3 +50,27 @@
     group: "{{ jenkins_group }}"
     mode: 0400
   tags: jenkins_shared
+
+- name: Get files' content
+  set_fact:
+    src: "{{ lookup('file', jenkins_work_dir + '/.docker/config.json', errors='ignore') | default('{}', true) }}"
+    ecr: "{{ lookup('file', 'credHelpers.json') }}"
+  tags: jenkins_shared
+
+- name: Create .docker directory
+  file:
+    path: "{{ jenkins_work_dir }}/.docker"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0700
+  tags: jenkins_shared
+
+- name: Update docker config.json
+  copy:
+    dest: "{{ jenkins_work_dir }}/.docker/config.json"
+    content: "{{ src | combine(ecr) }}"
+    group: "{{ jenkins_user }}"
+    owner: "{{ jenkins_group }}"
+    mode: 0600
+  tags: jenkins_shared
