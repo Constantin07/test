@@ -1,4 +1,4 @@
-ansible-lint==5.0.0
+ansible-lint==5.0.1
 awscli==1.19.8
 boto3==1.17.8
 paramiko==2.7.2
