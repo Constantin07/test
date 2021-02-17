@@ -3,5 +3,5 @@
 ********************************************************************************
 
 {{- if .Values.ingress.enabled }}
-The {{ .Release.Name }} can be accessed at http://{{ .Values.ingress.host }}:3000
+The {{ .Release.Name }} {{ .Chart.AppVersion }} can be accessed at http://{{ .Values.ingress.host }}:3000
 {{- end }}

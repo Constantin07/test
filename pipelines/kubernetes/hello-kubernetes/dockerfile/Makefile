@@ -8,12 +8,12 @@ EXECUTABLES = git docker
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-GIT_COMMIT ?= $(shell git rev-parse HEAD)
+GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
 ifdef BUILD_NUMBER
-  TAG=${BUILD_NUMBER}-${GIT_COMMIT}
+  TAG=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}
 else
-  TAG=${GIT_COMMIT}
+  TAG=${GIT_COMMIT_SHORT}
 endif
 
 .PHONY: all login build tag publish clean

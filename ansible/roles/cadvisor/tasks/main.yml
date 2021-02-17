@@ -2,6 +2,7 @@
 
 - name: Run cAdvisor docker container {{ cadvisor_version }}
   docker_container:
+    api_version: auto
     name: cadvisor
     image: "gcr.io/cadvisor/cadvisor:{{ cadvisor_version }}"
     pull: yes

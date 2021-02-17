@@ -9,16 +9,13 @@ FROM node:14.15.4-alpine3.12
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq
 
-RUN mkdir -p /usr/src/app
-COPY . /usr/src/app
-RUN chown -R node:node /usr/src/app
-
+COPY --chown=node:node . /home/node/
 COPY --from=builder /vault /usr/local/bin/
 
-WORKDIR /usr/src/app
-
 USER node
+WORKDIR /home/node
+
 RUN npm install
 
 CMD [ "npm", "start" ]
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT ["/home/node/entrypoint.sh"]
