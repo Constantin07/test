@@ -15,8 +15,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+      maxSurge: 50%
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -32,18 +32,26 @@ spec:
             - containerPort: {{ .Values.container.port }}
               protocol: TCP
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.container.port }}
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            timeoutSeconds: 3
-          readinessProbe:
             httpGet:
               path: /health
               port: {{ .Values.container.port }}
-            initialDelaySeconds: 15
+              scheme: HTTP
+            failureThreshold: 1
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.container.port }}
+              scheme: HTTP
+            failureThreshold: 30
             periodSeconds: 5
-            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.container.port }}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -74,11 +82,10 @@ spec:
               command:
                 - sh
                 - -c
-                - "ps -ef | grep 'vault agent' | grep -v grep"
+                - "nc -vz 127.0.0.1 8200"
             initialDelaySeconds: 5
             periodSeconds: 5
             failureThreshold: 1
-            timeoutSeconds: 3
           {{- if .Values.vaultAgent.resources }}
           resources:
             {{- toYaml .Values.vaultAgent.resources | nindent 12 }}
@@ -102,6 +109,7 @@ spec:
             - name: vault-config
               mountPath: /etc/vault/config.hcl
               subPath: config.hcl
+              readOnly: true
       volumes:
         - name: vault-config
           configMap:

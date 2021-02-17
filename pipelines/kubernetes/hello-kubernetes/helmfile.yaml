@@ -3,7 +3,7 @@
 helmDefaults:
   verify: false
   wait: true
-  timeout: 180
+  timeout: 300
   historyMax: 5
 
 releases:
@@ -20,7 +20,7 @@ releases:
           VAULT_SECRET_PATH: secret/hello-kubernetes
         resources:
           limits:
-            cpu: 120m
+            cpu: 100m
             memory: 128Mi
           requests:
             cpu: 50m
@@ -49,7 +49,7 @@ releases:
           annotations:
             kubernetes.io/ingress.class: internal
             external-dns.alpha.kubernetes.io/hostname: hello-kubernetes.internal.
-            external-dns.alpha.kubernetes.io/ttl: "120"
+            external-dns.alpha.kubernetes.io/ttl: "60"
           host: hello-kubernetes.internal
         hpa:
           enabled: true
