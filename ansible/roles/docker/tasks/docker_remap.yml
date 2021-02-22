@@ -1,0 +1,43 @@
+---
+
+- name: Create group
+  group:
+    name: "{{ dockremap_group }}"
+    gid: "{{ dockremap_gid + dockremap_subordinate_id }}"
+    state: present
+  tags: docker
+
+- name: Create user
+  user:
+    name: "{{ dockremap_user }}"
+    uid: "{{ dockremap_uid + dockremap_subordinate_id }}"
+    group: "{{ dockremap_group }}"
+    system: yes
+    state: present
+  tags: docker
+
+- name: Set subordinate GID file
+  lineinfile:
+    dest: "{{ dockremap_subordinate_file_group }}"
+    regexp: "^{{ dockremap_group }}:{{ dockremap_subordinate_id }}:{{ dockremap_subordinate_file_length }}$"
+    line: "{{ dockremap_group }}:{{ dockremap_subordinate_id }}:{{ dockremap_subordinate_file_length }}"
+  notify: restart docker
+  tags: docker
+
+- name: Set subordinate UID file
+  lineinfile:
+    dest: "{{ dockremap_subordinate_file_user }}"
+    regexp: "^{{ dockremap_user }}:{{ dockremap_subordinate_id }}:{{ dockremap_subordinate_file_length }}$"
+    line: "{{ dockremap_user }}:{{ dockremap_subordinate_id }}:{{ dockremap_subordinate_file_length }}"
+  notify: restart docker
+  tags: docker
+
+- name: Add sysctl values
+  sysctl:
+    name: user.max_user_namespaces
+    value: 28633
+    state: present
+    reload: no
+    ignoreerrors: yes
+  notify: reload sysctl.conf
+  tags: docker

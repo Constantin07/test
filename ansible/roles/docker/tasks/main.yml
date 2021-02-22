@@ -68,5 +68,10 @@
     enabled: yes
   tags: docker
 
+- name: Enable docker remapping feature
+  include_tasks: docker_remap.yml
+  when: dockremap_enable
+  tags: docker
+
 - meta: flush_handlers
   tags: docker

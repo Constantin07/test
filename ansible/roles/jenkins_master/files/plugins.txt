@@ -18,7 +18,6 @@ hashicorp-vault-plugin
 htmlpublisher
 http_request
 job-dsl
-jobConfigHistory
 jobcopy-builder
 kubernetes
 ldap

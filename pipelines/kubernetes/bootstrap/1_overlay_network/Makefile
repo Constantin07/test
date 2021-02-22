@@ -9,7 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	kubeval --strict --ignore-missing-schemas \
-	--kubernetes-version 1.19.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master \
+	--kubernetes-version 1.19.8 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master \
 	${CONFIG_FILE}
 
 # Install Calico overlay network in K8s
