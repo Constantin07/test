@@ -47,6 +47,8 @@ jenkins:
          command: "sleep"
          args: "9999999"
          privileged: true
+         runAsGroup: "1000"
+         runAsUser: "1000"
          resourceRequestCpu: "500m"
          resourceRequestMemory: "512Mi"
          resourceLimitCpu: "1000m"
