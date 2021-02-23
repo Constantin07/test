@@ -25,5 +25,5 @@ dockremap_group: dockremap
 dockremap_gid: 0
 dockremap_subordinate_id: 500000
 dockremap_subordinate_file_length: 65536
-dockremap_subordinate_file_user: /etc/subgid
+dockremap_subordinate_file_user: /etc/subuid
 dockremap_subordinate_file_group: /etc/subgid

@@ -7,10 +7,10 @@
   roles:
     - common
     - resolv
-    - docker
+    - { role: docker, dockremap_enable: true }
     - "prometheus/node_exporter"
     - "prometheus/prometheus"
     - grafana
-    - cadvisor
+#    - cadvisor
     - containerd
     - cri_containerd
