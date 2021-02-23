@@ -1,4 +1,4 @@
-FROM alpine:3.13.1 AS builder
+FROM alpine:3.13.2 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -102,7 +102,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.13.1
+FROM alpine:3.13.2
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
@@ -145,8 +145,7 @@ COPY --chown=${USERNAME}:${USERNAME} config.json /home/${USERNAME}/.docker/
 COPY bin/* /usr/local/bin/
 
 # Add helm repositories
-RUN helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
-    helm repo add bitnami https://charts.bitnami.com/bitnami && \
+RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     helm repo add deliveryhero https://charts.deliveryhero.io && \
     helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics && \
     helm repo add stable https://charts.helm.sh/stable && \

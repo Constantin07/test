@@ -15,7 +15,7 @@
     exposed_ports:
       - "3000"
     published_ports:
-      - "3000:3000"
+      - "3002:3000"
     pull: yes
     network_mode: bridge
     memory: "{{ memory|default('1gb') }}"

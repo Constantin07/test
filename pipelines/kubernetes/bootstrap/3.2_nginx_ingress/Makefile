@@ -11,6 +11,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: init validate template lint diff sync status destroy
 
 init:
+	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo update
 
 validate:

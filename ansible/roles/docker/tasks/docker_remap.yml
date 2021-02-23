@@ -35,7 +35,7 @@
 - name: Add sysctl values
   sysctl:
     name: user.max_user_namespaces
-    value: 28633
+    value: "28633"
     state: present
     reload: no
     ignoreerrors: yes
