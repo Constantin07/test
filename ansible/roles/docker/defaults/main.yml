@@ -6,6 +6,7 @@ docker_packages:
   - "docker-{{ docker_edition }}"
   - "docker-{{ docker_edition }}-cli"
   - containerd.io
+  - "docker-{{ docker_edition }}-rootless-extras"
 docker_package_state: latest
 
 # Used only for RedHat/CentOS.

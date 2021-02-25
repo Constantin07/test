@@ -11,6 +11,5 @@
     - "prometheus/node_exporter"
     - "prometheus/prometheus"
     - grafana
-#    - cadvisor
-    - containerd
-    - cri_containerd
+#    - containerd
+#    - cri_containerd
