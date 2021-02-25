@@ -1,7 +1,9 @@
-FROM alpine:3.13.1 AS builder
+FROM alpine:3.13 AS builder
+
+ARG VAULT_VERSION=1.6.3
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
-    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/1.6.2/vault_1.6.2_linux_amd64.zip -o vault.zip && \
+    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip && \
     unzip vault.zip && chmod +x vault
 
 
