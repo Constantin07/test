@@ -9,6 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: init template validate lint diff sync status destroy tests
 
 init:
+	helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
 	helm repo update
 
 template:

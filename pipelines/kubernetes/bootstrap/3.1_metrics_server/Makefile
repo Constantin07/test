@@ -9,6 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: init template validate lint diff sync status destroy
 
 init:
+	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
 
 template:

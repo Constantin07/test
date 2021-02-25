@@ -12,6 +12,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 $(eval export TSIG_SECRET=$(shell cat kube-cluster.internal.enc))
 
 init:
+	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
 
 validate:

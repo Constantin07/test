@@ -9,6 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: init template validate lint diff sync status destroy
 
 init:
+	helm repo add deliveryhero https://charts.deliveryhero.io
 	helm repo update
 
 template:
