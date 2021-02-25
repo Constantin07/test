@@ -143,10 +143,3 @@ COPY --chown=${USERNAME}:${USERNAME} config.json /home/${USERNAME}/.docker/
 
 # Other common binaries
 COPY bin/* /usr/local/bin/
-
-# Add helm repositories
-RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
-    helm repo add deliveryhero https://charts.deliveryhero.io && \
-    helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics && \
-    helm repo add stable https://charts.helm.sh/stable && \
-    helm repo update
