@@ -58,9 +58,9 @@ spec:
           {{- end }}
           {{- if .Values.env }}
           env:
-            {{- range $index, $element := .Values.env }}
-            - name: {{ $index | quote }}
-              value: {{ $element | quote }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
             {{- end }}
           {{- end }}
           {{- if .Values.securityContext }}
