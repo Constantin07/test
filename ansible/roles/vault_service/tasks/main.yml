@@ -3,14 +3,17 @@
 - name: Load sensitive data
   include_vars: vault.enc.yml
   no_log: True
+  tags: vault_service
 
 - name: Create a vault_logs volume
   docker_volume:
     name: vault_logs
+  tags: vault_service
 
 - name: Create a vault_data volume
   docker_volume:
     name: vault_data
+  tags: vault_service
 
 - name: Run vault container version {{ vault_version }}
   docker_container:
@@ -32,7 +35,7 @@
       - vault_data:/vault/file:rw
     restart_policy: always
     log_driver: journald
-    container_default_behavior: compatibility
+  tags: vault_service
 
 - name: Install Vault unseal unit file
   template:
@@ -41,6 +44,7 @@
     owner: root
     group: root
     mode: 0644
+  tags: vault_service
 
 - name: Enable and start vault-unseal
   systemd:
@@ -48,3 +52,4 @@
     enabled: yes
     state: restarted
     daemon_reload: yes
+  tags: vault_service
