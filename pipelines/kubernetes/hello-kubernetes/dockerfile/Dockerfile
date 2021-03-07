@@ -7,7 +7,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:14.15.4-alpine3.12
+FROM node:15-alpine
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq
 
