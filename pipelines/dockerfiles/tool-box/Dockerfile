@@ -1,4 +1,4 @@
-FROM alpine:3.13.2 AS builder
+FROM alpine:3.13 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -102,7 +102,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.13.2
+FROM alpine:3.13
 
 ARG USERNAME=toolbox
 ENV HELM_HOME=/tmp/.helm
