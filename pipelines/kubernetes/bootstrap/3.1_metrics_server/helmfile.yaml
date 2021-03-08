@@ -12,7 +12,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 5.6.0
+    version: 5.7.1
     values:
       - image:
           pullPolicy: Always
