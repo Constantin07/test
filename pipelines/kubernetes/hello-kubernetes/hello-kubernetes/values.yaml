@@ -35,7 +35,7 @@ vaultAgent:
   image:
     repository: vault
     tag: 1.6.3
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   role: test
   env: {}
   resources: {}
