@@ -120,8 +120,8 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
-RUN pip3 install --upgrade pip setuptools && \
-    pip3 install -r /requirements.txt
+RUN pip3 install --no-cache-dir --upgrade pip setuptools && \
+    pip3 install --no-cache-dir -r /requirements.txt
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
     curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk && \
