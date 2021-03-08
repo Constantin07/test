@@ -13,7 +13,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 ifdef BUILD_NUMBER
-  TAG="${BUILD_NUMBER}-${GIT_COMMIT}"
+  TAG=${BUILD_NUMBER}-${GIT_COMMIT}
 else
   TAG=${GIT_COMMIT}
 endif
