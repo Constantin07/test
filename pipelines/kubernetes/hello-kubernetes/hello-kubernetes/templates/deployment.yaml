@@ -15,13 +15,15 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 50%
+      maxSurge: 25%
       maxUnavailable: 1
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/vaultAgentConfigMap.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       containers:
@@ -68,48 +70,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
         {{- if .Values.vaultAgent.enabled }}
-
-        - name: vault-agent
-          image: "{{ .Values.vaultAgent.image.repository }}:{{ .Values.vaultAgent.image.tag }}"
-          imagePullPolicy: {{ .Values.vaultAgent.image.pullPolicy }}
-          command: [ "vault" ]
-          args:
-            - "agent"
-            - "-config=/etc/vault/config.hcl"
-            - "-log-level=info"
-          livenessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "nc -vz 127.0.0.1 8200"
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            failureThreshold: 1
-          {{- if .Values.vaultAgent.resources }}
-          resources:
-            {{- toYaml .Values.vaultAgent.resources | nindent 12 }}
-          {{- end }}
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            runAsUser: 100
-            runAsGroup: 1000
-            capabilities:
-              add:
-                - IPC_LOCK
-          {{- if .Values.vaultAgent.env }}
-          env:
-            {{- range $index, $element := .Values.vaultAgent.env }}
-            - name: {{ $index | quote }}
-              value: {{ $element | quote }}
-            {{- end }}
-          {{- end }}
-          volumeMounts:
-            - name: vault-config
-              mountPath: /etc/vault/config.hcl
-              subPath: config.hcl
-              readOnly: true
+{{- include "hello-kubernetes.vault" . | nindent 8 }}
       volumes:
         - name: vault-config
           configMap:

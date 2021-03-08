@@ -31,8 +31,6 @@ releases:
           enabled: true
           image:
             repository: vault
-            tag: 1.6.2
-            pullPolicy: Always
           role: hello-kubernetes
           env:
             VAULT_ADDR: "http://vault.internal:8200"
