@@ -39,6 +39,7 @@
     group: "{{ prometheus_group }}"
     extra_opts:
       - "--strip-components=1"
+  notify: restart prometheus
   tags: prometheus
 
 - name: Upload config file
