@@ -6,6 +6,11 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
 data:
   config.hcl: |
+    vault {
+      retry {
+        num_retries = 5
+      }
+    }
     exit_after_auth = false
     pid_file = "/home/vault/pidfile"
     auto_auth {
