@@ -15,6 +15,7 @@ var creds = process.env.SECRET_DATA;
 
 var port = process.env.PORT || 8080;
 var message = process.env.MESSAGE || "Hello world!";
+var namespace = process.env.NAMESPACE || "None";
 
 app.get('/', function (req, res) {
     // Get client IP
@@ -25,6 +26,7 @@ app.get('/', function (req, res) {
 	platform: os.type(),
 	release: os.release(),
 	hostName: os.hostname(),
+	namespace: namespace,
 	xForwardedFor: x_forwarded_for,
 	creds: JSON.stringify(creds)
     });
