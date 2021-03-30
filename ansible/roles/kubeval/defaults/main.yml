@@ -1,5 +1,5 @@
 ---
 
-kubeval_version: '0.15.0'
+kubeval_version: 'v0.16.1'
 kubeval_url: "https://github.com/instrumenta/kubeval/releases/download/{{ kubeval_version }}/kubeval-linux-amd64.tar.gz"
 install_dir: "/usr/local/bin"
