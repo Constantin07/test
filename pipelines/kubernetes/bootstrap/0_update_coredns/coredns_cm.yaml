@@ -6,23 +6,29 @@ metadata:
   namespace: kube-system
 data:
   Corefile: |
+    # Local private DNS zone
+    internal:53 {
+        errors
+        cache 10
+        forward . 10.0.2.4:53 {
+            prefer_udp
+        }
+    }
+    # Kubernetes DNS discovery
     .:53 {
         errors
-        health
+        health {
+            lameduck 5s
+        }
         ready
         kubernetes cluster.local in-addr.arpa ip6.arpa {
-           pods insecure
-           fallthrough in-addr.arpa ip6.arpa
+            pods insecure
+            fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
         forward . /etc/resolv.conf
-        cache 5
+        cache 30
         loop
         reload
         loadbalance
-    }
-    internal:53 {
-        errors
-        cache 30
-        forward . 10.0.2.4
     }

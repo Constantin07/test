@@ -7,14 +7,13 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:15.12.0-alpine3.13
+FROM node:15.14.0-alpine3.13
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates && \
+    update-ca-certificates
 
 COPY --chown=node:node . /home/node/
 COPY --from=builder /vault /usr/local/bin/
-
-RUN update-ca-certificates
 
 USER node
 WORKDIR /home/node

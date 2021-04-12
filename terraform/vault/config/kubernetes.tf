@@ -57,17 +57,3 @@ resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
   token_ttl                        = 3600
   token_policies                   = ["default", "hello-kubernetes"]
 }
-
-## Rate-limit quotas
-
-resource "vault_quota_rate_limit" "secret" {
-  name = "hello-kubernetes-secret"
-  path = "secret/hello-kubernetes/"
-  rate = 50
-}
-
-resource "vault_quota_rate_limit" "auth" {
-  name = "hello-kubernetes-auth"
-  path = "auth/kubernetes/role/hello-kubernetes/"
-  rate = 50
-}

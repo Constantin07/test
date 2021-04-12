@@ -7,5 +7,7 @@
     line: "dns=none"
     state: present
   notify: restart network_manager
+  tags: resolv
 
 - meta: flush_handlers
+  tags: resolv

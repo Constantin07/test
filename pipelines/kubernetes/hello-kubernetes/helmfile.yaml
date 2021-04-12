@@ -4,7 +4,7 @@ helmDefaults:
   verify: false
   wait: true
   timeout: 300
-  historyMax: 5
+  historyMax: 10
 
 releases:
   - name: hello-kubernetes
@@ -31,6 +31,7 @@ releases:
           enabled: true
           image:
             repository: vault
+            tag: 1.7.0
           role: hello-kubernetes
           env:
             VAULT_ADDR: "http://vault.internal:8200"

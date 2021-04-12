@@ -9,6 +9,7 @@
     owner: root
     group: root
     mode: 0644
+  tags: resolv
 
 - name: Update /etc/hosts
   lineinfile:
@@ -17,3 +18,4 @@
     line: "{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_nodename }}"
     state: present
   when: ansible_default_ipv4.address is defined
+  tags: resolv

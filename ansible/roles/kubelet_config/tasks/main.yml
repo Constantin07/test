@@ -9,6 +9,7 @@
     mode: 0644
   notify:
     - restart kubelet
+  tags: kubelet_config
 
 - name: Create kubelet extra args file
   template:
@@ -19,6 +20,7 @@
     mode: 0644
   notify:
     - restart kubelet
+  tags: kubelet_config
 
 - name: Protect kernel defaults
   sysctl:
@@ -32,4 +34,4 @@
     - { name: vm.overcommit_memory, value: 1 }
     - { name: kernel.panic, value: 10 }
     - { name: kernel.panic_on_oops, value: 1 }
-
+  tags: kubelet_config

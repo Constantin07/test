@@ -55,7 +55,7 @@
     mode: 0644
   tags: docker
 
-- name: Configure Docker Edge repo
+- name: Configure Docker Edge repository
   ini_file:
     dest: "/etc/yum.repos.d/docker-{{ docker_edition }}.repo"
     section: "docker-{{ docker_edition }}-edge"

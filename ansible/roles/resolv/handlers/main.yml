@@ -2,3 +2,4 @@
 
 - name: restart network_manager
   service: name=NetworkManager.service state=restarted
+  tags: resolv

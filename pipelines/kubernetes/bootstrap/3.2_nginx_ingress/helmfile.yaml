@@ -10,7 +10,7 @@ releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: ingress-nginx/ingress-nginx
-    version: 3.26.0
+    version: 3.29.0
     values:
       - controller:
           image:
@@ -32,6 +32,7 @@ releases:
           updateStrategy:
             rollingUpdate:
               maxUnavailable: 1
+            type: RollingUpdate
           minReadySeconds: 5
           service:
             type: NodePort

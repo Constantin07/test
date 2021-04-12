@@ -17,11 +17,11 @@ template:
 
 validate:
 	helmfile template | kubeval --strict \
-	--kubernetes-version 1.19.9 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	--kubernetes-version 1.20.5 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 lint:
-#	helmfile lint
-	helmfile template | kubectl apply --dry-run=server -f -
+	helmfile lint
+#	helmfile template | kubectl apply --dry-run=server -f -
 
 diff:
 	helmfile diff
