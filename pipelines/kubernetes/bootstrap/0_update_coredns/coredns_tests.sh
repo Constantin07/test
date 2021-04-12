@@ -27,6 +27,12 @@ test_CoreDnsCanResolveInternal() {
   assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
 }
 
+test_CoreDnsCanResolveVault() {
+  local HOST='vault.internal'
+  result=`kubectl exec busybox -- nslookup ${HOST} | grep Address | awk '{print $3}'`
+  assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
+}
+
 test_CoreDnsPodsAreRunning() {
   result=`kubectl get pods --namespace=kube-system -l k8s-app=kube-dns | grep Running | wc -l`
   assertEquals "At least 2 CoreDNS pods are running" '2' "$result"

@@ -12,7 +12,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: kube-state-metrics/kube-state-metrics
-    version: 2.13.1
+    version: 2.13.2
     values:
       - image:
           pullPolicy: Always

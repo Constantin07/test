@@ -40,7 +40,7 @@ pipeline {
               ])
 
               findFiles(glob: 'pipelines/**/Jenkinsfile').each { file->
-                //println "Job ${file.path} found."
+                println "Job ${file.path} found."
 
                 // Create folder structure
                 def jobPath = file.path.tokenize('/')

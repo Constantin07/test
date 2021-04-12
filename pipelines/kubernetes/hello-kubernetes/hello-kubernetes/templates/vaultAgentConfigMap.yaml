@@ -8,11 +8,9 @@ data:
   config.hcl: |
     vault {
       retry {
-        num_retries = 5
+        num_retries = 3
       }
     }
-    exit_after_auth = false
-    pid_file = "/home/vault/pidfile"
     auto_auth {
       method "kubernetes" {
         mount_path = "auth/kubernetes"
@@ -28,4 +26,6 @@ data:
       address = "127.0.0.1:8200"
       tls_disable = true
     }
+    pid_file = "/home/vault/pidfile"
+    exit_after_auth = false
 {{- end }}

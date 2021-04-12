@@ -15,7 +15,9 @@ pipeline {
   stages {
 
     stage('Build image') {
-      agent { label 'master' }
+      agent {
+        label 'master'
+      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -27,7 +29,9 @@ pipeline {
     }
 
     stage('Tag image') {
-      agent { label 'master' }
+      agent {
+        label 'master'
+      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make tag'
@@ -37,7 +41,9 @@ pipeline {
     }
 
     stage('Push image') {
-      agent { label 'master' }
+      agent {
+        label 'master'
+      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make push'
@@ -45,23 +51,11 @@ pipeline {
         milestone null
       }
     }
-/*
-    stage('Proceed with publish') {
-      options {
-        timeout(time: 30, unit: 'MINUTES')
-      }
-      input {
-        message "Ready to publish?"
-        ok "Yes, we should."
-      }
-      steps {
-        echo "Approved."
-        milestone null
-      }
-    }
-*/
+
     stage('Publish image') {
-      agent { label 'master' }
+      agent {
+        label 'master'
+      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
