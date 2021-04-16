@@ -33,7 +33,7 @@ pipeline {
               checkout([$class: 'GitSCM',
                 branches: [[name: repo['branch']]],
                 extensions: [
-                  [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
+                  [$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true],
                   [$class: 'CleanBeforeCheckout']
                 ],
                 userRemoteConfigs: [[credentialsId: repo['credentials'], url: repo['url']]]
@@ -84,9 +84,31 @@ pipeline {
                     description = 'description(\'' + jobConfig.description + '\')\n'
                   }
 
+                  // Triggers
+                  if (jobConfig.containsKey('triggers')) {
+                    triggers += 'pipelineTriggers {\n'
+                    triggers += 'triggers {\n'
+                    if (jobConfig.triggers.containsKey('cron')) {
+                      triggers += 'cron {\n' + 'spec("' + jobConfig.triggers.cron + '")\n' + '}\n'
+                    }
+                    if (jobConfig.triggers.containsKey('scm')) {
+                      triggers += 'pollSCM {\n' + 'scmpoll_spec("' + jobConfig.triggers.scm + '")\n' + '}\n'
+                    }
+                    if (jobConfig.triggers.containsKey('upstream')) {
+                      triggers += 'upstream {\n'
+                      triggers += 'upstreamProjects("' + jobConfig.triggers.upstream.projects.join(', ') + '")\n'
+                      triggers += 'threshold("' + jobConfig.triggers.upstream.threshold + '")\n'
+                      triggers += '}\n'
+                    }
+                    triggers += '}\n}\n'
+                  }
+
                   // Properties
-                  if (jobConfig.containsKey('properties')) {
-                    properties += 'properties {'
+                  if (jobConfig.containsKey('properties') || triggers.trim()) {
+                    properties += 'properties {\n'
+                    if (triggers.trim()) {
+                      properties += triggers
+                    }
                     jobConfig.properties.each { property ->
                       if (jobConfig.properties.containsKey('githubProjectUrl')) {
                         properties += '\ngithubProjectUrl("' + jobConfig.properties.githubProjectUrl + '")'
@@ -111,44 +133,35 @@ pipeline {
                     parameters += '\n}'
                   }
 
-                  // Triggers
-                  if (jobConfig.containsKey('triggers')) {
-                    triggers += 'triggers {'
-                    if (jobConfig.triggers.containsKey('cron')) {
-                      triggers += '\ncron("' + jobConfig.triggers.cron + '")'
-                    }
-                    if (jobConfig.triggers.containsKey('scm')) {
-                      triggers += '\nscm("' + jobConfig.triggers.scm + '")'
-                    }
-                    if (jobConfig.triggers.containsKey('upstream')) {
-                      triggers += '\nupstream("' + jobConfig.triggers.upstream.projects.join(', ') + '", "' + jobConfig.triggers.upstream.threshold + '")'
-                    }
-                    triggers += '\n}'
-                  }
 
                   // Git extensions
                   if (jobConfig.containsKey('extensions')) {
-                    extensions += 'extensions {'
+                    extensions += 'extensions {\n'
 
                     if (jobConfig.extensions.containsKey('cleanBeforeCheckout')) {
                       if (jobConfig.extensions.cleanBeforeCheckout) {
-                        extensions += '\ncleanBeforeCheckout()'
+                        extensions += 'cleanBeforeCheckout()\n'
                       }
                     }
 
                     if (jobConfig.extensions.containsKey('cloneOptions')) {
-                      extensions += '\ncloneOptions{'
+                      extensions += 'cloneOptions {\n'
                       if (jobConfig.extensions.cloneOptions.containsKey('shallow')) {
                         if (jobConfig.extensions.cloneOptions.shallow) {
-                          extensions += '\nshallow(true)'
+                          extensions += 'shallow(true)\n'
                         }
                       }
                       if (jobConfig.extensions.cloneOptions.containsKey('noTags')) {
                         if (jobConfig.extensions.cloneOptions.noTags) {
-                          extensions += '\nnoTags(true)'
+                          extensions += 'noTags(true)\n'
                         }
                       }
-                      extensions += '\n}'
+                      if (jobConfig.extensions.cloneOptions.containsKey('depth')) {
+                        extensions += 'depth(' + jobConfig.extensions.cloneOptions.depth + ')\n'
+                      } else {
+                        extensions += 'depth(1)\n'
+                      }
+                      extensions += '}\n'
                     }
 
                     if (jobConfig.extensions.containsKey('disableRemotePoll')) {
@@ -184,7 +197,6 @@ pipeline {
                     $description
                     $properties
                     $parameters
-                    $triggers
                     definition {
                       cpsScm {
                         scm {
@@ -210,7 +222,6 @@ pipeline {
                   'description': description,
                   'properties': properties,
                   'parameters': parameters,
-                  'triggers': triggers,
                   'branch': repo['branch'],
                   'credentials': repo['credentials'],
                   'url': repo['url'],
