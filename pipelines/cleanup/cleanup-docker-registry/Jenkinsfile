@@ -6,7 +6,7 @@ pipeline {
 
   triggers {
     pollSCM('H/4 H(9-23) * * *')
-    upstream(upstreamProjects: 'dockerfiles/tool-box,dockerfiles/vault,dockerfiles/hello-kubernetes,builds/build-docker-registry', threshold: hudson.model.Result.SUCCESS)
+    upstream(upstreamProjects: 'dockerfiles/tool-box,dockerfiles/vault,kubernetes/hello-kubernetes,builds/build-docker-registry', threshold: hudson.model.Result.SUCCESS)
   }
 
   options {
