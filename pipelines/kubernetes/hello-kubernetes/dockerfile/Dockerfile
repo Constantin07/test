@@ -1,6 +1,6 @@
 FROM alpine:3.13 AS builder
 
-ARG VAULT_VERSION=1.7.0
+ARG VAULT_VERSION=1.7.1
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip && \
