@@ -1,30 +1,23 @@
 ---
 
-- name: Make sure unzip is installed
+- name: Make sure yum-utils is installed
   package:
-    name: unzip
-    update_cache: yes
+    name: yum-utils
+    state: present
   tags: vault_binary
 
-- name: Install
+- name: Add Hasicorp repository
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp repository
+    baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/test
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+    gpgcheck: yes
+    enabled: yes
   tags: vault_binary
-  block:
 
-  - name: Download vault v{{ vault_version }} and verify checksum
-    get_url:
-      url: "{{ vault_url }}"
-      dest: "/tmp/{{ vault_package }}"
-      checksum: "{{ vault_checksum }}"
-
-  - name: Install vault v{{ vault_version }}
-    unarchive:
-      src: "/tmp/{{ vault_package }}"
-      dest: "{{ vault_install_dir }}"
-      remote_src: yes
-      mode: 0555
-
-  always:
-  - name: Remove temp file v{{ vault_version }}
-    file:
-      path: "/tmp/{{ vault_package }}"
-      state: absent
+- name: Install vault v{{ vault_version }}
+  yum:
+    name: "vault-{{ vault_version }}*.x86_64"
+    state: present
+  tags: vault_binary
