@@ -1,5 +1,5 @@
 {{- if .Values.hpa.enabled -}}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "hello-kubernetes.fullname" . }}
@@ -9,15 +9,22 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "hello-kubernetes.fullname" . }}
-  minReplicas: 2
-  maxReplicas: 4
+  minReplicas: {{ .Values.replicaCount }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 120
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: 90
+        target:
+          type: Utilization
+          averageUtilization: 90
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: 95
+        target:
+          type: Utilization
+          averageUtilization: 95
 {{- end }}

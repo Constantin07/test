@@ -52,3 +52,4 @@ ingress:
 
 hpa:
   enabled: false
+  maxReplicas: 3

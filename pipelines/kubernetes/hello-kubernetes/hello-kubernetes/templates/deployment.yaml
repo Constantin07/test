@@ -25,6 +25,16 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/vaultAgentConfigMap.yaml") . | sha256sum }}
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/name"
+                    operator: In
+                    values:
+                      - {{ include "hello-kubernetes.name" . }}
+              topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
@@ -74,7 +84,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
         {{- if .Values.vaultAgent.enabled }}
-{{- include "hello-kubernetes.vault" . | nindent 8 }}
+          {{- include "hello-kubernetes.vault" . | nindent 8 }}
       volumes:
         - name: vault-config
           configMap:
