@@ -17,7 +17,7 @@ init:
 validate:
 	gomplate -f ${HEADERS_FILE} | kubeval --strict
 	helmfile template | kubeval --strict \
-	--kubernetes-version 1.20.5 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	--kubernetes-version 1.20.6 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 template:
 	helmfile template
