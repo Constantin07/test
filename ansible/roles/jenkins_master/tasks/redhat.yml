@@ -49,8 +49,8 @@
 
 - name: Calculate memory for JVM
   set_fact:
-    mem_xms: "{{ ((ansible_memtotal_mb*0.9-700)/2)|int|abs  }}"
-    mem_xmx: "{{ (ansible_memtotal_mb*0.9-700)|int|abs }}"
+    mem_xms: "{{ ((ansible_memtotal_mb*0.9-800)/2)|int|abs  }}"
+    mem_xmx: "{{ (ansible_memtotal_mb*0.9-800)|int|abs }}"
   tags: jenkins_master
 
 - name: Jenkins config - JAVA_OPTIONS
