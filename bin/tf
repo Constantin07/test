@@ -2,7 +2,7 @@
 
 # Wrapper script used to execute terraform plans.
 
-set -euo pipefail
+set -eo pipefail
 
 usage() {
   echo "${0} <workspace> <bucket_name> <backend_key> <command> [optional terraform options]"
@@ -41,8 +41,7 @@ if [[ -n $JOB_NAME ]]; then
 fi
 
 # Initialize terraform.
-terraform init \
- "$TF_OPTIONS" \
+terraform init $TF_OPTIONS \
  -upgrade=true \
  -backend-config=region="eu-west-1" \
  -backend-config=bucket="$BUCKET_NAME" \

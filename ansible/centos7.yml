@@ -15,6 +15,6 @@
     - krew
     - fzf
     - vault_binary
-    - { role: jenkins_master, jenkins_version: "2.290" }
+    - { role: jenkins_master, jenkins_version: "2.291" }
     - prometheus/node_exporter
 #    - nfs_server

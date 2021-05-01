@@ -1,5 +1,5 @@
 ---
 
-helmfile_version: v0.138.7
+helmfile_version: v0.139.3
 helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_version }}/helmfile_linux_amd64"
 install_dir: /usr/local/bin
