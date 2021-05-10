@@ -1,0 +1,69 @@
+pipeline {
+
+  agent none
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/jenkins-agent'
+  }
+
+  stages {
+
+    stage('Build image') {
+      agent {
+        label 'master'
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make login build'
+          }
+        }
+        milestone null
+      }
+    }
+
+    stage('Tag image') {
+      agent {
+        label 'master'
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make tag'
+        }
+        milestone null
+      }
+    }
+
+    stage('Push image') {
+      agent {
+        label 'master'
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            retry(2) {
+              sh 'make push'
+            }
+          }
+        }
+        milestone null
+      }
+    }
+
+  }
+
+  post {
+    always {
+      node('master') {
+        cleanWs()
+      }
+    }
+  }
+
+}

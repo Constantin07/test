@@ -116,7 +116,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
+    gnupg gcc musl-dev openssl-dev libffi-dev ansible img && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
