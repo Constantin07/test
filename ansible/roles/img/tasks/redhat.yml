@@ -1,0 +1,12 @@
+---
+
+- name: Install required packages
+  yum:
+    name: "{{ item  }}"
+    state: present
+    update_cache: yes
+  loop:
+    - shadow-utils
+    - libseccomp.x86_64
+    - runc.x86_64
+  tags: img

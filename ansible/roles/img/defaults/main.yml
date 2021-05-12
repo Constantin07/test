@@ -1,0 +1,5 @@
+---
+
+img_version: v0.5.11
+img_url: "https://github.com/genuinetools/img/releases/download/{{ img_version }}/img-linux-amd64"
+local_dir: /usr/local/bin
