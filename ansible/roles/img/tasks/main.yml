@@ -1,0 +1,30 @@
+---
+
+- name: Include OS specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: img
+
+- name: Check if img is installed
+  stat: path="{{ local_dir }}/img"
+  register: img
+  tags: img
+
+- name: Check img version
+  shell: "set -o pipefail {{ local_dir }}/img -v | sed  s/,// | awk '{print $3}'"
+  register: img_ver
+  changed_when: False
+  tags: img
+
+- name: Download and install img {{ img_version }}
+  get_url:
+    url: "{{ img_url }}"
+    dest: "{{ local_dir }}/img"
+    force: yes
+    owner: root
+    group: root
+    mode: 0755
+    tmp_dest: "/tmp"
+    timeout: 20
+    validate_certs: yes
+  when: (img_ver.stdout != img_version and img.stat.exists) or not img.stat.exists
+  tags: img
