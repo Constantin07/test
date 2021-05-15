@@ -1,3 +1,0 @@
-elasticsearch-1.internal
-elasticsearch-2.internal
-elasticsearch-3.internal
