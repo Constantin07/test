@@ -1,6 +1,8 @@
 pipeline {
 
-  agent none
+  agent {
+    label 'master'
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -10,14 +12,12 @@ pipeline {
 
   environment {
     DIRECTORY = 'pipelines/dockerfiles/tool-box'
+    PATH ="/usr/local/bin:$PATH"
   }
 
   stages {
 
     stage('Build image') {
-      agent {
-        label 'master'
-      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -29,9 +29,6 @@ pipeline {
     }
 
     stage('Tag image') {
-      agent {
-        label 'master'
-      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make tag'
@@ -40,10 +37,9 @@ pipeline {
       }
     }
 
+// Insecure push not working in img yet
+
     stage('Push image') {
-      agent {
-        label 'master'
-      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make push'
@@ -53,9 +49,6 @@ pipeline {
     }
 
     stage('Publish image') {
-      agent {
-        label 'master'
-      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
