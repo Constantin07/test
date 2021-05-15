@@ -105,10 +105,9 @@ RUN apk --no-cache add ansible && \
 FROM alpine:3.13
 
 ARG USERNAME=toolbox
-ENV HELM_HOME=/tmp/.helm
-
-# Set default AWS region
-ENV AWS_DEFAULT_REGION=eu-west-1
+ENV USER=${USERNAME} \
+    HELM_HOME=/tmp/.helm \
+    AWS_DEFAULT_REGION=eu-west-1
 
 # Keep Ansible output colorized
 ENV ANSIBLE_FORCE_COLOR=true \
