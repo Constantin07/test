@@ -28,3 +28,23 @@
     validate_certs: yes
   when: (img_ver.stdout != img_version and img.stat.exists) or not img.stat.exists
   tags: img
+
+- name: Set subordinate UID file
+  lineinfile:
+    dest: /etc/subuid
+    regexp: "^jenkins:100000:65536$"
+    line: "jenkins:100000:65536"
+  tags: img
+
+- name: Set subordinate GID file
+  lineinfile:
+    dest: /etc/subgid
+    regexp: "^jenkins:100000:65536$"
+    line: "jenkins:100000:65536"
+  tags: img
+
+- name: Update permissions of /run/runc directory
+  file:
+    path: /run/runc
+    mode: "g=rwx,o=rwx"
+  tags: img

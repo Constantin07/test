@@ -24,38 +24,42 @@ endif
 default: build tag push
 
 .PHONY: all
-all: build tag push publish clean
+all: build tag push publish
 
 .PHONY: login
 login:
-	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
+#	@echo "${DOCKERHUB_PASSWORD}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin
+	@echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
 .PHONY: build
 build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
+#	img build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f requirements.yml
 	@rm -rf bin
 
 .PHONY: tag
 tag:
+#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
+#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 
 .PHONY: push
 push:
+#	img push --insecure-registry ${REGISTRY}/${IMAGE}:${TAG}
+#	img push --insecure-registry ${REGISTRY}/${IMAGE}:latest
 	docker push ${REGISTRY}/${IMAGE}:${TAG}
 	docker push ${REGISTRY}/${IMAGE}:latest
 
 # Publish to DockerHub
 .PHONY: publish
 publish: login
+#	img push ${DOCKER_REPOSITORY}:${TAG}
+#	img push ${DOCKER_REPOSITORY}:latest
 	docker push ${DOCKER_REPOSITORY}:${TAG}
 	docker push ${DOCKER_REPOSITORY}:latest
-
-.PHONY: clean
-clean:
-	docker rmi ${REGISTRY}/${IMAGE}:${TAG} || true
-	docker rmi ${REGISTRY}/${IMAGE}:latest || true
