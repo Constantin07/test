@@ -24,10 +24,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.20.6
+ARG KUBECTL_VERSION=v1.20.7
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=89ae000df6bbdf38ae4307cc4ecc0347d5c871476862912c0a765db9bf05284e
+ARG KUBECTL_SHA256=2ea3006a64d48657ac72223a01c6df0e5b827703263f2586da28044ea9e97daf
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
@@ -43,10 +43,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.139.5
+ARG HELMFILE_VERSION=0.139.7
 ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
 ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=1123d49f215fb3d34a88f71c700ca12bbd2d2bc0cc792412c068d483f17b2056
+ARG HELMFILE_SHA256=3cfebd821d701275efbf13cfb8aede829bca476771f289d1f16ce34f3e5f7349
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
@@ -115,7 +115,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible img && \
+    gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /

@@ -20,7 +20,7 @@ endif
 all: |login build tag publish
 
 login:
-	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
+	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
 
 build:
 	docker build -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .

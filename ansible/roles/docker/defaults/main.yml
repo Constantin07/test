@@ -17,6 +17,7 @@ docker_yum_repo_enable_edge: "0"
 sysctl_config:
   - { name: net.bridge.bridge-nf-call-iptables, value: 1 }
   - { name: net.bridge.bridge-nf-call-ip6tables, value: 1 }
+  - { name: user.max_user_namespaces, value: 28633 }
 
 # Docker user namespace remap feature
 dockremap_enable: no

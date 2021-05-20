@@ -88,7 +88,7 @@ pipeline {
       }
       steps {
         dir(env.ROOT_DIR + '2.1_docker_credentials') {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh './regcred.sh'
           }
         }

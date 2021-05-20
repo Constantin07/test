@@ -1,0 +1,8 @@
+---
+
+- name: restart runc-dir
+  systemd:
+    name: runc-dir.service
+    state: restarted
+    daemon_reload: yes
+  tags: img

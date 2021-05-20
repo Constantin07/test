@@ -48,8 +48,9 @@
     state: directory
   tags: docker
 
-#- name: Add sysctl configurations
-#  include_tasks: sysctl.yml
+- name: Add sysctl configurations
+  include_tasks: sysctl.yml
+  tags: docker
 
 - name: Update /etc/docker/daemon.json file
   template:
