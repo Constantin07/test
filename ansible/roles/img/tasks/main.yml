@@ -43,8 +43,20 @@
     line: "jenkins:100000:65536"
   tags: img
 
-- name: Update permissions of /run/runc directory
-  file:
-    path: /run/runc
-    mode: "g=rwx,o=rwx"
+- name: Install service unit for runc directory
+  copy:
+    src: runc-dir.service
+    dest: /etc/systemd/system/runc-dir.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart runc-dir
+  tags: img
+
+- name: Enable and start runc-dir
+  systemd:
+    name: runc-dir.service
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
   tags: img

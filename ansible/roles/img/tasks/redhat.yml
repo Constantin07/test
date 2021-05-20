@@ -8,5 +8,4 @@
   loop:
     - shadow-utils
     - libseccomp.x86_64
-    - runc.x86_64
   tags: img

@@ -28,8 +28,8 @@ all: build tag push publish
 
 .PHONY: login
 login:
-#	@echo "${DOCKERHUB_PASSWORD}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin
-	@echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+#	@echo "${DOCKERHUB_TOKEN}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin
+	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
 .PHONY: build
 build:

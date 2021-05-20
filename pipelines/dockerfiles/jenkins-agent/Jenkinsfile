@@ -1,6 +1,10 @@
+@Library('global-shared-library') _
+
 pipeline {
 
-  agent none
+  agent {
+    label 'master'
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -15,12 +19,12 @@ pipeline {
   stages {
 
     stage('Build image') {
-      agent {
-        label 'master'
+      environment {
+        PATH = "/usr/local/bin:$PATH"
       }
       steps {
         dir(env.DIRECTORY) {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make login build'
           }
         }
@@ -29,8 +33,8 @@ pipeline {
     }
 
     stage('Tag image') {
-      agent {
-        label 'master'
+      environment {
+        PATH = "/usr/local/bin:$PATH"
       }
       steps {
         dir(env.DIRECTORY) {
@@ -41,14 +45,15 @@ pipeline {
     }
 
     stage('Push image') {
-      agent {
-        label 'master'
+      environment {
+        PATH = "/usr/local/bin:$PATH"
       }
       steps {
         dir(env.DIRECTORY) {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             retry(2) {
               sh 'make push'
+              //cleanImg()
             }
           }
         }

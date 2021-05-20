@@ -24,7 +24,7 @@ pipeline {
       agent any
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make login build tag publish'
           }
         }
