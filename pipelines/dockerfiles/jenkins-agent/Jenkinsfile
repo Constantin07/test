@@ -53,7 +53,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             retry(2) {
               sh 'make push'
-              //cleanImg()
             }
           }
         }
@@ -65,9 +64,8 @@ pipeline {
 
   post {
     always {
-      node('master') {
-        cleanWs()
-      }
+      cleanImg()
+      cleanWs()
     }
   }
 
