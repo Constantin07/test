@@ -6,6 +6,7 @@ blueocean
 build-timestamp
 cctray-xml
 configuration-as-code
+configuration-as-code-groovy
 credentials
 custom-tools-plugin
 docker-plugin
@@ -24,12 +25,12 @@ ldap
 mask-passwords
 matrix-auth
 matrix-project
-next-build-number
 pipeline-aws
 pipeline-multibranch-defaults
 pipeline-rest-api
 pipeline-utility-steps
 ssh-agent
+startup-trigger-plugin
 timestamper
 workflow-aggregator
 workflow-remote-loader

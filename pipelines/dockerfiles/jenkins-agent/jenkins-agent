@@ -2,9 +2,6 @@
 
 set -e
 
-# Change ownershup
-sudo chown -R jenkins:jenkins ${JENKINS_HOME}
-
 # Usage jenkins-agent.sh [options] -url http://jenkins [SECRET] [AGENT_NAME]
 # Optional environment variables :
 # * JENKINS_TUNNEL : HOST:PORT for a tunnel to route TCP traffic to jenkins host, when jenkins can't be directly accessed over network

@@ -16,15 +16,15 @@ all: build tag push
 login:
 	@echo "${DOCKERHUB_TOKEN}" | img login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
-build:
+build: login
 	img build -t ${REPOSITORY}:latest .
 
 tag:
 	img tag ${REPOSITORY}:latest ${REPOSITORY}:${VERSION}
 
 push: login
-	img push ${REPOSITORY}:latest
 	img push ${REPOSITORY}:${VERSION}
+	img push ${REPOSITORY}:latest
 
 clean:
 	img rm ${REPOSITORY}:latest
