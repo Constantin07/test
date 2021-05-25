@@ -10,7 +10,7 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 VERSION=4.8
 
-.PHONY: all login build tag push
+.PHONY: all login build tag push clean
 all: build tag push
 
 login:
@@ -25,3 +25,7 @@ tag:
 push: login
 	img push ${REPOSITORY}:latest
 	img push ${REPOSITORY}:${VERSION}
+
+clean:
+	img rm ${REPOSITORY}:latest
+	img rm ${REPOSITORY}:${VERSION}
