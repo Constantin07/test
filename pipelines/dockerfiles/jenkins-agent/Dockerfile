@@ -3,7 +3,7 @@ FROM adoptopenjdk/openjdk11:alpine-jre
 # Install required packages
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk add --no-cache ca-certificates git curl bash jq openssh-client openssl openssl-dev docker sudo iptables e2fsprogs make procps && \
+    apk add --no-cache ca-certificates git curl bash jq openssh-client openssl sudo iptables e2fsprogs make procps img && \
     update-ca-certificates
 
 ENV JENKINS_HOME=/var/jenkins
@@ -18,8 +18,9 @@ RUN addgroup -g ${GID} ${GROUP} && \
     adduser -h "${JENKINS_HOME}" -u ${UID} -G ${GROUP} -s /bin/bash -D ${USER} && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${USER} && \
     chmod 440 /etc/sudoers.d/${USER} && \
-    addgroup ${USER} docker && \
-    chown -R ${USER}:${GROUP} ${JENKINS_HOME}
+    chown -R ${USER}:${GROUP} ${JENKINS_HOME} && \
+    echo "${USER}:165536:65536" >> /etc/subuid && \
+    echo "${GROUP}:165536:65536" >> /etc/subgid
 
 # Add jenkins agent
 
@@ -27,13 +28,6 @@ ARG VERSION=4.8
 RUN curl --create-dirs -sfSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar && \
     chmod 755 /usr/share/jenkins && \
     chmod 644 /usr/share/jenkins/agent.jar
-
-# Add dockermap user
-
-RUN addgroup -S dockermap && \
-    adduser -S -G dockermap dockermap && \
-    echo "dockermap:165536:65536" >> /etc/subuid && \
-    echo "dockermap:165536:65536" >> /etc/subgid
 
 # jenkins/inbound-agent
 

@@ -2,9 +2,6 @@
 
 set -e
 
-# Start docker
-sudo -E dockerd --storage-driver=vfs &>/dev/null &
-
 # Change ownershup
 sudo chown -R jenkins:jenkins ${JENKINS_HOME}
 
@@ -84,9 +81,6 @@ else
 			OPT_JENKINS_AGENT_NAME="${JENKINS_AGENT_NAME}" ;;
 		esac
 	fi
-
-	#TODO: Handle the case when the command-line and Environment variable contain different values.
-	#It is fine it blows up for now since it should lead to an error anyway.
 
 	exec $JAVA_BIN $JAVA_OPTS -cp /usr/share/jenkins/agent.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL $WORKDIR $WEB_SOCKET $DIRECT $PROTOCOLS $INSTANCE_IDENTITY $OPT_JENKINS_SECRET $OPT_JENKINS_AGENT_NAME "$@"
 fi

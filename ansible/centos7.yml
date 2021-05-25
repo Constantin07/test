@@ -16,6 +16,6 @@
     - fzf
     - vault_binary
     - img
-    - { role: jenkins_master, jenkins_version: "2.293" }
+    - { role: jenkins_master, jenkins_version: "2.295" }
     - prometheus/node_exporter
 #    - nfs_server
