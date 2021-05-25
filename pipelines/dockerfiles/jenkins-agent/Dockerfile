@@ -1,12 +1,10 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM adoptopenjdk/openjdk11:alpine
 
 # Install required packages
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk add --no-cache ca-certificates git curl bash jq openssh-client openssl sudo iptables e2fsprogs make procps img && \
+    apk add --no-cache ca-certificates curl bash git git-lfs jq openssh-client openssl procps img && \
     update-ca-certificates
-
-ENV JENKINS_HOME=/var/jenkins
 
 # Add jenkins user
 
@@ -15,33 +13,33 @@ ARG GROUP=jenkins
 ARG UID=1000
 ARG GID=1000
 RUN addgroup -g ${GID} ${GROUP} && \
-    adduser -h "${JENKINS_HOME}" -u ${UID} -G ${GROUP} -s /bin/bash -D ${USER} && \
-    echo "${USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${USER} && \
-    chmod 440 /etc/sudoers.d/${USER} && \
-    chown -R ${USER}:${GROUP} ${JENKINS_HOME} && \
+    adduser -h /home/${USER} -u ${UID} -G ${GROUP} -D ${USER} && \
     echo "${USER}:165536:65536" >> /etc/subuid && \
-    echo "${GROUP}:165536:65536" >> /etc/subgid
+    echo "${GROUP}:165536:65536" >> /etc/subgid && \
+    mkdir -p /run/runc && chmod 777 /run/runc && \
+    ln -s /usr/bin/img /usr/bin/docker
 
 # Add jenkins agent
 
 ARG VERSION=4.8
 RUN curl --create-dirs -sfSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar && \
     chmod 755 /usr/share/jenkins && \
-    chmod 644 /usr/share/jenkins/agent.jar
+    chmod 644 /usr/share/jenkins/agent.jar && \
+    ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
 # jenkins/inbound-agent
 
 COPY jenkins-agent /usr/local/bin/jenkins-agent
-RUN chmod +x /usr/local/bin/jenkins-agent
+RUN chmod +x /usr/local/bin/jenkins-agent && \
+    ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
 
 USER ${USER}
 
-ENV AGENT_WORKDIR=${JENKINS_HOME}/agent
-RUN mkdir ${JENKINS_HOME}/.jenkins && mkdir -p ${AGENT_WORKDIR}
+ARG AGENT_WORKDIR=/home/${USER}/agent
+ENV AGENT_WORKDIR=${AGENT_WORKDIR} \
+    USER=${USER}
+RUN mkdir /home/${USER}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 
-VOLUME ${JENKINS_HOME}/.jenkins
-VOLUME ${AGENT_WORKDIR}
-
-WORKDIR ${JENKINS_HOME}
+WORKDIR /home/${USER}
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]

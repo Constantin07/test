@@ -35,7 +35,7 @@ jenkins:
      waitForPodSec: 300
      templates:
      - containers:
-       - name: docker
+       - name: jnlp
          image: "constantin07/jenkins-agent:4.8"
          alwaysPullImage: true
          livenessProbe:
@@ -44,11 +44,9 @@ jenkins:
            periodSeconds: 0
            successThreshold: 0
            timeoutSeconds: 0
-         command: "sleep"
-         args: "9999999"
          privileged: true
-         runAsGroup: "1000"
-         runAsUser: "1000"
+         runAsGroup: 1000
+         runAsUser: 1000
          resourceRequestCpu: "500m"
          resourceRequestMemory: "512Mi"
          resourceLimitCpu: "1000m"
@@ -58,7 +56,7 @@ jenkins:
        name: docker
        namespace: default
        label: docker
-#       nodeUsageMode: NORMAL
+       idleMinutes: 1
        yamlMergeStrategy: override
        showRawYaml: false
 
@@ -67,3 +65,7 @@ unclassified:
     globalColorMapName: xterm
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
+
+groovy:
+  - script: >
+      println("This is Groovy script!");
