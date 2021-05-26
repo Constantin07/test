@@ -17,10 +17,13 @@ jenkins:
   agentProtocols:
   - "JNLP4-connect"
   - "Ping"
+
   systemMessage: "Jenkins configured via JCasC plugin\n"
+
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: true
+
   clouds:
   - kubernetes:
      containerCap: 20
@@ -30,9 +33,10 @@ jenkins:
      podLabels:
      - key: service
        value: jenkins
+     - key: cost
+       value: none
      serverUrl: https://kube-cluster.internal:6443
      credentialsId: kubernetes
-     waitForPodSec: 300
      templates:
      - containers:
        - name: jnlp
@@ -53,6 +57,10 @@ jenkins:
          resourceLimitMemory: "1Gi"
          ttyEnabled: true
          workingDir: "/home/jenkins/agent"
+         envVars:
+           - envVar:
+               key: "VAULT_ADDR"
+               value: "http://vault.internal:8200"
        name: docker
        namespace: default
        label: docker

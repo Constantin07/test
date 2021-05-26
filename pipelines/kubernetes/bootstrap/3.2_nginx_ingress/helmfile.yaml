@@ -16,9 +16,10 @@ releases:
           image:
             pullPolicy: Always
           config:
-            add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "CONFIGMAP_NAME" }}
-            enable-modsecurity: "true"
-            enable-owasp-modsecurity-crs: "true"
+            add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "HEADERS_CONFIGMAP_NAME" }}
+            disable-ipv6: true
+            enable-modsecurity: true
+            enable-owasp-modsecurity-crs: true
             http-snippet: |
               more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
