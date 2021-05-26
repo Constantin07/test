@@ -24,14 +24,12 @@ RUN addgroup -g ${GID} ${GROUP} && \
 ARG VERSION=4.8
 RUN curl --create-dirs -sfSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar && \
     chmod 755 /usr/share/jenkins && \
-    chmod 644 /usr/share/jenkins/agent.jar && \
-    ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
+    chmod 644 /usr/share/jenkins/agent.jar
 
 # jenkins/inbound-agent
 
 COPY jenkins-agent /usr/local/bin/jenkins-agent
-RUN chmod +x /usr/local/bin/jenkins-agent && \
-    ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
+RUN chmod +x /usr/local/bin/jenkins-agent
 
 USER ${USER}
 

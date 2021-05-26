@@ -1,6 +1,7 @@
 export NAMESPACE ?= default
-export HEADERS_FILE ?= headers-configmap.yaml
-export CONFIGMAP_NAME ?= nginx-ingress-headers
+
+export HEADERS_FILE = headers-configmap.yaml
+export HEADERS_CONFIGMAP_NAME = nginx-ingress-headers
 
 # Check for required binaries
 EXECUTABLES = helm helmfile gomplate kubectl kubeval
@@ -30,8 +31,7 @@ diff:
 	helmfile diff
 
 sync: validate
-	gomplate -f ${HEADERS_FILE}
-	gomplate -f ${HEADERS_FILE} | kubectl apply -f -
+	gomplate -f ${HEADERS_FILE} | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 
 status:

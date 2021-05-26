@@ -52,7 +52,7 @@ pipeline {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             retry(2) {
-              sh 'make push'
+              sh 'make push clean'
             }
           }
         }
@@ -64,7 +64,6 @@ pipeline {
 
   post {
     always {
-      cleanImg()
       cleanWs()
     }
   }

@@ -2,13 +2,14 @@
 
 set -e
 
-# Usage jenkins-agent.sh [options] -url http://jenkins [SECRET] [AGENT_NAME]
-# Optional environment variables :
-# * JENKINS_TUNNEL : HOST:PORT for a tunnel to route TCP traffic to jenkins host, when jenkins can't be directly accessed over network
+# Required environment variables :
 # * JENKINS_URL : alternate jenkins URL
 # * JENKINS_SECRET : agent secret, if not set as an argument
 # * JENKINS_AGENT_NAME : agent name, if not set as an argument
 # * JENKINS_AGENT_WORKDIR : agent work directory, if not set by optional parameter -workDir
+
+# Optional :
+# * JENKINS_TUNNEL : HOST:PORT for a tunnel to route TCP traffic to jenkins host, when jenkins can't be directly accessed over network
 # * JENKINS_WEB_SOCKET: true if the connection should be made via WebSocket rather than TCP
 # * JENKINS_DIRECT_CONNECTION: Connect directly to this TCP agent port, skipping the HTTP(S) connection parameter download.
 #                              Value: "<HOST>:<PORT>"
@@ -20,64 +21,40 @@ if [ $# -eq 1 ]; then
     # if only one argument, assume run command
     exec "$@"
 else
+    if [ "$JENKINS_WEB_SOCKET" = true ]; then
+	WEB_SOCKET=-webSocket
+    fi
 
-	# if -workDir is not provided, try env vars
-	if [ ! -z "$JENKINS_AGENT_WORKDIR" ]; then
-		case "$@" in
-			*"-workDir"*) echo "Warning: Work directory is defined twice in command-line arguments and the environment variable" ;;
-			*)
-			WORKDIR="-workDir $JENKINS_AGENT_WORKDIR" ;;
-		esac
-	fi
+    if [ -n "$JENKINS_PROTOCOLS" ]; then
+	PROTOCOLS="-protocols $JENKINS_PROTOCOLS"
+    fi
 
-	if [ -n "$JENKINS_URL" ]; then
-		URL="-url $JENKINS_URL"
-	fi
+    if [ -n "$JENKINS_DIRECT_CONNECTION" ]; then
+	DIRECT="-direct $JENKINS_DIRECT_CONNECTION"
+    fi
 
-	if [ -n "$JENKINS_NAME" ]; then
-		JENKINS_AGENT_NAME="$JENKINS_NAME"
-	fi
+    if [ -n "$JENKINS_INSTANCE_IDENTITY" ]; then
+	INSTANCE_IDENTITY="-instanceIdentity $JENKINS_INSTANCE_IDENTITY"
+    fi
 
-	if [ "$JENKINS_WEB_SOCKET" = true ]; then
-		WEB_SOCKET=-webSocket
-	fi
+    # if java home is defined, use it
+    JAVA_BIN="java"
+    if [ "$JAVA_HOME" ]; then
+	JAVA_BIN="$JAVA_HOME/bin/java"
+    fi
 
-	if [ -n "$JENKINS_PROTOCOLS" ]; then
-		PROTOCOLS="-protocols $JENKINS_PROTOCOLS"
-	fi
+    if [ -n "$JENKINS_NAME" ]; then
+	JENKINS_AGENT_NAME="$JENKINS_NAME"
+    fi
 
-	if [ -n "$JENKINS_DIRECT_CONNECTION" ]; then
-		DIRECT="-direct $JENKINS_DIRECT_CONNECTION"
-	fi
-
-	if [ -n "$JENKINS_INSTANCE_IDENTITY" ]; then
-		INSTANCE_IDENTITY="-instanceIdentity $JENKINS_INSTANCE_IDENTITY"
-	fi
-
-	# if java home is defined, use it
-	JAVA_BIN="java"
-	if [ "$JAVA_HOME" ]; then
-		JAVA_BIN="$JAVA_HOME/bin/java"
-	fi
-
-	# if both required options are defined, do not pass the parameters
-	OPT_JENKINS_SECRET=""
-	if [ -n "$JENKINS_SECRET" ]; then
-		case "$@" in
-			*"${JENKINS_SECRET}"*) echo "Warning: SECRET is defined twice in command-line arguments and the environment variable" ;;
-			*)
-			OPT_JENKINS_SECRET="${JENKINS_SECRET}" ;;
-		esac
-	fi
-	
-	OPT_JENKINS_AGENT_NAME=""
-	if [ -n "$JENKINS_AGENT_NAME" ]; then
-		case "$@" in
-			*"${JENKINS_AGENT_NAME}"*) echo "Warning: AGENT_NAME is defined twice in command-line arguments and the environment variable" ;;
-			*)
-			OPT_JENKINS_AGENT_NAME="${JENKINS_AGENT_NAME}" ;;
-		esac
-	fi
-
-	exec $JAVA_BIN $JAVA_OPTS -cp /usr/share/jenkins/agent.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL $WORKDIR $WEB_SOCKET $DIRECT $PROTOCOLS $INSTANCE_IDENTITY $OPT_JENKINS_SECRET $OPT_JENKINS_AGENT_NAME "$@"
+    exec $JAVA_BIN $JAVA_OPTS -cp /usr/share/jenkins/agent.jar hudson.remoting.jnlp.Main -headless \
+    $JENKINS_TUNNEL \
+    -url $JENKINS_URL \
+    -workDir $JENKINS_AGENT_WORKDIR \
+    $WEB_SOCKET \
+    $DIRECT \
+    $PROTOCOLS \
+    $INSTANCE_IDENTITY \
+    $JENKINS_SECRET \
+    $JENKINS_AGENT_NAME
 fi
