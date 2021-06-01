@@ -1,13 +1,13 @@
-FROM alpine:3.13 AS builder
+FROM alpine:3.14 AS builder
 
-ARG VAULT_VERSION=1.7.1
+ARG VAULT_VERSION=1.7.3
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip && \
     unzip vault.zip && chmod +x vault
 
 
-FROM node:15.14.0-alpine3.13
+FROM node:16.3.0-alpine3.13
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates && \
     update-ca-certificates

@@ -1,10 +1,10 @@
 image:
   repository: kubernetesui/dashboard
-  tag: v2.2.0
+  tag: v2.3.1
 
 scraper:
   repository: kubernetesui/metrics-scraper
-  tag: v1.0.6
+  tag: v1.0.7
 
 host: kubernetes-dashboard
 domain: internal

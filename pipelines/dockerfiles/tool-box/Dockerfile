@@ -1,4 +1,4 @@
-FROM alpine:3.13 AS builder
+FROM alpine:3.14 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -14,39 +14,39 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG PACKER_VERSION=1.7.2
+ARG PACKER_VERSION=1.7.3
 ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
 ARG PACKER_FILE=packer_${PACKER_VERSION}_linux_amd64.zip
-ARG PACKER_SHA256=9429c3a6f80b406dbddb9b30a4e468aeac59ab6ae4d09618c8d70c4f4188442e
+ARG PACKER_SHA256=1a8719f0797e9e45abd98d2eb38099b09e5566ec212453052d2f21facc990c73
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.20.7
+ARG KUBECTL_VERSION=v1.20.8
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=2ea3006a64d48657ac72223a01c6df0e5b827703263f2586da28044ea9e97daf
+ARG KUBECTL_SHA256=9e787c52a52caceeb7cfedafe4d795261dafa5ac1f6fc85ab54701398e454b8e
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.6.0
+ARG HELM_VERSION=v3.6.1
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=0a9c80b0f211791d6a9d36022abd0d6fd125139abe6d1dcf4c5bf3bc9dcec9c8
+ARG HELM_SHA256=c64f2c7b1d00c5328b164cea4bbd5e0752c103193037173c9eadea9d6a57eddb
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.139.7
+ARG HELMFILE_VERSION=0.139.9
 ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
 ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=3cfebd821d701275efbf13cfb8aede829bca476771f289d1f16ce34f3e5f7349
+ARG HELMFILE_SHA256=5fb4b0f95688de038266c2d33261cde13ab72fd49925450f49dff62977a2d6ca
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
@@ -102,7 +102,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.13
+FROM alpine:3.14
 
 ARG USERNAME=toolbox
 ENV USER=${USERNAME} \
