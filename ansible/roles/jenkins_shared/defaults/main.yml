@@ -6,7 +6,7 @@ jenkins_work_dir: "/var/lib/{{ jenkins_user }}"
 
 redhat_packages:
   - git
-  - java-1.8.0-openjdk
+  - java-11-openjdk.x86_64
   - unzip
   - curl
   - gnupg2
