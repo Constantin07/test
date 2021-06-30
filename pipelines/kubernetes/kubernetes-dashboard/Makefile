@@ -15,7 +15,7 @@ template:
 validate:
 	gomplate -f namespace.yaml | kubeval --strict
 	helmfile template | kubeval --strict \
-	--kubernetes-version 1.20.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	--kubernetes-version 1.20.8 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 lint:
 	helmfile lint

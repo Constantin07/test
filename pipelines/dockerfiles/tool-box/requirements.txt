@@ -1,4 +1,4 @@
 ansible-lint==4.3.7
-awscli==1.19.98
-boto3==1.17.98
+awscli==1.19.102
+boto3==1.17.102
 paramiko==2.7.2

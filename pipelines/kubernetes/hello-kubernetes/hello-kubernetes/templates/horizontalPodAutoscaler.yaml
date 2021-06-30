@@ -13,7 +13,7 @@ spec:
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 120
+      stabilizationWindowSeconds: 240
   metrics:
     - type: Resource
       resource:
