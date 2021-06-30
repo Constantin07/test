@@ -8,7 +8,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VERSION=4.8
+VERSION=4.9
 
 .PHONY: all login build tag push clean
 all: build tag push
