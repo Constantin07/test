@@ -24,29 +24,29 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.20.8
+ARG KUBECTL_VERSION=v1.20.9
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=9e787c52a52caceeb7cfedafe4d795261dafa5ac1f6fc85ab54701398e454b8e
+ARG KUBECTL_SHA256=9d76c4431e10e268dd7c6b53b27aaa62a6f26455013e1d7f6d85da86003539b9
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.6.2
+ARG HELM_VERSION=v3.6.3
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=f3a4be96b8a3b61b14eec1a35072e1d6e695352e7a08751775abf77861a0bf54
+ARG HELM_SHA256=07c100849925623dc1913209cd1a30f0a9b80a5b4d6ff2153c609d11b043e262
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.139.9
+ARG HELMFILE_VERSION=0.140.0
 ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
 ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=5fb4b0f95688de038266c2d33261cde13ab72fd49925450f49dff62977a2d6ca
+ARG HELMFILE_SHA256=ed22d31a16f1bbbf868c769dc62d79101fc1717d2998d7b7b28da9a4f334919e
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
