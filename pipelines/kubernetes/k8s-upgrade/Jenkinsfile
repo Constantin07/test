@@ -11,7 +11,7 @@ pipeline {
   }
 
   parameters {
-    string(name: 'K8S_VERSION', defaultValue: '1.20.8', description: 'The version of Kubernetes to upgrade to.')
+    string(name: 'K8S_VERSION', defaultValue: '1.20.9', description: 'The version of Kubernetes to upgrade to.')
   }
 
   environment {
