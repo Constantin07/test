@@ -8,19 +8,25 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VERSION=4.9
+VERSION=4.10
 
-.PHONY: all login build tag push clean
+.PHONY: all login build scan tag push clean
 all: build tag push
 
 login:
 	@echo "${DOCKERHUB_TOKEN}" | img login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: login
-	img build -t ${REPOSITORY}:latest .
+	img build -t ${REPOSITORY}:${VERSION} .
+
+scan:
+	img unpack ${REPOSITORY}:${VERSION}
+	trivy fs --exit-code 1 --vuln-type "os" -no-progress rootfs/
+	trivy fs --exit-code 0 --vuln-type "library" -no-progress rootfs/
+	rm -rf rootfs/
 
 tag:
-	img tag ${REPOSITORY}:latest ${REPOSITORY}:${VERSION}
+	img tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
 
 push: login
 	img push ${REPOSITORY}:${VERSION}

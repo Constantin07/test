@@ -32,6 +32,18 @@ pipeline {
       }
     }
 
+    stage('Scan image'){
+      environment {
+        PATH = "/usr/local/bin:$PATH"
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+        }
+        milestone null
+      }
+    }
+
     stage('Tag image') {
       environment {
         PATH = "/usr/local/bin:$PATH"
@@ -65,6 +77,7 @@ pipeline {
   post {
     always {
       cleanWs()
+      sh '/usr/local/bin/img prune'
     }
   }
 

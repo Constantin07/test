@@ -21,7 +21,7 @@ RUN addgroup -g ${GID} ${GROUP} && \
 
 # Add jenkins agent
 
-ARG VERSION=4.9
+ARG VERSION=4.10
 RUN curl --create-dirs -sfSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar && \
     chmod 755 /usr/share/jenkins && \
     chmod 644 /usr/share/jenkins/agent.jar

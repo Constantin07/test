@@ -10,7 +10,6 @@
     - resolv
     - chronyd
     - docker
-    - ctop
     - { role: jenkins_slave }
     - gnupg2
     - prometheus/node_exporter
