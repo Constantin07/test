@@ -28,6 +28,14 @@ pipeline {
       }
     }
 
+    stage('Scan image'){
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+        }
+      }
+    }
+
     stage('Tag image') {
       steps {
         dir(env.DIRECTORY) {

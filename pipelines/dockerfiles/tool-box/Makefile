@@ -18,20 +18,18 @@ else
   TAG=${GIT_COMMIT}
 endif
 
+.PHONY: default all login build scan tag push publish
+
 .DEFAULT_GOAL := default
 
-.PHONY: default
 default: build tag push
 
-.PHONY: all
 all: build tag push publish
 
-.PHONY: login
 login:
 #	@echo "${DOCKERHUB_TOKEN}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
-.PHONY: build
 build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
@@ -40,7 +38,9 @@ build:
 	@rm -f requirements.yml
 	@rm -rf bin
 
-.PHONY: tag
+scan:
+	trivy image --vuln-type="os" --exit-code 1 --no-progress ${REGISTRY}/${IMAGE}:${TAG}
+
 tag:
 #	img tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
 #	img tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
@@ -49,7 +49,6 @@ tag:
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
 	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 
-.PHONY: push
 push:
 #	img push --insecure-registry ${REGISTRY}/${IMAGE}:${TAG}
 #	img push --insecure-registry ${REGISTRY}/${IMAGE}:latest
@@ -57,7 +56,6 @@ push:
 	docker push ${REGISTRY}/${IMAGE}:latest
 
 # Publish to DockerHub
-.PHONY: publish
 publish: login
 #	img push ${DOCKER_REPOSITORY}:${TAG}
 #	img push ${DOCKER_REPOSITORY}:latest
