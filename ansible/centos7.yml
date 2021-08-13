@@ -16,6 +16,7 @@
     - fzf
     - vault_binary
     - img
+    - trivy
     - { role: jenkins_master, jenkins_version: "2.306" }
     - prometheus/node_exporter
 #    - nfs_server

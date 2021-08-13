@@ -1,0 +1,17 @@
+---
+
+- name: Add Trivy repository
+  yum_repository:
+    name: trivy
+    description: Trivy repository
+    baseurl: https://aquasecurity.github.io/trivy-repo/rpm/releases/$releasever/$basearch/
+    gpgcheck: no
+    enabled: yes
+  tags: trivy
+
+- name: Install trivy | v{{ trivy_version }}
+  yum:
+    name: "trivy-{{ trivy_version }}"
+    state: present
+    update_cache: yes
+  tags: trivy
