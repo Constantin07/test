@@ -20,15 +20,39 @@ pipeline {
 
   stages {
 
-    stage('Build and publish image') {
+    stage('Build image') {
       agent any
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make login build tag publish'
+            sh 'make login build tag'
           }
         }
-        cleanWs()
+        milestone null
+      }
+    }
+
+    stage('Scan image') {
+      agent any
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
+      steps {
+        dir(env.DIRECTORY + '/dockerfile') {
+          sh 'make scan'
+        }
+        milestone null
+      }
+    }
+
+    stage('Push image') {
+      agent any
+      steps {
+        dir(env.DIRECTORY + '/dockerfile') {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make login push'
+          }
+        }
         milestone null
       }
     }
@@ -47,7 +71,6 @@ pipeline {
           dir(env.DIRECTORY) {
             sh 'make lint sync'
           }
-          cleanWs()
           milestone null
         }
       }
@@ -66,7 +89,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh './test.sh'
         }
-        cleanWs()
         milestone null
       }
     }

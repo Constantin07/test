@@ -16,8 +16,8 @@ else
   TAG=${GIT_COMMIT_SHORT}
 endif
 
-.PHONY: all login build tag publish clean
-all: |login build tag publish
+.PHONY: all login build scan tag push clean
+all: |login build tag scan push
 
 login:
 	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
@@ -25,10 +25,14 @@ login:
 build:
 	docker build -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
+scan:
+	 trivy image --vuln-type="os,library" --exit-code 1 --no-progress ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
+	 trivy image --reset
+
 tag:
 	docker tag ${DOCKER_REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}/${IMAGE}:latest
 
-publish:
+push:
 	docker push ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
 	docker push ${DOCKER_REGISTRY}/${IMAGE}:latest
 

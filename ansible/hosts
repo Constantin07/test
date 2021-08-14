@@ -12,7 +12,7 @@ master-node2.internal
 [kube_slaves]
 worker-node1.internal
 worker-node2.internal
-worker-node3.internal
+#worker-node3.internal
 
 [kube:children]
 kube_masters

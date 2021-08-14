@@ -34,7 +34,6 @@ pipeline {
             sh 'make validate lint sync'
           }
         }
-        cleanWs()
         milestone(ordinal: 1)
       }
     }
@@ -52,7 +51,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh './test.sh'
         }
-        cleanWs()
         milestone(ordinal: 2)
       }
     }
