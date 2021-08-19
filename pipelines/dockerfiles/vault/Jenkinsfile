@@ -13,10 +13,6 @@ pipeline {
     DIRECTORY = 'pipelines/dockerfiles/vault'
   }
 
-  parameters {
-    string(name: 'VAULT_VERSION', defaultValue: '1.7.3', description: 'The version of Vault.')
-  }
-
   stages {
 
     stage('Build image') {
@@ -25,6 +21,17 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make login build'
           }
+        }
+      }
+    }
+
+    stage('Scan image') {
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
         }
       }
     }

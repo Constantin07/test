@@ -10,11 +10,9 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-ifndef VAULT_VERSION
-$(error VAULT_VERSION environment variable must be defined!)
-endif
+VAULT_VERSION = 1.8.1
 
-.PHONY: all login build tag publish clean
+.PHONY: all login build scan tag publish clean
 all: build tag publish
 
 login:
@@ -22,6 +20,9 @@ login:
 
 build:
 	docker build --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REGISTRY}/${IMAGE}:${VAULT_VERSION} .
+
+scan:
+	trivy image --vuln-type="os,library" --exit-code 0 --no-progress ${REGISTRY}/${IMAGE}:${VAULT_VERSION}
 
 tag:
 	docker tag ${REGISTRY}/${IMAGE}:${VAULT_VERSION} ${REGISTRY}/${IMAGE}:latest
