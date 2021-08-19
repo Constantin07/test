@@ -15,7 +15,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2
+      maxSurge: 1
       maxUnavailable: 1
   template:
     metadata:
@@ -36,10 +36,15 @@ spec:
                       - {{ include "hello-kubernetes.name" . }}
               topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
+      terminationGracePeriodSeconds: 80
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sleep", "60"]
           ports:
             - containerPort: {{ .Values.container.port }}
               protocol: TCP
