@@ -34,7 +34,7 @@ pipeline {
           sh 'git crypt unlock'
           sshagent(credentials: ['jenkins-ssh-key']) {
             sh 'ansible jenkins_slaves -m yum -a "name=* state=latest update_cache=yes"'
-            sh 'ansible-playbook jenkins_slaves.yml'
+            sh 'ansible-playbook jenkins_slaves.yaml'
           }
         }
       }
