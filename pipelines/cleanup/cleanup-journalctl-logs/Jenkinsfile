@@ -27,7 +27,7 @@ pipeline {
       steps {
         dir('ansible') {
           sshagent (credentials: ['jenkins-ssh-key']) {
-            sh 'ansible-playbook journalctl-cleanup.yml'
+            sh 'ansible-playbook journalctl-cleanup.yaml'
           }
         }
       }

@@ -34,7 +34,7 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
           sshagent (credentials: ['jenkins-ssh-key']) {
-            sh 'ansible-playbook k8s-upgrade.yml -e k8s_version=$K8S_VERSION -e non_interactive=true'
+            sh 'ansible-playbook k8s-upgrade.yaml -e k8s_version=$K8S_VERSION -e non_interactive=true'
           }
         }
       }

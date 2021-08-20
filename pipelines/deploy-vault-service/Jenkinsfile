@@ -30,7 +30,7 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
           sshagent (credentials: ['jenkins-ssh-key']) {
-            sh 'ansible-playbook vault.yml'
+            sh 'ansible-playbook vault.yaml'
           }
         }
       }
