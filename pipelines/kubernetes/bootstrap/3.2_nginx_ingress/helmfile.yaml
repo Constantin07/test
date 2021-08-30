@@ -25,20 +25,13 @@ releases:
             use-forwarded-headers: "true"
           dnsPolicy: ClusterFirstWithHostNet
           reportNodeInternalIp: true
-          watchIngressWithoutClass: true
           hostNetwork: true
           ingressClassResource:
             name: internal
-            enabled: true
             default: true
-          ingressClass: internal
           publishService:
             enabled: false
           kind: DaemonSet
-          updateStrategy:
-            rollingUpdate:
-              maxUnavailable: 1
-            type: RollingUpdate
           minReadySeconds: 5
           service:
             type: NodePort
@@ -48,5 +41,7 @@ releases:
             externalTrafficPolicy: Local
           scope:
             enabled: false
+          metrics:
+            enabled: true
         podSecurityPolicy:
           enabled: true

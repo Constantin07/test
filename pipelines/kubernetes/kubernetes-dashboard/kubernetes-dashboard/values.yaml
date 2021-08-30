@@ -9,4 +9,7 @@ scraper:
 host: kubernetes-dashboard
 domain: internal
 
+ingress:
+  ingressClassName: internal
+
 loadbalancerPort: 3000
