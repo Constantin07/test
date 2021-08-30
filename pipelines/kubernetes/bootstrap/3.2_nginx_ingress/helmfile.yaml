@@ -10,7 +10,7 @@ releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: ingress-nginx/ingress-nginx
-    version: 3.36.0
+    version: 4.0.1
     values:
       - controller:
           image:
@@ -24,8 +24,13 @@ releases:
               more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
           dnsPolicy: ClusterFirstWithHostNet
-          hostNetwork: true
           reportNodeInternalIp: true
+          watchIngressWithoutClass: true
+          hostNetwork: true
+          ingressClassResource:
+            name: internal
+            enabled: true
+            default: true
           ingressClass: internal
           publishService:
             enabled: false
