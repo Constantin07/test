@@ -10,7 +10,7 @@ def nodeNames() {
     if (node.getChannel() != null && node.getNumExecutors() > 0) {
       // Master node returns an empty value
       if (name == "") {
-        nodes.add("master")
+        nodes.add("built-in")
       } else {
         nodes.add(name)
       }
