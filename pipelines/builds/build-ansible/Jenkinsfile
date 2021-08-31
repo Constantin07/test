@@ -3,7 +3,7 @@ boolean update = false
 pipeline {
 
   agent {
-    label 'master'
+    label 'built-in'
   }
 
   options {

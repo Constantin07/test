@@ -1,4 +1,4 @@
-def nodeName = 'master'
+def nodeName = 'built-in'
 def git_url  = 'https://github.com/hashicorp/packer.git'
 def sub_dir  = 'go/src/github.com/hashicorp/packer'
 def git_hub_project = 'https://github.com/hashicorp/packer/'
@@ -23,11 +23,11 @@ node(nodeName){
     stage('Checkout') {
       checkout scm: [$class: 'GitSCM',
         branches: [[name: '*/master']],
-	userRemoteConfigs: [[url: git_url ]],
-	extensions: [
-	  [$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir],
-	  [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true]
-	]
+        userRemoteConfigs: [[url: git_url ]],
+        extensions: [
+          [$class: 'RelativeTargetDirectory', relativeTargetDir: sub_dir],
+          [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true]
+        ]
       ]
     }
 
@@ -42,7 +42,7 @@ node(nodeName){
 
       stage('Install') {
         sh 'sudo cp -f bin/packer /usr/local/bin/packer.io'
-	sh 'packer.io version'
+        sh 'packer.io version'
       }
     }
 
