@@ -39,7 +39,7 @@ build:
 	@rm -rf bin
 
 scan:
-	trivy image --vuln-type="os" --exit-code 1 --no-progress ${REGISTRY}/${IMAGE}:${TAG}
+	trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${TAG}
 
 tag:
 #	img tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
