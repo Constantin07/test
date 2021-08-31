@@ -14,7 +14,7 @@ def repos = [
 pipeline {
 
   agent {
-    label 'master'
+    label 'built-in'
   }
 
   options {
