@@ -6,11 +6,11 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.28.4		# nslookup is broken in more recent versions
+    image: busybox:1.34
     command: ["/bin/sh"]
     args:
       - -c
-      - "sleep 1800"
+      - "sleep 300"
     imagePullPolicy: IfNotPresent
   restartPolicy: Always
   terminationGracePeriodSeconds: 5
