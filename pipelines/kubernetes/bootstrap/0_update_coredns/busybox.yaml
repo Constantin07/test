@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.28		# nslookup is broken in more recent versions
+    image: busybox:1.28.4		# nslookup is broken in more recent versions
     command: ["/bin/sh"]
     args:
       - -c
