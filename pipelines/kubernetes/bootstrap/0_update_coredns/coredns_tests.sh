@@ -9,8 +9,8 @@ oneTimeSetUp() {
 }
 
 test_CoreDnsCanResolveKubernetes() {
-  local HOST='kubernetes.default'
-  result=`kubectl exec busybox -- nslookup ${HOST} | grep Address | awk '{print $3}'`
+  local HOST='kubernetes.default.svc.cluster.local'
+  result=`kubectl exec busybox -- nslookup -type=a ${HOST} | tail -n +2 | grep Address | awk '{print $2}'`
   kube_dns_ip=`kubectl -n default get svc kubernetes -o=jsonpath='{.spec.clusterIP}'`
   assertContains "CoreDNS can resolve ${HOST}" "${result}" "$kube_dns_ip"
 }
@@ -23,13 +23,13 @@ test_CoreDnsCheckLocalDomainConfigured() {
 
 test_CoreDnsCanResolveInternal() {
   local HOST='centos7.internal'
-  result=`kubectl exec busybox -- nslookup ${HOST} | grep Address | awk '{print $3}'`
+  result=`kubectl exec busybox -- nslookup -type=a ${HOST} | tail -n +2 | grep Address | awk '{print $2}'`
   assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
 }
 
 test_CoreDnsCanResolveVault() {
   local HOST='vault.internal'
-  result=`kubectl exec busybox -- nslookup ${HOST} | grep Address | awk '{print $3}'`
+  result=`kubectl exec busybox -- nslookup -type=a ${HOST} | tail -n +2 | grep Address | awk '{print $2}'`
   assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
 }
 
