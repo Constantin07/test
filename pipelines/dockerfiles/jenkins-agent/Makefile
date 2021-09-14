@@ -21,8 +21,7 @@ build: login
 
 scan:
 	img unpack ${REPOSITORY}:${VERSION}
-	trivy fs --exit-code 1 --vuln-type "os" -no-progress rootfs/
-	trivy fs --exit-code 0 --vuln-type "library" -no-progress rootfs/
+	trivy fs --exit-code 0 --no-progress --format json --output results.json rootfs/
 	rm -rf rootfs/
 
 tag:
