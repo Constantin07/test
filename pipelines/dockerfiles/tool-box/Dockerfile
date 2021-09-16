@@ -4,20 +4,20 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=0.14.10
+ARG TERRAFORM_VERSION=0.14.11
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=45d4a12ca7b5c52983f43837d696f45c5ed9ebe536d6b44104f2edb2e1a39894
+ARG TERRAFORM_SHA256=171ef5a4691b6f86eab524feaf9a52d5221c875478bd63dd7e55fef3939f7fd4
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG PACKER_VERSION=1.7.3
+ARG PACKER_VERSION=1.7.5
 ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
 ARG PACKER_FILE=packer_${PACKER_VERSION}_linux_amd64.zip
-ARG PACKER_SHA256=1a8719f0797e9e45abd98d2eb38099b09e5566ec212453052d2f21facc990c73
+ARG PACKER_SHA256=a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.6.3
+ARG HELM_VERSION=v3.7.0
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=07c100849925623dc1913209cd1a30f0a9b80a5b4d6ff2153c609d11b043e262
+ARG HELM_SHA256=096e30f54c3ccdabe30a8093f8e128dba76bb67af697b85db6ed0453a2701bf9
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
