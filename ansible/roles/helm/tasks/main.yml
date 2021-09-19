@@ -34,9 +34,9 @@
     version: 5.3.1
   tags: helm
 
-# Requires galaxy community.kubernetes collection
+# Requires galaxy kubernetes.core collection
 - name: Add helm repositories
-  community.kubernetes.helm_repository:
+  kubernetes.core.helm_repository:
     name: "{{ item.name }}"
     repo_url: "{{ item.url }}"
   loop: "{{ helm_repos }}"

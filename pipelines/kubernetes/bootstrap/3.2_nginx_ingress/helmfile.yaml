@@ -17,12 +17,13 @@ releases:
             pullPolicy: Always
           config:
             add-headers: {{ requiredEnv "NAMESPACE" }}/{{ requiredEnv "HEADERS_CONFIGMAP_NAME" }}
-            disable-ipv6: true
-            enable-modsecurity: true
-            enable-owasp-modsecurity-crs: true
+            disable-ipv6: "true"
+            enable-modsecurity: "true"
+            enable-owasp-modsecurity-crs: "true"
             http-snippet: |
               more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
+            compute-full-forwarded-for: "true"
           dnsPolicy: ClusterFirstWithHostNet
           reportNodeInternalIp: true
           hostNetwork: true
