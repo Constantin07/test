@@ -1,5 +1,5 @@
 ---
 
-gomplate_version: 'v3.9.0'
+gomplate_version: 'v3.10.0'
 gomplate_url: "https://github.com/hairyhenderson/gomplate/releases/download/{{ gomplate_version }}/gomplate_linux-amd64"
 install_dir: "/usr/local/bin"

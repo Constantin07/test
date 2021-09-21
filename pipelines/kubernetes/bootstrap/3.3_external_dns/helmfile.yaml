@@ -10,7 +10,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 5.4.7
+    version: 5.4.8
     values:
       - image:
           pullPolicy: Always
@@ -22,7 +22,7 @@ releases:
           zone: internal
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
-        interval: 10s
+        interval: 15s
         txtOwnerId: Kubernetes
         rbac:
           create: true
@@ -39,8 +39,8 @@ releases:
           runAsNonRoot: true
         resources:
           requests:
-            memory: "50Mi"
+            memory: "45Mi"
             cpu: "10m"
           limits:
-            memory: "50Mi"
+            memory: "45Mi"
             cpu: "50m"

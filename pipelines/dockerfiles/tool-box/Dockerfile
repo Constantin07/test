@@ -53,10 +53,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
-ARG GOMPLATE_VERSION=3.9.0
+ARG GOMPLATE_VERSION=3.10.0
 ARG GOMPLATE_URL=https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64
 ARG GOMPLATE_FILE=gomplate_linux-amd64
-ARG GOMPLATE_SHA256=7dbabe30095f822ec38f5f70711ff121c26e588227da4cc05208417cfaf929cd
+ARG GOMPLATE_SHA256=eec0f85433c9c8aad93e8cd84c79d238f436b3e62f35b15471f5929bc741763a
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
     sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
