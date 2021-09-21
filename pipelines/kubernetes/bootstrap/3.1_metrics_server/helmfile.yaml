@@ -5,14 +5,14 @@ helmDefaults:
   verify: false
   wait: true
   timeout: 120
-  historyMax: 10
+  historyMax: 5
 
 releases:
   - name: metrics-server
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 5.10.1
+    version: 5.10.4
     values:
       - image:
           pullPolicy: Always
@@ -22,8 +22,8 @@ releases:
           create: true
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "100m"
+            memory: "32Mi"
+            cpu: "50m"
           limits:
-            memory: "64Mi"
+            memory: "50Mi"
             cpu: "100m"

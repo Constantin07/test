@@ -10,7 +10,6 @@
    - common
    - resolv
    - docker
-   - ctop
    - automatic_updates
    - kube_common
    - kubelet_config

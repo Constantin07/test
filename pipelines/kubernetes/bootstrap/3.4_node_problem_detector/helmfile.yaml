@@ -5,7 +5,7 @@ helmDefaults:
   verify: false
   wait: true
   timeout: 120
-  historyMax: 10
+  historyMax: 5
 
 releases:
   - name: node-problem-detector
@@ -20,8 +20,8 @@ releases:
           pspEnabled: true
         resources:
           requests:
-            memory: 32Mi
-            cpu: 50m
+            memory: 30Mi
+            cpu: 25m
           limits:
             memory: 32Mi
             cpu: 50m
