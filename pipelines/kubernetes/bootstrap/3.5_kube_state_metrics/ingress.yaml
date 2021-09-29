@@ -1,0 +1,35 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-state-metrics
+  namespace: {{ .Env.NAMESPACE }}
+  labels:
+    app.kubernetes.io/instance: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "kube-state-metrics.internal."
+    external-dns.alpha.kubernetes.io/ttl: "60"
+spec:
+  ingressClassName: internal
+  rules:
+    - host: kube-state-metrics
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kube-state-metrics
+                port:
+                  number: 8080
+    - host: kube-state-metrics.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kube-state-metrics
+                port:
+                  number: 8080
