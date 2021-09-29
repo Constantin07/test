@@ -5,6 +5,8 @@ EXECUTABLES = helm helmfile kubeval
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
+KUBEVAL_OPTS = --strict --kubernetes-version 1.20.11 \
+--schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 .PHONY: init template validate lint diff sync status destroy tests
 
@@ -13,19 +15,22 @@ init:
 	helm repo update
 
 template:
+	gomplate -f ingress.yaml
 	helmfile template
 
 validate:
-	helmfile template | kubeval --strict \
-	--kubernetes-version 1.20.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	gomplate -f ingress.yaml | kubeval ${KUBEVAL_OPTS}
+	helmfile template | kubeval ${KUBEVAL_OPTS}
 
 lint:
 	helmfile lint
 
 diff:
+	gomplate -f ingress.yaml | kubectl diff -f -
 	helmfile diff
 
 sync: validate
+	gomplate -f ingress.yaml | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 
 status:
@@ -33,6 +38,7 @@ status:
 
 destroy:
 	helmfile destroy
+	gomplate -f ingress.yaml | kubectl delete --ignore-not-found=true -f -
 
 tests:
 	./tests.sh

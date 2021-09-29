@@ -27,7 +27,13 @@ scrape_configs:
 {% for node in nodes  %}
 {{- targets.append( "'"+node+":"+port+"'" ) -}}
 {% endfor %}
+
   - job_name: cadvisor
     scrape_interval: 10s
     static_configs:
       - targets: ['prometheus:8080']
+
+  - job_name: 'kube-state-metrics'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['kube-state-metrics:30000']

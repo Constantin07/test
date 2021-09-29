@@ -14,10 +14,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG PACKER_VERSION=1.7.5
+ARG PACKER_VERSION=1.7.6
 ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
 ARG PACKER_FILE=packer_${PACKER_VERSION}_linux_amd64.zip
-ARG PACKER_SHA256=a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5
+ARG PACKER_SHA256=d2717af4d728cd9034c7a3bb2c6eac384d772bae78d856413b14742a0ca28a1c
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
@@ -43,10 +43,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.140.1
+ARG HELMFILE_VERSION=0.141.0
 ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
 ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=8a705454cbbeea6d4c53949c59c7ce011fd737aa578ef208f57608fa573125b1
+ARG HELMFILE_SHA256=19f5ee251f440e50388709898b8abc725974f98b1aa66331b9916f89074fad38
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
