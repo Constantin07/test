@@ -1,0 +1,50 @@
+pipeline {
+
+  agent {
+    label 'built-in'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'ansible'
+    PYTHONWARNINGS = 'ignore::UserWarning'
+  }
+
+  stages {
+
+    stage('Deploy Prometheus') {
+      agent {
+        docker {
+          label 'master'
+          reuseNode true
+          registryUrl 'http://centos7.internal:5000'
+          image 'centos7.internal:5000/tool-box:latest'
+          alwaysPull true
+          args '-u toolbox --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'git crypt unlock'
+          sshagent(credentials: ['jenkins-ssh-key']) {
+            sh 'ansible-playbook prometheus.yaml'
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
