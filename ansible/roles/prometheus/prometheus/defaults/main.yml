@@ -1,6 +1,6 @@
 ---
 
-prometheus_version: 2.30.2
+prometheus_version: 2.30.3
 download_url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
 install_dir: /usr/local/bin
 prometheus_config_dir: /etc/prometheus

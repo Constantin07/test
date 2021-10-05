@@ -7,7 +7,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:16.8.0-alpine3.14
+FROM node:16-alpine3.14
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates && \
     update-ca-certificates
