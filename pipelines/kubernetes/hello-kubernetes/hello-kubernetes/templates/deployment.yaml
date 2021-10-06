@@ -36,7 +36,7 @@ spec:
                       - {{ include "hello-kubernetes.name" . }}
               topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
-      terminationGracePeriodSeconds: 80
+      terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -44,7 +44,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/sleep", "60"]
+                command: ["/bin/sleep", "30"]
           ports:
             - containerPort: {{ .Values.container.port }}
               protocol: TCP
