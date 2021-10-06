@@ -9,8 +9,8 @@
   roles:
    - common
    - resolv
-   - docker
    - automatic_updates
+   - containerd
    - kube_common
    - kubelet_config
    - role: prometheus/node_exporter
