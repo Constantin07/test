@@ -24,10 +24,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
     unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
     chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.20.11
+ARG KUBECTL_VERSION=v1.21.5
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=3a2bf981939df89f807858a481f6f5f2e33a7b9708bd029c8bece434db228efe
+ARG KUBECTL_SHA256=060ede75550c63bdc84e14fcc4c8ab3017f7ffc032fc4cac3bf20d274fab1be4
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \

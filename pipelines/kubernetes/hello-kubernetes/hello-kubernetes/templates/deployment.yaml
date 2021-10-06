@@ -27,14 +27,16 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app.kubernetes.io/name"
-                    operator: In
-                    values:
-                      - {{ include "hello-kubernetes.name" . }}
-              topologyKey: "kubernetes.io/hostname"
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app.kubernetes.io/name"
+                      operator: In
+                      values:
+                        - {{ include "hello-kubernetes.name" . }}
+                topologyKey: "kubernetes.io/hostname"
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       terminationGracePeriodSeconds: 60
       containers:
