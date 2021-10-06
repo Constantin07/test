@@ -24,24 +24,6 @@ pipeline {
 
   stages {
 
-    stage('Update CoreDNS ConfigMap') {
-      agent {
-        docker {
-          registryUrl env.REGISTRY
-          image env.DOCKER_IMAGE
-          alwaysPull true
-          args env.ARGS
-        }
-      }
-      steps {
-        dir(env.ROOT_DIR + '0_update_coredns') {
-          sh 'make apply'
-          sh 'make test'
-        }
-        milestone(ordinal: 1)
-      }
-    }
-
     stage('Install Calico Overlay') {
       agent {
         docker {
@@ -52,8 +34,26 @@ pipeline {
         }
       }
       steps {
-        dir(env.ROOT_DIR + '1_overlay_network') {
+        dir(env.ROOT_DIR + '0_overlay_network') {
           sh 'make install'
+        }
+        milestone(ordinal: 1)
+      }
+    }
+
+    stage('Update CoreDNS ConfigMap') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '1_update_coredns') {
+          sh 'make apply'
+          sh 'make test'
         }
         milestone(ordinal: 2)
       }
