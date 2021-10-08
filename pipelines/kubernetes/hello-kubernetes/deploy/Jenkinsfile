@@ -1,5 +1,3 @@
-def skipDelete = false
-
 pipeline {
 
   agent none
@@ -12,7 +10,7 @@ pipeline {
 
   environment {
     KUBECONFIG = '/home/toolbox/.kube/config'
-    DIRECTORY = 'pipelines/kubernetes/hello-kubernetes'
+    DIRECTORY = 'pipelines/kubernetes/hello-kubernetes/deploy'
     REGISTRY = 'http://centos7.internal:5000'
     DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
     ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
@@ -91,47 +89,6 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           sh './test.sh'
-        }
-        milestone null
-      }
-    }
-
-    stage('Skip delete') {
-      options {
-        timeout(time: 1, unit: 'HOURS')
-      }
-      steps {
-        script {
-          skipDelete = input(
-            message: 'Should we skip delete?',
-            ok: 'Yes',
-            parameters: [booleanParam(name: 'SKIP_DELETE', defaultValue: true, description: 'Whether to skip delete stage.')]
-          )
-          println(skipDelete)
-        }
-        milestone null
-      }
-    }
-
-    stage('Delete hello-kubernetes app') {
-      when {
-        expression { skipDelete == false }
-      }
-      agent {
-        docker {
-          registryUrl env.REGISTRY
-          image env.DOCKER_IMAGE
-          alwaysPull true
-          args env.ARGS
-        }
-      }
-      steps {
-        lock('kubernetes/hello-kubernetes') {
-          dir(env.DIRECTORY) {
-            sh 'make destroy'
-          }
-          cleanWs()
-          milestone null
         }
       }
     }
