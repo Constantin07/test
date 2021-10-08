@@ -23,7 +23,7 @@ template:
 
 validate:
 	helmfile template | kubeval --strict \
-	--kubernetes-version 1.20.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	--kubernetes-version 1.21.5 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 lint:
 	helmfile lint
