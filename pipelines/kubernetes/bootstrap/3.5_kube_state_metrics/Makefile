@@ -11,7 +11,7 @@ KUBEVAL_OPTS = --strict --kubernetes-version 1.21.5 \
 .PHONY: init template validate lint diff sync status destroy tests
 
 init:
-	helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
+	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
 
 template:
