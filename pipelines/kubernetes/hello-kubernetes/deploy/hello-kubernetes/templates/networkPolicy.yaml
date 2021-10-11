@@ -1,0 +1,17 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - {}
+  egress:
+    - {}

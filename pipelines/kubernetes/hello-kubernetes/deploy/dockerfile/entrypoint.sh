@@ -24,7 +24,14 @@ while ! (vault status); do
     retry=$((retry+1))
 done
 
-echo "Reading vault secret."
-export SECRET_DATA="$(vault read -format=json ${VAULT_SECRET_PATH} | jq -rc '.data')"
+echo "Reading vault secret..."
+SECRET_DATA="$(vault read -format=json ${VAULT_SECRET_PATH} | jq -rc '.data')"
+RC=$?
+if [[ $RC -ne 0 ]]; then
+    echo "Failed to read secret at path ${VAULT_SECRET_PATH}, exit code $RC"
+    exit 3
+else
+    export SECRET_DATA
+fi
 
 exec "$@"

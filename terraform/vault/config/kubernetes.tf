@@ -34,10 +34,12 @@ data "kubernetes_secret" "vault_auth" {
 
 # TODO: get token_reviewer dynamically
 resource "vault_kubernetes_auth_backend_config" "kubernetes" {
-  backend            = vault_auth_backend.kubernetes.path
-  kubernetes_host    = data.external.kube_config.result.server
-  kubernetes_ca_cert = base64decode(data.external.kube_config.result.certificate-authority-data)
-  token_reviewer_jwt = data.kubernetes_secret.vault_auth.data.token
+  backend                = vault_auth_backend.kubernetes.path
+  kubernetes_host        = data.external.kube_config.result.server
+  kubernetes_ca_cert     = base64decode(data.external.kube_config.result.certificate-authority-data)
+  token_reviewer_jwt     = data.kubernetes_secret.vault_auth.data.token
+  issuer                 = "api"
+  disable_iss_validation = "true"
 }
 
 resource "vault_kubernetes_auth_backend_role" "vault_auth" {
@@ -56,4 +58,5 @@ resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
   bound_service_account_namespaces = ["default"]
   token_ttl                        = 3600
   token_policies                   = ["default", "hello-kubernetes"]
+  token_type                       = "service"
 }
