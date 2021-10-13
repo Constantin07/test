@@ -12,7 +12,7 @@ if [ -z "${VAULT_ADDR}" ]; then
     exit 1
 fi
 
-max_retries=10
+max_retries=5
 retry=0
 echo "Checking vault-agent is up."
 while ! (vault status); do
@@ -24,7 +24,7 @@ while ! (vault status); do
     retry=$((retry+1))
 done
 
-echo "Reading vault secret..."
+echo "Reading vault secret from path ${VAULT_SECRET_PATH} ..."
 SECRET_DATA="$(vault read -format=json ${VAULT_SECRET_PATH} | jq -rc '.data')"
 RC=$?
 if [[ $RC -ne 0 ]]; then
