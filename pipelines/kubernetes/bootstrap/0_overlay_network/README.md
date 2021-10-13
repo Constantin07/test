@@ -7,3 +7,10 @@
   diff -u calico.yaml calico-new.yaml
   ```
 
+## Calico API server
+
+  Install guide: https://docs.projectcalico.org/maintenance/install-apiserver
+
+  ```bash
+  curl -sSfL -O https://docs.projectcalico.org/manifests/apiserver.yaml
+  ```

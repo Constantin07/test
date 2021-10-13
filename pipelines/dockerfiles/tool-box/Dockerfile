@@ -123,7 +123,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
     ANSIBLE_HOST_KEY_CHECKING=False
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client \
+    apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client openssl \
     gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
