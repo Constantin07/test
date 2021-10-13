@@ -2,16 +2,56 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "hello-kubernetes.fullname" . }}-network-policy
+  name: {{ include "hello-kubernetes.fullname" . }}-network-policy-egress
+  labels:
+    {{- include "hello-kubernetes.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
   policyTypes:
-    - Ingress
-    - Egress
-  ingress:
-    - {}
+  - Egress
   egress:
-    - {}
+  # Access to Vault server
+  - to:
+    - ipBlock:
+        cidr: 10.0.2.4/32
+    ports:
+    - protocol: TCP
+      port: 8200
+  # Access to CoreDNS to resolve DNS names
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-network-policy-ingress
+  labels:
+    {{- include "hello-kubernetes.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: default
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: nginx-ingress
+    ports:
+    - protocol: TCP
+      port: 8080
