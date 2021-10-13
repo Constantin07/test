@@ -17,6 +17,7 @@
     - vault_binary
     - img
     - trivy
+    - calicoctl
     - { role: jenkins_master, jenkins_version: "2.316" }
     - prometheus/node_exporter
 #    - nfs_server
