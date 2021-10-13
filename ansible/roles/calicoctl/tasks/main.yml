@@ -1,0 +1,17 @@
+---
+
+- name: Download and install calicoctl {{ calicoctl_version }}
+  get_url:
+    url: "{{ calicoctl_url }}"
+    dest: "{{ install_dir }}/calicoctl"
+    force: yes
+    mode: 0755
+    tmp_dest: /tmp
+  tags: calicoctl
+
+- name: Create a symbolic link for calicoctl to work with kubectl
+  ansible.builtin.file:
+    src: "{{ install_dir }}/calicoctl"
+    dest: "{{ install_dir }}/kubectl-calico"
+    state: link
+  tags: calicoctl

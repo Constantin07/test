@@ -24,7 +24,7 @@ pipeline {
 
   stages {
 
-    stage('Install Calico Overlay') {
+    stage('Install Calico Overlay Network') {
       agent {
         docker {
           registryUrl env.REGISTRY
