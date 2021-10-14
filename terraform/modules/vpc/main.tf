@@ -16,9 +16,9 @@ resource "aws_vpc" "default" {
 
   assign_generated_ipv6_cidr_block = true
 
-  tags = merge(map(
-    "Name", "${var.environment}-vpc"
-  ), var.extra_tags)
+  tags = merge(tomap({ Name = "${var.environment}-vpc" }),
+    var.extra_tags,
+  )
 }
 
 locals {
@@ -29,9 +29,9 @@ resource "aws_vpc_dhcp_options" "default" {
   domain_name         = local.domain_name
   domain_name_servers = ["AmazonProvidedDNS"]
 
-  tags = merge(map(
-    "Name", "${var.environment}-dhcp-options"
-  ), var.extra_tags)
+  tags = merge(tomap({ Name = "${var.environment}-dhcp-options" }),
+    var.extra_tags,
+  )
 }
 
 resource "aws_vpc_dhcp_options_association" "default" {
@@ -60,10 +60,11 @@ resource "aws_subnet" "private" {
   cidr_block        = cidrsubnet(aws_vpc.default.cidr_block, local.newbits, 0 + count.index)
   availability_zone = element(local.availability_zones, count.index)
 
-  tags = merge(map(
-    "Name", "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}",
-    "kubernetes.io/role/internal-elb", "1"
-  ), var.extra_tags)
+  tags = merge(tomap({
+    Name = "${var.environment}-subnet-private-${substr(element(local.availability_zones, count.index), -1, 1)}",
+    "kubernetes.io/role/internal-elb" = "1" }),
+    var.extra_tags,
+  )
 }
 
 resource "aws_subnet" "public" {
@@ -74,18 +75,20 @@ resource "aws_subnet" "public" {
   availability_zone       = element(local.availability_zones, count.index)
   map_public_ip_on_launch = true
 
-  tags = merge(map(
-    "Name", "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
-    "kubernetes.io/role/elb", "1"
-  ), var.extra_tags)
+  tags = merge(tomap({
+    Name = "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
+    "kubernetes.io/role/elb" = "1" }),
+    var.extra_tags,
+  )
 }
 
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 
-  tags = merge(map(
-    "Name", "${var.environment}-gw"
-  ), var.extra_tags)
+  tags = merge(tomap(
+    { Name = "${var.environment}-gw" }),
+    var.extra_tags,
+  )
 }
 
 resource "aws_egress_only_internet_gateway" "default" {
@@ -99,9 +102,10 @@ resource "aws_eip" "nat_gateway" {
 
   vpc = true
 
-  tags = merge(map(
-      "Name", "${var.environment}-nat-gw-${substr(element(local.availability_zones, count.index), -1, 1)}"
-    ), var.extra_tags)
+  tags = merge(tomap(
+    { Name = "${var.environment}-nat-gw-${substr(element(local.availability_zones, count.index), -1, 1)}" },
+    var.extra_tags,
+  )
 }
 
 resource "aws_nat_gateway" "default" {
@@ -110,9 +114,10 @@ resource "aws_nat_gateway" "default" {
   allocation_id = element(aws_eip.nat_gateway.*.id, count.index)
   subnet_id     = element(aws_subnet.public.*.id, count.index)
 
-  tags = merge(map(
-      "Name", "${var.environment}-nat-gw"
-    ), var.extra_tags)
+  tags = merge(tomap(
+    { Name = "${var.environment}-nat-gw" }),
+    var.extra_tags,
+  )
 
   depends_on = ["aws_internet_gateway.default"]
 }
@@ -132,9 +137,10 @@ resource "aws_vpc_endpoint" "dynamodb" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
 
-  tags = merge(map(
-    "Name", "${var.environment}-public-rt"
-  ), var.extra_tags)
+  tags = merge(tomap(
+    { Name = "${var.environment}-public-rt" }),
+    var.extra_tags,
+  )
 }
 
 resource "aws_route" "outer_igw" {
@@ -158,9 +164,10 @@ resource "aws_route_table" "private" {
 
   vpc_id = aws_vpc.default.id
 
-  tags = merge(map(
-    "Name", "${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}"
-  ), var.extra_tags)
+  tags = merge(tomap(
+    { Name = "${var.environment}-private-rt-${substr(element(local.availability_zones, count.index), -1, 1)}" }),
+    var.extra_tags,
+  )
 }
 
 /*
