@@ -37,7 +37,7 @@ pipeline {
         retry(2) {
           sh '''
             if [ "$(docker ps -aq -f status=running -f name=docker-registry)" ]; then
-              docker run --rm --network host anoxis/registry-cli -r http://${REGISTRY_HOST} --delete --num 3 --order-by-date --digest-method=GET
+              docker run --rm --network host anoxis/registry-cli -r http://${REGISTRY_HOST} --delete --num 2 --order-by-date --digest-method=GET
               # Perform garbage collection
               docker exec docker-registry /bin/registry garbage-collect /etc/docker/registry/config.yml --delete-untagged=true
             fi
