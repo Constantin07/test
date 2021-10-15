@@ -24,7 +24,6 @@ pipeline {
             sh 'make login build'
           }
         }
-        milestone null
       }
     }
 
@@ -44,18 +43,16 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make tag'
         }
-        milestone null
       }
     }
 
-// Insecure push not working in img yet
+    // Insecure push not working in img yet
 
     stage('Push image') {
       steps {
         dir(env.DIRECTORY) {
           sh 'make push'
         }
-        milestone null
       }
     }
 
@@ -68,7 +65,6 @@ pipeline {
             }
           }
         }
-        milestone null
       }
     }
 

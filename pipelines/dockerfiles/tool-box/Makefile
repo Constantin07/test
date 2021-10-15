@@ -24,7 +24,7 @@ endif
 
 default: build tag push
 
-all: build tag push publish
+all: login build scan tag push publish
 
 login:
 #	@echo "${DOCKERHUB_TOKEN}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin

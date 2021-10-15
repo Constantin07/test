@@ -1,8 +1,8 @@
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: dashboard-metrics-scraper
-  namespace: {{ .Release.Namespace }}
   labels:
     k8s-app: dashboard-metrics-scraper
     chart: {{ template "kubernetes-dashboard.chart" . }}
@@ -21,6 +21,9 @@ spec:
       annotations:
         "seccomp.security.alpha.kubernetes.io/pod": 'runtime/default'
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: dashboard-metrics-scraper
           image: "{{ .Values.scraper.repository }}:{{ .Values.scraper.tag }}"

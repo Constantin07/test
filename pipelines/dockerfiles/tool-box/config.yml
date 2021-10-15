@@ -5,9 +5,6 @@ description: 'Build and publish docker image with tools.'
 properties:
   githubProjectUrl: 'https://github.com/Constantin07/test'
 
-#triggers:
-#  scm: "H/2 * * * *"
-
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:

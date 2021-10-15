@@ -1,8 +1,8 @@
+---
 kind: Service
 apiVersion: v1
 metadata:
   name: kubernetes-dashboard
-  namespace: {{ .Release.Namespace }}
   labels:
     k8s-app: {{ template "kubernetes-dashboard.name" . }}
     chart: {{ template "kubernetes-dashboard.chart" . }}
