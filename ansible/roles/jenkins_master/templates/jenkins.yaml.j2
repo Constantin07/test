@@ -40,7 +40,7 @@ jenkins:
      templates:
      - containers:
        - name: jnlp
-         image: "constantin07/jenkins-agent:4.10"
+         image: "constantin07/jenkins-agent:4.11"
          alwaysPullImage: true
          livenessProbe:
            failureThreshold: 0
@@ -51,7 +51,7 @@ jenkins:
          privileged: true
          runAsGroup: 1000
          runAsUser: 1000
-         resourceRequestCpu: "500m"
+         resourceRequestCpu: "300m"
          resourceRequestMemory: "512Mi"
          resourceLimitCpu: "1000m"
          resourceLimitMemory: "1Gi"

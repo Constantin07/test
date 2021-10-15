@@ -28,7 +28,6 @@ pipeline {
             sh 'make login build'
           }
         }
-        milestone null
       }
     }
 
@@ -43,7 +42,6 @@ pipeline {
             tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
           )
         }
-        milestone null
       }
     }
 
@@ -55,7 +53,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make tag'
         }
-        milestone null
       }
     }
 
@@ -71,7 +68,6 @@ pipeline {
             }
           }
         }
-        milestone null
       }
     }
 
