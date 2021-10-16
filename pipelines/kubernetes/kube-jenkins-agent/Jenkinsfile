@@ -1,0 +1,48 @@
+pipeline {
+
+  agent {
+    label 'docker'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+    disableResume()
+    skipDefaultCheckout()
+  }
+
+  environment {
+    AWS_DEFAULT_REGION = 'eu-west-1'
+  }
+
+  stages {
+
+    stage('Test') {
+      steps {
+        sh """
+          pwd
+          ls -la /usr/bin/
+          echo Hello
+          ps -ef
+        """
+
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: 'Amazon Credentials',
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]])
+        {
+          sh """
+            img pull public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
+            img ls
+            img rm public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
+          """
+        }
+      }
+    }
+
+  }
+
+}
