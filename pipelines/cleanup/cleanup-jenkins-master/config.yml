@@ -2,6 +2,9 @@
 
 description: "Clean up Jenkins master node."
 
+triggers:
+  cron: 'H */4 * * *'
+
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:

@@ -37,6 +37,14 @@ spec:
                       values:
                         - {{ include "hello-kubernetes.name" . }}
                 topologyKey: "kubernetes.io/hostname"
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+              app.kubernetes.io/instance: {{ .Release.Name }}
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       terminationGracePeriodSeconds: 60
       containers:
