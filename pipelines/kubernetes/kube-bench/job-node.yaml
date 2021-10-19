@@ -5,6 +5,7 @@ metadata:
   labels:
     app: kube-bench-node
 spec:
+  ttlSecondsAfterFinished: 120
   template:
     metadata:
       labels:
