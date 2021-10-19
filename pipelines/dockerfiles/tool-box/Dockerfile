@@ -14,15 +14,15 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG PACKER_VERSION=1.7.6
-ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
-ARG PACKER_FILE=packer_${PACKER_VERSION}_linux_amd64.zip
-ARG PACKER_SHA256=d2717af4d728cd9034c7a3bb2c6eac384d772bae78d856413b14742a0ca28a1c
+# ARG PACKER_VERSION=1.7.7
+# ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+# ARG PACKER_FILE=packer_${PACKER_VERSION}_linux_amd64.zip
+# ARG PACKER_SHA256=8513c3679d51141c39da3d95c691fcfc4b2ccc20e96ac5244b58b98899d6fe54
 
-RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
-    sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
-    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
-    chmod +x ${INSTALL_DIR}/packer
+# RUN set -exo pipefail; curl -fsSL --retry 3 -o ${PACKER_FILE} ${PACKER_URL}; \
+#    sha256sum ${PACKER_FILE} | grep ${PACKER_SHA256}; \
+#    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
+#    chmod +x ${INSTALL_DIR}/packer
 
 ARG KUBECTL_VERSION=v1.21.5
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl

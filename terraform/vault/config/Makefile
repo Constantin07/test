@@ -14,4 +14,4 @@ lint:
 	.venv/bin/pylint get_kubeconfig.py
 
 clean:
-	@rm -rf .venv
+	@rm -rf .venv .terraform
