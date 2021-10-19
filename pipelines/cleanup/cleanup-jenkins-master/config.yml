@@ -1,0 +1,9 @@
+---
+
+description: "Clean up Jenkins master node."
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true
