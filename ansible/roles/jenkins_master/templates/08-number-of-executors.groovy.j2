@@ -10,7 +10,7 @@ instance.setNumExecutors(4)
 // Set label name on master
 instance.setLabelString('master')
 
-// Set jenkins slave port
-instance.setSlaveAgentPort({{ jenkins_slave_port }})
+// Set jenkins agent port
+instance.setSlaveAgentPort({{ jenkins_agent_port }})
 
 instance.save()

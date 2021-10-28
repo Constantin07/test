@@ -11,11 +11,9 @@ if(!Jenkins.instance.isQuietingDown()) {
     j.setCrumbIssuer(new DefaultCrumbIssuer(true))
     j.save()
     println 'CSRF Protection configuration has changed.  Enabled CSRF Protection.'
-  }
-  else {
+  } else {
     println 'Nothing changed.  CSRF Protection already configured.'
   }
-}
-else {
+} else {
   println 'Shutdown mode enabled. Configuration of CSRF protection SKIPPED.'
 }

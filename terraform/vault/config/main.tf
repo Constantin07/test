@@ -1,21 +1,6 @@
 provider "vault" {
 }
 
-resource "vault_audit" "file" {
-  type = "file"
-
-  options = {
-    file_path = "/vault/logs/audit.log"
-  }
-}
-
-## Secret engines
-
-resource "vault_mount" "secret" {
-  path = "secret"
-  type = "kv"
-}
-
 ## Auth
 
 resource "vault_auth_backend" "aws" {

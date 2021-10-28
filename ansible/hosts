@@ -1,8 +1,8 @@
 [local]
 centos7.internal
 
-[jenkins_slaves]
-jenkins-slave.internal
+[jenkins_agents]
+jenkins-agent.internal
 
 [kube_masters]
 master-node1.internal
@@ -28,7 +28,7 @@ ansible_user=ubuntu
 
 [all:children]
 local
-jenkins_slaves
+jenkins_agents
 kube
 
 [all:vars]
