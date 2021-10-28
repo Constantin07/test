@@ -3,7 +3,7 @@
 description: Clean up old docker images and containers.
 
 triggers:
-  cron: 'TZ=Europe/London\nH H/4 * * *'
+  cron: 'TZ=Europe/London\nH H/5 * * *'
 
 extensions:
   cleanBeforeCheckout: true

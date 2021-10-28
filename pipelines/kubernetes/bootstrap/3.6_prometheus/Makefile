@@ -5,7 +5,7 @@ EXECUTABLES = helm helmfile kubeval
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-KUBEVAL_OPTS = --strict --ignore-missing-schemas --kubernetes-version 1.21.5 \
+KUBEVAL_OPTS = --strict --ignore-missing-schemas --kubernetes-version 1.21.6 \
 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 .PHONY: init template validate lint diff sync status destroy

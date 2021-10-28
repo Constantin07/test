@@ -22,7 +22,7 @@ def nodeNames() {
 node() {
   properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', numToKeepStr: '20')),
-    pipelineTriggers([cron("TZ=Europe/London\nH H/4 * * *")]),
+    pipelineTriggers([cron("TZ=Europe/London\nH H/5 * * *")]),
     durabilityHint('PERFORMANCE_OPTIMIZED'),
     disableConcurrentBuilds()
   ])

@@ -7,7 +7,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 KUBEVAL_OPTS = --strict --ignore-missing-schemas \
---kubernetes-version 1.21.5 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+--kubernetes-version 1.21.6 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 
 .PHONY: validate install diff delete clean
 
