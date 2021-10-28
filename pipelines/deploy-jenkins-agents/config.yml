@@ -1,6 +1,6 @@
 ---
 
-description: Deploy Jenkins slaves.
+description: Deploy Jenkins agents.
 
 extensions:
   cleanBeforeCheckout: true

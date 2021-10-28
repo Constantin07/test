@@ -1,6 +1,6 @@
 ---
 
-- hosts: jenkins_slaves
+- hosts: jenkins_agents
   become: yes
   become_user: root
   any_errors_fatal: true
@@ -10,6 +10,6 @@
     - resolv
     - chronyd
     - docker
-    - { role: jenkins_slave }
+    - { role: jenkins_agent }
     - gnupg2
     - prometheus/node_exporter

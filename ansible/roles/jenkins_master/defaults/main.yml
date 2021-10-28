@@ -5,7 +5,7 @@ jenkins_yum_gpg_key:  "https://pkg.jenkins.io/redhat/jenkins.io.key"
 jenkins_home:         "/var/lib/jenkins"
 jenkins_version:      "2.283"
 jenkins_port:         "8080"
-jenkins_slave_port:   "50000"
+jenkins_agent_port:   "50000"
 jenkins_url: "http://{{ ansible_nodename }}:{{ jenkins_port }}"
 jenkins_system_properties: >-
   -Djenkins.install.runSetupWizard=false
@@ -16,6 +16,7 @@ jenkins_java_options: >-
   -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1
   -XX:-BytecodeVerificationLocal -XX:-BytecodeVerificationRemote -XX:+ReduceSignalUsage
   -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation
-  -XX:+UnlockExperimentalVMOptions -XX:+UseZGC
   -XX:+ExplicitGCInvokesConcurrent
   -XX:+ParallelRefProcEnabled
+
+#   -XX:+UnlockExperimentalVMOptions -XX:+UseZGC

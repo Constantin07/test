@@ -1,6 +1,6 @@
 ---
 
-- name: Install required packages for Jenkins both master and slave
+- name: Install required packages for Jenkins both master and agent
   yum:
     name: "{{ redhat_packages }}"
     update_cache: yes

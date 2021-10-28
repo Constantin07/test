@@ -9,12 +9,12 @@ import hudson.model.Node.Mode
 
 String jenkins_home = '/var/lib/jenkins'
 
-def slaves = [
-  'jenkins-slave'
+def agents = [
+  'jenkins-agent'
 ]
 
-slaves.each {
-  println "--> Create slave ${it}"
+agents.each {
+  println "--> Create agent ${it}"
   launcher = new JNLPLauncher(true)  // Enable WorkDir
   DumbSlave dumb = new DumbSlave(
     it,             // Agent name

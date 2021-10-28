@@ -7,13 +7,13 @@ def instance = Jenkins.getInstance()
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 hudsonRealm.createAccount('{{ admin_username }}','{{ admin_password }}')            // Admin
-hudsonRealm.createAccount('{{ jnlp_slave_username }}','{{ jnlp_slave_password }}')  // Jenkins slaves
+hudsonRealm.createAccount('{{ jnlp_agent_username }}','{{ jnlp_agent_password }}')  // Jenkins agents
 instance.setSecurityRealm(hudsonRealm)
 
 def strategy = new GlobalMatrixAuthorizationStrategy()
 strategy.add(Jenkins.ADMINISTER, '{{ admin_username }}')
-strategy.add(Jenkins.READ, '{{ jnlp_slave_username }}')
-strategy.add(Jenkins.MasterComputer.CONNECT, '{{ jnlp_slave_username }}')
+strategy.add(Jenkins.READ, '{{ jnlp_agent_username }}')
+strategy.add(Jenkins.MasterComputer.CONNECT, '{{ jnlp_agent_username }}')
 instance.setAuthorizationStrategy(strategy)
 
 instance.save()

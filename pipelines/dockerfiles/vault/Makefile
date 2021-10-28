@@ -10,7 +10,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VAULT_VERSION = 1.8.4
+VAULT_VERSION = 1.8.5
 
 .PHONY: all login build scan tag publish clean
 all: build tag publish
@@ -22,7 +22,7 @@ build:
 	docker build --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REGISTRY}/${IMAGE}:${VAULT_VERSION} .
 
 scan:
-	trivy image --vuln-type="os,library" --exit-code 0 --no-progress ${REGISTRY}/${IMAGE}:${VAULT_VERSION}
+	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${VAULT_VERSION}
 
 tag:
 	docker tag ${REGISTRY}/${IMAGE}:${VAULT_VERSION} ${REGISTRY}/${IMAGE}:latest
