@@ -15,7 +15,7 @@ from terraform_external_data import terraform_external_data
 def get_kubeconfig(query):
     """ Returns cluster config """
     with open(os.path.expanduser(query['config_file']), 'r', encoding='utf8') as infile:
-        return yaml.load(infile.read())['clusters'][0]['cluster']
+        return yaml.safe_load(infile.read())['clusters'][0]['cluster']
 
 
 if __name__ == '__main__':
