@@ -12,5 +12,6 @@
   Install guide: https://docs.projectcalico.org/maintenance/install-apiserver
 
   ```bash
-  curl -sSfL -O https://docs.projectcalico.org/manifests/apiserver.yaml
+  curl -sSfL https://docs.projectcalico.org/manifests/apiserver.yaml -o apiserve-new.yaml
+  diff -u apiserver.yaml apiserve-new.yaml
   ```
