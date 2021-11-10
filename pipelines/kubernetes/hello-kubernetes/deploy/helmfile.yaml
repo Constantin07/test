@@ -33,6 +33,7 @@ releases:
             repository: vault
             tag: 1.8.5
           role: hello-kubernetes
+          secret_path: secret/hello-kubernetes
           env:
             VAULT_ADDR: "http://vault.internal:8200"
             VAULT_SKIP_VERIFY: "true"

@@ -98,9 +98,18 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
+          volumeMounts:
+            - name: secrets
+              mountPath: /etc/secrets
+              readOnly: true
         {{- if .Values.vaultAgent.enabled }}
           {{- include "hello-kubernetes.vault" . | nindent 8 }}
+        {{- end }}
       volumes:
+        - name: secrets
+          emptyDir:
+            medium: "Memory"
+        {{- if .Values.vaultAgent.enabled }}
         - name: vault-config
           configMap:
             name: {{ include "hello-kubernetes.fullname" . }}-vault-agent-config

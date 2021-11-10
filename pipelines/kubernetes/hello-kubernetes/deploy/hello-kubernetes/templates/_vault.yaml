@@ -40,4 +40,10 @@
       mountPath: /etc/vault/config.hcl
       subPath: config.hcl
       readOnly: true
+    - name: vault-config
+      mountPath: /etc/vault/secrets.tmpl
+      subPath: secrets.tmpl
+      readOnly: true
+    - name: secrets
+      mountPath: /etc/secrets
 {{- end }}

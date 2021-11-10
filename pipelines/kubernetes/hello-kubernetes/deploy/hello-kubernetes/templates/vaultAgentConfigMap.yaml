@@ -22,10 +22,25 @@ data:
     cache {
       use_auto_auth_token = true
     }
+    template {
+      source = "/etc/vault/secrets.tmpl"
+      destination = "/etc/secrets/secrets.yaml"
+      error_on_missing_key = true
+    }
+    template_config {
+      static_secret_render_interval = "30s"
+    }
     listener "tcp" {
       address = "127.0.0.1:8200"
       tls_disable = true
     }
     pid_file = "/home/vault/pidfile"
     exit_after_auth = false
+
+  secrets.tmpl: |
+    {{ `{{- with secret` }} {{ .Values.vaultAgent.secret_path | quote }} {{ `-}}` }}
+    {{ `{{- range $key, $value := .Data }}` }}
+    {{ `{{ $key }}: "{{ $value }}"` }}
+    {{ `{{- end }}` }}
+    {{ `{{- end }}` }}
 {{- end }}
