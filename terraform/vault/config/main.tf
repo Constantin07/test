@@ -23,13 +23,3 @@ resource "vault_auth_backend" "userpass" {
     listing_visibility = "unauth"
   }
 }
-
-resource "vault_auth_backend" "kubernetes" {
-  type        = "kubernetes"
-  description = "Kubernetes authentication backend"
-  tune {
-    default_lease_ttl  = "3600s"
-    max_lease_ttl      = "3600s"
-    listing_visibility = "unauth"
-  }
-}

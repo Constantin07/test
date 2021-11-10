@@ -1,13 +1,15 @@
 # PKI
 
+# Root CA
+
 resource "vault_mount" "pki" {
   path        = "pki"
   type        = "pki"
-  description = "PKI backend"
+  description = "PKI backend for Root CA"
 
+  # 10 years
   max_lease_ttl_seconds = 315360000
 }
-
 
 resource "vault_pki_secret_backend_crl_config" "crl_config" {
   backend = vault_mount.pki.path
@@ -21,22 +23,54 @@ resource "vault_pki_secret_backend_config_urls" "config_urls" {
   crl_distribution_points = ["http://vault.internal:8200/v1/pki/crl"]
 }
 
-/*
-resource "vault_pki_secret_backend_root_cert" "test" {
-  depends_on = [vault_mount.pki]
+# Intermediate CA
 
-  backend = vault_mount.pki.path
+resource "vault_mount" "pki_int" {
+  path        = "pki_int"
+  type        = "pki"
+  description = "PKI backend for Intermediate CA"
 
-  type                 = "internal"
-  common_name          = "Root CA"
-  ttl                  = "315360000"
-  format               = "pem"
-  private_key_format   = "der"
-  key_type             = "rsa"
-  key_bits             = 2048
-  max_path_length      = 0
-  exclude_cn_from_sans = true
-  ou                   = "My OU"
-  organization         = "My organization"
+  # 5 years
+  max_lease_ttl_seconds = 157680000
 }
-*/
+
+resource "vault_pki_secret_backend_crl_config" "crl_config_int" {
+  backend = vault_mount.pki_int.path
+  expiry  = "72h"
+  disable = false
+}
+
+resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
+  backend                 = vault_mount.pki_int.path
+  issuing_certificates    = ["http://vault.internal:8200/v1/pki_int/ca"]
+  crl_distribution_points = ["http://vault.internal:8200/v1/pki_int/crl"]
+}
+
+resource "vault_pki_secret_backend_role" "test" {
+  backend         = vault_mount.pki_int.path
+  name            = "test"
+  ttl             = 604800  # 7 days
+  max_ttl         = 1814400 # 21 days
+  allow_localhost = true
+  allow_ip_sans   = true
+  key_type        = "rsa"
+  key_bits        = 2048
+  key_usage = [
+    "DigitalSignature",
+    "KeyAgreement",
+    "KeyEncipherment",
+  ]
+  allowed_domains = [
+    "internal"
+  ]
+  allowed_domains_template           = true
+  allow_subdomains                   = true
+  allow_glob_domains                 = true
+  enforce_hostnames                  = true
+  server_flag                        = true
+  client_flag                        = true
+  code_signing_flag                  = true
+  email_protection_flag              = true
+  no_store                           = true
+  basic_constraints_valid_for_non_ca = false
+}
