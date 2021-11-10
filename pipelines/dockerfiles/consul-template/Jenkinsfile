@@ -11,15 +11,13 @@ pipeline {
   }
 
   environment {
-    DIRECTORY = 'pipelines/dockerfiles/jenkins-agent'
+    DIRECTORY = 'pipelines/dockerfiles/consul-template'
+    PATH = "/usr/local/bin:$PATH"
   }
 
   stages {
 
     stage('Build image') {
-      environment {
-        PATH = "/usr/local/bin:$PATH"
-      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -30,9 +28,6 @@ pipeline {
     }
 
     stage('Scan image'){
-      environment {
-        PATH = "/usr/local/bin:$PATH"
-      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make scan'
@@ -44,9 +39,6 @@ pipeline {
     }
 
     stage('Tag image') {
-      environment {
-        PATH = "/usr/local/bin:$PATH"
-      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make tag'
@@ -55,9 +47,6 @@ pipeline {
     }
 
     stage('Push image') {
-      environment {
-        PATH = "/usr/local/bin:$PATH"
-      }
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
