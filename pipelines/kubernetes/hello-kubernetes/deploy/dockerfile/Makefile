@@ -26,8 +26,8 @@ build:
 	docker build -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
 scan:
-	 trivy image --exit-code 0 --no-progress --format json --output results.json ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
-	 trivy image --reset
+	trivy image --exit-code 0 --no-progress --format json --output results.json ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
+	trivy image --reset
 
 tag:
 	docker tag ${DOCKER_REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}/${IMAGE}:latest

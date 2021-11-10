@@ -1,4 +1,19 @@
+# Requires VAULT_ADDR and VAULT_TOKEN environment variables to be set.
+provider "vault" {
+}
+
 # Kubernetes
+
+resource "vault_auth_backend" "kubernetes" {
+  type        = "kubernetes"
+  description = "Kubernetes authentication backend"
+  tune {
+    default_lease_ttl  = "3600s"
+    max_lease_ttl      = "3600s"
+    listing_visibility = "unauth"
+  }
+}
+
 
 provider "kubernetes" {
   config_path    = "~/.kube/config"
