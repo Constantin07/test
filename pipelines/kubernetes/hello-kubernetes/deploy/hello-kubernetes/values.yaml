@@ -46,6 +46,13 @@ consulTemplate:
     repository: constantin07/consul-template
     tag: 0.27.2
     pullPolicy: Always
+  resources:
+    requests:
+      cpu: 20m
+      memory: 20Mi
+    limits:
+      cpu: 50m
+      memory: 64Mi
 
 service:
   type: ClusterIP

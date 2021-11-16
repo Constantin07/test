@@ -1,0 +1,32 @@
+{{ define "hello-kubernetes.consul" }}
+- name: consul-template
+  image: "{{ .Values.consulTemplate.image.repository }}:{{ .Values.consulTemplate.image.tag }}"
+  imagePullPolicy: {{ .Values.consulTemplate.image.pullPolicy }}
+  command: [ "/usr/local/bin/consul-template" ]
+  args:
+    - "-config=/home/consul/config.hcl"
+    - "-log-level=info"
+  {{- if .Values.consulTemplate.resources }}
+  resources:
+    {{- toYaml .Values.consulTemplate.resources | nindent 4 }}
+  {{- end }}
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+  {{- if .Values.consulTemplate.env }}
+  env:
+    {{- range $key, $value := .Values.consulTemplate.env }}
+    - name: {{ $key }}
+      value: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  volumeMounts:
+    - name: consul-template-config
+      mountPath: /home/consul/config.hcl
+      subPath: config.hcl
+      readOnly: true
+    - name: secrets
+      mountPath: /etc/secrets
+{{- end }}

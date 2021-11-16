@@ -9,7 +9,12 @@ data:
     vault {
       address = "http://127.0.0.1:8200"
       unwrap_token = false
+      default_lease_duration = "60s"
       renew_token = false
+
+      retry {
+        attempts = 5
+      }
     }
 
 {{- end }}

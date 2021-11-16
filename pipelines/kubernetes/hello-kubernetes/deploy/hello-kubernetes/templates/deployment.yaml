@@ -15,7 +15,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2
+      maxSurge: 1
       maxUnavailable: 1
   template:
     metadata:
@@ -56,6 +56,9 @@ spec:
         {{- include "hello-kubernetes.application" . | nindent 8 }}
         {{- if .Values.vaultAgent.enabled }}
           {{- include "hello-kubernetes.vault" . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.consulTemplate.enabled }}
+          {{- include "hello-kubernetes.consul" . | nindent 8 }}
         {{- end }}
       volumes:
         - name: secrets
