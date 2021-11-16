@@ -23,7 +23,12 @@ spec:
         app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/vaultAgentConfigMap.yaml") . | sha256sum }}
+        {{- if .Values.vaultAgent.enabled }}
+        checksum/vault-agent-config: {{ include (print $.Template.BasePath "/vault-agent-configmap.yaml") . | sha256sum }}
+        {{- end }}
+        {{- if .Values.consulTemplate.enabled }}
+        checksum/consul-template-config: {{ include (print $.Template.BasePath "/consul-template-configmap.yaml") . | sha256sum }}
+        {{- end }}
     spec:
       affinity:
         podAntiAffinity:
@@ -60,4 +65,9 @@ spec:
         - name: vault-config
           configMap:
             name: {{ include "hello-kubernetes.fullname" . }}-vault-agent-config
+        {{- end }}
+        {{- if .Values.consulTemplate.enabled }}
+        - name: consul-template-config
+          configMap:
+            name: {{ include "hello-kubernetes.fullname" . }}-consul-template-config
         {{- end }}

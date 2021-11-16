@@ -40,6 +40,13 @@ vaultAgent:
   env: {}
   resources: {}
 
+consulTemplate:
+  enabled: false
+  image:
+    repository: constantin07/consul-template
+    tag: 0.27.2
+    pullPolicy: Always
+
 service:
   type: ClusterIP
   port: 80
