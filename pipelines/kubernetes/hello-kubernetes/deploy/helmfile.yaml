@@ -25,10 +25,9 @@ releases:
           requests:
             cpu: 50m
             memory: 100Mi
-        psp:
-          enabled: false
         consulTemplate:
           enabled: true
+          pki_backend_role: "pki_int/issue/test"
         vaultAgent:
           enabled: true
           image:
