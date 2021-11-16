@@ -6,6 +6,15 @@
   args:
     - "-config=/home/consul/config.hcl"
     - "-log-level=info"
+  livenessProbe:
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - "pgrep consul-template"
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    failureThreshold: 1
   {{- if .Values.consulTemplate.resources }}
   resources:
     {{- toYaml .Values.consulTemplate.resources | nindent 4 }}
@@ -23,10 +32,22 @@
     {{- end }}
   {{- end }}
   volumeMounts:
+    - name: secrets
+      mountPath: /etc/secrets
     - name: consul-template-config
       mountPath: /home/consul/config.hcl
       subPath: config.hcl
       readOnly: true
-    - name: secrets
-      mountPath: /etc/secrets
+    - name: consul-template-config
+      mountPath: /home/consul/ca.ctmpl
+      subPath: ca.ctmpl
+      readOnly: true
+    - name: consul-template-config
+      mountPath: /home/consul/cert.ctmpl
+      subPath: cert.ctmpl
+      readOnly: true
+    - name: consul-template-config
+      mountPath: /home/consul/key.ctmpl
+      subPath: key.ctmpl
+      readOnly: true
 {{- end }}

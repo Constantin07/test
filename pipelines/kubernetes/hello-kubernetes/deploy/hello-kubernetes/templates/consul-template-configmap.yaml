@@ -9,12 +9,49 @@ data:
     vault {
       address = "http://127.0.0.1:8200"
       unwrap_token = false
-      default_lease_duration = "60s"
       renew_token = false
 
       retry {
         attempts = 5
+        backoff = "500ms"
       }
     }
+
+    template {
+      source = "/home/consul/ca.ctmpl"
+      destination = "/etc/secrets/ca.pem"
+      error_on_missing_key = true
+      perms = "0644"
+      create_dest_dirs = false
+    }
+
+    template {
+      source = "/home/consul/cert.ctmpl"
+      destination = "/etc/secrets/cert.pem"
+      error_on_missing_key = true
+      perms = "0644"
+      create_dest_dirs = false
+      command = "echo Certiticate updated"
+    }
+
+    template {
+      source = "/home/consul/key.ctmpl"
+      destination = "/etc/secrets/key.pem"
+      error_on_missing_key = true
+      perms = "0644"
+      create_dest_dirs = false
+    }
+
+  ca.ctmpl: |
+    {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
+    {{ `{{- .Data.issuing_ca }}{{ end }}` }}
+
+  cert.ctmpl: |
+    {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
+    {{ `{{- .Data.certificate }}{{ end }}` }}
+
+  key.ctmpl: |
+    {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
+    {{ `{{- .Data.private_key }}{{ end }}` }}
 
 {{- end }}

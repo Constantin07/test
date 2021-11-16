@@ -16,7 +16,7 @@ max_retries=5
 retry=0
 delay=2
 echo "Checking vault-agent is up."
-while ! (vault status); do
+while ! (vault status > /dev/null); do
     echo "Attempt $retry failed, retry in $delay sec(s) ..."
     sleep $delay
     if [ $retry -ge $max_retries ]; then
