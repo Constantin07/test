@@ -1,5 +1,4 @@
 {{/*
-
 # Temporary disabled due to performance issues
 ---
 apiVersion: networking.k8s.io/v1

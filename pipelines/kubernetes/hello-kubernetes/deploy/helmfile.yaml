@@ -27,6 +27,8 @@ releases:
             memory: 100Mi
         psp:
           enabled: false
+        consulTemplate:
+          enabled: true
         vaultAgent:
           enabled: true
           image:
