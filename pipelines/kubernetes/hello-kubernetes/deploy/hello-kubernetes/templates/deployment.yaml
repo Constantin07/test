@@ -15,7 +15,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
+      maxSurge: 2
       maxUnavailable: 1
   template:
     metadata:
@@ -48,60 +48,7 @@ spec:
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       terminationGracePeriodSeconds: 60
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          lifecycle:
-            preStop:
-              exec:
-                command: ["/bin/sleep", "30"]
-          ports:
-            - containerPort: {{ .Values.container.port }}
-              protocol: TCP
-          startupProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.container.port }}
-              scheme: HTTP
-            failureThreshold: 30
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.container.port }}
-              scheme: HTTP
-            failureThreshold: 1
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.container.port }}
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          {{- if .Values.resources }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- end }}
-          env:
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          {{- if .Values.env }}
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-          {{- end }}
-          {{- if .Values.securityContext }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- end }}
-          volumeMounts:
-            - name: secrets
-              mountPath: /etc/secrets
-              readOnly: true
+        {{- include "hello-kubernetes.application" . | nindent 8 }}
         {{- if .Values.vaultAgent.enabled }}
           {{- include "hello-kubernetes.vault" . | nindent 8 }}
         {{- end }}
