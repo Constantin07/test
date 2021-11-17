@@ -1,0 +1,70 @@
+pipeline {
+
+  agent {
+    label 'built-in'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/docker-nginx-proxy'
+    PATH = "/usr/local/bin:$PATH"
+  }
+
+  stages {
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make login build'
+          }
+        }
+      }
+    }
+
+    stage('Scan image'){
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+          recordIssues(
+            tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
+          )
+        }
+      }
+    }
+
+    stage('Tag image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make tag'
+        }
+      }
+    }
+
+    stage('Push image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            retry(2) {
+              sh 'make push clean'
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+      sh '/usr/local/bin/img prune'
+    }
+  }
+
+}

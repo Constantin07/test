@@ -1,12 +1,11 @@
-
-REPOSITORY ?= constantin07/consul-template
+REPOSITORY ?= constantin07/docker-nginx-proxy
 
 # Check for required binaries
 EXECUTABLES = img
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-VERSION=0.27.2
+VERSION=0.0.1
 
 .PHONY: all login build scan tag push clean
 all: build tag push
