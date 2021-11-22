@@ -53,24 +53,28 @@ data:
       server {
         listen 80 default_server;
         server_name _;
-        return 301 https://$host:8443$request_uri;
+        return 301 https://$host:{{ .Values.proxy.port }}$request_uri;
       }
 
       server {
-        listen {{ .Values.container.port }} ssl;
+        listen {{ .Values.proxy.port }} ssl;
         server_name  $host;
 
         ssl_certificate /etc/secrets/cert_chain.pem;
         ssl_certificate_key /etc/secrets/key.pem;
-        ssl_protocols TLSv1.2;
+        ssl_protocols TLSv1.1 TLSv1.2;
         ssl_ciphers HIGH:!aNULL:!MD5;
         ssl_session_timeout 5m;
 
         access_log  /dev/stderr  main;
 
+        location /healthz {
+          return 200 '{"status": "UP"}';
+          access_log off;
+        }
+
         location / {
-          set $backend_upstream "http://127.0.0.1:{{ .Values.container.port }}";
-          proxy_pass $backend_upstream;
+          proxy_pass "http://127.0.0.1:{{ .Values.container.port }}";
           proxy_redirect off;
           proxy_intercept_errors on;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

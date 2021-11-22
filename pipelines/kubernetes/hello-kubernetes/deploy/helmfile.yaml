@@ -53,6 +53,7 @@ releases:
           enabled: true
           ingressClassName: internal
           annotations:
+            nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
             external-dns.alpha.kubernetes.io/hostname: hello-kubernetes.internal.
             external-dns.alpha.kubernetes.io/ttl: "60"
           host: hello-kubernetes.internal
