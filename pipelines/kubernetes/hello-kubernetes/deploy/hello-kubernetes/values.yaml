@@ -54,6 +54,13 @@ consulTemplate:
       cpu: 50m
       memory: 64Mi
 
+proxy:
+  enabled: false
+  image:
+    repository: constantin07/docker-nginx-proxy
+    tag: 0.0.1
+    pullPolicy: Always
+
 service:
   type: ClusterIP
   port: 80

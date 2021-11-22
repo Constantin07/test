@@ -59,6 +59,9 @@ spec:
         {{- if .Values.consulTemplate.enabled }}
           {{- include "hello-kubernetes.consul" . | nindent 8 }}
         {{- end }}
+        {{- if .Values.proxy.enabled }}
+          {{- include "hello-kubernetes.proxy" . | nindent 8 }}
+        {{- end }}
       volumes:
         - name: secrets
           emptyDir:
