@@ -2,6 +2,17 @@
 - name: proxy
   image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
   imagePullPolicy: {{ .Values.proxy.image.pullPolicy }}
+  lifecycle:
+    preStop:
+      exec:
+        command: ["/bin/sleep", "30"]
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: {{ .Values.proxy.port }}
+      scheme: HTTPS
+    failureThreshold: 1
+    periodSeconds: 10
   volumeMounts:
     - name: secrets
       mountPath: /etc/secrets
