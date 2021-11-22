@@ -51,6 +51,12 @@ spec:
               app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       terminationGracePeriodSeconds: 60
+
+      {{- if .Values.consulTemplate.enabled }}
+      initContainers:
+        {{- include "hello-kubernetes.consul-init" . | nindent 8 }}
+      {{- end }}
+
       containers:
         {{- include "hello-kubernetes.application" . | nindent 8 }}
         {{- if .Values.vaultAgent.enabled }}
