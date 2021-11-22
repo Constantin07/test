@@ -9,14 +9,10 @@ ARG CONSUL_TEMPLATE_VERSION=0.27.2
 RUN curl -fsSL --retry 3 https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -o consul-template.zip && \
     unzip consul-template.zip && chmod +x consul-template
 
-ARG VAULT_VERSION=1.8.5
-RUN curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip && \
-    unzip vault.zip && chmod +x vault
-
 
 FROM alpine:3.14
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-certificates bash jq && \
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-certificates bash curl jq && \
     update-ca-certificates
 
 COPY --from=builder /usr/local/bin/ /usr/local/bin/

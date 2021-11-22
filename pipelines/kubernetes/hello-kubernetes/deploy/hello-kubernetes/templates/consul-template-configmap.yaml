@@ -30,7 +30,7 @@ data:
       error_on_missing_key = true
       perms = "0644"
       create_dest_dirs = false
-      command = "echo Certiticate updated"
+      command = "curl -sk https://127.0.0.1:{{ .Values.proxy.port }}/reload || true"
     }
 
     template {
@@ -39,7 +39,7 @@ data:
       error_on_missing_key = true
       perms = "0644"
       create_dest_dirs = false
-      command = "echo Certiticate chain updated"
+      command = "curl -sk https://127.0.0.1:{{ .Values.proxy.port }}/reload || true"
     }
 
     template {
@@ -48,6 +48,7 @@ data:
       error_on_missing_key = true
       perms = "0644"
       create_dest_dirs = false
+      command = "curl -sk https://127.0.0.1:{{ .Values.proxy.port }}/reload || true"
     }
 
   ca.ctmpl: |

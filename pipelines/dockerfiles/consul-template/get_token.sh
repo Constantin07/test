@@ -21,7 +21,8 @@ if [ -z "$AUTH_PATH" ]; then
 fi
 
 JWT="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-VAULT_TOKEN="$(vault write $AUTH_PATH role=$VAULT_ROLE jwt=$JWT -format=json | jq -r '.auth.client_token')"
+DATA="{\"jwt\": \"$JWT\", \"role\": \"$VAULT_ROLE\"}"
+VAULT_TOKEN="$(curl -sSf -X POST --data "$DATA" $VAULT_ADDR/v1/$AUTH_PATH | jq -r '.auth.client_token')"
 RC=$?
 if [[ $RC -ne 0 ]]; then
     echo "Failed to get Vault token, exit code $RC"

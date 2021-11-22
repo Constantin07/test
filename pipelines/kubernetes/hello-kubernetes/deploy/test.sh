@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-SITE='http://hello-kubernetes.internal:30000'
+SITE='https://hello-kubernetes.internal:30001'
 
-test_HelloKubernetesIsUp() {
+test_HelloKubernetesIsAccessible() {
   result=`curl -ksSfL --retry 5 -o /dev/null -w "%{http_code}" "$SITE"`
   assertEquals "Site is up" "${result}" '200'
 }
