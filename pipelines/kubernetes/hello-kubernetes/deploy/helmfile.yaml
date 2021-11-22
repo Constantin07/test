@@ -30,6 +30,10 @@ releases:
           pki_backend_role: "pki_int/issue/test"
           env:
             VAULT_ADDR: "http://127.0.0.1:8200"
+        consulTemplateInit:
+          env:
+            VAULT_ADDR: "http://vault.internal:8200"
+            VAULT_ROLE: "hello-kubernetes"
         proxy:
           enabled: true
         vaultAgent:

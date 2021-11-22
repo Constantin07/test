@@ -3,7 +3,7 @@
 SITE='http://hello-kubernetes.internal:30000'
 
 test_HelloKubernetesIsUp() {
-  result=`curl -sSfL --retry 5 -o /dev/null -w "%{http_code}" "$SITE"`
+  result=`curl -ksSfL --retry 5 -o /dev/null -w "%{http_code}" "$SITE"`
   assertEquals "Site is up" "${result}" '200'
 }
 
