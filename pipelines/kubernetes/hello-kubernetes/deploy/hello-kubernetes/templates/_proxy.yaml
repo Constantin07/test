@@ -5,4 +5,7 @@
   volumeMounts:
     - name: secrets
       mountPath: /etc/secrets
+    - name: proxy-config
+      mountPath: /usr/local/openresty/nginx/conf/nginx.conf
+      subPath: nginx.conf
 {{- end }}

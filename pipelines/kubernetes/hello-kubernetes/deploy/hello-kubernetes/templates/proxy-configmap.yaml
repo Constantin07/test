@@ -1,0 +1,93 @@
+{{- if .Values.proxy.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-proxy-config
+  labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
+data:
+  nginx.conf: |
+    ## user nobody;
+    worker_processes  auto;
+
+    # Enable the use of JIT for regular expressions to speed-up their processing.
+    pcre_jit on;
+
+    error_log /dev/stderr error;
+    pid       logs/nginx.pid;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      # get CN
+      map $ssl_client_s_dn $ssl_client_s_dn_cn {
+        default "none";
+        ~(^|,)CN=(?<CN>[^,]+) $CN;
+      }
+
+      include       mime.types;
+      default_type  application/octet-stream;
+
+      underscores_in_headers on;
+
+      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"'
+                        '"$ssl_client_verify" "ssl_client_s_dn"';
+
+      # access_log  /var/log/nginx/access.log  main;
+
+      sendfile on;
+
+      keepalive_timeout 65;
+
+      gzip on;
+      gzip_comp_level 5;
+      gzip_min_length 256;
+      gzip_proxied any;
+      gzip_vary on;
+
+      server_tokens off;
+
+      server {
+        listen 80 default_server;
+        server_name _;
+        return 301 https://$host:8443$request_uri;
+      }
+
+      server {
+        listen {{ .Values.container.port }} ssl;
+        server_name  $host;
+
+        ssl_certificate /etc/secrets/cert_chain.pem;
+        ssl_certificate_key /etc/secrets/key.pem;
+        ssl_protocols TLSv1.2;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_session_timeout 5m;
+
+        access_log  /dev/stderr  main;
+
+        location / {
+          set $backend_upstream "http://127.0.0.1:{{ .Values.container.port }}";
+          proxy_pass $backend_upstream;
+          proxy_redirect off;
+          proxy_intercept_errors on;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Host $host:$server_port;
+        }
+
+        error_page 404 /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+          root /usr/share/nginx/html;
+        }
+      }
+
+      # include /etc/nginx/conf.d/*.conf;
+    }
+
+{{- end }}

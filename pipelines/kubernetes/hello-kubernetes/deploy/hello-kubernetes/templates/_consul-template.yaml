@@ -47,6 +47,10 @@
       subPath: cert.ctmpl
       readOnly: true
     - name: consul-template-config
+      mountPath: /home/consul/cert_chain.ctmpl
+      subPath: cert_chain.ctmpl
+      readOnly: true
+    - name: consul-template-config
       mountPath: /home/consul/key.ctmpl
       subPath: key.ctmpl
       readOnly: true

@@ -34,6 +34,15 @@ data:
     }
 
     template {
+      source = "/home/consul/cert_chain.ctmpl"
+      destination = "/etc/secrets/cert_chain.pem"
+      error_on_missing_key = true
+      perms = "0644"
+      create_dest_dirs = false
+      command = "echo Certiticate chain updated"
+    }
+
+    template {
       source = "/home/consul/key.ctmpl"
       destination = "/etc/secrets/key.pem"
       error_on_missing_key = true
@@ -48,6 +57,12 @@ data:
   cert.ctmpl: |
     {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
     {{ `{{- .Data.certificate }}{{ end }}` }}
+
+  cert_chain.ctmpl: |
+    {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
+    {{ `{{- .Data.ca_chain }}` }}
+    {{ `{{- .Data.issuing_ca }}` }}
+    {{ `{{ .Data.certificate }}{{ end }}` }}
 
   key.ctmpl: |
     {{ `{{- with secret` }} {{ required "A valid .Values.consulTemplate.pki_backend_role entry required!" .Values.consulTemplate.pki_backend_role | quote }} {{ `"common_name=` }}{{ .Values.ingress.host }}{{ `" "ttl=15m" }}` }}
