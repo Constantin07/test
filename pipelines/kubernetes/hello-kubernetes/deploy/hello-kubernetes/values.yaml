@@ -60,6 +60,7 @@ proxy:
     repository: constantin07/docker-nginx-proxy
     tag: 0.0.1
     pullPolicy: Always
+  port: 8443
 
 service:
   type: ClusterIP

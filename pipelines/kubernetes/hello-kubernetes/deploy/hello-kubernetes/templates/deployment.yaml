@@ -76,3 +76,8 @@ spec:
           configMap:
             name: {{ include "hello-kubernetes.fullname" . }}-consul-template-config
         {{- end }}
+        {{- if .Values.proxy.enabled }}
+        - name: proxy-config
+          configMap:
+            name: {{ include "hello-kubernetes.fullname" . }}-proxy-config
+        {{- end }}
