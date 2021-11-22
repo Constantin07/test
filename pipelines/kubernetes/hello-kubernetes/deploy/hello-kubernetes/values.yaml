@@ -49,10 +49,10 @@ consulTemplate:
   resources:
     requests:
       cpu: 20m
-      memory: 20Mi
+      memory: 32Mi
     limits:
       cpu: 50m
-      memory: 64Mi
+      memory: 96Mi
 
 proxy:
   enabled: false
