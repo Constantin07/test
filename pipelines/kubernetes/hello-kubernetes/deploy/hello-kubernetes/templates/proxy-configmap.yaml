@@ -12,7 +12,7 @@ data:
     # Enable the use of JIT for regular expressions to speed-up their processing.
     pcre_jit on;
 
-    error_log /dev/stderr error;
+    error_log stderr error;
     pid       logs/nginx.pid;
 
     events {
@@ -51,7 +51,7 @@ data:
       server_tokens off;
 
       server {
-        listen 80 default_server;
+        listen 8081 default_server;
         server_name _;
         return 301 https://$host:{{ .Values.proxy.port }}$request_uri;
       }
@@ -70,7 +70,7 @@ data:
         ssl_session_cache shared:SSL:1m;
         ssl_session_timeout 5m;
 
-        access_log  /dev/stderr  main;
+        access_log  /dev/stdout  main;
 
         location /healthz {
           return 200 '{"status": "UP"}';
@@ -81,7 +81,14 @@ data:
           allow 127.0.0.1;
           deny all;
           content_by_lua_block {
-            os.execute("/usr/local/openresty/nginx/sbin/nginx -s reload")
+            local res = os.execute("/bin/echo Hello")
+            ngx.header["Content-type"] = "text/plain"
+            if res == 0 then
+              ngx.say('SUCCESS')
+            else
+              ngx.status = ngx.HTTP_NOT_FOUND
+              ngx.say('FAILURE')
+            end
           }
         }
 
@@ -94,12 +101,12 @@ data:
           proxy_set_header Host $host:$server_port;
         }
 
-        error_page 404 /404.html;
+        # error_page 404 /404.html;
 
         # redirect server error pages to the static page /50x.html
         error_page 500 502 503 504 /50x.html;
         location = /50x.html {
-          root /usr/share/nginx/html;
+          root /usr/local/openresty/nginx/html;
         }
       }
 
