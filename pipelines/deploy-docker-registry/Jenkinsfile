@@ -13,6 +13,7 @@ pipeline {
   environment {
     DIRECTORY = 'pipelines/deploy-docker-registry'
     REMOTE_TAG = "${BUILD_NUMBER}-${GIT_COMMIT.substring(0, 8)}"
+    PATH = "/usr/local/bin:$PATH"
   }
 
   stages {
@@ -23,6 +24,15 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make build tag'
           }
+        }
+      }
+    }
+
+    stage('Scan image'){
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+            recordIssues(tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')])
         }
       }
     }
