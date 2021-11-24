@@ -4,8 +4,8 @@ FROM openresty/openresty:bullseye-fat
 RUN set -x \
     && addgroup --system --gid 1000 nginx \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 1000 nginx \
-    && addgroup nobody tty \
+    && usermod -a -G tty nobody \
+    && chmod o+w /dev/stderr \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install procps \
-    && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade \
-    &&  rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
