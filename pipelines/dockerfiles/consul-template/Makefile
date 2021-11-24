@@ -1,4 +1,3 @@
-
 REPOSITORY ?= constantin07/consul-template
 
 # Check for required binaries
