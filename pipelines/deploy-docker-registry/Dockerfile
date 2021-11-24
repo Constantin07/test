@@ -1,6 +1,6 @@
 # Build a minimal distribution container
 
-FROM alpine:3.14
+FROM alpine:3.15
 
 ARG DIR=tmp/amd64/
 

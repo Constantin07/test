@@ -1,4 +1,4 @@
-REGISTRY ?= centos7.internal:5000
+REGISTRY ?= constantin07
 IMAGE_NAME ?= docker-registry
 SERVICE_PORT ?= 5000
 DOCKER_REGISTRY = https://github.com/docker/distribution-library-image.git
@@ -17,18 +17,21 @@ else
   TAG=$(REMOTE_TAG)
 endif
 
-.PHONY: build tag push clean deploy
+.PHONY: tmp build login tag push clean deploy
 
 tmp:
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
 
-build: tmp
+login:
+	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+
+build: tmp login
 	docker build --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
 
 tag:
 	docker tag ${REGISTRY}/${IMAGE_NAME}:${TAG} ${REGISTRY}/${IMAGE_NAME}:latest
 
-push:
+push: login
 	docker push ${REGISTRY}/${IMAGE_NAME}:${TAG}
 	docker push ${REGISTRY}/${IMAGE_NAME}:latest
 
