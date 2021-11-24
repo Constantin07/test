@@ -1,0 +1,5 @@
+---
+
+git_chglog_version: 0.15.0
+git_chglog_url: "https://github.com/git-chglog/git-chglog/releases/download/v{{ git_chglog_version }}/git-chglog_{{ git_chglog_version }}_linux_amd64.tar.gz"
+install_dir: "/usr/local/bin"

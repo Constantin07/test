@@ -1,0 +1,16 @@
+---
+
+- name: Download and install git-chglog {{ git_chglog_version }}
+  unarchive:
+    src: "{{ git_chglog_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+    exclude:
+     - CHANGELOG.md
+     - LICENSE
+     - README.md
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded
+  tags: git_chglog
