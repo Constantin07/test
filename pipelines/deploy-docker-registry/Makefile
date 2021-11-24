@@ -17,7 +17,7 @@ else
   TAG=$(REMOTE_TAG)
 endif
 
-.PHONY: tmp build login tag push clean deploy
+.PHONY: tmp login build scan tag push clean deploy
 
 tmp:
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
@@ -27,6 +27,9 @@ login:
 
 build: tmp login
 	docker build --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
+
+scan:
+	trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE_NAME}:${TAG}
 
 tag:
 	docker tag ${REGISTRY}/${IMAGE_NAME}:${TAG} ${REGISTRY}/${IMAGE_NAME}:latest
