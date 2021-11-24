@@ -1,4 +1,4 @@
-FROM alpine:3.14 AS builder
+FROM alpine:3.15 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -111,7 +111,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.14
+FROM alpine:3.15
 
 ARG USERNAME=toolbox
 ENV USER=${USERNAME} \
