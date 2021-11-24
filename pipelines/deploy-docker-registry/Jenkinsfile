@@ -11,7 +11,7 @@ pipeline {
   }
 
   environment {
-    DIRECTORY = 'pipelines/builds/build-docker-registry'
+    DIRECTORY = 'pipelines/deploy-docker-registry'
     REMOTE_TAG = "${BUILD_NUMBER}-${GIT_COMMIT.substring(0, 8)}"
   }
 
@@ -20,7 +20,9 @@ pipeline {
     stage('Build image') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make build tag'
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make build tag'
+          }
         }
       }
     }
@@ -28,7 +30,9 @@ pipeline {
     stage('Publish image') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make push'
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make push'
+          }
         }
       }
     }
