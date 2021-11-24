@@ -6,9 +6,10 @@ def renderJobConfig(template, binding) {
   return engine.createTemplate(template).make(binding).toString()
 }
 
-// Repos to scan
+// Repositories to scan
 def repos = [
-  [ name: 'test', url: 'git@github.com:Constantin07/test.git', branch: 'master', credentials: 'Git' ]
+  [ name: 'test', url: 'git@github.com:Constantin07/test.git', branch: 'master', credentials: 'Git' ],
+  [ name: 'simple-k8s-app', url: 'git@github.com:Constantin07/simple-k8s-app.git', branch: 'master', credentials: 'Git' ]
 ]
 
 pipeline {
