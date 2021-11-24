@@ -1,7 +1,0 @@
-********************************************************************************
-*** PLEASE BE PATIENT: {{ .Release.Name }} may take a few minutes to install ***
-********************************************************************************
-
-{{- if .Values.ingress.enabled }}
-The {{ .Release.Name }} {{ .Chart.AppVersion }} can be accessed at http://{{ .Values.ingress.host }}:3000
-{{- end }}
