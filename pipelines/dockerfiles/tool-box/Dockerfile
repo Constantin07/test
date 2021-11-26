@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.21.0
+ARG TRIVY_VERSION=0.21.1
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=5503390316751a1a932e334ef14ec057f4976addec32ff0145273c7c06a160bc
+ARG TRIVY_SHA256=4900136f41c713ce8d202e9aa055543a11e56bc280bc864719d4343dc2d3e696
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
