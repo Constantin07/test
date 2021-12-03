@@ -133,7 +133,8 @@ ENV ANSIBLE_FORCE_COLOR=true \
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client openssl \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
+    gnupg gcc musl-dev openssl-dev libffi-dev ansible \
+    podman shadow fuse-overlayfs slirp4netns && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
@@ -147,7 +148,9 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
 
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
-    adduser -D -u 995 -G ${USERNAME} ${USERNAME}
+    adduser -D -u 995 -G ${USERNAME} ${USERNAME} && \
+    echo ${USERNAME}:10000:5000 > /etc/subuid && \
+    echo ${USERNAME}:10000:5000 > /etc/subgid
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}

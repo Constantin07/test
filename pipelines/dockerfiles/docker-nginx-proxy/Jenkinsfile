@@ -60,7 +60,6 @@ pipeline {
 
   post {
     always {
-      sh '/usr/local/bin/img prune'
       cleanWs()
     }
   }
