@@ -26,6 +26,7 @@ pipeline {
       steps {
         sh '''
           rm -rf $HOME/.cache/trivy
+          rm -rf $HOME/.local/share/containers/storage
           rm -rf $HOME/.cache/JNA/temp
           rm -rf $HOME/.helm
           rm -rf $HOME/.packer.d
