@@ -1,7 +1,7 @@
 REPOSITORY ?= constantin07/consul-template
 
 # Check for required binaries
-EXECUTABLES = img
+EXECUTABLES = podman tar
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -10,24 +10,28 @@ VERSION=0.27.2
 .PHONY: all login build scan tag push clean
 all: build tag push
 
+.ONESHELL:
+
 login:
-	@echo "${DOCKERHUB_TOKEN}" | img login --username "${DOCKERHUB_USERNAME}" --password-stdin
+	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build: login
-	img build -t ${REPOSITORY}:${VERSION} .
+	podman build -t ${REPOSITORY}:${VERSION} .
 
 scan:
-	img unpack ${REPOSITORY}:${VERSION}
-	trivy fs --exit-code 0 --no-progress --format json --output results.json rootfs/
-	rm -rf rootfs/
+	$(eval TMP_DIR := $(shell mktemp -d))
+	@podman image save --quiet --format docker-archive ${REPOSITORY}:${VERSION} | tar -x --wildcards -C ${TMP_DIR}
+	@find ${TMP_DIR} -type f -name '*.tar' -print0 | xargs -r -0 --max-args=1 tar -C ${TMP_DIR} -xf
+	@trivy fs --exit-code 0 --no-progress --format json --output results.json ${TMP_DIR}
+	@rm -rf ${TMP_DIR}
 
 tag:
-	img tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
+	podman tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
 
 push: login
-	img push ${REPOSITORY}:${VERSION}
-	img push ${REPOSITORY}:latest
+	podman push ${REPOSITORY}:${VERSION}
+	podman push ${REPOSITORY}:latest
 
 clean:
-	img rm ${REPOSITORY}:latest
-	img rm ${REPOSITORY}:${VERSION}
+	podman rmi ${REPOSITORY}:latest || true
+	podman rmi ${REPOSITORY}:${VERSION} || true
