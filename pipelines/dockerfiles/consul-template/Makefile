@@ -16,7 +16,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build: login
-	podman build -t ${REPOSITORY}:${VERSION} .
+	podman build --pull --format docker -t ${REPOSITORY}:${VERSION} .
 
 scan:
 	$(eval TMP_DIR := $(shell mktemp -d))
