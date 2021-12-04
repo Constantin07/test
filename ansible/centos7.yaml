@@ -15,7 +15,6 @@
     - krew
     - fzf
     - vault_binary
-    - img
     - trivy
     - calicoctl
     - git_chglog
