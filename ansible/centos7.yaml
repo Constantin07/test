@@ -18,6 +18,6 @@
     - trivy
     - calicoctl
     - git_chglog
-    - { role: jenkins_master, jenkins_version: "2.323" }
+    - { role: jenkins_master, jenkins_version: "2.324" }
     - prometheus/node_exporter
 #    - nfs_server
