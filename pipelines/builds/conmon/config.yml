@@ -1,0 +1,9 @@
+---
+
+description: 'Builds and installs conmon.'
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true
