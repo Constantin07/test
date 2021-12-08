@@ -1,0 +1,87 @@
+pipeline {
+
+  agent {
+    label 'built-in'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/builds/conmon'
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm: [$class: 'GitSCM',
+          branches: [[name: 'main']],
+          userRemoteConfigs: [[url: 'https://github.com/containers/conmon.git' ]],
+          extensions: [
+            [$class: 'CleanCheckout'],
+            [$class: 'CloneOption', noTags: false, reference: '', shallow: false]
+          ]
+        ]
+        script {
+          latestTag = sh(script: 'git describe --tags `git rev-list --tags --max-count=1`', returnStdout: true).trim()
+        }
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        sh """
+          sudo yum install -y \
+            gcc \
+            git \
+            glib2-devel \
+            glibc-devel \
+            libseccomp-devel \
+            make \
+            pkgconfig \
+        """
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'make'
+      }
+    }
+
+    stage('Install') {
+      environment {
+        PATH = "/usr/local/go/bin:${env.PATH}"
+      }
+      steps {
+        sh 'sudo env PATH=$PATH make install'
+      }
+    }
+
+    stage('Verify') {
+      environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+      }
+      steps {
+        sh 'conmon --version'
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+    success {
+      script {
+        currentBuild.description = latestTag
+      }
+    }
+  }
+
+}
