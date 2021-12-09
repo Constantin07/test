@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.7.1
+ARG HELM_VERSION=v3.7.2
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=6cd6cad4b97e10c33c978ff3ac97bb42b68f79766f1d2284cfd62ec04cd177f4
+ARG HELM_SHA256=4ae30e48966aba5f807a4e140dad6736ee1a392940101e4d79ffb4ee86200a9e
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -133,8 +133,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client openssl \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible \
-    podman shadow fuse-overlayfs slirp4netns && \
+    gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
@@ -148,9 +147,7 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
 
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
-    adduser -D -u 995 -G ${USERNAME} ${USERNAME} && \
-    echo ${USERNAME}:10000:5000 > /etc/subuid && \
-    echo ${USERNAME}:10000:5000 > /etc/subgid
+    adduser -D -u 995 -G ${USERNAME} ${USERNAME}
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}

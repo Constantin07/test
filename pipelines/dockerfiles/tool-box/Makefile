@@ -27,37 +27,36 @@ default: build tag push
 all: login build scan tag push publish
 
 login:
-#	@echo "${DOCKERHUB_TOKEN}" | img login -u "${DOCKERHUB_USERNAME}" --password-stdin
-	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+	@echo "${DOCKERHUB_TOKEN}" | podman login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
-#	img build -t ${REGISTRY}/${IMAGE}:${TAG} .
-	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
+	podman build --pull --format docker -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f requirements.yml
 	@rm -rf bin
 
 scan:
-	trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${TAG}
+	$(eval TMP_DIR := $(shell mktemp -d))
+	@podman image save --quiet --format docker-archive ${REGISTRY}/${IMAGE}:${TAG} | tar -x --wildcards -C ${TMP_DIR} --warning=no-timestamp
+	@find ${TMP_DIR} -type f -name '*.tar' -print0 | xargs -r -0 --max-args=1 tar -C ${TMP_DIR} --warning=no-timestamp -xf
+	@trivy fs --exit-code 0 --no-progress --format json --output results.json ${TMP_DIR}
+	@rm -rf ${TMP_DIR}
 
 tag:
-#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
-#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
-#	img tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
-	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
-	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
-	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
+	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
+	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 
 push:
-#	img push --insecure-registry ${REGISTRY}/${IMAGE}:${TAG}
-#	img push --insecure-registry ${REGISTRY}/${IMAGE}:latest
-	docker push ${REGISTRY}/${IMAGE}:${TAG}
-	docker push ${REGISTRY}/${IMAGE}:latest
+	podman push ${REGISTRY}/${IMAGE}:${TAG}
+	podman push ${REGISTRY}/${IMAGE}:latest
 
 # Publish to DockerHub
 publish: login
-#	img push ${DOCKER_REPOSITORY}:${TAG}
-#	img push ${DOCKER_REPOSITORY}:latest
-	docker push ${DOCKER_REPOSITORY}:${TAG}
-	docker push ${DOCKER_REPOSITORY}:latest
+	podman push ${DOCKER_REPOSITORY}:${TAG}
+	podman push ${DOCKER_REPOSITORY}:latest
+
+clean:
+	podman rmi ${REGISTRY}/${IMAGE}:latest || true
+	podman rmi ${REGISTRY}/${IMAGE}:${TAG} || true
