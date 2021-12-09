@@ -46,8 +46,6 @@ pipeline {
       }
     }
 
-    // Insecure push not working in img yet
-
     stage('Push image') {
       steps {
         dir(env.DIRECTORY) {
