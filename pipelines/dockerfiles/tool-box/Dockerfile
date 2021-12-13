@@ -100,10 +100,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
     tar -xvzf ${TRIVY_FILE} -C ${INSTALL_DIR} trivy
 
-ARG GITCHGLOG_VERSION=0.15.0
+ARG GITCHGLOG_VERSION=0.15.1
 ARG GITCHGLOG_URL=https://github.com/git-chglog/git-chglog/releases/download/v${GITCHGLOG_VERSION}/git-chglog_${GITCHGLOG_VERSION}_linux_amd64.tar.gz
 ARG GITCHGLOG_FILE=git-chglog_${GITCHGLOG_VERSION}_linux_amd64.tar.gz
-ARG GITCHGLOG_SHA256=815ff0b78b3c3a0cc5e5e456d5f022a56d1f8e34d99165e4476e74be68646854
+ARG GITCHGLOG_SHA256=5247e4602bac520e92fca317322fe716968a27aab1d91706f316627e3a3ee8e6
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GITCHGLOG_FILE} ${GITCHGLOG_URL}; \
     sha256sum ${GITCHGLOG_FILE} | grep ${GITCHGLOG_SHA256}; \

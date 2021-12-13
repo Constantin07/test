@@ -1,0 +1,102 @@
+pipeline {
+
+  agent {
+    label 'built-in'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/builds/podman'
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm: [$class: 'GitSCM',
+          branches: [[name: 'main']],
+          userRemoteConfigs: [[url: 'https://github.com/containers/podman.git' ]],
+          extensions: [
+            [$class: 'CleanCheckout'],
+            [$class: 'CloneOption', noTags: false, reference: '', shallow: false]
+          ]
+        ]
+        script {
+          latestTag = sh(script: 'git describe --tags `git rev-list --tags --max-count=1`', returnStdout: true).trim()
+          println latestTag
+          sh "git checkout ${latestTag}"
+        }
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        sh """
+          sudo yum install -y \
+            btrfs-progs-devel \
+            containernetworking-plugins \
+            device-mapper-devel \
+            git \
+            glib2-devel \
+            glibc-devel \
+            glibc-static \
+            gcc \
+            gpgme-devel \
+            iptables \
+            libassuan-devel \
+            libgpg-error-devel \
+            libseccomp-devel \
+            libselinux-devel \
+            make \
+            pkgconfig \
+            sudo
+        """
+      }
+    }
+
+    stage('Build') {
+      environment {
+        PATH = "/usr/local/go/bin:${env.PATH}"
+      }
+      steps {
+        sh 'make BUILDTAGS="selinux seccomp"'
+      }
+    }
+
+    stage('Install') {
+      environment {
+        PATH = "/usr/local/go/bin:${env.PATH}"
+      }
+      steps {
+        sh 'sudo env PATH=$PATH make install PREFIX=/usr/local'
+      }
+    }
+
+    stage('Verify') {
+      environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+      }
+      steps {
+        sh 'podman -v; podman info'
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+    success {
+      script {
+        currentBuild.description = latestTag
+      }
+    }
+  }
+
+}
