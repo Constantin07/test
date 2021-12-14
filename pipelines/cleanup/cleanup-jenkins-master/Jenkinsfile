@@ -29,8 +29,10 @@ pipeline {
           rm -rf $HOME/.cache/JNA/temp
           rm -rf $HOME/.helm
           rm -rf $HOME/.packer.d
-          podman system prune -fa
         '''
+        retry(2) {
+          sh 'podman system prune -fa'
+        }
       }
     }
 
