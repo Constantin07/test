@@ -4,7 +4,7 @@ export HEADERS_FILE = headers-configmap.yaml
 export HEADERS_CONFIGMAP_NAME = nginx-ingress-headers
 
 # Check for required binaries
-EXECUTABLES = helm helmfile gomplate kubectl kubeval
+EXECUTABLES = helm helmfile gomplate kubectl kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -16,9 +16,9 @@ init:
 	helm repo update
 
 validate:
-	gomplate -f ${HEADERS_FILE} | kubeval --strict
-	helmfile template | kubeval --strict \
-	--kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	mkdir -p /tmp/kubeconform
+	gomplate -f ${HEADERS_FILE} | kubeconform --strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 template:
 	helmfile template

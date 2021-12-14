@@ -2,7 +2,7 @@
 export NAMESPACE ?= default
 
 # Check for required binaries
-EXECUTABLES = helm helmfile kubeval
+EXECUTABLES = helm helmfile kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -16,8 +16,8 @@ init:
 	helm repo update
 
 validate:
-	helmfile template | kubeval --strict \
-	--kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	mkdir -p /tmp/kubeconform
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 template:
 	helmfile template
