@@ -11,7 +11,7 @@
     - helm
     - helmfile
     - gomplate
-    - kubeval
+    - kubeconform
     - krew
     - fzf
     - vault_binary

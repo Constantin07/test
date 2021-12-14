@@ -4,10 +4,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.0.11
+ARG TERRAFORM_VERSION=1.1.0
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=eeb46091a42dc303c3a3c300640c7774ab25cbee5083dafa5fd83b54c8aca664
+ARG TERRAFORM_SHA256=763378aa75500ce5ba67d0cba8aa605670cd28bf8bafc709333a30908441acb5
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -81,6 +81,15 @@ ARG KUBEVAL_SHA256=2d6f9bda1423b93787fa05d9e8dfce2fc1190fefbcd9d0936b9635f3f78ba
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
     sha256sum ${KUBEVAL_FILE} | grep ${KUBEVAL_SHA256}; \
     tar xvzf ${KUBEVAL_FILE} -C ${INSTALL_DIR} kubeval
+
+ARG KUBECONFORM_VERSION=v0.4.12
+ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
+ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
+ARG KUBECONFORM_SHA256=c8ebeb665969e42397e4751e03ba66c6ccdf8d914f81fb4190d5bff99f21a5e2
+
+RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
+    sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
+    tar xvzf ${KUBECONFORM_FILE} -C ${INSTALL_DIR} kubeconform
 
 ARG ECR_HELPER_VERSION=0.5.0
 ARG ECR_HELPER_URL=https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/${ECR_HELPER_VERSION}/linux-amd64/docker-credential-ecr-login
