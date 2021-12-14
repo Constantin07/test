@@ -10,10 +10,10 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VAULT_VERSION = 1.8.5
+VAULT_VERSION = 1.9.1
 
 .PHONY: all login build scan tag publish clean
-all: build tag publish
+default: build tag publish
 
 login:
 	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
