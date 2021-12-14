@@ -18,6 +18,7 @@ template:
 	helmfile template
 
 validate:
+	mkdir -p /tmp/kubeconform
 	gomplate -f ingress.yaml | kubeconform ${KUBECONFORM_OPTS}
 	helmfile template | kubeconform ${KUBECONFORM_OPTS}
 
