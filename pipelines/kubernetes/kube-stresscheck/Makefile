@@ -2,14 +2,15 @@ export NAMESPACE ?= default
 export CONFIG_FILE ?= node.yaml
 
 # Check for required binaries
-EXECUTABLES = gomplate kubectl kubeval
+EXECUTABLES = gomplate kubectl kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 .PHONY: validate template diff sync status destroy
 
 validate:
-	gomplate -f ${CONFIG_FILE} | kubeval --strict
+	mkdir -p /tmp/kubeconform
+	gomplate -f ${CONFIG_FILE} | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 template:
 	gomplate -f ${CONFIG_FILE}

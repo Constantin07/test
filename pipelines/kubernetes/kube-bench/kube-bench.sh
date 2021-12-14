@@ -28,8 +28,8 @@ fi
 trap cleanup ERR
 
 # Validate definition files
-kubeval --strict ./kube-bench-${TARGET}-configmap.yaml
-kubeval --strict ./job-${TARGET}.yaml
+kubeconform -strict -summary ./kube-bench-${TARGET}-configmap.yaml
+kubeconform -strict -summary ./job-${TARGET}.yaml
 
 # Run kube-bench job on node/master
 kubectl apply -n "${NAMESPACE}" -f ./kube-bench-${TARGET}-configmap.yaml

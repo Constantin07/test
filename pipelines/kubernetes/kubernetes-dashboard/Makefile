@@ -1,10 +1,11 @@
 export NAMESPACE ?= kubernetes-dashboard
 
 # Check for required binaries
-EXECUTABLES = gomplate helmfile kubectl kubeval
+EXECUTABLES = gomplate helmfile kubectl kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
+KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 .PHONY: init template validate lint diff sync status destroy
 
@@ -13,9 +14,9 @@ template:
 	helmfile template
 
 validate:
-	gomplate -f namespace.yaml | kubeval --strict
-	helmfile template | kubeval --strict \
-	--kubernetes-version 1.21.6 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	mkdir -p /tmp/kubeconform
+	gomplate -f namespace.yaml | kubeconform ${KUBECONFORM_OPTS}
+	helmfile template | kubeconform ${KUBECONFORM_OPTS}
 
 lint:
 	helmfile lint
