@@ -1,0 +1,14 @@
+---
+
+- name: Download and install kubeconform {{ kubeconform_version }}
+  unarchive:
+    src: "{{ kubeconform_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+    extra_opts:
+      - "kubeconform"
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded
+  tags: kubeconform

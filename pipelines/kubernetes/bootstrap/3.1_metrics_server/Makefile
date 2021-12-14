@@ -15,9 +15,13 @@ init:
 template:
 	helmfile template
 
+#validate:
+#	helmfile template | kubeval --strict \
+#	--kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+
 validate:
-	helmfile template | kubeval --strict \
-	--kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+	mkdir -p /tmp/kubeconform
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 lint:
 	helmfile lint
