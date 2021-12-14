@@ -73,15 +73,6 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
-ARG KUBEVAL_VERSION=v0.16.1
-ARG KUBEVAL_URL=https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL_VERSION}/kubeval-linux-amd64.tar.gz
-ARG KUBEVAL_FILE=kubeval-linux-amd64.tar.gz
-ARG KUBEVAL_SHA256=2d6f9bda1423b93787fa05d9e8dfce2fc1190fefbcd9d0936b9635f3f78ba790
-
-RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBEVAL_FILE} ${KUBEVAL_URL}; \
-    sha256sum ${KUBEVAL_FILE} | grep ${KUBEVAL_SHA256}; \
-    tar xvzf ${KUBEVAL_FILE} -C ${INSTALL_DIR} kubeval
-
 ARG KUBECONFORM_VERSION=v0.4.12
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz

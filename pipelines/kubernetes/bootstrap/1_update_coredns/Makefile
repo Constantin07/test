@@ -3,14 +3,15 @@
 CONFIGMAP_FILE ?= coredns_cm.yaml
 
 # Check for required binaries
-EXECUTABLES = kubeval kubectl
+EXECUTABLES = kubeconform kubectl
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 .PHONY: validate apply diff
 
 validate:
-	kubeval --strict "${CONFIGMAP_FILE}"
+	mkdir -p /tmp/kubeconform
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7 "${CONFIGMAP_FILE}"
 
 apply: validate
 	@kubectl diff -f "${CONFIGMAP_FILE}"; \

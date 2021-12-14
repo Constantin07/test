@@ -3,14 +3,15 @@
 CONFIG_FILE ?= vault-auth.yaml
 
 # Check for required binaries
-EXECUTABLES = kubeval kubectl
+EXECUTABLES = kubeconform kubectl
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 .PHONY: validate install diff delete
 
 validate:
-	kubeval --strict ${CONFIG_FILE}
+	mkdir -p /tmp/kubeconform
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7 ${CONFIG_FILE}
 
 install: validate
 	kubectl apply -f ${CONFIG_FILE} --wait=true

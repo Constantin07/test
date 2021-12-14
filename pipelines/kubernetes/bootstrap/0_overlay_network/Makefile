@@ -2,18 +2,18 @@ CONFIG_FILE ?= calico.yaml
 APISERVER_FILE ?= apiserver.yaml
 
 # Check for required binaries
-EXECUTABLES = kubeval kubectl openssl
+EXECUTABLES = kubectl kubeconform openssl
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-KUBEVAL_OPTS = --strict --ignore-missing-schemas \
---kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7
 
 .PHONY: validate install diff delete clean
 
 validate:
-	kubeval ${KUBEVAL_OPTS} ${CONFIG_FILE}
-	kubeval ${KUBEVAL_OPTS} ${APISERVER_FILE}
+	mkdir -p /tmp/kubeconform
+	kubeconform ${KUBECONFORM_OPTS} ${CONFIG_FILE}
+	kubeconform ${KUBECONFORM_OPTS} ${APISERVER_FILE}
 
 # Install Calico overlay network in K8s
 install: validate

@@ -1,6 +1,6 @@
 ---
 
-description: 'Builds and installs podman.'
+description: 'Builds and installs fuse-overlayfs.'
 
 extensions:
   cleanBeforeCheckout: true
