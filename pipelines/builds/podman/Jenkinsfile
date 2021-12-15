@@ -29,8 +29,8 @@ pipeline {
         ]
         script {
           latestTag = sh(script: 'git describe --tags `git rev-list --tags --max-count=1`', returnStdout: true).trim()
-          println latestTag
-          sh "git checkout ${latestTag}"
+          println("The latest tag is: ${latestTag}")
+          // sh "git checkout ${latestTag}"
         }
       }
     }
@@ -75,13 +75,19 @@ pipeline {
       }
       steps {
         sh 'sudo env PATH=$PATH make install PREFIX=/usr/local'
+        sh 'sudo systemctl daemon-reload'
         sh 'sudo systemctl enable podman.socket'
+        sh 'sudo systemctl start podman.socket'
+        sh 'sudo systemctl enable podman.service'
       }
     }
 
     stage('Verify') {
       steps {
-        sh 'podman -v; podman info'
+        script {
+          version = sh(script: 'podman -v | cut -d" " -f3', returnStdout: true).trim()
+        }
+        sh 'podman info'
       }
     }
 
@@ -93,7 +99,7 @@ pipeline {
     }
     success {
       script {
-        currentBuild.description = latestTag
+        currentBuild.description = version
       }
     }
   }
