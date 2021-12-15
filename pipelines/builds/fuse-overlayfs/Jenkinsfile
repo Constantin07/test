@@ -55,7 +55,7 @@ pipeline {
     stage('Install') {
       steps {
         sh 'sudo make install'
-        sh 'sudo ln -sf /usr/local/bin/fuse-overlayfs /bin/fuse-overlayfs'
+        // sh 'sudo ln -sf /usr/local/bin/fuse-overlayfs /bin/fuse-overlayfs'
       }
     }
 

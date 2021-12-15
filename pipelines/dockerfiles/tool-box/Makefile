@@ -5,7 +5,7 @@ DOCKER_REPOSITORY ?= constantin07/tool-box
 IMAGE ?= tool-box
 
 # Check for required binaries
-EXECUTABLES = git docker
+EXECUTABLES = git podman trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -37,11 +37,7 @@ build:
 	@rm -rf bin
 
 scan:
-	$(eval TMP_DIR := $(shell mktemp -d))
-	@podman image save --quiet --format docker-archive ${REGISTRY}/${IMAGE}:${TAG} | tar -x --wildcards -C ${TMP_DIR} --warning=no-timestamp
-	@find ${TMP_DIR} -type f -name '*.tar' -print0 | xargs -r -0 --max-args=1 tar -C ${TMP_DIR} --warning=no-timestamp -xf
-	@trivy fs --exit-code 0 --no-progress --format json --output results.json ${TMP_DIR}
-	@rm -rf ${TMP_DIR}
+	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${TAG}
 
 tag:
 	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
@@ -49,8 +45,8 @@ tag:
 	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 
 push:
-	podman push ${REGISTRY}/${IMAGE}:${TAG}
-	podman push ${REGISTRY}/${IMAGE}:latest
+	podman push --tls-verify=false ${REGISTRY}/${IMAGE}:${TAG}
+	podman push --tls-verify=false ${REGISTRY}/${IMAGE}:latest
 
 # Publish to DockerHub
 publish: login

@@ -28,6 +28,9 @@ pipeline {
     }
 
     stage('Scan image'){
+      environment {
+        XDG_RUNTIME_DIR = '/run'
+      }
       steps {
         dir(env.DIRECTORY) {
           sh 'make scan'

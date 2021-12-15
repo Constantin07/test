@@ -1,7 +1,7 @@
 REPOSITORY ?= constantin07/consul-template
 
 # Check for required binaries
-EXECUTABLES = podman tar
+EXECUTABLES = podman trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -19,11 +19,7 @@ build: login
 	podman build --pull --format docker -t ${REPOSITORY}:${VERSION} .
 
 scan:
-	$(eval TMP_DIR := $(shell mktemp -d))
-	@podman image save --quiet --format docker-archive ${REPOSITORY}:${VERSION} | tar -x --wildcards -C ${TMP_DIR} --warning=no-timestamp
-	@find ${TMP_DIR} -type f -name '*.tar' -print0 | xargs -r -0 --max-args=1 tar -C ${TMP_DIR} --warning=no-timestamp -xf
-	@trivy fs --exit-code 0 --no-progress --format json --output results.json ${TMP_DIR}
-	@rm -rf ${TMP_DIR}
+	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VERSION}
 
 tag:
 	podman tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest

@@ -7,10 +7,9 @@ After=network-online.target
 ExecStart=/etc/rc.d/init.d/jenkins start
 ExecStop=/etc/rc.d/init.d/jenkins stop
 Restart=always
-RestartSec=10
+RestartSec=15
 Type=forking
 LimitNOFILE=65535
-LimitNOFILESoft=32768
 
 [Install]
 WantedBy=multi-user.target
