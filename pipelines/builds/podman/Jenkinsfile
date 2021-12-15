@@ -79,6 +79,7 @@ pipeline {
         sh 'sudo systemctl enable podman.socket'
         sh 'sudo systemctl start podman.socket'
         sh 'sudo systemctl enable podman.service'
+        sh 'sudo loginctl enable-linger jenkins'
       }
     }
 

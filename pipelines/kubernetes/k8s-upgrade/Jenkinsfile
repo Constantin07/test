@@ -11,7 +11,7 @@ pipeline {
   }
 
   parameters {
-    string(name: 'K8S_VERSION', defaultValue: '1.21.7', description: 'The version of Kubernetes to upgrade to.')
+    string(name: 'K8S_VERSION', defaultValue: '1.21.8', description: 'The version of Kubernetes to upgrade to.')
   }
 
   environment {
@@ -45,6 +45,11 @@ pipeline {
   post {
     always {
       cleanWs()
+    }
+    success {
+      script {
+        currentBuild.description = params.K8S_VERSION
+      }
     }
   }
 

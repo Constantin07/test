@@ -16,7 +16,7 @@ VAULT_VERSION = 1.9.1
 default: build tag publish
 
 login:
-	docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
+	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
 	docker build --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REGISTRY}/${IMAGE}:${VAULT_VERSION} .
