@@ -1,3 +1,5 @@
+String version = ''
+
 pipeline {
 
   agent {
@@ -29,6 +31,10 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
+          script {
+            def playbook = readYaml file: 'vault.yaml'
+            version = playbook[0].roles[2].vault_version
+          }
           sshagent (credentials: ['jenkins-ssh-key']) {
             sh 'ansible-playbook vault.yaml'
           }
@@ -41,6 +47,9 @@ pipeline {
   post {
     always {
       cleanWs()
+      script {
+        currentBuild.description = version
+      }
     }
   }
 

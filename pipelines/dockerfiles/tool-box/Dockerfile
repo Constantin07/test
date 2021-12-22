@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.21.3
+ARG TRIVY_VERSION=0.22.0
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=4cb8959ec58aed26fb5f22d45bf60842934745c2f347b2ce1c009cdced52a4b9
+ARG TRIVY_SHA256=ce09fc69627c02d879fe03704df866b576b1fc0486f7cf0fc8b06e9dbd6f142c
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
@@ -147,7 +147,7 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
 
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
-    adduser -D -u 995 -G ${USERNAME} ${USERNAME}
+    adduser -D -h /home/${USERNAME} -u 995 -G ${USERNAME} ${USERNAME}
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
