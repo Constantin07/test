@@ -1,0 +1,36 @@
+---
+
+- name: Create podman config directory
+  file:
+    path: "{{ jenkins_home }}/.config/containers"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0775
+  tags: podman
+
+- name: Get user id
+  getent:
+    database: passwd
+    key: "{{ jenkins_user }}"
+  tags: podman
+
+- name: Upload podman storage.conf file
+  template:
+    src: storage.conf.j2
+    dest: "{{ jenkins_home }}/.config/containers/storage.conf"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0644
+  notify: update podman
+  tags: podman
+
+- name: Create podman graphroot directory
+  file:
+    path: "{{ jenkins_home }}/.local/share/containers/storage"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0775
+  notify: update podman
+  tags: podman

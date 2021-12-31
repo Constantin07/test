@@ -29,7 +29,9 @@ pipeline {
 
     stage('Scan image'){
       environment {
+        // Workaround for trivy to use correct podman socket file
         XDG_RUNTIME_DIR = '/run'
+        TRIVY_INSECURE = 'true'
       }
       steps {
         dir(env.DIRECTORY) {
@@ -62,7 +64,7 @@ pipeline {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             retry(2) {
-              sh 'make publish'
+              sh 'make publish clean'
             }
           }
         }
