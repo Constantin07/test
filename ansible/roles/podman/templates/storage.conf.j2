@@ -1,0 +1,8 @@
+[storage]
+driver = "overlay"
+runroot = "/run/user/{{ ansible_facts.getent_passwd[jenkins_user].1 }}"
+graphroot = "{{ jenkins_home }}/.local/share/containers/storage"
+rootless_storage_path = "{{ jenkins_home }}/.local/share/containers/storage"
+
+[storage.options]
+mount_program = "/usr/local/bin/fuse-overlayfs"

@@ -1,0 +1,5 @@
+---
+
+- name: update podman
+  command: podman info
+  tags: podman

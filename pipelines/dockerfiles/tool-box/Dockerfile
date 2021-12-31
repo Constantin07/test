@@ -4,10 +4,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.1.0
+ARG TERRAFORM_VERSION=1.1.3
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=763378aa75500ce5ba67d0cba8aa605670cd28bf8bafc709333a30908441acb5
+ARG TERRAFORM_SHA256=b215de2a18947fff41803716b1829a3c462c4f009b687c2cbdb52ceb51157c2f
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -132,12 +132,13 @@ ENV ANSIBLE_FORCE_COLOR=true \
     ANSIBLE_HOST_KEY_CHECKING=False
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py-pip make openssh-client openssl \
+    apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py3-pip make openssh-client openssl \
     gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
-RUN pip3 install --no-cache-dir --upgrade pip setuptools && \
+RUN pip3 install --no-cache-dir --upgrade setuptools && \
+    pip3 install --no-cache-dir --upgrade --ignore-installed pip && \
     pip3 install --no-cache-dir -r /requirements.txt
 
 RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
