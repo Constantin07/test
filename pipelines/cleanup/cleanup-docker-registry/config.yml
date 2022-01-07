@@ -8,8 +8,8 @@ triggers:
     projects:
       - dockerfiles/tool-box
       - dockerfiles/vault
-      - kubernetes/hello-kubernetes
-      - builds/build-docker-registry
+      - kubernetes/hello-kubernetes/deploy
+      - deploy-docker-registry
 
 extensions:
   cleanBeforeCheckout: true
