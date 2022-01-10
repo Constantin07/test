@@ -46,7 +46,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
 ARG HELMFILE_VERSION=v0.143.0
 ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_linux_amd64
 ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=9c325c64b9dff30fe957e652901f95dc5f67da5b8c76b3784fb221e495d69408
+ARG HELMFILE_SHA256=829b2b27aa4d7111f6c5b047ca162d2a9aef76b6646bb31c895850683a86c2c1
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
