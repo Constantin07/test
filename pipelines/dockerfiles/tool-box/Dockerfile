@@ -4,10 +4,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.1.3
+ARG TERRAFORM_VERSION=1.1.4
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=b215de2a18947fff41803716b1829a3c462c4f009b687c2cbdb52ceb51157c2f
+ARG TERRAFORM_SHA256=fca028d622f82788fdc35c1349e78d69ff07c7bb68c27d12f8b48c420e3ecdfb
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -24,10 +24,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
 #    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
 #    chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.21.8
+ARG KUBECTL_VERSION=v1.21.9
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=84eaef3da0b508666e58917ebe9a6b32dcc6367bddf6e4489b909451877e3e70
+ARG KUBECTL_SHA256=195d5387f2a6ca7b8ab5c2134b4b6cc27f29372f54b771947ba7c18ee983fbe6
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
@@ -82,10 +82,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
     tar xvzf ${KUBECONFORM_FILE} -C ${INSTALL_DIR} kubeconform
 
-ARG ECR_HELPER_VERSION=0.5.0
+ARG ECR_HELPER_VERSION=0.6.0
 ARG ECR_HELPER_URL=https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/${ECR_HELPER_VERSION}/linux-amd64/docker-credential-ecr-login
 ARG ECR_HELPER_FILE=docker-credential-ecr-login
-ARG ECR_HELPER_SHA256=a0ae9a66b1f41f3312785ec5e17404c7fd2a16a35703c9ea7c050406e20fc503
+ARG ECR_HELPER_SHA256=af805202cb5d627dde2e6d4be1f519b195fd5a3a35ddc88d5010b4a4e5a98dd8
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE} ${ECR_HELPER_URL}; \
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
