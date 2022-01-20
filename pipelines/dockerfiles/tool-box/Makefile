@@ -22,7 +22,7 @@ endif
 
 .DEFAULT_GOAL := default
 
-default: build tag push
+default: build tag push clean
 
 all: login build scan tag push publish
 

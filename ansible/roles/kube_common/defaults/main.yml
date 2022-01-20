@@ -1,6 +1,6 @@
 ---
 
-k8s_version: '1.21.8-00'
+k8s_version: '1.21.9-00'
 
 kubernetes_packages:
   - kubelet={{ k8s_version }}
