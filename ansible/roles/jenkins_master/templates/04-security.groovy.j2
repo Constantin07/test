@@ -1,12 +1,12 @@
 #!groovy
 
 import jenkins.model.Jenkins
-import jenkins.security.s2m.AdminWhitelistRule
+// import jenkins.security.s2m.AdminWhitelistRule
 
 Jenkins jenkins = Jenkins.getInstance()
 
 // Enable Agent to master security subsystem
-jenkins.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
+// jenkins.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
 
 // Disable old Non-Encrypted protocols
 HashSet<String> newProtocols = new HashSet<>(jenkins.getAgentProtocols())
