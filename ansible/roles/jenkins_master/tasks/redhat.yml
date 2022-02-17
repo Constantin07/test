@@ -1,5 +1,13 @@
 ---
 
+# Required jar utility
+- name: Install required packages for Jenkins master
+  yum:
+    name: java-11-openjdk-devel.x86_64
+    update_cache: yes
+    state: present
+  tags: jenkins_master
+
 - name: Add Jenkins repository
   get_url:
     url: "{{ jenkins_yum_repo_url }}"

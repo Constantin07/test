@@ -48,6 +48,7 @@ pipeline {
             glib2-devel \
             glibc-devel \
             glibc-static \
+            golang-github-cpuguy83-md2man \
             gcc \
             gpgme-devel \
             iptables \
