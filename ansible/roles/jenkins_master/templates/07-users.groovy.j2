@@ -2,6 +2,8 @@
 
 import jenkins.model.*
 import hudson.security.*
+import org.jenkinsci.plugins.matrixauth.PermissionEntry
+import org.jenkinsci.plugins.matrixauth.AuthorizationType
 
 def instance = Jenkins.getInstance()
 
@@ -11,9 +13,9 @@ hudsonRealm.createAccount('{{ jnlp_agent_username }}','{{ jnlp_agent_password }}
 instance.setSecurityRealm(hudsonRealm)
 
 def strategy = new GlobalMatrixAuthorizationStrategy()
-strategy.add(Jenkins.ADMINISTER, '{{ admin_username }}')
-strategy.add(Jenkins.READ, '{{ jnlp_agent_username }}')
-strategy.add(Jenkins.MasterComputer.CONNECT, '{{ jnlp_agent_username }}')
+strategy.add(Jenkins.ADMINISTER, new PermissionEntry(AuthorizationType.USER, '{{ admin_username }}'))
+strategy.add(Jenkins.READ, new PermissionEntry(AuthorizationType.USER, '{{ jnlp_agent_username }}'))
+strategy.add(Jenkins.MasterComputer.CONNECT, new PermissionEntry(AuthorizationType.USER, '{{ jnlp_agent_username }}'))
 instance.setAuthorizationStrategy(strategy)
 
 instance.save()
