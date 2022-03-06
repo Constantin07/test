@@ -11,6 +11,8 @@ jenkins_system_properties: >-
   -Djenkins.install.runSetupWizard=false
   -Dhudson.slaves.ChannelPinger.pingIntervalSeconds=300
 
+vault_url: "http://vault.internal:8200"
+
 # More details on tuning https://jenkins.io/blog/2016/11/21/gc-tuning
 jenkins_java_options: >-
   -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1

@@ -17,6 +17,7 @@ greenballs
 hashicorp-vault-plugin
 htmlpublisher
 http_request
+jaxb
 job-dsl
 jobcopy-builder
 kubernetes
