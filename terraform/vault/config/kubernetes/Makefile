@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 .PHONY: all pip3-install clean
-default: pip3-install
+default: pip3-install lint
 
 .venv:
 	python3 -m venv .venv

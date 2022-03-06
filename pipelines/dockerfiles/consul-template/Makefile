@@ -5,7 +5,7 @@ EXECUTABLES = podman trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-VERSION=0.27.2
+VERSION=0.28.0
 
 .PHONY: all login build scan tag push clean
 all: build tag push
