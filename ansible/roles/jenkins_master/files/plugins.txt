@@ -13,6 +13,7 @@ docker-workflow
 durable-task
 git
 github
+git-parameter
 greenballs
 hashicorp-vault-plugin
 htmlpublisher

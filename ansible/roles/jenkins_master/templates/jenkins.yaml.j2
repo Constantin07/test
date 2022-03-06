@@ -13,6 +13,14 @@ credentials:
           id: "kubernetes"
           scope: GLOBAL
 
+      - vaultAppRoleCredential:
+          id: "vault-approle"
+          description: "Vault AppRole"
+          path: "approle"
+          roleId: "{{ vault_role_id }}"
+          scope: GLOBAL
+          secretId: "{{ vault_secret_id }}"
+
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
@@ -78,6 +86,7 @@ unclassified:
   hashicorpVault:
    configuration:
      vaultUrl: "{{ vault_url }}"
+     vaultCredentialId: "vault-approle"
      engineVersion: 1
      skipSslVerification: true
 

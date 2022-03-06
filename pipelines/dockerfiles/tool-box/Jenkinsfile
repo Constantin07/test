@@ -21,7 +21,9 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make login build'
+            withCredentials([[$class: 'VaultTokenCredentialBinding', addrVariable: 'VAULT_ADDR', credentialsId: 'vault-approle', tokenVariable: 'VAULT_TOKEN', vaultAddr: 'http://vault.internal:8200']]) {
+              sh 'make login build'
+            }
           }
         }
       }
