@@ -26,7 +26,7 @@ lint:
 	helmfile lint
 
 diff:
-	helmfile diff
+	HELM_DIFF_COLOR=true helmfile diff
 
 sync: validate
 	helmfile sync

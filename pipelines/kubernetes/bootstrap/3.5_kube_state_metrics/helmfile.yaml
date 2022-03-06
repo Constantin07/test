@@ -12,7 +12,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/kube-state-metrics
-    version: 2.2.8
+    version: 2.2.11
     values:
       - image:
           pullPolicy: Always
