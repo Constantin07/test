@@ -1,0 +1,9 @@
+---
+
+- name: update ca trust redhat
+  command: update-ca-trust
+  tags: ca_certificates
+
+- name: update ca trust debian
+  command: update-ca-certificates
+  tags: ca_certificates

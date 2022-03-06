@@ -1,0 +1,62 @@
+---
+
+- name: Set Linux OS distribution
+  set_fact:
+    distribution: "{{ ansible_os_family|lower }}"
+  tags: ca_certificates
+
+- name: Include distribution specific vars
+  include_vars: "{{ distribution }}.yml"
+  tags: ca_certificates
+
+- name: Include Linux distribution specific tasks
+  include_tasks: "{{ distribution }}.yml"
+  tags: ca_certificates
+
+- name: Get internal root CA certificate from Vault
+  uri:
+    url: "{{ vault_addr }}/v1/{{ root_ca_path }}/ca/pem"
+    method: GET
+    headers:
+      X-Vault-Token: "{{ lookup('env', 'VAULT_TOKEN') }}"
+    return_content: yes
+    validate_certs: no
+  register: root_ca
+  until: root_ca.status == 200
+  retries: 3
+  delay: 5
+  tags: ca_certificates
+
+- name: Save internal root CA certificate
+  ansible.builtin.copy:
+    dest: "{{ dest_dir }}/root_ca.{{ cert_ext }}"
+    content: "{{ root_ca.content }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: update ca trust {{ distribution }}
+  tags: ca_certificates
+
+- name: Get internal intermediate CA certificate from Vault
+  uri:
+    url: "{{ vault_addr }}/v1/{{ intermediate_ca_path }}/ca/pem"
+    method: GET
+    headers:
+      X-Vault-Token: "{{ lookup('env', 'VAULT_TOKEN') }}"
+    return_content: yes
+    validate_certs: no
+  register: int_ca
+  until: int_ca.status == 200
+  retries: 3
+  delay: 5
+  tags: ca_certificates
+
+- name: Save internal intermediate CA certificate
+  ansible.builtin.copy:
+    dest: "{{ dest_dir }}/int_ca.{{ cert_ext }}"
+    content: "{{ int_ca.content }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: update ca trust {{ distribution }}
+  tags: ca_certificates

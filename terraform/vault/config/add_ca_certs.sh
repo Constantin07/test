@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script adds Root and Intermediate CA certs to system
+# This script adds Root and Intermediate CA certs to system truster store
 
 set -e
 
