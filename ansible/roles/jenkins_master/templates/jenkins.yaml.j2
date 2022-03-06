@@ -71,8 +71,15 @@ jenkins:
 unclassified:
   ansiColorBuildWrapper:
     globalColorMapName: xterm
+
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
+
+  hashicorpVault:
+   configuration:
+     vaultUrl: "{{ vault_url }}"
+     engineVersion: 1
+     skipSslVerification: true
 
 groovy:
   - script: >
