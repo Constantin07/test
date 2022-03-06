@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.24.1
+ARG TRIVY_VERSION=0.24.2
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=876e286cb53a626a31bff62ff3945f7dc7c67fdb223782a36ff24dc4691b332b
+ARG TRIVY_SHA256=4b2dd2bca5c44a4bb175d66e784457edd7fe5154bd2554319907c2abd76c8f5a
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
@@ -149,6 +149,9 @@ RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
     adduser -D -h /home/${USERNAME} -u 995 -G ${USERNAME} ${USERNAME}
+
+COPY *_ca.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}

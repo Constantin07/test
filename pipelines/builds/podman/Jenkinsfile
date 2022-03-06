@@ -22,8 +22,8 @@ pipeline {
     stage('Checkout') {
       steps {
         checkout scm: [$class: 'GitSCM',
-          branches: [[name: 'main']],
-          userRemoteConfigs: [[url: 'https://github.com/containers/podman.git' ]],
+          branches: [[ name: 'main' ]],
+          userRemoteConfigs: [[ url: 'https://github.com/containers/podman.git' ]],
           extensions: [
             [$class: 'CleanCheckout'],
             [$class: 'CloneOption', noTags: false, reference: '', shallow: false]

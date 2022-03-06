@@ -27,12 +27,14 @@ default: build tag push clean publish clean
 all: login build scan tag push publish
 
 login:
-	@echo "${DOCKERHUB_TOKEN}" | podman login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
+	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
 build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
-	podman build --pull --format docker -t ${REGISTRY}/${IMAGE}:${TAG} .
+	@./add_ca_certs.sh
+	docker build --pull -t ${REGISTRY}/${IMAGE}:${TAG} .
+	@rm -f *_ca.crt
 	@rm -f requirements.yml
 	@rm -rf bin
 
@@ -40,19 +42,22 @@ scan:
 	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${TAG}
 
 tag:
-	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
-	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
-	podman tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:latest
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:${TAG}
+	docker tag ${REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REPOSITORY}:latest
 
 push:
-	podman push --tls-verify=false ${REGISTRY}/${IMAGE}:${TAG}
-	podman push --tls-verify=false ${REGISTRY}/${IMAGE}:latest
+	docker push ${REGISTRY}/${IMAGE}:${TAG}
+	docker push ${REGISTRY}/${IMAGE}:latest
 
 # Publish to DockerHub
 publish: login
-	podman push ${DOCKER_REPOSITORY}:${TAG}
-	podman push ${DOCKER_REPOSITORY}:latest
+	docker push ${DOCKER_REPOSITORY}:${TAG}
+	docker push ${DOCKER_REPOSITORY}:latest
 
 clean:
-	podman rmi ${REGISTRY}/${IMAGE}:latest || true
-	podman rmi ${REGISTRY}/${IMAGE}:${TAG} || true
+	@rm -f *_ca.crt
+	@rm -f requirements.yml
+	@rm -rf bin
+	docker rmi ${REGISTRY}/${IMAGE}:latest || true
+	docker rmi ${REGISTRY}/${IMAGE}:${TAG} || true

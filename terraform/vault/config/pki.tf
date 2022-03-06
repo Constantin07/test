@@ -1,6 +1,6 @@
 # PKI
 
-# Root CA
+## Root CA
 
 resource "vault_mount" "pki" {
   path        = "pki"
@@ -23,7 +23,7 @@ resource "vault_pki_secret_backend_config_urls" "config_urls" {
   crl_distribution_points = ["http://vault.internal:8200/v1/pki/crl"]
 }
 
-# Intermediate CA
+## Intermediate CA
 
 resource "vault_mount" "pki_int" {
   path        = "pki_int"
