@@ -1,0 +1,7 @@
+---
+
+# Important: The VAULT_TOKEN environment variable must be defined for this role to work properly
+
+vault_addr:           "http://vault.internal:8200"
+root_ca_path:         pki
+intermediate_ca_path: pki_int

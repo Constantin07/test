@@ -2,4 +2,5 @@
 
 dependencies:
   - role: journalctl
+  - role: ca_certificates
 

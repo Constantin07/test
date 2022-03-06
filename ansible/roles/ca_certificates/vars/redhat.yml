@@ -1,0 +1,4 @@
+---
+
+dest_dir: /usr/share/pki/ca-trust-source/anchors
+cert_ext: 'pem'

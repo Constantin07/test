@@ -1,0 +1,4 @@
+---
+
+dest_dir: /usr/local/share/ca-certificates
+cert_ext: 'crt'

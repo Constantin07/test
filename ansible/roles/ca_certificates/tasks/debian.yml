@@ -1,0 +1,8 @@
+---
+
+- name: Install required packages
+  apt:
+    name: ca-certificates
+    update_cache: yes
+    state: present
+  tags: ca_certificates
