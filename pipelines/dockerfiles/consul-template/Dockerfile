@@ -5,7 +5,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
 ARG INSTALL_DIR=/usr/local/bin
 WORKDIR ${INSTALL_DIR}
 
-ARG CONSUL_TEMPLATE_VERSION=0.28.0
+ARG CONSUL_TEMPLATE_VERSION=0.28.1
 RUN curl -fsSL --retry 3 https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -o consul-template.zip && \
     unzip consul-template.zip && chmod +x consul-template
 

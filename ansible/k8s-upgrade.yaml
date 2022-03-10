@@ -1,8 +1,8 @@
 ---
 # Playbook to upgrade Kubernetes cluster, both master & slave nodes
 
-# Usage for interactive mode: ansible-playbook k8s-upgrade.yml -e k8s_version=1.18.8
-# Usage for non-interactive mode: ansible-playbook k8s-upgrade.yml -e k8s_version=1.18.8 -e non_interactive=true
+# Usage for interactive mode: ansible-playbook k8s-upgrade.yaml -e k8s_version=1.22.8
+# Usage for non-interactive mode: ansible-playbook k8s-upgrade.yaml -e k8s_version=1.22.8 -e non_interactive=true
 
 - hosts: kube
   become: yes
