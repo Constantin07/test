@@ -2,3 +2,4 @@
 dependencies:
   - role: git_crypt
   - role: jenkins_shared
+  - role: consul_template

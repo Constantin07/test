@@ -1,0 +1,12 @@
+---
+
+- name: Download and install consul-template {{ ct_version }}
+  unarchive:
+    src: "{{ ct_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded
+  tags: consul_template
