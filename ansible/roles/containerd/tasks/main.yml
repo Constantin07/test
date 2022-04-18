@@ -69,3 +69,13 @@
     mode: 0644
   notify: restart containerd
   tags: containerd
+
+- name: Copy crictl.yaml to /etc
+  copy:
+    src: crictl.yaml
+    dest: "/etc"
+    owner: root
+    group: root
+    mode: 0644
+  tags: containerd
+
