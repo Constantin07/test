@@ -7,6 +7,10 @@ helmDefaults:
   timeout: 120
   historyMax: 5
 
+repositories:
+  - name: deliveryhero
+    url: https://charts.deliveryhero.io
+
 releases:
   - name: node-problem-detector
     namespace: {{ requiredEnv "NAMESPACE" }}

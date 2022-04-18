@@ -60,6 +60,10 @@ resource "vault_pki_secret_backend_role" "test" {
     "DigitalSignature",
     "KeyAgreement",
     "KeyEncipherment",
+    "DataEncipherment",
+  ]
+  ext_key_usage = [
+    "UsageServerAuth",
   ]
   allowed_domains = [
     "internal"
@@ -90,6 +94,10 @@ resource "vault_pki_secret_backend_role" "server" {
     "DigitalSignature",
     "KeyAgreement",
     "KeyEncipherment",
+    "DataEncipherment",
+  ]
+  ext_key_usage = [
+    "UsageServerAuth",
   ]
   allowed_domains = [
     "internal"

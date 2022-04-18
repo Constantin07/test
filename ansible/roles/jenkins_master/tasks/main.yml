@@ -4,6 +4,11 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: jenkins_master
 
+- name: Enable HTTPS
+  include_tasks: https.yml
+  when: enable_https | bool
+  tags: jenkins_master
+
 - name: Add jenkins user to docker group
   user:
     name: jenkins
