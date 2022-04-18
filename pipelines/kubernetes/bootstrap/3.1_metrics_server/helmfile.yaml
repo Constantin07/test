@@ -28,5 +28,5 @@ releases:
             memory: "32Mi"
             cpu: "50m"
           limits:
-            memory: "50Mi"
-            cpu: "100m"
+            memory: "32Mi"
+            cpu: "150m"
