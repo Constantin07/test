@@ -6,6 +6,7 @@ timeout=5
 max_retry=60
 count=1
 RC=1
+
 until [[ ${RC} -eq 0 || ${count} -eq ${max_retry} ]]; do
     result=`kubectl top node 2>&1`
     RC=$?

@@ -12,14 +12,17 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 5.11.5
+    version: 5.11.7
     values:
       - image:
           pullPolicy: Always
+        serviceAccount:
+          name: metrics-server
         extraArgs:
           kubelet-insecure-tls: true
         apiService:
           create: true
+          insecureSkipTLSVerify: true
         resources:
           requests:
             memory: "32Mi"
