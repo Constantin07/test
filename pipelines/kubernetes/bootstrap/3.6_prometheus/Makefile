@@ -10,8 +10,7 @@ KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-sche
 .PHONY: init template validate lint diff sync status destroy
 
 init:
-	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-	helm repo update
+	helmfile repos
 
 template:
 	helmfile template

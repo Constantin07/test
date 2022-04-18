@@ -39,7 +39,7 @@
     update_cache: yes
   tags: jenkins_master
 
-- name: Jenkins config - JENKINS_PORT
+- name: Jenkins configure - JENKINS_PORT
   lineinfile:
     path: /etc/sysconfig/jenkins
     regexp: '^JENKINS_PORT='
@@ -47,7 +47,7 @@
   notify: restart jenkins
   tags: jenkins_master
 
-- name: Jenkins config - JENKINS_LISTEN_ADDRESS
+- name: Jenkins configure - JENKINS_LISTEN_ADDRESS
   lineinfile:
     path: /etc/sysconfig/jenkins
     regexp: '^JENKINS_LISTEN_ADDRESS='

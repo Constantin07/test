@@ -9,8 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: init template validate lint diff sync status destroy
 
 init:
-	helm repo add bitnami https://charts.bitnami.com/bitnami
-	helm repo update
+	helmfile repos
 
 template:
 	helmfile template
@@ -21,7 +20,6 @@ validate:
 
 lint:
 	helmfile lint
-#	helmfile template | kubectl apply --dry-run=server -f -
 
 diff:
 	helmfile diff

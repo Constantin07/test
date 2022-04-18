@@ -1,0 +1,10 @@
+---
+
+- name: Jenkins configure - JENKINS_HTTPS_PORT
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_HTTPS_PORT='
+    line: 'JENKINS_HTTPS_PORT="{{ jenkins_https_port }}"'
+  notify: restart jenkins
+  tags: jenkins_master
+

@@ -5,6 +5,7 @@ jenkins_yum_gpg_key:  "https://pkg.jenkins.io/redhat/jenkins.io.key"
 jenkins_home:         "/var/lib/jenkins"
 jenkins_version:      "2.328"
 jenkins_port:         "8080"
+jenkins_https_port:   "-1"
 jenkins_agent_port:   "50000"
 jenkins_url: "http://{{ ansible_nodename }}:{{ jenkins_port }}"
 jenkins_system_properties: >-

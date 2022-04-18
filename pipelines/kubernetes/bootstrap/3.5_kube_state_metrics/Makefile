@@ -10,8 +10,7 @@ KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-sche
 .PHONY: init template validate lint diff sync status destroy tests
 
 init:
-	helm repo add bitnami https://charts.bitnami.com/bitnami
-	helm repo update
+	helmfile repos
 
 template:
 	gomplate -f ingress.yaml
