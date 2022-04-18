@@ -14,7 +14,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 6.2.4
+    version: 6.2.7
     values:
       - image:
           pullPolicy: Always

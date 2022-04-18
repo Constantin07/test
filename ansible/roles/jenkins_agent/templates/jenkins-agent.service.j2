@@ -12,10 +12,12 @@ PermissionsStartOnly=true
 Environment="JAVA_OPTS=-Xms512m -Xmx{{ (ansible_memtotal_mb-512)|int|abs }}m"
 ExecStartPre=-/usr/bin/mkdir -p {{ jenkins_work_dir }}
 ExecStartPre=/usr/bin/chown -R {{ jenkins_user }}:{{ jenkins_group }} {{ jenkins_work_dir }}
-ExecStart=/usr/bin/java $JAVA_OPTS {{ jenkins_system_properties }} -jar {{ jenkins_bin_path }}/slave.jar \
-  -jnlpUrl http://{{ jenkins_master_host }}:{{ jenkins_master_port }}/computer/{{ ansible_hostname }}/slave-agent.jnlp \
+ExecStart=/usr/bin/java $JAVA_OPTS {{ jenkins_system_properties }} \
+  -jar {{ jenkins_bin_path }}/slave.jar \
+  -jnlpUrl {{ jenkins_master_scheme }}://{{ jenkins_master_host }}:{{ jenkins_master_port }}/computer/{{ ansible_hostname }}/slave-agent.jnlp \
   -jnlpCredentials {{ jnlp_agent_username }}:{{ jnlp_agent_password }} \
-  -workDir "{{ jenkins_work_dir }}"
+  -workDir "{{ jenkins_work_dir }}" \
+  -noCertificateCheck
 KillSignal=SIGTERM
 KillMode=process
 Restart=on-failure
