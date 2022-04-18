@@ -14,7 +14,7 @@ releases:
   - name: nginx-ingress
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: ingress-nginx/ingress-nginx
-    version: 4.0.19
+    version: 4.1.0
     values:
       - controller:
           image:

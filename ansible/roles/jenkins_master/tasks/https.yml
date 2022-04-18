@@ -8,3 +8,57 @@
   notify: restart jenkins
   tags: jenkins_master
 
+- name: Jenkins configure - JENKINS_HTTPS_KEYSTORE
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_HTTPS_KEYSTORE='
+    line: 'JENKINS_HTTPS_KEYSTORE="{{ jenkins_home }}/jenkins.jks"'
+  notify: restart jenkins
+  tags: jenkins_master
+
+- name: Jenkins configure - JENKINS_HTTPS_KEYSTORE_PASSWORD
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_HTTPS_KEYSTORE_PASSWORD='
+    line: 'JENKINS_HTTPS_KEYSTORE_PASSWORD="{{ jks_password }}"'
+  notify: restart jenkins
+  tags: jenkins_master
+
+- name: Jenkins configure - JENKINS_HTTPS_LISTEN_ADDRESS
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    regexp: '^JENKINS_HTTPS_LISTEN_ADDRESS='
+    line: 'JENKINS_HTTPS_LISTEN_ADDRESS="0.0.0.0"'
+  notify: restart jenkins
+  tags: jenkins_master
+
+- name: Copy script to generate JKS keystore
+  ansible.builtin.copy:
+    src: generate_cert.sh
+    dest: "{{ jenkins_home }}/"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: '0755'
+  notify: restart jenkins
+  tags: jenkins_master
+
+- name: Generate JKS keystore
+  ansible.builtin.command:
+    argv:
+      - ./generate_cert.sh
+      - "{{ ansible_nodename }}"
+      - "{{ jks_password }}"
+    chdir: "{{ jenkins_home }}"
+  environment:
+    VAULT_ADDR: "{{ lookup('env', 'VAULT_ADDR') }}"
+    VAULT_TOKEN: "{{ lookup('env', 'VAULT_TOKEN') }}"
+    JAVA_HOME: "{{ lookup('env', 'JAVA_HOME') }}"
+  tags: jenkins_master
+
+- name: Change JKS file ownerhip, group and permissions
+  ansible.builtin.file:
+    path: "{{ jenkins_home }}/jenkins.jks"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: '0644'
+  tags: jenkins_master

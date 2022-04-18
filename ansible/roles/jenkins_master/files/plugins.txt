@@ -29,6 +29,7 @@ matrix-project
 pipeline-aws
 pipeline-multibranch-defaults
 pipeline-rest-api
+pipeline-stage-view
 pipeline-utility-steps
 ssh-agent
 startup-trigger-plugin

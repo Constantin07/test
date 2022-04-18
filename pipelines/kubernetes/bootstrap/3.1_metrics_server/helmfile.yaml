@@ -16,10 +16,12 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 5.11.7
+    version: 5.11.9
     values:
       - image:
           pullPolicy: Always
+        commonLabels:
+          app.kubernetes.io/version: 0.6.1
         serviceAccount:
           name: metrics-server
         extraArgs:

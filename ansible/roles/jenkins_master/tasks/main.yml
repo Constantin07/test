@@ -4,6 +4,11 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: jenkins_master
 
+- name: Include secrets
+  include_vars: secrets.enc.yml
+  no_log: True
+  tags: jenkins_master
+
 - name: Enable HTTPS
   include_tasks: https.yml
   when: enable_https | bool
@@ -11,7 +16,7 @@
 
 - name: Add jenkins user to docker group
   user:
-    name: jenkins
+    name: "{{ jenkins_user }}"
     groups: docker
     append: yes
   tags: jenkins_master
@@ -24,25 +29,20 @@
   file:
     state: "{{ item }}"
     path: /var/lib/jenkins/init.groovy.d
-    owner: jenkins
-    group: jenkins
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
     mode: 0755
   with_items:
     - absent
     - directory
   tags: jenkins_master
 
-- name: Include secrets
-  include_vars: secrets.enc.yml
-  no_log: True
-  tags: jenkins_master
-
 - name: Upload Groovy bootstrap scripts
   template:
     src: "{{ item }}"
     dest: "{{ jenkins_home }}/init.groovy.d/{{ item | basename | regex_replace('.j2','') }}"
-    owner: jenkins
-    group: jenkins
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
     mode: 0644
   with_fileglob:
     - ../templates/*.groovy.j2
@@ -50,11 +50,11 @@
   tags: jenkins_master
 
 - name: Upload list of plugins and install script
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.name }}"
     dest: "{{ jenkins_home }}/{{ item.name }}"
-    owner: jenkins
-    group: jenkins
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
     mode: "{{ item.mode }}"
   loop:
     - { name: 'install-plugins.sh', mode: '0755' }
@@ -66,8 +66,8 @@
   template:
     src: jenkins.yaml.j2
     dest: "{{ jenkins_home }}/jenkins.yaml"
-    owner: jenkins
-    group: jenkins
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
     mode: 0644
   notify: restart jenkins
   no_log: true
@@ -77,8 +77,8 @@
   file:
     state: "{{ item }}"
     path: /var/lib/jenkins/plugins
-    owner: jenkins
-    group: jenkins
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
     mode: 0755
   with_items:
     - absent
@@ -93,7 +93,7 @@
     JENKINS_UC: "https://updates.jenkins.io"
     JENKINS_UC_LATEST: "http://mirrors.jenkins-ci.org"
   become: yes
-  become_user: jenkins
+  become_user: "{{ jenkins_user }}"
   tags: jenkins_master
 
 - name: Install Jenkins systemd unit file
