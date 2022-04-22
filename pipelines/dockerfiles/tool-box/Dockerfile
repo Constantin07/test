@@ -24,10 +24,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
 #    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
 #    chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.22.8
+ARG KUBECTL_VERSION=v1.22.9
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=761bf1f648056eeef753f84c8365afe4305795c5f605cd9be6a715483fe7ca6b
+ARG KUBECTL_SHA256=ae6a9b585f9a366d24bb71f508bfb9e2bb90822136138109d3a91cd28e6563bb
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.26.0
+ARG TRIVY_VERSION=0.27.0
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=98fa7307a206d9218c9f2f80bee19ab9935bc905334430edbf5da7e6a7fd036e
+ARG TRIVY_SHA256=3f00ddcac8abecadcc761bdb46787d83dd3cfae1e2e0d9116794a81c086ab125
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
@@ -133,7 +133,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py3-pip make openssh-client openssl \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible && \
+    gnupg gcc musl-dev openssl-dev libffi-dev ansible git-crypt && \
     setcap cap_net_raw+ep /bin/busybox
 
 COPY requirements.txt /
@@ -141,10 +141,7 @@ RUN pip3 install --no-cache-dir --upgrade setuptools && \
     pip3 install --no-cache-dir --upgrade --ignore-installed pip && \
     pip3 install --no-cache-dir -r /requirements.txt
 
-RUN set -ex; curl -fsSL --retry 3 -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-git-crypt/master/sgerrand.rsa.pub && \
-    curl -fsSL --retry 3 -O https://github.com/sgerrand/alpine-pkg-git-crypt/releases/download/0.6.0-r1/git-crypt-0.6.0-r1.apk && \
-    apk add git-crypt-0.6.0-r1.apk && rm -f git-crypt-0.6.0-r1.apk && \
-    ln -s /bin/git-crypt /usr/local/bin/git-crypt
+RUN ln -s /usr/bin/git-crypt /usr/local/bin/git-crypt
 
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \

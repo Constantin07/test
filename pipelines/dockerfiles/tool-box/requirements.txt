@@ -1,6 +1,6 @@
 ansible-lint==5.4.0
-awscli==1.22.80
-boto3==1.21.25
+awscli==1.22.101
+boto3==1.21.46
 cryptography==36.0.2
 Jinja2==3.0.3
 paramiko==2.10.3
