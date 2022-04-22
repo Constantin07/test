@@ -1,11 +1,11 @@
 REPOSITORY ?= constantin07/consul-template
 
 # Check for required binaries
-EXECUTABLES = podman trivy
+EXECUTABLES = docker trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-VERSION=0.28.1
+VERSION=0.29.0
 
 .PHONY: all login build scan tag push clean
 all: build tag push

@@ -76,6 +76,7 @@ resource "vault_pki_secret_backend_role" "test" {
   client_flag                        = true
   code_signing_flag                  = true
   email_protection_flag              = true
+  generate_lease                     = true
   no_store                           = true
   basic_constraints_valid_for_non_ca = false
 }
@@ -110,6 +111,7 @@ resource "vault_pki_secret_backend_role" "server" {
   client_flag                        = true
   code_signing_flag                  = true
   email_protection_flag              = true
+  generate_lease                     = true
   no_store                           = true
   basic_constraints_valid_for_non_ca = false
 }

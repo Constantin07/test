@@ -10,7 +10,7 @@ pip3-install: .venv
 	.venv/bin/pip3 install --no-cache-dir --upgrade pip setuptools
 	.venv/bin/pip3 install --no-cache-dir -r requirements.txt
 
-lint:
+lint: pip3-install
 	.venv/bin/pylint get_kubeconfig.py
 
 clean:
