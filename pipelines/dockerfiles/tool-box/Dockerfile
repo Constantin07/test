@@ -1,4 +1,4 @@
-FROM alpine:3.15 AS builder
+FROM alpine:3.16 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.8.2
+ARG HELM_VERSION=v3.9.0
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=6cb9a48f72ab9ddfecab88d264c2f6508ab3cd42d9c09666be16a7bf006bed7b
+ARG HELM_SHA256=1484ffb0c7a608d8069470f48b88d729e88c41a1b6602f145231e8ea7b43b50a
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -120,7 +120,7 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 ARG USERNAME=toolbox
 ENV USER=${USERNAME} \

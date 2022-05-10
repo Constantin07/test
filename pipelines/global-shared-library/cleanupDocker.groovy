@@ -8,8 +8,6 @@ def call(String nodeName='', int keep_images=1) {
     stage("Cleanup on ${nodeName}") {
       node(nodeName) {
 
-        checkout scm
-
         def image = docker.image(docker_image)
         image.pull()
         image.withRun("--privileged \

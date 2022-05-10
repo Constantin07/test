@@ -7,7 +7,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VERSION=4.13
+VERSION=4.14
 
 .PHONY: all login build scan tag push clean
 all: build tag push
@@ -16,7 +16,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build: login
-	podman build --pull --format docker --build-arg VERSION=${VERSION} -t ${REPOSITORY}:${VERSION} .
+	podman build --format docker --network host --build-arg VERSION=${VERSION} --build-arg VAULT_ADDR=${VAULT_ADDR} -t ${REPOSITORY}:${VERSION} .
 
 scan:
 	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VERSION}
