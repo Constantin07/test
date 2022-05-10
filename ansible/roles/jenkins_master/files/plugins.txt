@@ -23,6 +23,7 @@ job-dsl
 jobcopy-builder
 kubernetes
 ldap
+lockable-resources
 mask-passwords
 matrix-auth
 matrix-project

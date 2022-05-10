@@ -1,4 +1,4 @@
-FROM alpine:3.15 AS builder
+FROM alpine:3.16 AS builder
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip
 
@@ -10,7 +10,7 @@ RUN curl -fsSL --retry 3 https://releases.hashicorp.com/consul-template/${CONSUL
     unzip consul-template.zip && chmod +x consul-template
 
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-certificates bash curl jq && \
     update-ca-certificates

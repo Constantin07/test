@@ -7,7 +7,7 @@ jenkins_home:         "/var/lib/jenkins"
 jenkins_port:         "-1"
 jenkins_https_port:   "8443"
 jenkins_agent_port:   "50000"
-jenkins_url: "https://{{ ansible_nodename }}:{{ jenkins_port }}"
+jenkins_url: "https://{{ ansible_nodename }}:{{ jenkins_https_port }}"
 jenkins_system_properties: >-
   -Djenkins.install.runSetupWizard=false
   -Dhudson.slaves.ChannelPinger.pingIntervalSeconds=300
@@ -16,10 +16,11 @@ vault_url: "http://vault.internal:8200"
 
 # More details on tuning https://jenkins.io/blog/2016/11/21/gc-tuning
 jenkins_java_options: >-
-  -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1
+  -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1 -Dhudson.DNSMultiCast.disabled=true
   -XX:-BytecodeVerificationLocal -XX:-BytecodeVerificationRemote -XX:+ReduceSignalUsage
   -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation
   -XX:+ExplicitGCInvokesConcurrent
   -XX:+ParallelRefProcEnabled
+  -XX:+UseStringDeduplication
 
 #   -XX:+UnlockExperimentalVMOptions -XX:+UseZGC

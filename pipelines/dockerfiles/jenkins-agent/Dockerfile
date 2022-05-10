@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 # Install required packages
 
@@ -30,6 +30,12 @@ RUN curl --create-dirs -sfSLo /usr/share/jenkins/agent.jar https://repo.jenkins-
 
 COPY jenkins-agent /usr/local/bin/jenkins-agent
 RUN chmod +x /usr/local/bin/jenkins-agent
+
+ARG VAULT_ADDR
+COPY add_ca_certs.sh add_ca_certs.sh
+RUN chmod +x ./add_ca_certs.sh && \
+    ./add_ca_certs.sh && \
+    rm -f ./add_ca_certs.sh
 
 USER ${USER}
 
