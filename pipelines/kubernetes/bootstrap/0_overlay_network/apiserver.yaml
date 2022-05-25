@@ -73,11 +73,10 @@ spec:
       containers:
       - args:
         - --secure-port=5443
-        - -v=5
         env:
         - name: DATASTORE_TYPE
           value: kubernetes
-        image: calico/apiserver:v3.22.2
+        image: calico/apiserver:v3.23.1
         livenessProbe:
           httpGet:
             path: /version

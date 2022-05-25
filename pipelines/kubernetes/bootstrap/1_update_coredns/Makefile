@@ -11,7 +11,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	mkdir -p /tmp/kubeconform
-	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.22.9 "${CONFIGMAP_FILE}"
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.22.10 "${CONFIGMAP_FILE}"
 
 apply: validate
 	@kubectl diff -f "${CONFIGMAP_FILE}"; \

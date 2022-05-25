@@ -24,10 +24,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
 #    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
 #    chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.22.9
+ARG KUBECTL_VERSION=v1.22.10
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=ae6a9b585f9a366d24bb71f508bfb9e2bb90822136138109d3a91cd28e6563bb
+ARG KUBECTL_SHA256=225bc8d4ac86e3a9e36b85d2d9cb90cd4b4afade29ba0292f47834ecf570abf2
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.27.0
+ARG TRIVY_VERSION=0.28.1
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=3f00ddcac8abecadcc761bdb46787d83dd3cfae1e2e0d9116794a81c086ab125
+ARG TRIVY_SHA256=2b3f401a181fbcd52624f1e79a38ddf4e28afab5354136496a058d2a76f59f0b
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
