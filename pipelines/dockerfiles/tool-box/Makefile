@@ -22,7 +22,7 @@ endif
 
 .DEFAULT_GOAL := default
 
-default: build tag push clean publish clean
+default: build tag push publish clean
 
 all: login build scan tag push publish
 
@@ -33,7 +33,7 @@ build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
 	@./add_ca_certs.sh
-	docker build --pull -t ${REGISTRY}/${IMAGE}:${TAG} .
+	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f *_ca.crt
 	@rm -f requirements.yml
 	@rm -rf bin

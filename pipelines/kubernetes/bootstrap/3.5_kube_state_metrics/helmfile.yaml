@@ -16,11 +16,9 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/kube-state-metrics
-    version: 2.2.24
+    version: 3.0.3
     values:
-      - image:
-          pullPolicy: Always
-        resources:
+      - resources:
           requests:
             cpu: 10m
             memory: 32Mi

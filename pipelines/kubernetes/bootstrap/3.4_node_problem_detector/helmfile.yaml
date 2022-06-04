@@ -16,13 +16,9 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: deliveryhero/node-problem-detector
-    version: 2.2.1
+    version: 2.2.2
     values:
-      - image:
-          pullPolicy: Always
-        rbac:
-          pspEnabled: true
-        resources:
+      - resources:
           requests:
             memory: 30Mi
             cpu: 25m
