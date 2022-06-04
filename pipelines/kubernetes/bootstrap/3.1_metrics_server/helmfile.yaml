@@ -16,16 +16,14 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 5.11.9
+    version: 6.0.5
     values:
-      - image:
-          pullPolicy: Always
-        commonLabels:
+      - commonLabels:
           app.kubernetes.io/version: 0.6.1
         serviceAccount:
           name: metrics-server
         extraArgs:
-          kubelet-insecure-tls: true
+          - "--kubelet-insecure-tls=true"
         apiService:
           create: true
           insecureSkipTLSVerify: true
@@ -36,3 +34,5 @@ releases:
           limits:
             memory: "32Mi"
             cpu: "150m"
+        startupProbe:
+          enabled: true

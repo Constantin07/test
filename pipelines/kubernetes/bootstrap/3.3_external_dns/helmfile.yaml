@@ -14,11 +14,9 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 6.4.5
+    version: 6.5.2
     values:
-      - image:
-          pullPolicy: Always
-        sources:
+      - sources:
           - ingress
         provider: rfc2136
         rfc2136:
