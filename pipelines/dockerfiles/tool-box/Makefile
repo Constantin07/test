@@ -22,7 +22,7 @@ endif
 
 .DEFAULT_GOAL := default
 
-default: build tag push publish clean
+default: build tag push clean
 
 all: login build scan tag push publish
 
@@ -56,8 +56,5 @@ publish: login
 	docker push ${DOCKER_REPOSITORY}:latest
 
 clean:
-	@rm -f *_ca.crt
-	@rm -f requirements.yml
+	@rm -f *_ca.crt requirements.yml
 	@rm -rf bin
-	docker rmi ${REGISTRY}/${IMAGE}:latest || true
-	docker rmi ${REGISTRY}/${IMAGE}:${TAG} || true
