@@ -12,7 +12,7 @@ pipeline {
 
   environment {
     DIRECTORY = 'pipelines/dockerfiles/tool-box'
-    PATH ="/usr/local/bin:$PATH"
+    PATH = "/usr/local/bin:$PATH"
   }
 
   stages {
@@ -24,6 +24,27 @@ pipeline {
             withCredentials([[$class: 'VaultTokenCredentialBinding', addrVariable: 'VAULT_ADDR', credentialsId: 'vault-approle', tokenVariable: 'VAULT_TOKEN', vaultAddr: 'http://vault.internal:8200']]) {
               sh 'make login build'
             }
+          }
+        }
+      }
+    }
+
+    stage('Test image') {
+      agent {
+        docker {
+          image 'centos7.internal:5000/tool-box:latest'
+          reuseNode true
+          alwaysPull true
+          args '-u toolbox -t --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
+        }
+      }
+      steps {
+        sh 'git crypt unlock'
+        sshagent (credentials: ['jenkins-ssh-key']) {
+          dir('ansible') {
+            sh 'python3 -V'
+            sh 'ansible --version'
+            sh 'ansible local -m ping'
           }
         }
       }
