@@ -14,7 +14,7 @@ releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     chart: bitnami/external-dns
-    version: 6.5.6
+    version: 6.6.1
     values:
       - sources:
           - ingress
@@ -24,12 +24,12 @@ releases:
           zone: internal
           tsigKeyname: kube-cluster.internal.
           tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
+          minTTL: 30s
         interval: 15s
         txtOwnerId: Kubernetes
         rbac:
           create: true
           serviceAccountName: external-dns
-          pspEnabled: true
         domainFilters:
           - internal
         securityContext:

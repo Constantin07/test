@@ -35,7 +35,7 @@ pipeline {
           image 'centos7.internal:5000/tool-box:latest'
           reuseNode true
           alwaysPull true
-          args '-u toolbox -t --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
+          args '-u toolbox --network host -t --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
         }
       }
       steps {
@@ -44,7 +44,7 @@ pipeline {
           dir('ansible') {
             sh 'python3 -V'
             sh 'ansible --version'
-            sh 'ansible local -m ping'
+            sh "ansible local -m ping -e 'ansible_python_interpreter=/usr/bin/python3'"
           }
         }
       }
