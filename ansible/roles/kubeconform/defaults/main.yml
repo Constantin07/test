@@ -1,5 +1,5 @@
 ---
 
-kubeconform_version: 'v0.4.13'
+kubeconform_version: 'v0.4.14'
 kubeconform_url: https://github.com/yannh/kubeconform/releases/download/{{ kubeconform_version }}/kubeconform-linux-amd64.tar.gz
 install_dir: "/usr/local/bin"
