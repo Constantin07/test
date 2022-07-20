@@ -5,7 +5,7 @@ DOCKER_REPOSITORY ?= constantin07/tool-box
 IMAGE ?= tool-box
 
 # Check for required binaries
-EXECUTABLES = git podman trivy
+EXECUTABLES = git trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -22,7 +22,7 @@ endif
 
 .DEFAULT_GOAL := default
 
-default: build tag push clean
+default: build tag test push clean
 
 all: login build scan tag push publish
 
@@ -58,3 +58,8 @@ publish: login
 clean:
 	@rm -f *_ca.crt requirements.yml
 	@rm -rf bin
+
+test:
+	@echo "Testing image"
+	@docker run --rm -it ${REGISTRY}/${IMAGE}:${TAG} python3 -V
+	@docker run --rm -it ${REGISTRY}/${IMAGE}:${TAG} ansible --version

@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.9.1
+ARG HELM_VERSION=v3.9.2
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=73df7ddd5ab05e96230304bf0e6e31484b1ba136d0fc22679345c0b4bd43f7ac
+ARG HELM_SHA256=3f5be38068a1829670440ccf00b3b6656fd90d0d9cfd4367539f3b13e4c20531
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.30.1
+ARG TRIVY_VERSION=0.30.2
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=1e5b74696a395735a29c6f92f559be20a96ac0c985dab82b4c4586111daacd15
+ARG TRIVY_SHA256=ac2093318d595f305bb5e8a1c32190677836ebe6bc3527d397cd7d02b2069135
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \
@@ -132,15 +132,17 @@ ENV USER=${USERNAME} \
 ENV ANSIBLE_FORCE_COLOR=true \
     ANSIBLE_HOST_KEY_CHECKING=False
 
-RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk --no-cache add ca-certificates git curl bash procps jq python3 python3-dev py3-pip make openssh-client openssl \
-    gnupg gcc musl-dev openssl-dev libffi-dev ansible git-crypt && \
-    setcap cap_net_raw+ep /bin/busybox
-
 COPY requirements.txt /
-RUN pip3 install --no-cache-dir --upgrade setuptools && \
+
+RUN apk --no-cache update && apk --no-cache upgrade && \
+    apk --no-cache add ca-certificates git curl bash procps jq python3 py3-pip make openssh-client openssl gnupg git-crypt ansible && \
+    apk --no-cache add --virtual build-dependencies python3-dev libffi-dev musl-dev gcc openssl-dev && \
+    setcap cap_net_raw+ep /bin/busybox && \
+    pip3 install --no-cache-dir --upgrade setuptools && \
     pip3 install --no-cache-dir --upgrade --ignore-installed pip && \
-    pip3 install --no-cache-dir -r /requirements.txt
+    pip3 install --no-cache-dir -r /requirements.txt && \
+    apk del build-dependencies && \
+    rm -rf /var/cache/apk/* /root/.cache/pip
 
 RUN ln -s /usr/bin/git-crypt /usr/local/bin/git-crypt
 
