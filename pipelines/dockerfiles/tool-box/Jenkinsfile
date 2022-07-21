@@ -57,7 +57,9 @@ pipeline {
       }
       steps {
         dir(env.DIRECTORY) {
-          sh 'make scan'
+          retry(2) {
+            sh 'make scan'
+          }
           recordIssues(
             tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
           )
