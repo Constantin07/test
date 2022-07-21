@@ -9,7 +9,6 @@ resource "tls_private_key" "etcd-1_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-1_server_cert_req" {
-  key_algorithm   = tls_private_key.etcd-1_server_priv_key.algorithm
   private_key_pem = tls_private_key.etcd-1_server_priv_key.private_key_pem
 
   subject {
@@ -31,7 +30,6 @@ resource "tls_cert_request" "etcd-1_server_cert_req" {
 
 resource "tls_locally_signed_cert" "etcd-1_server_cert" {
   cert_request_pem   = tls_cert_request.etcd-1_server_cert_req.cert_request_pem
-  ca_key_algorithm   = local.ca_key_algorithm
   ca_private_key_pem = local.ca_private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
@@ -56,7 +54,6 @@ resource "tls_private_key" "etcd-2_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-2_server_cert_req" {
-  key_algorithm   = tls_private_key.etcd-2_server_priv_key.algorithm
   private_key_pem = tls_private_key.etcd-2_server_priv_key.private_key_pem
 
   subject {
@@ -78,7 +75,6 @@ resource "tls_cert_request" "etcd-2_server_cert_req" {
 
 resource "tls_locally_signed_cert" "etcd-2_server_cert" {
   cert_request_pem   = tls_cert_request.etcd-2_server_cert_req.cert_request_pem
-  ca_key_algorithm   = local.ca_key_algorithm
   ca_private_key_pem = local.ca_private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
@@ -103,7 +99,6 @@ resource "tls_private_key" "etcd-3_server_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-3_server_cert_req" {
-  key_algorithm   = tls_private_key.etcd-3_server_priv_key.algorithm
   private_key_pem = tls_private_key.etcd-3_server_priv_key.private_key_pem
 
   subject {
@@ -125,7 +120,6 @@ resource "tls_cert_request" "etcd-3_server_cert_req" {
 
 resource "tls_locally_signed_cert" "etcd-3_server_cert" {
   cert_request_pem   = tls_cert_request.etcd-3_server_cert_req.cert_request_pem
-  ca_key_algorithm   = local.ca_key_algorithm
   ca_private_key_pem = local.ca_private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
@@ -150,7 +144,6 @@ resource "tls_private_key" "etcd-client_priv_key" {
 }
 
 resource "tls_cert_request" "etcd-client_cert_req" {
-  key_algorithm   = tls_private_key.etcd-client_priv_key.algorithm
   private_key_pem = tls_private_key.etcd-client_priv_key.private_key_pem
 
   subject {
@@ -161,7 +154,6 @@ resource "tls_cert_request" "etcd-client_cert_req" {
 
 resource "tls_locally_signed_cert" "etcd-client_cert" {
   cert_request_pem   = tls_cert_request.etcd-client_cert_req.cert_request_pem
-  ca_key_algorithm   = local.ca_key_algorithm
   ca_private_key_pem = local.ca_private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 

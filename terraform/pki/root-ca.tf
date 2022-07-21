@@ -6,7 +6,6 @@ locals {
 }
 
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm   = local.ca_key_algorithm
   private_key_pem = local.ca_private_key_pem
 
   subject {
