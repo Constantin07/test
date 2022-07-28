@@ -74,3 +74,21 @@
     owner: "{{ jenkins_group }}"
     mode: 0600
   tags: jenkins_shared
+
+- name: Create .ssh directory
+  file:
+    path: "{{ jenkins_work_dir }}/.ssh"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0700
+  tags: jenkins_shared
+
+- name: Copy SSH config file
+  copy:
+    dest: "{{ jenkins_work_dir }}/.ssh/config"
+    src: config
+    group: "{{ jenkins_user }}"
+    owner: "{{ jenkins_group }}"
+    mode: 0644
+  tags: jenkins_shared
