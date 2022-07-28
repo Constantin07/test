@@ -12,4 +12,3 @@
     - "prometheus/prometheus"
     - grafana
 #    - containerd
-#    - cri_containerd

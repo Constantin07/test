@@ -12,6 +12,7 @@ docker-plugin
 docker-workflow
 durable-task
 git
+git-client
 github
 git-parameter
 greenballs
