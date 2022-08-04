@@ -10,5 +10,7 @@ redhat_packages:
   - python3
 
 debian_packages:
+  - iputils-ping
   - socat
   - python3
+  - python3-pip
