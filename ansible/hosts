@@ -11,7 +11,6 @@ master-node2.internal
 [kube_slaves]
 worker-node1.internal
 worker-node2.internal
-#worker-node3.internal
 
 [kube:children]
 kube_masters
@@ -24,6 +23,12 @@ ansible_user=ubuntu
 prometheus.internal
 
 [prometheus:vars]
+ansible_user=ubuntu
+
+[server]
+server.internal
+
+[server:vars]
 ansible_user=ubuntu
 
 [all:children]

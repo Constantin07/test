@@ -1,23 +1,4 @@
 ---
 
-- name: Make sure yum-utils is installed
-  package:
-    name: yum-utils
-    state: present
-  tags: vault_binary
-
-- name: Add Hasicorp repository
-  yum_repository:
-    name: hashicorp
-    description: Hashicorp Stable - $basearch
-    baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
-    gpgkey: https://rpm.releases.hashicorp.com/gpg
-    gpgcheck: yes
-    enabled: yes
-  tags: vault_binary
-
-- name: Install vault v{{ vault_version }}
-  yum:
-    name: "vault-{{ vault_version }}*.x86_64"
-    state: present
+- include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: vault_binary

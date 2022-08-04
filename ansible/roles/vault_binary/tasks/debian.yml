@@ -1,0 +1,21 @@
+---
+
+- name: Add HashiCorp GPG key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+  tags: vault_binary
+
+- name: Add HashiCorp Linux repository
+  apt_repository:
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+    update_cache: yes
+    state: present
+  tags: vault_binary
+
+- name: Install Vault binary
+  apt:
+    name: vault={{ vault_version }}-*
+    state: present
+    update_cache: yes
+  tags: vault_binary
