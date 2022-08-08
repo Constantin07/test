@@ -1,7 +1,7 @@
 ---
-# Vault deployment in docker container
+# Vault deployment as docker container
 
-- hosts: centos7.internal
+- hosts: vault.internal
 
   roles:
     - docker

@@ -4,10 +4,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.2.6
+ARG TERRAFORM_VERSION=1.2.7
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=9fd445e7a191317dcfc99d012ab632f2cc01f12af14a44dfbaba82e0f9680365
+ARG TERRAFORM_SHA256=dfd7c44a5b6832d62860a01095a15b53616fb3ea4441ab89542f9364e3fca718
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.9.2
+ARG HELM_VERSION=v3.9.3
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=3f5be38068a1829670440ccf00b3b6656fd90d0d9cfd4367539f3b13e4c20531
+ARG HELM_SHA256=2d07360a9d93b18488f1ddb9de818b92ba738acbec6e1c66885a88703fa7b21c
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -53,10 +53,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
-ARG GOMPLATE_VERSION=3.11.1
+ARG GOMPLATE_VERSION=3.11.2
 ARG GOMPLATE_URL=https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64
 ARG GOMPLATE_FILE=gomplate_linux-amd64
-ARG GOMPLATE_SHA256=e3d3c32075c6523bd6d0a999977d1a9619b7d39549381b40dad8a82c963fc13e
+ARG GOMPLATE_SHA256=53858f4c6b68a0bea0a66430760eb0948c7745f6d3052a395507e6bb9c6964a9
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
     sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \

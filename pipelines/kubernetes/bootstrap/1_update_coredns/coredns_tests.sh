@@ -30,7 +30,7 @@ test_CoreDnsCanResolveInternal() {
 test_CoreDnsCanResolveVault() {
   local HOST='vault.internal'
   result=`kubectl exec busybox -- nslookup -type=a ${HOST} | tail -n +2 | grep Address | awk '{print $2}'`
-  assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
+  assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.26'
 }
 
 test_CoreDnsPodsAreRunning() {

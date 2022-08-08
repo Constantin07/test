@@ -1,11 +1,12 @@
 [Unit]
 Description=Vault Unseal
-Requires=network-online.target docker.service
-After=network-online.target docker.service
+Requires=network-online.target docker.service vault-service.service
+After=network-online.target docker.service vault-service.service
+PartOf=vault-service.service
 
 [Service]
 Type=oneshot
-Environment="VAULT_ADDR=http://vault.internal:8200"
+Environment="VAULT_ADDR={{ vault_addr }}"
 Environment="UNSEAL_KEY1={{ unseal_key1 }}"
 Environment="UNSEAL_KEY2={{ unseal_key2 }}"
 Environment="UNSEAL_KEY3={{ unseal_key3 }}"
