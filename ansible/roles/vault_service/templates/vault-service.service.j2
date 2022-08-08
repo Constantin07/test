@@ -1,0 +1,26 @@
+[Unit]
+Description="HashiCorp Vault run as a docker container"
+After=network-online.target docker.service
+Requires=network-online.target docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+RestartSec=10s
+ExecStartPre=-/usr/bin/docker stop vault
+ExecStartPre=-/usr/bin/docker rm vault
+ExecStartPre=/usr/bin/docker pull {{ docker_host }}/{{ image_name }}:{{ vault_version }}
+ExecStart=/usr/bin/docker run --rm --name vault \
+  -v vault_logs:/vault/logs:rw \
+  -v vault_data:/vault/file:rw \
+  -p {{ vault_port }}:{{ vault_port }} \
+  --network=bridge \
+  --cap-add=IPC_LOCK \
+  --ipc=private \
+  --memory={{ memory|default('512mb') }} \
+  --log-driver=journald \
+  {{ docker_host }}/{{ image_name }}:{{ vault_version }} \
+  server
+
+[Install]
+WantedBy=multi-user.target

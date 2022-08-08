@@ -1,5 +1,6 @@
 [local]
 centos7.internal
+vault.internal
 
 [jenkins_agents]
 jenkins-agent.internal

@@ -15,26 +15,21 @@
     name: vault_data
   tags: vault_service
 
-- name: Run vault container version {{ vault_version }}
-  docker_container:
-    name: "{{ image_name }}"
-    image: "{{ docker_host }}/{{ image_name }}:{{ vault_version }}"
-    command: server
-    state: started
-    recreate: yes
-    oom_killer: no
-    published_ports:
-      - "8200:8200"
-    pull: yes
-    network_mode: bridge
-    capabilities:
-      - ipc_lock
-    memory: "{{ memory|default('512mb') }}"
-    volumes:
-      - vault_logs:/vault/logs:rw
-      - vault_data:/vault/file:rw
-    restart_policy: always
-    log_driver: journald
+- name: Install Vault service unit file | {{ vault_version }}
+  template:
+    src: vault-service.service.j2
+    dest: /etc/systemd/system/vault-service.service
+    owner: root
+    group: root
+    mode: 0644
+  tags: vault_service
+
+- name: Enable and start Vault service
+  systemd:
+    name: vault-service.service
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
   tags: vault_service
 
 - name: Install Vault unseal unit file

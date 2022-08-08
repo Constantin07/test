@@ -1,2 +1,7 @@
 ---
 
+vault_port: 8200
+vault_addr: "http://vault.internal:{{ vault_port }}"
+docker_host: "centos7.internal:5000"
+image_name: "vault"
+memory: "256m"
