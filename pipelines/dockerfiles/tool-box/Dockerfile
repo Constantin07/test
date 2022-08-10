@@ -34,10 +34,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.9.3
+ARG HELM_VERSION=v3.9.4
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=2d07360a9d93b18488f1ddb9de818b92ba738acbec6e1c66885a88703fa7b21c
+ARG HELM_SHA256=31960ff2f76a7379d9bac526ddf889fb79241191f1dbe2a24f7864ddcb3f6560
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.30.4
+ARG TRIVY_VERSION=0.31.3
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=bf4fbf5c1c8179460070dce909dec93cf61dfbbf917f49a16ea336d1f66f3727
+ARG TRIVY_SHA256=39b1a297f6117ce13b4d58c5462f01bcd48c1a7c6bd7bf82a34e14c74ec14ed0
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \

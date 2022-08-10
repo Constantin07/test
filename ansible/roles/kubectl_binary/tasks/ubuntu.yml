@@ -1,0 +1,34 @@
+---
+
+- name: Install required packages | Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - bash-completion
+    - software-properties-common
+    - socat  # required for kubectl port-forward to work
+  tags: kubectl_binary
+
+- name: Add GPG key | Ubuntu
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  tags: kubectl_binary
+
+- name: Add repository source list | Ubuntu
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    filename: "kubernetes"
+    update_cache: yes
+    state: present
+  tags: kubectl_binary
+
+- name: Install kubectl package | Ubuntu
+  apt:
+    name: kubectl={{ kubectl_version }}
+    state: present
+    update_cache: yes
+  tags: kubectl_binary
