@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/kube-state-metrics
-    version: 3.1.6
+    version: 3.2.2
     values:
       - resources:
           requests:
