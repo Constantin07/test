@@ -26,7 +26,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: tmp login
-	docker build --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
+	docker build --compress --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
 
 scan:
 	trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE_NAME}:${TAG}

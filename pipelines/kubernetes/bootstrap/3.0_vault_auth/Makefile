@@ -23,4 +23,4 @@ test:
 	./vault_auth_tests.sh
 
 delete:
-	kubectl delete -f ${CONFIG_FILE} --wait=true || true
+	kubectl delete -f ${CONFIG_FILE} --ignore-not-found=true --wait=true || true

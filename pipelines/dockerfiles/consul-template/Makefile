@@ -5,7 +5,7 @@ EXECUTABLES = docker trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-VERSION=0.29.2
+VERSION=0.29.5
 
 .PHONY: all login build scan tag push clean
 default: build tag push
@@ -16,7 +16,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: login
-	docker build --build-arg VERSION=${VERSION} -t ${REPOSITORY}:${VERSION} .
+	docker build --compress --build-arg VERSION=${VERSION} -t ${REPOSITORY}:${VERSION} .
 
 scan:
 	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VERSION}
