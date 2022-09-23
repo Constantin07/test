@@ -42,12 +42,11 @@ data "kubernetes_service_account" "vault_auth" {
 # Get secret token name associated with vault-auth service account
 data "kubernetes_secret" "vault_auth" {
   metadata {
-    name      = data.kubernetes_service_account.vault_auth.default_secret_name
+    name      = "vault-auth-token"
     namespace = "default"
   }
 }
 
-# TODO: get token_reviewer dynamically
 resource "vault_kubernetes_auth_backend_config" "kubernetes" {
   backend                = vault_auth_backend.kubernetes.path
   kubernetes_host        = data.external.kube_config.result.server
@@ -55,6 +54,7 @@ resource "vault_kubernetes_auth_backend_config" "kubernetes" {
   token_reviewer_jwt     = data.kubernetes_secret.vault_auth.data.token
   issuer                 = "api"
   disable_iss_validation = "true"
+  disable_local_ca_jwt   = "true"
 }
 
 resource "vault_kubernetes_auth_backend_role" "vault_auth" {
@@ -69,9 +69,9 @@ resource "vault_kubernetes_auth_backend_role" "vault_auth" {
 resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "hello-kubernetes"
-  bound_service_account_names      = ["hello-kubernetes"]
+  bound_service_account_names      = ["hello-kubernetes", "default"]
   bound_service_account_namespaces = ["default"]
-  token_ttl                        = 3600
+  token_ttl                        = 7200
   token_policies                   = ["default", "hello-kubernetes"]
   token_type                       = "service"
 }

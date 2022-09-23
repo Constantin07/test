@@ -4,8 +4,15 @@ oneTimeSetUp() {
   assertNotNull "Required environment variable KUBECONFIG is not set" "${KUBECONFIG}"
   NAMESPACE='default'
   SERVICE_ACCOUNT='vault-auth'
+  SECRET_NAME='vault-auth-token'
   service=`kubectl -n ${NAMESPACE} get sa/${SERVICE_ACCOUNT} -o json`
+  SECRET=`kubectl -n ${NAMESPACE} get secret/${SECRET_NAME} -o json`
   cluster_role_binding=`kubectl get clusterrolebinding/${SERVICE_ACCOUNT} -o json`
+}
+
+test_VaultAuthSecretExists() {
+  secret=`echo $SECRET | jq -r .metadata.name`
+  assertEquals "Vault auth secret exists" "${secret}" 'vault-auth-token'
 }
 
 test_VaultServiceAccountExists() {
@@ -15,7 +22,7 @@ test_VaultServiceAccountExists() {
 
 test_VaultServiceAccountHasSecret() {
   secret=`echo ${service} | jq -r .secrets[0].name`
-  assertContains "Service account has secret" "${secret}" 'vault-auth-token-'
+  assertContains "Service account has secret" "${secret}" 'vault-auth-token'
 }
 
 test_ClusterRoleBindingExists() {

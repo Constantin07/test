@@ -5,6 +5,17 @@ kind: ServiceAccount
 metadata:
   name: vault-auth
   namespace: default
+automountServiceAccountToken: true
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault-auth-token
+  namespace: default
+  annotations:
+    kubernetes.io/service-account.name: vault-auth
+type: kubernetes.io/service-account-token
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

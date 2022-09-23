@@ -33,7 +33,7 @@ build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
 	@./add_ca_certs.sh
-	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
+	docker build --compress -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f *_ca.crt
 	@rm -f requirements.yml
 	@rm -rf bin

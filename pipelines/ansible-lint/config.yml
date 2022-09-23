@@ -4,4 +4,4 @@ extensions:
   cleanBeforeCheckout: true
 
 triggers:
-  scm: 'H/2 * * * *'
+  scm: 'H/5 * * * *'

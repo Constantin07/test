@@ -30,8 +30,8 @@ diff:
 
 # Remove Calico from K8s
 destroy: clean
-	kubectl delete -f ${CONFIG_FILE} --wait=true
-	kubectl delete -f ${APISERVER_FILE} --wait=true
+	kubectl delete -f ${CONFIG_FILE} --wait=true --ignore-not-found=true
+	kubectl delete -f ${APISERVER_FILE} --wait=true --ignore-not-found=true
 	kubectl -n calico-apiserver delete secret calico-apiserver-certs --ignore-not-found=true
 
 clean:
