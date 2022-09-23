@@ -7,7 +7,8 @@ WORKDIR ${INSTALL_DIR}
 
 ARG VERSION
 RUN curl -fsSL --retry 3 https://releases.hashicorp.com/consul-template/${VERSION}/consul-template_${VERSION}_linux_amd64.zip -o consul-template.zip && \
-    unzip consul-template.zip && chmod +x consul-template
+    unzip consul-template.zip && chmod +x consul-template && \
+    rm -f consul-template.zip
 
 
 FROM alpine:3.16
@@ -17,11 +18,12 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-cer
 
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
+ARG USER=consul
 ARG GROUP=consul
-RUN addgroup -g 1000 1000 && \
-    adduser -h /home/consul -u 1000 -G 1000 -D consul
+RUN addgroup -g 1000 ${GROUP} && \
+    adduser -h /home/${USER} -u 1000 -G ${GROUP} -D ${USER}
 
-COPY get_token.sh /home/consul/
+COPY --chown=${USER}:${GROUP} get_token.sh /home/consul/
 
 USER consul
 WORKDIR /home/consul
