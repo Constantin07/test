@@ -37,6 +37,8 @@ ansible_user=ubuntu
 local
 jenkins_agents
 kube
+prometheus
+server
 
 [all:vars]
 ansible_user=root

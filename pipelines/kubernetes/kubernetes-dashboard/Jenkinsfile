@@ -31,7 +31,7 @@ pipeline {
       steps {
         lock('kubernetes/kubernetes-dashboard') {
           dir(env.DIRECTORY) {
-            sh 'make validate lint sync'
+            sh 'make validate lint apply'
           }
         }
         milestone(ordinal: 1)

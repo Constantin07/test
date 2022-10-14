@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 6.2.1
+    version: 6.2.3
     values:
       - commonLabels:
           app.kubernetes.io/version: 0.6.1

@@ -1,7 +1,7 @@
 ---
 # Used to vacuum journalctl logs
 
-- hosts: all
+- hosts: all,!centos7.internal
   become: yes
   become_user: root
   gather_facts: no
@@ -11,4 +11,3 @@
 
     - name: Vacuum journalctl logs
       command: journalctl --vacuum-size=50M
-

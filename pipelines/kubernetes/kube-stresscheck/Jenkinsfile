@@ -25,7 +25,7 @@ pipeline {
     stage('Run kube-stresscheck') {
       steps {
         dir(env.DIRECTORY) {
-          sh 'make sync'
+          sh 'make apply'
         }
       }
     }

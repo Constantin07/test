@@ -5,9 +5,9 @@ EXECUTABLES = gomplate helmfile kubectl kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.23.12
+KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
 
-.PHONY: init template validate lint diff sync status destroy
+.PHONY: init template validate lint diff apply status destroy
 
 template:
 	gomplate -f namespace.yaml | kubectl apply --dry-run -f -
@@ -24,7 +24,7 @@ lint:
 diff:
 	helmfile diff
 
-sync: validate
+apply: validate
 	gomplate -f namespace.yaml | kubectl apply -f -
 	helmfile sync
 

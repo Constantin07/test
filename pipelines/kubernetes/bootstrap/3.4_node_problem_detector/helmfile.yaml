@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: deliveryhero/node-problem-detector
-    version: 2.2.6
+    version: 2.3.1
     values:
       - resources:
           requests:

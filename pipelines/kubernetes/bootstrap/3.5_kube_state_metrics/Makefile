@@ -5,9 +5,9 @@ EXECUTABLES = helm helmfile kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.23.12
+KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
 
-.PHONY: init template validate lint diff sync status destroy tests
+.PHONY: init template validate lint diff apply status destroy tests
 
 init:
 	helmfile repos
@@ -28,7 +28,7 @@ diff:
 	gomplate -f ingress.yaml | kubectl diff -f -
 	helmfile diff
 
-sync: validate
+apply: validate
 	gomplate -f ingress.yaml | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 

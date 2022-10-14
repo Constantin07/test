@@ -108,7 +108,7 @@ pipeline {
       steps {
         dir(env.ROOT_DIR + '3.1_metrics_server') {
           sh '''
-            make init lint sync
+            make init lint apply
             ./wait.sh
           '''
         }
@@ -148,7 +148,7 @@ pipeline {
           }
           steps {
             dir(env.ROOT_DIR + '3.2_nginx_ingress') {
-              sh 'make init lint sync'
+              sh 'make init lint apply'
             }
           }
         }
@@ -166,7 +166,7 @@ pipeline {
             dir(env.ROOT_DIR + '3.3_external_dns') {
               sh '''
                 git crypt unlock
-                make init lint sync
+                make init lint apply
               '''
             }
           }
@@ -184,7 +184,7 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '3.4_node_problem_detector') {
               sh '''
-                make init lint sync
+                make init lint apply
               '''
             }
           }
@@ -202,7 +202,7 @@ pipeline {
           steps {
             dir(env.ROOT_DIR + '3.5_kube_state_metrics') {
               sh '''
-                make init lint sync tests
+                make init lint apply tests
               '''
             }
           }
