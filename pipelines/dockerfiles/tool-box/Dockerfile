@@ -4,10 +4,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.3.2
+ARG TERRAFORM_VERSION=1.3.4
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=6372e02a7f04bef9dac4a7a12f4580a0ad96a37b5997e80738e070be330cb11c
+ARG TERRAFORM_SHA256=b24210f28191fa2a08efe69f54e3db2e87a63369ac4f5dcaf9f34dc9318eb1a8
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -24,20 +24,20 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
 #    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
 #    chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.23.13
+ARG KUBECTL_VERSION=v1.24.8
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=fae6957e6a7047ad49cdd20976cd2ce9188b502c831fbf61f36618ea1188ba38
+ARG KUBECTL_SHA256=f93c18751ec715b4d4437e7ece18fe91948c71be1f24ab02a2dde150f5449855
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.10.1
+ARG HELM_VERSION=v3.10.2
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=c12d2cd638f2d066fec123d0bd7f010f32c643afdf288d39a4610b1f9cb32af3
+ARG HELM_SHA256=2315941a13291c277dac9f65e75ead56386440d3907e0540bf157ae70f188347
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
@@ -91,10 +91,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.32.1
+ARG TRIVY_VERSION=0.34.0
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=ca0213f0c0f3b76498f1d8c20aabebeb7cedf8433ceacdef853c7841134e0033
+ARG TRIVY_SHA256=53f176ca461412563cec7199798ad9acf8bbb38527c0d9a38f745442f022f111
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \

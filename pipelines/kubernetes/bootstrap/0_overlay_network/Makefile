@@ -6,7 +6,7 @@ EXECUTABLES = kubectl kubeconform openssl
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.23.12
+KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
 
 .PHONY: validate install diff delete clean
 

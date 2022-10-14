@@ -76,7 +76,7 @@ spec:
         env:
         - name: DATASTORE_TYPE
           value: kubernetes
-        image: calico/apiserver:v3.24.0
+        image: calico/apiserver:v3.24.4
         livenessProbe:
           httpGet:
             path: /version
