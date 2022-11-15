@@ -6,6 +6,13 @@
     state: present
   tags: trivy
 
+- name: Add Trivy apt repository key
+  get_url:
+    url: https://aquasecurity.github.io/trivy-repo/deb/public.key
+    dest: /etc/apt/keyrings/trivy.key
+    mode: '0644'
+    force: true
+
 - name: Add Trivy repository
   apt_repository:
     repo: deb [arch=amd64] https://aquasecurity.github.io/trivy-repo/deb {{ ansible_distribution_release }} main

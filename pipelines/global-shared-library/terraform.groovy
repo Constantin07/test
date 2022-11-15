@@ -5,11 +5,14 @@ import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 def call(String nodeName = '', String directory = '.') {
 
   // Global state
-  def needUpdate = false
-  def apply      = false
+  boolean needUpdate = false
+  boolean apply      = false
 
   // Used for locks
   String jobName = "${env.JOB_NAME}"
+
+  // Global variables
+  String checkov_image = 'bridgecrew/checkov:2.2.75'
 
   node(nodeName) {
 
@@ -38,6 +41,7 @@ def call(String nodeName = '', String directory = '.') {
       }
 
       dir(path: directory) {
+
 
         // Terraform AWS credentials wrapper
         withCredentials([[
@@ -70,6 +74,14 @@ def call(String nodeName = '', String directory = '.') {
             milestone label: 'Validate'
           }
 
+	// Needs to be run after terraform init to scan modules too
+	stage('Static code analysis') {
+	  String args = "--entrypoint='' --tty --rm"
+	  docker.image(checkov_image).inside(args) {
+	    sh "checkov -d ."
+	  }
+	  milestone label: 'Static code analysis'
+	}
 
           lock("${jobName}") {
               stage(name: 'Plan') {

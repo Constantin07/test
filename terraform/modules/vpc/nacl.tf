@@ -30,7 +30,7 @@ resource "aws_network_acl_rule" "private_ingress_ephemeral_tcp" {
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = var.vpc_cidr
   from_port      = 1024
   to_port        = 65535
 }
@@ -41,7 +41,7 @@ resource "aws_network_acl_rule" "private_ingress_ephemeral_udp" {
   egress         = false
   protocol       = "udp"
   rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = var.vpc_cidr
   from_port      = 1024
   to_port        = 65535
 }
