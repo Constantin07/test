@@ -11,14 +11,18 @@ resource "aws_vpc" "default" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  enable_classiclink             = false
-  enable_classiclink_dns_support = false
+  assign_generated_ipv6_cidr_block     = true
+  enable_network_address_usage_metrics = true
 
-  assign_generated_ipv6_cidr_block = true
+  #checkov:skip=CKV2_AWS_11: Flow logs not used for cost saving reasons (testing purposes)
 
   tags = merge(tomap({ Name = "${var.environment}-vpc" }),
     var.extra_tags,
   )
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.default.id
 }
 
 locals {
@@ -73,7 +77,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.default.id
   cidr_block              = cidrsubnet(aws_vpc.default.cidr_block, local.newbits, var.availability_zones_count + count.index)
   availability_zone       = element(local.availability_zones, count.index)
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = merge(tomap({
     Name = "${var.environment}-subnet-public-${substr(element(local.availability_zones, count.index), -1, 1)}",
