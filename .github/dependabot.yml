@@ -3,34 +3,34 @@ updates:
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/vault/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/jenkins-agent/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/docker-nginx-proxy/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/consul-template/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "pip"
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "pip"
     directory: "terraform/vault/config/kubernetes/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
