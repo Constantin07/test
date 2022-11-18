@@ -46,4 +46,3 @@ jdk-tool
 antisamy-markup-formatter
 pam-auth
 warnings-ng
-windows-slaves

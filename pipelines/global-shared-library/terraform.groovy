@@ -12,7 +12,7 @@ def call(String nodeName = '', String directory = '.') {
   String jobName = "${env.JOB_NAME}"
 
   // Global variables
-  String checkov_image = 'bridgecrew/checkov:2.2.75'
+  String checkov_image = 'bridgecrew/checkov:2.2.78'
 
   node(nodeName) {
 
@@ -40,17 +40,17 @@ def call(String nodeName = '', String directory = '.') {
         milestone label: 'Unlock secrets'
       }
 
-      dir(path: directory) {
+      // Terraform AWS credentials wrapper
+      withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: 'Amazon Credentials',
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]])
+      {
 
+        dir(path: directory) {
 
-        // Terraform AWS credentials wrapper
-        withCredentials([[
-            $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: 'Amazon Credentials',
-            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-          ]])
-        {
           stage("Validate") {
             println "Print terraform version"
             sh 'terraform -version'
@@ -73,15 +73,17 @@ def call(String nodeName = '', String directory = '.') {
             sh 'terraform validate'
             milestone label: 'Validate'
           }
+        }
 
 	// Needs to be run after terraform init to scan modules too
 	stage('Static code analysis') {
-	  String args = "--entrypoint='' --tty --rm"
-	  docker.image(checkov_image).inside(args) {
-	    sh "checkov -d ."
+	  docker.image(checkov_image).inside("--entrypoint=''") {
+	    sh "checkov -d ${directory}"
 	  }
 	  milestone label: 'Static code analysis'
 	}
+
+        dir(path: directory) {
 
           lock("${jobName}") {
               stage(name: 'Plan') {
