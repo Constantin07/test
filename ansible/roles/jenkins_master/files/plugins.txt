@@ -35,7 +35,6 @@ pipeline-stage-view
 pipeline-utility-steps
 ssh-agent
 startup-trigger-plugin
-timestamper
 workflow-aggregator
 workflow-remote-loader
 ws-cleanup
@@ -46,4 +45,3 @@ jdk-tool
 antisamy-markup-formatter
 pam-auth
 warnings-ng
-windows-slaves
