@@ -12,5 +12,15 @@ spec:
       - -c
       - "sleep 300"
     imagePullPolicy: IfNotPresent
-  restartPolicy: Always
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+      runAsUser: 65534
+      runAsGroup: 65534
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+  restartPolicy: OnFailure
   terminationGracePeriodSeconds: 5
