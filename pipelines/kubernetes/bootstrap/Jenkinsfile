@@ -96,6 +96,24 @@ pipeline {
       }
     }
 
+    stage('PSA label namespace') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '2.2_psa_label') {
+            sh './psa_label_namespace.sh'
+        }
+        milestone(ordinal: 5)
+      }
+    }
+
+
     stage('Install metrics-server') {
       agent {
         docker {
@@ -112,7 +130,7 @@ pipeline {
             ./wait.sh
           '''
         }
-        milestone(ordinal: 5)
+        milestone(ordinal: 6)
       }
     }
 
@@ -131,8 +149,10 @@ pipeline {
           }
           steps {
             dir(env.ROOT_DIR + '3.0_vault_auth') {
-              sh 'make install'
-              sh 'make test'
+              sh '''
+                make install
+                make test
+              '''
             }
           }
         }
@@ -183,9 +203,7 @@ pipeline {
           }
           steps {
             dir(env.ROOT_DIR + '3.4_node_problem_detector') {
-              sh '''
-                make init lint apply
-              '''
+              sh 'make init lint apply'
             }
           }
         }
@@ -201,9 +219,7 @@ pipeline {
           }
           steps {
             dir(env.ROOT_DIR + '3.5_kube_state_metrics') {
-              sh '''
-                make init lint apply tests
-              '''
+              sh 'make init lint apply tests'
             }
           }
         }
@@ -225,7 +241,7 @@ pipeline {
         dir(env.ROOT_DIR + '7_cluster_tests') {
           sh './cluster_status_tests.sh'
         }
-        milestone(ordinal: 6)
+        milestone(ordinal: 7)
       }
     }
 
