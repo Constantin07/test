@@ -12,7 +12,7 @@ def call(String nodeName = '', String directory = '.') {
   String jobName = "${env.JOB_NAME}"
 
   // Global variables
-  String checkov_image = 'bridgecrew/checkov:2.2.84'
+  String checkov_image = 'bridgecrew/checkov:2.2.95'
 
   node(nodeName) {
 
