@@ -35,9 +35,8 @@ pipeline {
         ]])
         {
           sh """
-            img pull public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
-            img ls
-            img rm public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
+            ls -la
+            #docker pull public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
           """
         }
       }

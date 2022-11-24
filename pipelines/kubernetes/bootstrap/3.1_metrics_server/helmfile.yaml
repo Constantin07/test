@@ -16,11 +16,9 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: bitnami/metrics-server
-    version: 6.2.3
+    version: 6.2.4
     values:
-      - commonLabels:
-          app.kubernetes.io/version: 0.6.1
-        serviceAccount:
+      - serviceAccount:
           name: metrics-server
         extraArgs:
           - "--kubelet-insecure-tls=true"

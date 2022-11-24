@@ -48,7 +48,7 @@ jenkins:
      templates:
      - containers:
        - name: jnlp
-         image: "constantin07/jenkins-agent:4.14"
+         image: "constantin07/jenkins-agent:3077.vd69cf116da_6f"
          alwaysPullImage: true
          livenessProbe:
            failureThreshold: 0
@@ -56,7 +56,7 @@ jenkins:
            periodSeconds: 0
            successThreshold: 0
            timeoutSeconds: 0
-         privileged: true
+         privileged: false
          runAsGroup: 1000
          runAsUser: 1000
          resourceRequestCpu: "300m"

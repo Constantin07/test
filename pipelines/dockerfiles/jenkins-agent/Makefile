@@ -1,33 +1,33 @@
 REPOSITORY ?= constantin07/jenkins-agent
 
 # Check for required binaries
-EXECUTABLES = git podman trivy
+EXECUTABLES = git docker trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VERSION=4.14
+VERSION=3077.vd69cf116da_6f
 
 .PHONY: all login build scan tag push clean
 all: build tag push
 
 login:
-	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
+	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: login
-	podman build --format docker --network host --build-arg VERSION=${VERSION} --build-arg VAULT_ADDR=${VAULT_ADDR} -t ${REPOSITORY}:${VERSION} .
+	docker build --build-arg VERSION=${VERSION} --build-arg VAULT_ADDR=${VAULT_ADDR} -t ${REPOSITORY}:${VERSION} .
 
 scan:
 	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VERSION}
 
 tag:
-	podman tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
+	docker tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
 
 push: login
-	podman push ${REPOSITORY}:${VERSION}
-	podman push ${REPOSITORY}:latest
+	docker push ${REPOSITORY}:${VERSION}
+	docker push ${REPOSITORY}:latest
 
 clean:
-	podman rmi ${REPOSITORY}:latest || true
-	podman rmi ${REPOSITORY}:${VERSION} || true
+	docker rmi ${REPOSITORY}:latest || true
+	docker rmi ${REPOSITORY}:${VERSION} || true

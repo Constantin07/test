@@ -18,8 +18,6 @@ for ns in "${NAMESPACES[@]}"; do
   kubectl label --overwrite namespace "$ns" \
     pod-security.kubernetes.io/enforce=baseline \
     pod-security.kubernetes.io/enforce-version=$K8S_VERSION \
-    pod-security.kubernetes.io/audit=restricted \
-    pod-security.kubernetes.io/audit-version=$K8S_VERSION \
     pod-security.kubernetes.io/warn=restricted \
     pod-security.kubernetes.io/warn-version=$K8S_VERSION
 done
