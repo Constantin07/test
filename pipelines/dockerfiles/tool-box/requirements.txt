@@ -1,4 +1,4 @@
-ansible-lint==6.8.6
+ansible-lint==6.9.0
 awscli==1.27.9
 boto3==1.26.17
 cryptography==38.0.3
