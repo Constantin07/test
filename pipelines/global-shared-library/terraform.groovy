@@ -12,7 +12,7 @@ def call(String nodeName = '', String directory = '.') {
   String jobName = "${env.JOB_NAME}"
 
   // Global variables
-  String checkov_image = 'bridgecrew/checkov:2.2.95'
+  String checkov_image = 'bridgecrew/checkov:latest'
 
   node(nodeName) {
 
@@ -78,7 +78,8 @@ def call(String nodeName = '', String directory = '.') {
 	// Needs to be run after terraform init to scan modules too
 	stage('Static code analysis') {
 	  docker.image(checkov_image).inside("--entrypoint=''") {
-	    sh "checkov -d ${directory}"
+	    sh "checkov -d ${directory} -o cli -o junitxml --output-file-path console,results.xml"
+	    junit skipPublishingChecks: true, testResults: 'results.xml'
 	  }
 	  milestone label: 'Static code analysis'
 	}

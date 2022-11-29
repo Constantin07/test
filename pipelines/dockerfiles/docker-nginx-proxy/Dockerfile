@@ -2,8 +2,8 @@ FROM openresty/openresty:bullseye-fat
 
 # Create nginx user/group
 RUN set -x \
-    && addgroup --system --gid 1000 nginx \
-    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 1000 nginx \
+    && addgroup --system --gid 10001 nginx \
+    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 10001 nginx \
     && usermod -a -G tty nginx \
     && chmod o+w /dev/stderr \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
