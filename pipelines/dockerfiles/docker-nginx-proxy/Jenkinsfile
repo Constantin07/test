@@ -17,6 +17,24 @@ pipeline {
 
   stages {
 
+    stage('Static code analysis') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:latest'
+          args "--entrypoint=''"
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh """
+            checkov -d . --skip-check CKV_DOCKER_2 \
+            -o cli -o junitxml --output-file-path console,results.xml --soft-fail
+          """
+          junit skipPublishingChecks: true, testResults: 'results.xml'
+        }
+      }
+    }
+
     stage('Build image') {
       steps {
         dir(env.DIRECTORY) {

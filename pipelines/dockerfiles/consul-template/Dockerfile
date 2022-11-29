@@ -18,8 +18,8 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-cer
 
 ARG USER=consul
 ARG GROUP=consul
-RUN addgroup -g 1000 ${GROUP} && \
-    adduser -h /home/${USER} -u 1000 -G ${GROUP} -D ${USER}
+RUN addgroup -g 10001 ${GROUP} && \
+    adduser -h /home/${USER} -u 10001 -G ${GROUP} -D ${USER}
 
 COPY --from=builder --chown=${USER}:${GROUP} /usr/local/bin/ /usr/local/bin/
 COPY --chown=${USER}:${GROUP} get_token.sh /home/consul/
