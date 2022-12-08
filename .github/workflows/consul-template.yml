@@ -1,0 +1,42 @@
+name: Consul-template
+run-name: ${{ github.actor }} is testing out GitHub Actions
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipelines/dockerfiles/consul-template
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker login
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: make login
+
+      - name: Docker build
+        run: make build
+
+      - name: Docker tag
+        run: make tag
+
+      - name: Run trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/constantin07/consul-template:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Docker push
+        run: make push
