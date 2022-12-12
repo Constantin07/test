@@ -26,6 +26,11 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "pip"
+    directory: "ansible/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pip"
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
       interval: "weekly"
