@@ -3,7 +3,6 @@ run-name: Lint Ansible
 
 on:
   push:
-  pull_request:
 
 jobs:
   Ansible-lint:
