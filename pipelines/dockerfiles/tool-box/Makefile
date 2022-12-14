@@ -36,7 +36,7 @@ build:
 	docker build --compress -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f *_ca.crt
 	@rm -f requirements.yml
-	@rm -rf bin
+	@rm -rf bin results.json
 
 scan:
 	@trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${TAG}
@@ -57,7 +57,7 @@ publish: login
 
 clean:
 	@rm -f *_ca.crt requirements.yml
-	@rm -rf bin
+	@rm -rf bin results.json
 
 test:
 	@echo "Testing image"
