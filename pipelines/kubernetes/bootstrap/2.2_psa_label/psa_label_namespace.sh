@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Label namespace with Pod Security Admission
+# Label namespace with Pod Security Admissions
 
 set -eu
 

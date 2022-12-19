@@ -16,7 +16,7 @@
     - trivy
 ##    - calicoctl
     - git_chglog
-#    - { role: jenkins_master, jenkins_version: "2.382", enable_https: true }
+#    - { role: jenkins_master, jenkins_version: "2.383", enable_https: true }
 ##    - podman
     - prometheus/node_exporter
 ##    - nfs_server
