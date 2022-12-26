@@ -12,6 +12,7 @@ DOCKERHUB_SERVER='https://index.docker.io/v1/'
 # List of namespaces to add docker credentials to
 NAMESPACES=(
   default
+  system
   calico-apiserver
 )
 

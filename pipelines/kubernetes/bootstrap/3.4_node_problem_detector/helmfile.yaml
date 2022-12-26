@@ -4,7 +4,7 @@ helmDefaults:
   cleanupOnFail: false
   verify: false
   wait: true
-  timeout: 120
+  timeout: 180
   historyMax: 5
 
 repositories:
@@ -14,11 +14,17 @@ repositories:
 releases:
   - name: node-problem-detector
     namespace: {{ requiredEnv "NAMESPACE" }}
-    createNamespace: false
+    createNamespace: true
     chart: deliveryhero/node-problem-detector
     version: 2.3.2
     values:
-      - resources:
+      - image:
+          pullPolicy: Always
+        metrics:
+          enabled: true
+        securityContext:
+          privileged: false
+        resources:
           requests:
             memory: 30Mi
             cpu: 25m

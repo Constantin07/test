@@ -106,13 +106,12 @@ pipeline {
         }
       }
       steps {
-        dir(env.ROOT_DIR + '2.2_psa_label') {
+        dir(env.ROOT_DIR + '2.2_pod_security_admission') {
             sh './psa_label_namespace.sh'
         }
         milestone(ordinal: 5)
       }
     }
-
 
     stage('Install metrics-server') {
       agent {
