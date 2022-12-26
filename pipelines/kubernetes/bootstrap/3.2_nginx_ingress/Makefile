@@ -1,4 +1,4 @@
-export NAMESPACE ?= default
+export NAMESPACE ?= system
 
 export HEADERS_FILE = headers-configmap.yaml
 export HEADERS_CONFIGMAP_NAME = nginx-ingress-headers
