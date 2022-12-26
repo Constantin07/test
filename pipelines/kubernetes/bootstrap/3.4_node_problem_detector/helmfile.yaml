@@ -4,7 +4,7 @@ helmDefaults:
   cleanupOnFail: false
   verify: false
   wait: true
-  timeout: 180
+  timeout: 120
   historyMax: 5
 
 repositories:
@@ -22,8 +22,6 @@ releases:
           pullPolicy: Always
         metrics:
           enabled: true
-        securityContext:
-          privileged: false
         resources:
           requests:
             memory: 30Mi
