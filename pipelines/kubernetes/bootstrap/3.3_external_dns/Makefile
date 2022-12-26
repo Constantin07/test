@@ -1,5 +1,4 @@
-
-export NAMESPACE ?= default
+export NAMESPACE ?= system
 
 # Check for required binaries
 EXECUTABLES = helm helmfile kubeconform
