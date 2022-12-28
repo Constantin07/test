@@ -1,0 +1,17 @@
+name: Pylint-check
+run-name: Python lint check
+
+on:
+  pull_request:
+
+jobs:
+  Pylint-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/vault/config/kubernetes
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run pylint
+        run: make
