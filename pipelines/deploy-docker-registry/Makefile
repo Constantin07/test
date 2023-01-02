@@ -49,7 +49,7 @@ deploy:
 	docker run -d --name ${IMAGE_NAME} \
 	-p ${SERVICE_PORT}:${SERVICE_PORT} \
 	-v /var/lib/registry:/var/lib/registry \
-	--memory 256m --cpus "0.5" \
+	--memory 312m --cpus "0.75" \
 	--restart unless-stopped \
 	${REGISTRY}/${IMAGE_NAME}:${TAG}
 

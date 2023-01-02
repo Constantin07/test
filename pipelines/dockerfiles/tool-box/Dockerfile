@@ -1,3 +1,5 @@
+ARG VAULT_CERTS=copy
+
 FROM alpine:3.17 AS builder
 
 RUN apk --no-cache add curl unzip
@@ -120,6 +122,16 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
+FROM alpine:3.17 as certs_copy
+ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
+ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
+
+FROM alpine:3.17 as certs_no_copy
+ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
+
+FROM certs_${VAULT_CERTS} as certs
+
+
 FROM alpine:3.17
 
 ARG USERNAME=toolbox
@@ -133,6 +145,7 @@ ENV ANSIBLE_FORCE_COLOR=true \
     ANSIBLE_HOST_KEY_CHECKING=False
 
 COPY requirements.txt /
+COPY --from=certs /usr/local/share/ca-certificates/ /usr/local/share/ca-certificates/
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 py3-pip make openssh-client openssl gnupg git-crypt ansible && \
@@ -142,16 +155,14 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
     pip3 install --no-cache-dir --upgrade --ignore-installed pip && \
     pip3 install --no-cache-dir -r /requirements.txt && \
     apk del build-dependencies && \
-    rm -rf /var/cache/apk/* /root/.cache/pip
+    rm -rf /var/cache/apk/* /root/.cache/pip && \
+    update-ca-certificates
 
 RUN ln -s /usr/bin/git-crypt /usr/local/bin/git-crypt
 
 # Add non-privileged user
 RUN addgroup -g 992 ${USERNAME} && \
     adduser -D -h /home/${USERNAME} -u 995 -G ${USERNAME} ${USERNAME}
-
-COPY *_ca.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
