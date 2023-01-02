@@ -1,10 +1,16 @@
 ---
 
-- name: Download and install helmfile {{ helmfile_version }}
-  get_url:
-    url: "{{ helmfile_url }}"
-    dest: "{{ install_dir }}/helmfile"
-    force: yes
+- name: Download and install helmfile v{{ helmfile_version }}
+  ansible.builtin.unarchive:
+    src: "{{ helmfile_url }}"
+    dest: "{{ install_dir }}"
     mode: 0755
-    tmp_dest: /tmp
+    remote_src: yes
+    exclude:
+      - LICENSE
+      - README.md
+  retries: 3
+  delay: 3
+  register: result
+  until: result is succeeded
   tags: helmfile
