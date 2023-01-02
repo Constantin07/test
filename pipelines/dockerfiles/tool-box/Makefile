@@ -9,7 +9,6 @@ EXECUTABLES = git trivy
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 ifdef BUILD_NUMBER
@@ -33,7 +32,7 @@ build:
 	@cp -a ../../../ansible/requirements.yml .
 	@cp -a ../../../bin .
 	@./add_ca_certs.sh
-	docker build --compress -t ${REGISTRY}/${IMAGE}:${TAG} .
+	docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
 	@rm -f *_ca.crt
 	@rm -f requirements.yml
 	@rm -rf bin results.json

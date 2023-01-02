@@ -3,6 +3,7 @@ run-name: Python lint check
 
 on:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   Pylint-check:

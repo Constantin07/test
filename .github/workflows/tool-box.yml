@@ -1,8 +1,10 @@
 name: tool-box
-run-name: Build container by ${{ github.actor }}
+run-name: Build container
 
 on:
   pull_request:
+  push:
+  workflow_dispatch:
 
 jobs:
   Build:
@@ -16,23 +18,27 @@ jobs:
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: make login
+        run: |
+          echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
       - name: Docker build
-        run: make build
+        run: |
+          cp -a ../../../ansible/requirements.yml .
+          cp -a ../../../bin .
+          docker build --build-arg VAULT_CERTS=no_copy -t constantin07/tool-box:latest .
 
-#      - name: Run trivy scan
-#        uses: aquasecurity/trivy-action@master
-#        with:
-#          image-ref: 'docker.io/constantin07/consul-template:latest'
-#          format: 'sarif'
-#          output: 'trivy-results.sarif'
+      - name: Run trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'constantin07/tool-box:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
 
-#      - name: Upload Trivy scan results to GitHub Security tab
-#        uses: github/codeql-action/upload-sarif@v2
-#        if: always()
-#        with:
-#          sarif_file: 'trivy-results.sarif'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
 #      - name: Docker push
 #        run: make push
