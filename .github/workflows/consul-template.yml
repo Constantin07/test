@@ -1,4 +1,4 @@
-name: Consul-template
+name: consul-template
 run-name: Build consul-template container
 
 on:

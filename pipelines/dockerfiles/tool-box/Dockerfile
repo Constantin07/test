@@ -45,14 +45,14 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=v0.144.0
-ARG HELMFILE_URL=https://github.com/roboll/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_linux_amd64
-ARG HELMFILE_FILE=helmfile_linux_amd64
-ARG HELMFILE_SHA256=dcf865a715028d3a61e2fec09f2a0beaeb7ff10cde32e096bf94aeb9a6eb4f02
+ARG HELMFILE_VERSION=0.149.0
+ARG HELMFILE_URL=https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
+ARG HELMFILE_FILE=helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
+ARG HELMFILE_SHA256=10645a3319c727bd2a9f663d2e2083966a4c79b9880131589d397050d80f5870
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
-    mv ${HELMFILE_FILE} ${INSTALL_DIR}/helmfile; \
+    tar -xvzf ${HELMFILE_FILE} -C ${INSTALL_DIR} helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
 ARG GOMPLATE_VERSION=3.11.3
