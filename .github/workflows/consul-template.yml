@@ -5,10 +5,12 @@ on:
   pull_request:
     paths:
       - 'pipelines/dockerfiles/consul-template/**'
+      - .github/workflows/consul-template.yml
 
   push:
     paths:
       - 'pipelines/dockerfiles/consul-template/**'
+      - .github/workflows/consul-template.yml
     branches:
       - master
 

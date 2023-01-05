@@ -8,10 +8,12 @@ on:
   pull_request:
     paths:
       - 'ansible/**'
+      - .github/workflows/ansible-lint.yml
 
   push:
     paths:
       - 'ansible/**'
+      - .github/workflows/ansible-lint.yml
     branches:
       - master
 
@@ -22,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: $DIRECTORY
+        working-directory: ${{ env.DIRECTORY }}
     steps:
       - uses: actions/checkout@v3
 

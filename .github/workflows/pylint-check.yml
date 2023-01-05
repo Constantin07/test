@@ -5,10 +5,12 @@ on:
   pull_request:
     paths:
       - 'terraform/vault/config/kubernetes/**'
+      - .github/workflows/pylint-check.yml
 
   push:
     paths:
       - 'terraform/vault/config/kubernetes/**'
+      - .github/workflows/pylint-check.yml
     branches:
       - master
 
