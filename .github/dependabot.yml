@@ -4,38 +4,62 @@ updates:
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/vault/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/jenkins-agent/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/docker-nginx-proxy/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
 
   - package-ecosystem: "docker"
     directory: "pipelines/dockerfiles/consul-template/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
 
   - package-ecosystem: "pip"
     directory: "ansible/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "python"
 
   - package-ecosystem: "pip"
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "python"
 
   - package-ecosystem: "pip"
     directory: "terraform/vault/config/kubernetes/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dependencies"
+      - "python"
