@@ -3,6 +3,15 @@ run-name: Build consul-template container
 
 on:
   pull_request:
+    paths:
+      - 'pipelines/dockerfiles/consul-template/**'
+
+  push:
+    paths:
+      - 'pipelines/dockerfiles/consul-template/**'
+    branches:
+      - master
+
   workflow_dispatch:
 
 jobs:
@@ -34,7 +43,6 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
-        if: always()
         with:
           sarif_file: 'trivy-results.sarif'
 
