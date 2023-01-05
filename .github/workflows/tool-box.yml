@@ -5,10 +5,12 @@ on:
   pull_request:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
+      - .github/workflows/tool-box.yml
 
   push:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
+      - .github/workflows/tool-box.yml
     branches:
       - master
 
