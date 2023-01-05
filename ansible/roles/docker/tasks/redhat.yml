@@ -13,7 +13,7 @@
   tags: docker
 
 - name: Install epel-release
-  yum:
+  ansible.builtin.yum:
     name: "{{ item  }}"
     state: present
     update_cache: yes
@@ -22,7 +22,7 @@
   tags: docker
 
 - name: Install required packages
-  yum:
+  ansible.builtin.yum:
     name: "{{ item  }}"
     state: present
     update_cache: yes
