@@ -3,10 +3,19 @@ run-name: Python lint check
 
 on:
   pull_request:
+    paths:
+      - 'terraform/vault/config/kubernetes/**'
+
+  push:
+    paths:
+      - 'terraform/vault/config/kubernetes/**'
+    branches:
+      - master
+
   workflow_dispatch:
 
 jobs:
-  Pylint-check:
+  pylint-check:
     runs-on: ubuntu-latest
     defaults:
       run:

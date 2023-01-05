@@ -1,12 +1,21 @@
-name: Ansible-lint
-run-name: Lint Ansible
+name: ansible-lint
+run-name: Ansible lint
 
 on:
   pull_request:
+    paths:
+      - 'ansible/**'
+
+  push:
+    paths:
+      - 'ansible/**'
+    branches:
+      - master
+
   workflow_dispatch:
 
 jobs:
-  Ansible-lint:
+  ansible-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
