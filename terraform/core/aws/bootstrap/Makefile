@@ -1,14 +1,16 @@
 
 .DEFAULT_GOAL := all
 
-.PHONY: all clean check-account
-
-check-account:
 ifndef ACCOUNT
-$(error ACCOUNT is not defined. Run as `make ACCOUNT=xyz`.)
+all: check
 endif
 
-all: check-account
+.PHONY: tflint
+tflint:
+	docker run --rm -v $$(pwd):/data -t ghcr.io/terraform-linters/tflint-bundle /data
+
+.PHONY: all
+all:
 	terraform init -upgrade=true && terraform validate
 	terraform workspace select ${ACCOUNT} || terraform workspace new ${ACCOUNT}
 	terraform plan -var-file vars/${ACCOUNT}.tfvars -out plan.out
@@ -16,5 +18,10 @@ all: check-account
 	terraform apply plan.out
 	rm -f plan.out
 
+.PHONY: check
+check:
+	$(error ACCOUNT env. var. is not defined. Run as `make ACCOUNT=xyz`.)
+
+.PHONY: clean
 clean:
 	rm -rf .terraform/
