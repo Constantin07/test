@@ -15,8 +15,13 @@ ifndef VARFILE
 	$(error VARFILE must be defined.)
 endif
 
+
+.PHONY: validate
+validate: check-vars
+	tf ${WORKSPACE} ${BUCKET} ${STATE_KEY} validate
+
 .PHONY: plan
-plan:  check-vars
+plan: check-vars
 	tf ${WORKSPACE} ${BUCKET} ${STATE_KEY} plan -var-file ${VARFILE} -out=${PLAN_FILE}
 
 .PHONY: apply

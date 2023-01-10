@@ -11,9 +11,6 @@ def call(String nodeName = '', String directory = '.') {
   // Used for locks
   String jobName = "${env.JOB_NAME}"
 
-  // Global variables
-  String checkov_image = 'bridgecrew/checkov:latest'
-
   node(nodeName) {
 
     properties([
@@ -75,14 +72,22 @@ def call(String nodeName = '', String directory = '.') {
           }
         }
 
-	// Needs to be run after terraform init to scan modules too
-	stage('Static code analysis') {
-	  docker.image(checkov_image).inside("--entrypoint=''") {
-	    sh "checkov -d ${directory} -o cli -o junitxml --output-file-path console,results.xml"
-	    junit skipPublishingChecks: true, testResults: 'results.xml'
-	  }
-	  milestone label: 'Static code analysis'
-	}
+        // Needs to be run after terraform init to scan modules too
+        stage('Static code analysis') {
+          docker.image('bridgecrew/checkov:latest').inside("--entrypoint=''") {
+            sh "checkov -d ${directory} -o cli -o junitxml --output-file-path console,results.xml"
+            junit skipPublishingChecks: true, testResults: 'results.xml'
+          }
+          milestone label: 'Static code analysis'
+        }
+
+        stage('Run TFLint') {
+          //docker.image('ghcr.io/terraform-linters/tflint-bundle:latest').inside("--entrypoint=''") {
+            //sh "export TFLINT_LOG=debug; tflint --chdir=${directory}/"
+          //}
+          sh "docker run --rm -v " + pwd() + ":/data -t ghcr.io/terraform-linters/tflint-bundle --chdir=/data/${directory}/"
+          milestone label: 'TFLint'
+        }
 
         dir(path: directory) {
 

@@ -19,6 +19,26 @@ pipeline {
 
   stages {
 
+    stage('Validate') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          withAWS(credentials: 'Amazon Credentials') {
+            sh 'git crypt unlock'
+            sh 'make WORKSPACE=default BUCKET=dev-710782875474-terraform-state VARFILE=vars/dev.tfvars validate'
+          }
+        }
+        milestone null
+      }
+    }
+
     stage('Plan') {
       agent {
         docker {
