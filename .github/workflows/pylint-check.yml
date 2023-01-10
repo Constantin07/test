@@ -11,8 +11,7 @@ on:
     paths:
       - 'terraform/vault/config/kubernetes/**'
       - .github/workflows/pylint-check.yml
-    branches:
-      - master
+    branches: [ master ]
 
   workflow_dispatch:
 
@@ -23,7 +22,8 @@ jobs:
       run:
         working-directory: terraform/vault/config/kubernetes
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
       - name: Run pylint
         run: make
