@@ -17,7 +17,7 @@ on:
 
 jobs:
   Build:
-    runs-on: [ubuntu-latest, ubuntu-20.04]
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: pipelines/dockerfiles/consul-template
@@ -53,15 +53,15 @@ jobs:
         run: make push
 
   Checkov-check:
-    runs-on: [ubuntu-latest, ubuntu-20.04]
-    defaults:
-      run:
-        working-directory: pipelines/dockerfiles/consul-template
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
       - name: Run Checkov action
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: .
+          directory: pipelines/dockerfiles/consul-template
           framework: dockerfile
           skip_check: CKV_DOCKER_2
           output_format: sarif
