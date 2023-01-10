@@ -1,5 +1,5 @@
 ---
 
-ct_version: 0.29.4
+ct_version: 0.30.0
 ct_url: "https://releases.hashicorp.com/consul-template/{{ ct_version }}/consul-template_{{ ct_version }}_linux_amd64.zip"
 install_dir: /usr/local/bin
