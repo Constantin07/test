@@ -41,6 +41,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.8.0
         with:
           image-ref: 'docker.io/constantin07/consul-template:latest'
+          security-checks: 'vuln,secret,config'
           format: 'sarif'
           output: 'trivy-results.sarif'
 
