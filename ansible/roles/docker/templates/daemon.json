@@ -31,5 +31,8 @@
     "centos7.internal:5000",
     "registry:5000",
     "registry.internal:5000"
-  ]
+  ],
+  "features": {
+    "buildkit": true
+  }
 }
