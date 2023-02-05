@@ -148,7 +148,7 @@ COPY requirements.txt /
 COPY --from=certs /usr/local/share/ca-certificates/ /usr/local/share/ca-certificates/
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk --no-cache add ca-certificates git curl bash procps jq python3 py3-pip make openssh-client openssl gnupg git-crypt ansible && \
+    apk --no-cache add ca-certificates git curl bash procps jq python3 py3-pip make openssh-client openssl gnupg git-crypt && \
     apk --no-cache add --virtual build-dependencies python3-dev libffi-dev musl-dev gcc openssl-dev libcap && \
     setcap cap_net_raw+ep /bin/busybox && \
     pip3 install --no-cache-dir --upgrade setuptools && \
