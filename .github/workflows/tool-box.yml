@@ -48,7 +48,7 @@ jobs:
           cp -a ../../../bin .
 
       - name: Docker build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: pipelines/dockerfiles/tool-box
           platforms: linux/amd64
