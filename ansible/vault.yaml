@@ -6,4 +6,4 @@
   roles:
     - docker
     - vault_binary
-    - { role: vault_service, vault_version: "1.12.2" }
+    - { role: vault_service, vault_version: "1.12.3" }

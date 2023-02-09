@@ -11,8 +11,7 @@
   tags: docker
 
 - name: Run apt-get update
-  apt:
-    upgrade: dist
+  ansible.builtin.apt:
     update_cache: yes
   tags: docker
 
