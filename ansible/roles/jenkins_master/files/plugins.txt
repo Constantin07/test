@@ -3,7 +3,6 @@ ansicolor
 aws-credentials
 blueocean
 build-timestamp
-cctray-xml
 configuration-as-code
 configuration-as-code-groovy
 credentials
@@ -21,7 +20,6 @@ htmlpublisher
 http_request
 jaxb
 job-dsl
-jobcopy-builder
 kubernetes
 ldap
 lockable-resources
