@@ -6,10 +6,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.3.8
+ARG TERRAFORM_VERSION=1.3.9
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=9d9e7d6a9b41cef8b837af688441d4fbbd84b503d24061d078ad662441c70240
+ARG TERRAFORM_SHA256=53048fa573effdd8f2a59b726234c6f450491fe0ded6931e9f4c6e3df6eece56
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
