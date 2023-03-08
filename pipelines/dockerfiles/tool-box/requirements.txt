@@ -6,4 +6,4 @@ boto3==1.26.85
 cryptography==39.0.2
 Jinja2==3.1.2
 paramiko==3.0.0
-resolvelib==0.8.1
+resolvelib==1.0.0
