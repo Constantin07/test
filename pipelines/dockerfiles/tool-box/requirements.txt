@@ -2,7 +2,7 @@ ansible==7.3.0
 ansible-core==2.14.3
 #ansible-lint==6.12.1
 awscli==1.27.87
-boto3==1.26.86
+boto3==1.26.87
 cryptography==39.0.2
 Jinja2==3.1.2
 paramiko==3.0.0
