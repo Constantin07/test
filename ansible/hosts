@@ -8,7 +8,6 @@ jenkins-agent.internal
 
 [kube_masters]
 master-node1.internal
-master-node2.internal
 
 [kube_slaves]
 worker-node1.internal

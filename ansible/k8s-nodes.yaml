@@ -7,8 +7,8 @@
   any_errors_fatal: true
 
   roles:
-   - common
    - resolv
+   - common
    - automatic_updates
    - containerd
    - kube_common
