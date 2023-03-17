@@ -60,16 +60,6 @@
     mode: 0755
   tags: containerd
 
-- name: Add custom settings to containerd drop-in file
-  copy:
-    src: 10-containerd.conf
-    dest: /etc/systemd/system/containerd.service.d/
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart containerd
-  tags: containerd
-
 - name: Copy crictl.yaml to /etc
   copy:
     src: crictl.yaml
@@ -78,4 +68,3 @@
     group: root
     mode: 0644
   tags: containerd
-
