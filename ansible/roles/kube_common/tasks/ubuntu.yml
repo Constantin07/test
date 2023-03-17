@@ -9,6 +9,7 @@
     - apt-transport-https
     - bash-completion
     - curl
+    - ca-certificates
     - software-properties-common
     - socat  # required for kubectl port-forward to work
   tags: kube_common
