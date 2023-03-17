@@ -1,16 +1,5 @@
 ---
 
-- name: Create kubelet systemd dropin file
-  template:
-    src: 20-kubelet.conf.j2
-    dest: /etc/systemd/system/kubelet.service.d/20-kubelet.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart kubelet
-  tags: kubelet_config
-
 - name: Create kubelet extra args file
   template:
     src: kubelet.j2
