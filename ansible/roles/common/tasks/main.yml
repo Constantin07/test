@@ -5,4 +5,5 @@
 
 - include_tasks: disable_firewalld.yml
 
-- include_tasks: disable_ipv6.yml
+# Disabled via kernel command-line parameter
+#- include_tasks: disable_ipv6.yml
