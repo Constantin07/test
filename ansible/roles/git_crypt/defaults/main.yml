@@ -12,3 +12,6 @@ redhat_packages:
   - gcc-c++
   - openssl-devel
   - openssl-libs
+
+debian_packages:
+  - git-crypt

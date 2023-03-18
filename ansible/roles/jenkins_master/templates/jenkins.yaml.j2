@@ -3,15 +3,15 @@ credentials:
     domainCredentials:
     - credentials:
       - x509ClientCert:
+          id: "kubernetes"
+          description: "Kubernetes"
+          scope: GLOBAL
           serverCaCertificate: |-
             {{ kubernetes_ca | indent(12, true) | trim }}
           clientCertificate: |-
             {{ kubernetes_client_cert | indent(12, true) | trim }}
           clientKeySecret: |-
             {{ kubernetes_client_key | indent(12, true) | trim }}
-          description: "Kubernetes"
-          id: "kubernetes"
-          scope: GLOBAL
 
       - vaultAppRoleCredential:
           id: "vault-approle"
@@ -48,7 +48,7 @@ jenkins:
      templates:
      - containers:
        - name: jnlp
-         image: "constantin07/jenkins-agent:3077.vd69cf116da_6f"
+         image: "constantin07/jenkins-agent:3107.v665000b_51092"
          alwaysPullImage: true
          livenessProbe:
            failureThreshold: 0

@@ -51,13 +51,31 @@ pipeline {
         }
       }
       steps {
-        dir(env.ROOT_DIR + '1_update_coredns') {
+        dir(env.ROOT_DIR + '1.0_update_coredns') {
           sh 'make apply'
           sh 'make test'
         }
         milestone(ordinal: 2)
       }
     }
+
+    stage('Create namespaces') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR + '1.1_create_namespaces') {
+          sh './create_namespaces.sh'
+        }
+        milestone(ordinal: 3)
+      }
+    }
+
 
     stage('Protect critical resources') {
       agent {
@@ -73,7 +91,7 @@ pipeline {
           sh 'make protect'
           sh 'make test'
         }
-        milestone(ordinal: 3)
+        milestone(ordinal: 4)
       }
     }
 
@@ -92,7 +110,7 @@ pipeline {
             sh './regcred.sh'
           }
         }
-        milestone(ordinal: 4)
+        milestone(ordinal: 5)
       }
     }
 
@@ -109,7 +127,7 @@ pipeline {
         dir(env.ROOT_DIR + '2.2_pod_security_admission') {
             sh './psa_label_namespace.sh'
         }
-        milestone(ordinal: 5)
+        milestone(ordinal: 6)
       }
     }
 
@@ -129,7 +147,7 @@ pipeline {
             ./wait.sh
           '''
         }
-        milestone(ordinal: 6)
+        milestone(ordinal: 7)
       }
     }
 
@@ -240,7 +258,7 @@ pipeline {
         dir(env.ROOT_DIR + '7_cluster_tests') {
           sh './cluster_status_tests.sh'
         }
-        milestone(ordinal: 7)
+        milestone(ordinal: 8)
       }
     }
 

@@ -26,10 +26,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
 #    unzip -d ${INSTALL_DIR} ${PACKER_FILE}; \
 #    chmod +x ${INSTALL_DIR}/packer
 
-ARG KUBECTL_VERSION=v1.24.8
+ARG KUBECTL_VERSION=v1.24.10
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=f93c18751ec715b4d4437e7ece18fe91948c71be1f24ab02a2dde150f5449855
+ARG KUBECTL_SHA256=d8e9cd9bb073ff09e2f2a74cf48e94a9b9d4f2fa2e2dd91b68b01f64e7061a3b
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
@@ -75,10 +75,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
-ARG KUBECONFORM_VERSION=v0.4.14
+ARG KUBECONFORM_VERSION=v0.6.1
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
-ARG KUBECONFORM_SHA256=140044a5eb44a18e52d737ba15936f87b0e5fca3d34a02ae13b2d68025a449f3
+ARG KUBECONFORM_SHA256=7f84c1e4109fb72f151da41bdffea05e1e37591f179de51adc048c83533ad215
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
@@ -93,10 +93,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE}
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
     chmod +x ${INSTALL_DIR}/${ECR_HELPER_FILE}
 
-ARG TRIVY_VERSION=0.38.2
+ARG TRIVY_VERSION=0.38.3
 ARG TRIVY_URL=https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 ARG TRIVY_FILE=trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-ARG TRIVY_SHA256=4d3241dffc52f9654e00c0df2fdf9d4aadc7524e917b6e3587ec183a5790914e
+ARG TRIVY_SHA256=21d257de320c26a70faee2534c869512191e3ca32dd2752b24a7d2281e456572
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TRIVY_FILE} ${TRIVY_URL}; \
     sha256sum ${TRIVY_FILE} | grep ${TRIVY_SHA256}; \

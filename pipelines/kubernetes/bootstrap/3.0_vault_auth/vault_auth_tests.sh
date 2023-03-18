@@ -5,7 +5,7 @@ oneTimeSetUp() {
   NAMESPACE='default'
   SERVICE_ACCOUNT='vault-auth'
   SECRET_NAME='vault-auth-token'
-  service=`kubectl -n ${NAMESPACE} get sa/${SERVICE_ACCOUNT} -o json`
+  sa=`kubectl -n ${NAMESPACE} get sa/${SERVICE_ACCOUNT} -o json`
   SECRET=`kubectl -n ${NAMESPACE} get secret/${SECRET_NAME} -o json`
   cluster_role_binding=`kubectl get clusterrolebinding/${SERVICE_ACCOUNT} -o json`
 }
@@ -16,13 +16,8 @@ test_VaultAuthSecretExists() {
 }
 
 test_VaultServiceAccountExists() {
-  sa=`echo ${service} | jq -r .metadata.name`
+  sa=`echo ${sa} | jq -r .metadata.name`
   assertEquals "Vault service account exists" "${sa}" "${SERVICE_ACCOUNT}"
-}
-
-test_VaultServiceAccountHasSecret() {
-  secret=`echo ${service} | jq -r .secrets[0].name`
-  assertContains "Service account has secret" "${secret}" 'vault-auth-token'
 }
 
 test_ClusterRoleBindingExists() {

@@ -1,0 +1,9 @@
+---
+
+- name: Install required packages for git-crypt
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop: "{{ debian_packages }}"
+  tags: git_crypt
