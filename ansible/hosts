@@ -32,6 +32,9 @@ server.internal
 [server:vars]
 ansible_user=ubuntu
 
+[jenkins_agents:vars]
+ansible_user=ubuntu
+
 [all:children]
 local
 jenkins_agents

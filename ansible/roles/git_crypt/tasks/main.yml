@@ -3,24 +3,3 @@
 - name: Include Linux distribution specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: git_crypt
-
-- name: Download git-crypt tarball
-  get_url:
-    url: "{{ git_crypt_url }}"
-    dest: "{{ tmp_dir }}/{{ git_crypt_dir }}.tar.gz"
-    force: yes
-    mode: 0644
-  tags: git_crypt
-
-- name: Extract git-crypt tarball
-  unarchive:
-    src: "{{ tmp_dir }}/{{ git_crypt_dir }}.tar.gz"
-    dest: "{{ tmp_dir }}/"
-    remote_src: yes
-  tags: git_crypt
-
-- name: Build git-crypt
-  shell: "make && make install PREFIX={{ install_dir }}"
-  args:
-    chdir: "{{ tmp_dir }}/{{ git_crypt_dir }}"
-  tags: git_crypt

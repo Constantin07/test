@@ -6,8 +6,8 @@
   any_errors_fatal: true
 
   roles:
-    - common
     - resolv
+    - common
     - chronyd
     - docker
     - { role: jenkins_agent }
