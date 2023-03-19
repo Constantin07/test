@@ -1,11 +1,7 @@
 ---
 
-- name: Include Linux distribution specific tasks
-  include_tasks: "packages_{{ ansible_os_family|lower }}.yml"
-  tags: jenkins_shared
-
-- name: Add Kubeconfig file
-  include_tasks: "kubeconfig.yml"
+- name: Include Linux distribution specific tasks | {{ ansible_os_family|lower }}
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
   tags: jenkins_shared
 
 - name: Install required pip packages
@@ -91,4 +87,8 @@
     group: "{{ jenkins_user }}"
     owner: "{{ jenkins_group }}"
     mode: 0644
+  tags: jenkins_shared
+
+- name: Add Kubeconfig file
+  include_tasks: kubeconfig.yml
   tags: jenkins_shared

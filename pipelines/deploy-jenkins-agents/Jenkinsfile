@@ -33,7 +33,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'git crypt unlock'
           sshagent(credentials: ['jenkins-ssh-key']) {
-            sh 'ansible jenkins_agents -m yum -a "name=* state=latest update_cache=yes"'
             sh 'ansible-playbook jenkins_agents.yaml'
           }
         }

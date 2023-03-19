@@ -1,0 +1,9 @@
+---
+
+- name: Install required packages for Jenkins both master and agent
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  loop: "{{ debian_packages }}"
+  tags: jenkins_shared
