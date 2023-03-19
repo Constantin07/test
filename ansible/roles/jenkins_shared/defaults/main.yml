@@ -17,3 +17,9 @@ redhat_packages:
   - rpm-build
   - python-docutils
   - python2-devel
+
+debian_packages:
+  - git
+  - openjdk-11-jdk
+  - unzip
+  - curl

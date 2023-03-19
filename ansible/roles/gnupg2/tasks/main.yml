@@ -1,5 +1,9 @@
 ---
 
+- name: Include Linux distribution specific tasks | {{ ansible_os_family|lower }}
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: gnupg2
+
 - name: Check if required variables are defined
   assert:
     that:
@@ -29,7 +33,6 @@
     group: "{{ gpg_group }}"
     mode:  0600
   become: yes
-  become_user: "{{ gpg_user }}"
   with_items:
     - { name: "{{ gpg_private_key }}" }
     - { name: "{{ gpg_ownertrust }}" }
