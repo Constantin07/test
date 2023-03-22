@@ -1,5 +1,5 @@
 ---
 
-calicoctl_version: 'v3.20.2'
-calicoctl_url: "https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctl_version }}/calicoctl"
+calicoctl_version: 'v3.25.0'
+calicoctl_url: "https://github.com/projectcalico/calico/releases/download/{{ calicoctl_version }}/calicoctl-{{ ansible_system|lower }}-amd64"
 install_dir: "/usr/local/bin"

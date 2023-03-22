@@ -2,16 +2,16 @@
 
   https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises#install-calico-with-kubernetes-api-datastore-50-nodes-or-less
 
-  ```bash
-  curl -sL https://docs.projectcalico.org/manifests/calico.yaml -o calico-new.yaml
+  ```sh
+  curl -sL https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml -o calico-new.yaml
   diff -u calico.yaml calico-new.yaml
   ```
 
 ## Calico API server
 
-  Install guide: https://docs.projectcalico.org/maintenance/install-apiserver
+  Install guide: https://docs.tigera.io/calico/latest/operations/install-apiserver#install-the-api-server
 
-  ```bash
-  curl -sL https://docs.projectcalico.org/manifests/apiserver.yaml -o apiserver-new.yaml
+  ```sh
+  curl -sL https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/apiserver.yaml -o apiserver-new.yaml
   diff -u apiserver.yaml apiserver-new.yaml
   ```

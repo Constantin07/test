@@ -76,7 +76,7 @@ spec:
         env:
         - name: DATASTORE_TYPE
           value: kubernetes
-        image: calico/apiserver:v3.24.5
+        image: calico/apiserver:v3.25.0
         livenessProbe:
           httpGet:
             path: /version
@@ -107,6 +107,8 @@ spec:
       tolerations:
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
       volumes:
       - name: calico-apiserver-certs
         secret:
