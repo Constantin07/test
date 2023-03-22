@@ -21,7 +21,7 @@ install: validate
 	@kubectl apply -f ${CONFIG_FILE} --wait=true
 	@./wait.sh
 	# Make sure CPU/RAM resources are guaranteed
-	@kubectl -n ${NAMESPACE} set resources ds/calico-node --requests='cpu=250m,memory=128Mi' --limits='cpu=250m,memory=128Mi' || true
+	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=250m,memory=128Mi' --limits='cpu=250m,memory=128Mi' || true
 	@kubectl apply -f ${APISERVER_FILE} --wait=true
 	@./api_server.sh
 
@@ -31,9 +31,9 @@ diff:
 
 # Remove Calico from K8s
 destroy: clean
-	kubectl -n ${NAMESPACE} delete -f ${CONFIG_FILE} --wait=true --ignore-not-found=true
-	kubectl delete -f ${APISERVER_FILE} --wait=true --ignore-not-found=true
 	kubectl -n calico-apiserver delete secret calico-apiserver-certs --ignore-not-found=true
+	kubectl delete -f ${APISERVER_FILE} --wait=true --ignore-not-found=true
+	kubectl -n ${NAMESPACE} delete -f ${CONFIG_FILE} --wait=true --ignore-not-found=true
 
 clean:
 	@rm -f apiserver.crt apiserver.key
