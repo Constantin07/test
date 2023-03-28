@@ -1,5 +1,5 @@
 ansible==7.3.0
-ansible-core==2.14.3
+ansible-core==2.14.4
 #ansible-lint==6.12.1
 awscli==1.27.100
 boto3==1.26.95
