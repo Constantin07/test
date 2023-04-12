@@ -47,5 +47,5 @@ jobs:
 
       - name: Run TFLint
         run: |
-          terraform -chdir=terraform/pipeline init -upgrade -backend=false 
-          TFLINT_LOG=debug tflint --color --chdir=terraform/pipeline --config=../../.tflint.hcl
+          terraform -chdir=terraform/pipeline init -upgrade -backend=false
+          tflint --color --chdir=terraform/pipeline --config=../../.tflint.hcl
