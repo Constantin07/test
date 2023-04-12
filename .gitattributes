@@ -6,6 +6,7 @@
 *.enc filter=git-crypt diff=git-crypt
 *.enc.yml filter=git-crypt diff=git-crypt
 *.auto.tfvars filter=git-crypt diff=git-crypt
+terraform.tfvars !filter !diff
 ansible/roles/elasticsearch/defaults/main.yml filter=git-crypt diff=git-crypt
 ansible/roles/kibana/defaults/main.yml filter=git-crypt diff=git-crypt
 ansible/roles/metricbeat/defaults/main.yml filter=git-crypt diff=git-crypt
