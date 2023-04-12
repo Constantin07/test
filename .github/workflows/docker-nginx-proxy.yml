@@ -8,7 +8,7 @@ on:
 
   push:
     paths:
-      - 'pipelines/dockerfiles/consul-template/**'
+      - 'pipelines/dockerfiles/docker-nginx-proxy/**'
       - .github/workflows/consul-template.yml
 
   workflow_dispatch:
