@@ -1,9 +1,6 @@
 name: ansible-lint
 run-name: Ansible lint
 
-env:
-  DIRECTORY: ansible
-
 on:
   pull_request:
     paths:
@@ -17,6 +14,9 @@ on:
     branches: [ master ]
 
   workflow_dispatch:
+
+env:
+  DIRECTORY: ansible
 
 jobs:
   ansible-lint:

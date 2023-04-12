@@ -6,12 +6,12 @@ on:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
       - .github/workflows/tool-box.yml
+    branches: [ master ]
 
   push:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
       - .github/workflows/tool-box.yml
-    branches: [ master ]
 
   workflow_dispatch:
 
