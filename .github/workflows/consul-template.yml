@@ -11,12 +11,11 @@ on:
     paths:
       - 'pipelines/dockerfiles/consul-template/**'
       - .github/workflows/consul-template.yml
-    branches: [ master ]
 
   workflow_dispatch:
 
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -53,7 +52,7 @@ jobs:
       - name: Docker push
         run: make push
 
-  Checkov-check:
+  checkov:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
