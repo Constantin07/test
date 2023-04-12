@@ -1,0 +1,51 @@
+name: tflint
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+      - .github/workflows/tflint.yml
+
+  push:
+    paths:
+      - 'terraform/**'
+      - .github/workflows/tflint.yml
+
+  workflow_dispatch:
+
+jobs:
+  tflint:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Cache plugin dir
+        uses: actions/cache@v3
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3.0.0
+        with:
+          tflint_version: v0.46.0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: 1.4.5
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: |
+          terraform -chdir=terraform/pipeline init -upgrade -backend=false 
+          TFLINT_LOG=debug tflint --color --chdir=terraform/pipeline --config=../../.tflint.hcl

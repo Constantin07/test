@@ -1,7 +1,7 @@
 REPOSITORY ?= constantin07/docker-nginx-proxy
 
 # Check for required binaries
-EXECUTABLES = docker trivy
+EXECUTABLES = docker
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -13,7 +13,7 @@ all: build tag push
 login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
-build: login
+build:
 	docker build -t ${REPOSITORY}:${VERSION} .
 
 scan:
@@ -22,7 +22,7 @@ scan:
 tag:
 	docker tag ${REPOSITORY}:${VERSION} ${REPOSITORY}:latest
 
-push: login
+push:
 	docker push ${REPOSITORY}:${VERSION}
 	docker push ${REPOSITORY}:latest
 
