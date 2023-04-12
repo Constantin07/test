@@ -1,0 +1,73 @@
+name: docker-nginx-proxy
+
+on:
+  pull_request:
+    paths:
+      - 'pipelines/dockerfiles/docker-nginx-proxy/**'
+      - .github/workflows/docker-nginx-proxy.yml
+
+  push:
+    paths:
+      - 'pipelines/dockerfiles/consul-template/**'
+      - .github/workflows/consul-template.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipelines/dockerfiles/docker-nginx-proxy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Docker login
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: make login
+
+      - name: Docker build
+        run: make build
+
+      - name: Docker tag
+        run: make tag
+
+      - name: Run trivy scan
+        uses: aquasecurity/trivy-action@0.9.2
+        with:
+          image-ref: 'docker.io/constantin07/docker-nginx-proxy:latest'
+          security-checks: 'vuln,secret,config'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Docker push
+        run: make push
+
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Run Checkov action
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: pipelines/dockerfiles/docker-nginx-proxy
+          framework: dockerfile
+          skip_check: CKV_DOCKER_2
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          soft_fail: true
+
+      - name: Upload Checkov results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'checkov-results.sarif'
