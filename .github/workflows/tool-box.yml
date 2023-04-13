@@ -63,7 +63,10 @@ jobs:
           load: false
 
       - name: Load just one platform
-        run: docker buildx build --load --platform linux/amd64 -t ${{ env.IMAGE_NAME }} .
+        run: docker buildx build --load --platform 'linux/amd64' -t ${{ env.IMAGE_NAME }} .
+
+      - name: Load another platform with a different tag
+        run: docker buildx build --load --platform 'linux/arm64' -t ${{ env.IMAGE_NAME }}-arm64 .
 
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.9.2
@@ -77,5 +80,5 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-      - name: Docker push
-        run: docker push ${{ env.IMAGE_NAME }}
+      - name: Push both platforms as one image manifest list
+        run: docker buildx build --push --platform 'linux/arm64,linux/amd64' -t ${{ env.IMAGE_NAME }} .
