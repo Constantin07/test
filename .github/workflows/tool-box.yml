@@ -62,6 +62,9 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}
           load: false
 
+      - name: Load just one platform
+        run: docker buildx build --load --platform linux/amd64 -t ${{ env.IMAGE_NAME }} .
+
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.9.2
         with:
