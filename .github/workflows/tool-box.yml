@@ -21,6 +21,9 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        platform: ['linux/amd64', 'linux/arm64']
     runs-on: ubuntu-22.04
     permissions:
       security-events: write
@@ -54,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: pipelines/dockerfiles/tool-box
-          platforms: linux/amd64
+          platforms: ${{ matrix.platform }}
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
