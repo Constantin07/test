@@ -21,9 +21,6 @@ env:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        platform: ['linux/amd64', 'linux/arm64']
     runs-on: ubuntu-22.04
     permissions:
       security-events: write
@@ -57,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: pipelines/dockerfiles/tool-box
-          platforms: ${{ matrix.platform }}
+          platforms: 'linux/amd64,linux/arm64'
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -77,6 +74,5 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-# Just test that the build is succesful
-#      - name: Docker push
-#        run: docker push ${{ env.IMAGE_NAME }}
+      - name: Docker push
+        run: docker push ${{ env.IMAGE_NAME }}
