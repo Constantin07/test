@@ -15,6 +15,9 @@ on:
 
   workflow_dispatch:
 
+env:
+  terraform_version: 1.4.5
+
 jobs:
   tflint:
     runs-on: ubuntu-22.04
@@ -36,7 +39,8 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
         with:
-          terraform_version: 1.4.5
+          terraform_version: ${{ env.terraform_version }}
+          terraform_wrapper: false
 
       - name: Check Terraform formatting
         working-directory: terraform
@@ -49,10 +53,15 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
-        working-directory: terraform
+        shell: bash
         run: |
-          for d in $(ls -d */ | sort | uniq); do
+          top_dir="$(pwd)"
+          for d in $(find ./terraform -type d -print | sed -E 's|^./||' | grep -v "^terraform$" | sort); do
             echo "Checking directory ${d}"
+
+            # Skip directory if no Terraform files found
+            ls ${d}/*.tf >/dev/null 2>&1 || { echo "No Terraform files found, skipping..."; continue; }
+
             terraform -chdir="${d}" init -upgrade -backend=false
-            tflint --chdir="${d}" --color --config=../../.tflint.hcl
+            tflint --chdir="${d}" --color --config="${top_dir}/.tflint.hcl"
           done
