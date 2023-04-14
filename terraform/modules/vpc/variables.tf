@@ -5,6 +5,7 @@ variable "vpc_cidr" {
 
 variable "internal_dns_domain" {
   description = "Internal DNS domain"
+  type        = string
   default     = ""
 }
 

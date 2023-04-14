@@ -2,7 +2,6 @@
 
 locals {
   ca_private_key_pem = file("${path.module}/files/ca-priv-key.pem")
-  ca_key_algorithm   = "RSA"
 }
 
 resource "tls_self_signed_cert" "ca" {
