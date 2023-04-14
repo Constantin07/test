@@ -31,13 +31,6 @@ data "external" "kube_config" {
   }
 }
 
-data "kubernetes_service_account" "vault_auth" {
-  metadata {
-    name      = "vault-auth"
-    namespace = "default"
-  }
-}
-
 # Get secret token name associated with vault-auth service account
 data "kubernetes_secret" "vault_auth" {
   metadata {

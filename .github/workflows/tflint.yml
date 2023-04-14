@@ -62,6 +62,12 @@ jobs:
             # Skip directory if no Terraform files found
             ls ${d}/*.tf >/dev/null 2>&1 || { echo "No Terraform files found, skipping..."; continue; }
 
+            echo "Run Terraform init"
             terraform -chdir="${d}" init -upgrade -backend=false
+
+            echo "Validate Terraform config"
+            terraform validate
+
+            echo "Run tflint"
             tflint --chdir="${d}" --color --config="${top_dir}/.tflint.hcl"
           done
