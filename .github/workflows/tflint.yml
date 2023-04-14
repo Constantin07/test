@@ -5,20 +5,19 @@ on:
     paths:
       - 'terraform/**'
       - .github/workflows/tflint.yml
+      - '!**/README.md'
 
   push:
     paths:
       - 'terraform/**'
       - .github/workflows/tflint.yml
+      - '!**/README.md'
 
   workflow_dispatch:
 
 jobs:
   tflint:
-    strategy:
-      matrix:
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -50,6 +49,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
+        working-directory: terraform
         run: |
-          terraform -chdir=terraform/pipeline init -upgrade -backend=false
-          tflint --color --chdir=terraform/pipeline --config=../../.tflint.hcl
+          for d in $(ls -d */ | sort | uniq); do
+            echo "Checking directory ${d}"
+            terraform -chdir="${d}" init -upgrade -backend=false
+            tflint --chdir="${d}" --color --config=../../.tflint.hcl
+          done
