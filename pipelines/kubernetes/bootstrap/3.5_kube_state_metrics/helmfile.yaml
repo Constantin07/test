@@ -18,7 +18,9 @@ releases:
     chart: bitnami/kube-state-metrics
     version: 3.3.5
     values:
-      - resources:
+      - rbac:
+          pspEnabled: false
+        resources:
           requests:
             cpu: 10m
             memory: 32Mi
