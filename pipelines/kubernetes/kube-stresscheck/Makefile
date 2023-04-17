@@ -10,7 +10,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	mkdir -p /tmp/kubeconform
-	gomplate -f ${CONFIG_FILE} | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.12
+	gomplate -f ${CONFIG_FILE} | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.25.9
 
 template:
 	gomplate -f ${CONFIG_FILE}
