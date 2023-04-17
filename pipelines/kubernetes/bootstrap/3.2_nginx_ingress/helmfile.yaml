@@ -49,5 +49,3 @@ releases:
             enabled: false
           metrics:
             enabled: true
-        podSecurityPolicy:
-          enabled: true
