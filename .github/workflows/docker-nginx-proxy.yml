@@ -5,6 +5,7 @@ on:
     paths:
       - 'pipelines/dockerfiles/docker-nginx-proxy/**'
       - .github/workflows/docker-nginx-proxy.yml
+    branches: [ master ]
 
   push:
     paths:
@@ -15,7 +16,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
     defaults:
       run:
         working-directory: pipelines/dockerfiles/docker-nginx-proxy
@@ -52,7 +55,9 @@ jobs:
         run: make push
 
   checkov:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
