@@ -6,6 +6,7 @@ on:
     paths:
       - 'pipelines/dockerfiles/consul-template/**'
       - .github/workflows/consul-template.yml
+    branches: [ master ]
 
   push:
     paths:
