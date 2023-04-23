@@ -71,3 +71,6 @@ jobs:
             echo "Run tflint"
             tflint --chdir="${d}" --color --config="${top_dir}/.tflint.hcl"
           done
+
+      - name: Check Terraform formatting
+        run: terraform -chdir=terraform fmt -recursive -check=true -write=false
