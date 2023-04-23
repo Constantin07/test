@@ -5,12 +5,14 @@ on:
     paths:
       - 'terraform/**'
       - .github/workflows/tflint.yml
+      - .tflint.hcl
       - '!**/README.md'
 
   push:
     paths:
       - 'terraform/**'
       - .github/workflows/tflint.yml
+      - .tflint.hcl
       - '!**/README.md'
 
   workflow_dispatch:
