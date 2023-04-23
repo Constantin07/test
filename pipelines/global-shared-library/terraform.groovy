@@ -72,6 +72,15 @@ def call(String nodeName = '', String directory = '.') {
           }
         }
 
+        stage('Run TFLint') {
+          sh "docker run --rm -v " + pwd() +
+          """:/data --entrypoint=/bin/sh -t ghcr.io/terraform-linters/tflint-bundle -c \"
+            tflint --init --config=/data/.tflint.hcl; tflint --config=/data/.tflint.hcl --chdir=/data/${directory}/
+            \"
+          """
+          milestone label: 'TFLint'
+        }
+
         // Needs to be run after terraform init to scan modules too
         stage('Static code analysis') {
           docker.image('bridgecrew/checkov:latest').inside("--entrypoint=''") {
@@ -79,14 +88,6 @@ def call(String nodeName = '', String directory = '.') {
             junit skipPublishingChecks: true, testResults: 'results.xml'
           }
           milestone label: 'Static code analysis'
-        }
-
-        stage('Run TFLint') {
-          //docker.image('ghcr.io/terraform-linters/tflint-bundle:latest').inside("--entrypoint=''") {
-            //sh "export TFLINT_LOG=debug; tflint --chdir=${directory}/"
-          //}
-          sh "docker run --rm -v " + pwd() + ":/data -t ghcr.io/terraform-linters/tflint-bundle --chdir=/data/${directory}/"
-          milestone label: 'TFLint'
         }
 
         dir(path: directory) {
