@@ -3,7 +3,7 @@
 set -e
 
 TARGET="$1"
-NAMESPACE="${NAMESPACE:-default}"
+NAMESPACE="${NAMESPACE:-kube-system}"
 JOB_NAME="kube-bench-${TARGET}"
 TIMEOUT="120s"
 
@@ -14,7 +14,6 @@ function usage() {
 
 function cleanup() {
     kubectl -n "${NAMESPACE}" delete -f ./job-${TARGET}.yaml --ignore-not-found=true
-    kubectl -n "${NAMESPACE}" delete -f ./kube-bench-${TARGET}-configmap.yaml --ignore-not-found=true
 }
 
 if [ $# -ne 1 ]; then
@@ -28,11 +27,9 @@ fi
 trap cleanup ERR
 
 # Validate definition files
-kubeconform -strict -summary ./kube-bench-${TARGET}-configmap.yaml
 kubeconform -strict -summary ./job-${TARGET}.yaml
 
 # Run kube-bench job on node/master
-kubectl apply -n "${NAMESPACE}" -f ./kube-bench-${TARGET}-configmap.yaml
 kubectl apply -n "${NAMESPACE}" -f ./job-${TARGET}.yaml
 
 # Wait for job completion
