@@ -84,10 +84,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
     tar xvzf ${KUBECONFORM_FILE} -C ${INSTALL_DIR} kubeconform
 
-ARG ECR_HELPER_VERSION=0.6.0
+ARG ECR_HELPER_VERSION=0.7.0
 ARG ECR_HELPER_URL=https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/${ECR_HELPER_VERSION}/linux-amd64/docker-credential-ecr-login
 ARG ECR_HELPER_FILE=docker-credential-ecr-login
-ARG ECR_HELPER_SHA256=af805202cb5d627dde2e6d4be1f519b195fd5a3a35ddc88d5010b4a4e5a98dd8
+ARG ECR_HELPER_SHA256=c978912da7f54eb3bccf4a3f990c91cc758e1494a8af7a60f3faf77271b565db
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${ECR_HELPER_FILE} ${ECR_HELPER_URL}; \
     sha256sum ${INSTALL_DIR}/${ECR_HELPER_FILE} | grep ${ECR_HELPER_SHA256}; \
