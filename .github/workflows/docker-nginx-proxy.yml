@@ -10,7 +10,7 @@ on:
   push:
     paths:
       - 'pipelines/dockerfiles/docker-nginx-proxy/**'
-      - .github/workflows/consul-template.yml
+      - .github/workflows/docker-nginx-proxy.yml
 
   workflow_dispatch:
 
