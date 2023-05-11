@@ -10,7 +10,6 @@
     - helmfile
     - gomplate
     - kubeconform
-##    - krew
     - fzf
     - vault_binary
     - trivy
