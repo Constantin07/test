@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-REGISTRY ?= centos7.internal:5000
+REGISTRY ?= registry.internal:5000
 DOCKER_REPOSITORY ?= constantin07/tool-box
 IMAGE ?= tool-box
 

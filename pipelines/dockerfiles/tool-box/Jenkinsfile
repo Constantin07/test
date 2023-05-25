@@ -32,7 +32,7 @@ pipeline {
     stage('Test image') {
       agent {
         docker {
-          image 'centos7.internal:5000/tool-box:latest'
+          image 'registry.internal:5000/tool-box:latest'
           reuseNode true
           alwaysPull true
           args '-u toolbox -t --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
