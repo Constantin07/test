@@ -2,7 +2,7 @@ FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache ca-certificates
 
-ARG VERSION=2.8.1
+ARG VERSION
 
 RUN set -eux; apkArch="$(apk --print-arch)"; \
     case "$apkArch" in \
