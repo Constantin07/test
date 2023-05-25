@@ -29,16 +29,6 @@
     mode: 0755
   tags: docker
 
-- name: Add custom settings to docker drop-in file
-  copy:
-    src: docker.conf
-    dest: /etc/systemd/system/docker.service.d/docker.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart docker
-  tags: docker
-
 - name: Create docker config directory
   file:
     path: "/etc/docker"
@@ -54,7 +44,7 @@
 
 - name: Update /etc/docker/daemon.json file
   template:
-    src: daemon.json
+    src: daemon.json.j2
     dest: /etc/docker/daemon.json
     owner: root
     group: root

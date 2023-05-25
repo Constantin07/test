@@ -1,7 +1,5 @@
 [local]
 centos7.internal
-vault.internal
-registry.internal
 
 [jenkins_agents]
 jenkins-agent.internal
@@ -28,6 +26,8 @@ ansible_user=ubuntu
 
 [server]
 server.internal
+vault.internal
+registry.internal
 
 [server:vars]
 ansible_user=ubuntu
