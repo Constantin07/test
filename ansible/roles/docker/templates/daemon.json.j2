@@ -10,9 +10,6 @@
   ],
 {% if ansible_os_family|lower == 'debian' %}
   "storage-driver": "overlay2",
-  "storage-opts": [
-    "overlay2.override_kernel_check=true"
-  ],
 {% elif ansible_os_family|lower == 'redhat' %}
   "storage-driver": "btrfs",
 {% endif %}
