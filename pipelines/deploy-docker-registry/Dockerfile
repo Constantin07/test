@@ -1,4 +1,4 @@
-FROM alpine:3.16 AS builder
+FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache ca-certificates
 
@@ -21,7 +21,7 @@ RUN set -eux; apkArch="$(apk --print-arch)"; \
     registry --version
 
 
-FROM alpine:3.16
+FROM alpine:3.18
 
 RUN set -ex; apk --no-cache update && apk --no-cache upgrade && \
     apk add --no-cache ca-certificates apache2-utils
