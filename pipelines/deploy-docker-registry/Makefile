@@ -3,6 +3,7 @@ IMAGE_NAME ?= docker-registry
 SERVICE_PORT ?= 5000
 DOCKER_REGISTRY = https://github.com/docker/distribution-library-image.git
 TMP_DIR = tmp
+VERSION ?= 2.8.1
 
 # Check for required binaries
 EXECUTABLES = git docker
@@ -12,12 +13,13 @@ K := $(foreach exec,$(EXECUTABLES),\
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 ifndef REMOTE_TAG
-  TAG=$(GIT_COMMIT)
+  TAG=$(VERSION)-$(GIT_COMMIT)
 else
-  TAG=$(REMOTE_TAG)
+  TAG=$(VERSION)-$(REMOTE_TAG)
 endif
 
 .PHONY: tmp login build scan tag push clean deploy
+all: build tag push clean
 
 tmp:
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
@@ -26,7 +28,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: tmp login
-	docker build --compress --pull --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
+	docker build --build-arg VERSION=${VERSION} --tag ${REGISTRY}/${IMAGE_NAME}:${TAG} .
 
 scan:
 	trivy image --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE_NAME}:${TAG}
