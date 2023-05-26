@@ -23,7 +23,7 @@ pipeline {
   }
 
   environment {
-    REGISTRY_HOST = 'centos7.internal:5000'
+    REGISTRY_HOST = 'registry.internal:5000'
   }
 
   stages {

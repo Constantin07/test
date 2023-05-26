@@ -12,8 +12,8 @@ pipeline {
   environment {
     KUBECONFIG = '/home/toolbox/.kube/config'
     ROOT_DIR = 'pipelines/kubernetes/bootstrap/'
-    REGISTRY = 'http://centos7.internal:5000'
-    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
     ARGS = '''
              -u toolbox \
              -t \
