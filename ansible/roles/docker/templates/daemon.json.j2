@@ -11,7 +11,8 @@
 {% if ansible_os_family|lower == 'debian' %}
   "storage-driver": "overlay2",
 {% elif ansible_os_family|lower == 'redhat' %}
-  "storage-driver": "btrfs",
+{# Btrfs is not supported on CentOS by Docker-CE #}
+{#  "storage-driver": "btrfs", #}
 {% endif %}
   "log-driver": "json-file",
   "log-opts": {

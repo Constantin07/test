@@ -1,5 +1,5 @@
 ---
 
-version: 0.7.0
+version: 0.7.1
 url: "https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/{{ version }}/linux-amd64/docker-credential-ecr-login"
 install_dir: /usr/bin
