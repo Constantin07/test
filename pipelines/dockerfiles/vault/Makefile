@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-REGISTRY ?= centos7.internal:5000
+REGISTRY ?= constantin07
 IMAGE ?= vault
 
 # Check for required binaries
