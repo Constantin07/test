@@ -4,7 +4,7 @@ set -e
 
 # Script to test docker-registry is up and running
 
-REGISTRY="registry.internal:5001"
+REGISTRY="registry.internal:5000"
 
 retry=0
 while [ $retry -le 5 ]; do
