@@ -1,0 +1,83 @@
+String version = ''
+
+pipeline {
+
+  agent {
+    label 'built-in'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/docker-registry'
+    REMOTE_TAG = "${BUILD_NUMBER}-${GIT_COMMIT.substring(0, 8)}"
+    PATH = "/usr/local/bin:$PATH"
+  }
+
+  stages {
+
+    stage('Static code analysis') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:latest'
+          args "--entrypoint=''"
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh """
+            checkov -d . --skip-check CKV_DOCKER_2 \
+            -o cli -o junitxml --output-file-path console,results.xml --soft-fail
+          """
+          junit skipPublishingChecks: true, testResults: 'results.xml'
+        }
+      }
+    }
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make build tag'
+          }
+          script {
+            version = sh(script: "grep -Po '^VERSION\\s*=\\s*\\K.*\$' Makefile", returnStdout: true).trim()
+          }
+        }
+      }
+    }
+
+    stage('Scan image'){
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+            recordIssues(tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')])
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make push'
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+      script {
+        currentBuild.description = version
+      }
+    }
+  }
+
+}
