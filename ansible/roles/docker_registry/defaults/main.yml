@@ -1,0 +1,6 @@
+---
+
+registry_port: 5000
+image_name: "constantin07/docker-registry"
+memory: "312m"
+cpus: "0.75"

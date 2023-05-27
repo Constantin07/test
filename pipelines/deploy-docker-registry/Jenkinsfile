@@ -11,54 +11,38 @@ pipeline {
   }
 
   environment {
-    DIRECTORY = 'pipelines/deploy-docker-registry'
-    REMOTE_TAG = "${BUILD_NUMBER}-${GIT_COMMIT.substring(0, 8)}"
-    PATH = "/usr/local/bin:$PATH"
+    DIRECTORY = 'ansible'
+    PYTHONWARNINGS = 'ignore::UserWarning'
   }
 
   stages {
 
-    stage('Build image') {
+    stage('Deploy docker-registry service') {
+      agent {
+        docker {
+          registryUrl 'http://registry.internal:5000'
+          image 'registry.internal:5000/tool-box:latest'
+          alwaysPull true
+          args '-u toolbox'
+        }
+      }
       steps {
         dir(env.DIRECTORY) {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make build tag'
+          script {
+            def playbook = readYaml file: 'docker-registry.yaml'
+            version = playbook[0].roles[2].registry_version
           }
-        }
-      }
-    }
-
-    stage('Scan image'){
-      steps {
-        dir(env.DIRECTORY) {
-          sh 'make scan'
-            recordIssues(tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')])
-        }
-      }
-    }
-
-    stage('Publish image') {
-      steps {
-        dir(env.DIRECTORY) {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make push'
+          sshagent (credentials: ['jenkins-ssh-key']) {
+            sh 'ansible-playbook docker-registry.yaml'
           }
-        }
-      }
-    }
-
-    stage('Deploy container') {
-      steps {
-        dir(env.DIRECTORY) {
-          sh 'make deploy'
         }
       }
     }
 
     stage('Test') {
       steps {
-        dir(env.DIRECTORY) {
-          sh 'make test'
+        dir('pipelines/deploy-docker-registry') {
+          sh './test.sh'
         }
       }
     }
@@ -68,6 +52,9 @@ pipeline {
   post {
     always {
       cleanWs()
+      script {
+        currentBuild.description = version
+      }
     }
   }
 

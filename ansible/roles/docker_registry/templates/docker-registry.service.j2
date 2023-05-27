@@ -1,0 +1,24 @@
+[Unit]
+Description="Docker registry as a docker container"
+After=network-online.target docker.service
+Requires=network-online.target docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+RestartSec=10s
+ExecStartPre=-/usr/bin/docker stop docker-registry
+ExecStartPre=-/usr/bin/docker rm docker-registry
+ExecStartPre=/usr/bin/docker pull {{ image_name }}:{{ registry_version }}
+ExecStart=/usr/bin/docker run --rm --name docker-registry \
+  -v docker_registry:/var/lib/registry:rw \
+  -p {{ registry_port }}:{{ registry_port }} \
+  --network=bridge \
+  --ipc=private \
+  --memory={{ memory|default('512mb') }} \
+  --cpus={{ cpus | default('0.5')}} \
+  --log-driver=journald \
+  {{ image_name }}:{{ registry_version }}
+
+[Install]
+WantedBy=multi-user.target
