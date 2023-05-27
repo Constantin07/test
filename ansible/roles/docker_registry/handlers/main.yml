@@ -1,0 +1,8 @@
+---
+
+- name: restart container
+  ansible.builtin.systemd:
+    name: docker-registry.service
+    state: restarted
+    daemon_reload: yes
+  tags: docker_registry

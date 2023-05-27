@@ -35,10 +35,12 @@ COPY --from=builder --chown=${USER}:${GROUP} /bin/registry /bin/registry
 COPY --chown=${USER}:${GROUP} config-example.yml /etc/docker/registry/config.yml
 COPY --chown=${USER}:${GROUP} tmp/docker-entrypoint.sh /entrypoint.sh
 
-USER registry
-
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
+
+USER ${USER}
+
+WORKDIR /var/lib/registry
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/etc/docker/registry/config.yml"]

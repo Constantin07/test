@@ -1,3 +1,5 @@
+String version = ''
+
 pipeline {
 
   agent {
@@ -30,7 +32,7 @@ pipeline {
         dir(env.DIRECTORY) {
           script {
             def playbook = readYaml file: 'docker-registry.yaml'
-            version = playbook[0].roles[2].registry_version
+            version = playbook[0].roles[1].registry_version
           }
           sshagent (credentials: ['jenkins-ssh-key']) {
             sh 'ansible-playbook docker-registry.yaml'

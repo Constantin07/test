@@ -14,7 +14,6 @@ ExecStart=/usr/bin/docker run --rm --name docker-registry \
   -v docker_registry:/var/lib/registry:rw \
   -p {{ registry_port }}:{{ registry_port }} \
   --network=bridge \
-  --ipc=private \
   --memory={{ memory|default('512mb') }} \
   --cpus={{ cpus | default('0.5')}} \
   --log-driver=journald \
