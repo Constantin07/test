@@ -2,20 +2,20 @@
 
 set -e
 
-# Script to test docker-registry container is running
+# Script to test docker-registry is up and running
 
-CONTAINER_NAME="${IMAGE_NAME:-docker-registry}"
+REGISTRY="registry.internal:5001"
 
 retry=0
 while [ $retry -le 5 ]; do
-    if [[ $(docker inspect -f '{{.State.Running}}' ${CONTAINER_NAME}) == "true" ]]; then
-	echo "Container ${CONTAINER_NAME} is running ..."
+    if [[ $(curl -I -k -s $REGISTRY | head -n 1 | cut -d ' ' -f 2) == "200" ]]; then
+	echo "Docker registry ${REGISTRY} is up and running ..."
 	exit 0
     fi
-    echo "Waiting for ${CONTAINER_NAME} container to come up, retry=$retry"
+    echo "Waiting for docker registry '${REGISTRY}' to come up, retry=$retry"
     sleep 3
     ((retry+=1))
 done
 
-echo "Container ${CONTAINER_NAME} failed to start. Max $retry retries reached."
+echo "Docker registry ${REGISTRY} failed to start. Max $retry retries reached."
 exit 1

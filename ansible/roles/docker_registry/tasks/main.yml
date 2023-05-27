@@ -4,6 +4,7 @@
 #  community.docker.docker_volume:
   docker_volume:
     name: docker_registry
+  notify: restart container
   tags: docker_registry
 
 - name: Install docker-registry service unit file | {{ registry_version }}
@@ -13,12 +14,14 @@
     owner: root
     group: root
     mode: 0644
+  notify: restart container
   tags: docker_registry
 
 - name: Enable and start docker-registry service
-  systemd:
+  ansible.builtin.systemd:
     name: docker-registry.service
     enabled: yes
-    state: restarted
+    state: started
     daemon_reload: yes
+  notify: restart container
   tags: docker_registry
