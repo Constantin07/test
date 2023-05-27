@@ -10,7 +10,7 @@
     - docker.io
   tags: docker
 
-- name: Run apt-get update
+- name: Run apt update
   ansible.builtin.apt:
     update_cache: yes
   tags: docker
