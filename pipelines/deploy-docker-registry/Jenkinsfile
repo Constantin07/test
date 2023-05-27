@@ -32,7 +32,16 @@ pipeline {
         dir(env.DIRECTORY) {
           script {
             def playbook = readYaml file: 'docker-registry.yaml'
-            version = playbook[0].roles[1].registry_version
+            playbook[0].roles.findAll { it.getClass() != String }.each { value ->
+              if (value.containsKey('registry_version')) {
+                version = value.registry_version
+              }
+            }
+            if (!version) {
+              error('Could not find version in yaml file.')
+            } else {
+              currentBuild.description = version
+            }
           }
           sshagent (credentials: ['jenkins-ssh-key']) {
             sh 'ansible-playbook docker-registry.yaml'
@@ -54,9 +63,6 @@ pipeline {
   post {
     always {
       cleanWs()
-      script {
-        currentBuild.description = version
-      }
     }
   }
 
