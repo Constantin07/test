@@ -33,7 +33,16 @@ pipeline {
           sh 'git crypt unlock'
           script {
             def playbook = readYaml file: 'vault.yaml'
-            version = playbook[0].roles[2].vault_version
+            playbook[0].roles.findAll { it.getClass() != String }.each { value ->
+              if (value.containsKey('vault_version')) {
+                version = value.vault_version
+              }
+            }
+            if (!version) {
+              error('Could not find version in yaml file.')
+            } else {
+              currentBuild.description = version
+            }
           }
           sshagent (credentials: ['jenkins-ssh-key']) {
             sh 'ansible-playbook vault.yaml'
@@ -47,9 +56,6 @@ pipeline {
   post {
     always {
       cleanWs()
-      script {
-        currentBuild.description = version
-      }
     }
   }
 
