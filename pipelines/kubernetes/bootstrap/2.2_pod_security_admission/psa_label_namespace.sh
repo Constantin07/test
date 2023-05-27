@@ -5,7 +5,7 @@
 set -eu
 
 # Must be a valid Kubernetes minor version
-K8S_VERSION="v1.25"
+K8S_VERSION="v1.26"
 
 # List of namespaces in scope for the 'baseline' Pod Security Standard
 NAMESPACES_BASELINE=(
