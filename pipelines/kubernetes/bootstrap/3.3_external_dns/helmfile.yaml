@@ -15,7 +15,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/external-dns
-    version: 6.19.1
+    version: 6.20.3
     values:
       - sources:
           - ingress
