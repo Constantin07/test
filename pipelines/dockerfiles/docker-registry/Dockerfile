@@ -23,16 +23,22 @@ RUN set -eux; apkArch="$(apk --print-arch)"; \
 
 FROM alpine:3.18
 
-RUN set -ex; apk --no-cache update && apk --no-cache upgrade && \
-    apk add --no-cache ca-certificates apache2-utils
+ARG USER=registry
+ARG GROUP=registry
 
-COPY --from=builder /bin/registry /bin/registry
-COPY config-example.yml /etc/docker/registry/config.yml
+RUN set -ex; apk --no-cache update && apk --no-cache upgrade && \
+    apk add --no-cache ca-certificates apache2-utils && \
+    addgroup -g 10001 ${GROUP} && \
+    adduser -h /home/${USER} -u 10001 -G ${GROUP} -D ${USER}
+
+COPY --from=builder --chown=${USER}:${GROUP} /bin/registry /bin/registry
+COPY --chown=${USER}:${GROUP} config-example.yml /etc/docker/registry/config.yml
+COPY --chown=${USER}:${GROUP} tmp/docker-entrypoint.sh /entrypoint.sh
+
+USER registry
 
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
-
-COPY tmp/docker-entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/etc/docker/registry/config.yml"]
