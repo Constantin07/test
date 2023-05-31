@@ -1,2 +1,2 @@
-ansible-lint==6.16.2
+ansible-lint==6.17.0
 #ansible-core~=2.14.5
