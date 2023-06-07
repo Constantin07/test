@@ -17,6 +17,24 @@ pipeline {
 
   stages {
 
+    stage('Checkov scan') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:latest'
+          args "--entrypoint=''"
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh """
+            checkov -d . --config-file .checkov.yaml \
+            -o cli -o junitxml --output-file-path console,results.xml --quiet
+          """
+          junit skipPublishingChecks: true, testResults: 'results.xml'
+        }
+      }
+    }
+
     stage('Build image') {
       steps {
         dir(env.DIRECTORY) {

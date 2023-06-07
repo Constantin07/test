@@ -1,3 +1,5 @@
+#checkov:skip=CKV_DOCKER_2: No healcheck is required for this image
+
 ARG VAULT_CERTS=copy
 
 FROM alpine:3.18 AS builder
@@ -129,6 +131,7 @@ ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
 FROM alpine:3.18 as certs_no_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 
+#checkov:skip=CKV_DOCKER_7: Using multistage build images with no version tags
 FROM certs_${VAULT_CERTS} as certs
 
 
