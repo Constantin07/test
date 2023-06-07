@@ -10,8 +10,8 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
 
 ARG USER=jenkins
 ARG GROUP=jenkins
-ARG UID=1000
-ARG GID=1000
+ARG UID=10001
+ARG GID=10001
 RUN addgroup -g ${GID} ${GROUP} && \
     adduser -h /home/${USER} -u ${UID} -G ${GROUP} -D ${USER} && \
     echo "${USER}:165536:65536" >> /etc/subuid && \
