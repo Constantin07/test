@@ -7,39 +7,42 @@ helmDefaults:
   historyMax: 5
 
 repositories:
-  - name: bitnami
-    url: https://charts.bitnami.com/bitnami
+  - name: external-dns
+    url: https://kubernetes-sigs.github.io/external-dns
 
 releases:
   - name: external-dns
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
-    chart: bitnami/external-dns
-    version: 6.20.3
+    chart: external-dns/external-dns
+    version: 1.13.0
     values:
-      - sources:
+      - terminationGracePeriodSeconds: 5
+        sources:
           - ingress
         provider: rfc2136
-        rfc2136:
-          host: centos7.internal
-          zone: internal
-          tsigKeyname: kube-cluster.internal.
-          tsigSecret: {{ requiredEnv "TSIG_SECRET" }}
-          minTTL: 30s
+        extraArgs:
+          - --rfc2136-host=centos7.internal
+          - --rfc2136-port=53
+          - --rfc2136-zone=internal
+          - --rfc2136-tsig-keyname=kube-cluster.internal.
+          - --rfc2136-tsig-secret={{ requiredEnv "TSIG_SECRET" }}
+          - --rfc2136-tsig-secret-alg=hmac-sha256
+          - --rfc2136-tsig-axfr
+          - --rfc2136-min-ttl=30s
         interval: 15s
         txtOwnerId: Kubernetes
-        rbac:
-          create: true
-          serviceAccountName: external-dns
         domainFilters:
           - internal
         securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
-        podSecurityContext:
-          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
         resources:
           requests:
             memory: "45Mi"
