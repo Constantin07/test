@@ -51,8 +51,6 @@ pipeline {
 
     stage('Scan image'){
       environment {
-        // Workaround for trivy to use correct podman socket file
-        // XDG_RUNTIME_DIR = '/run'
         TRIVY_INSECURE = 'true'
       }
       steps {
