@@ -145,8 +145,23 @@ pipeline {
                       }
                     }
 
+                    if (jobConfig.extensions.containsKey('pruneStaleBranch')) {
+                      if (jobConfig.extensions.pruneStaleBranch) {
+                        extensions += 'pruneStaleBranch()\n'
+                      }
+                    }
+
+                    if (jobConfig.extensions.containsKey('localBranch')) {
+                      extensions += 'localBranch(jobConfig.extensions.localBranch)\n'
+                    }
+
                     if (jobConfig.extensions.containsKey('cloneOptions')) {
                       extensions += 'cloneOptions {\n'
+                      if (jobConfig.extensions.cloneOptions.containsKey('honorRefspec')) {
+                        if (jobConfig.extensions.cloneOptions.honorRefspec) {
+                          extensions += 'honorRefspec(true)\n'
+                        }
+                      }
                       if (jobConfig.extensions.cloneOptions.containsKey('shallow')) {
                         if (jobConfig.extensions.cloneOptions.shallow) {
                           extensions += 'shallow(true)\n'
