@@ -1,7 +1,6 @@
 SHELL := /bin/bash
 
-REGISTRY ?= constantin07
-IMAGE ?= vault
+REPOSITORY := constantin07/vault
 
 # Check for required binaries
 EXECUTABLES = git docker
@@ -19,18 +18,18 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
-	docker build --compress --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REGISTRY}/${IMAGE}:${VAULT_VERSION} .
+	docker build --compress --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REPOSITORY}:${VAULT_VERSION} .
 
 scan:
-	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REGISTRY}/${IMAGE}:${VAULT_VERSION}
+	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VAULT_VERSION}
 
 tag:
-	docker tag ${REGISTRY}/${IMAGE}:${VAULT_VERSION} ${REGISTRY}/${IMAGE}:latest
+	docker tag ${REPOSITORY}:${VAULT_VERSION} ${REPOSITORY}:latest
 
 publish:
-	docker push ${REGISTRY}/${IMAGE}:${VAULT_VERSION}
-	docker push ${REGISTRY}/${IMAGE}:latest
+	docker push ${REPOSITORY}:${VAULT_VERSION}
+	docker push ${REPOSITORY}:latest
 
 clean:
-	docker rmi ${REGISTRY}/${IMAGE}:${VAULT_VERSION} || true
-	docker rmi ${REGISTRY}/${IMAGE}:latest || true
+	docker rmi ${REPOSITORY}:${VAULT_VERSION} || true
+	docker rmi ${REPOSITORY}:latest || true
