@@ -1,6 +1,6 @@
 ansible-core==2.15.0
 #ansible-lint==6.12.1
-awscli==1.27.149
+awscli==1.27.150
 boto3==1.26.149
 cryptography==41.0.1
 Jinja2==3.1.2
