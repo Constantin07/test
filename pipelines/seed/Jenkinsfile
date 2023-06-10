@@ -151,6 +151,12 @@ pipeline {
                       }
                     }
 
+                    if (jobConfig.extensions.containsKey('localBranch')) {
+                      if (jobConfig.extensions.localBranch) {
+                        extensions += 'localBranch()\n'
+                      }
+                    }
+
                     if (jobConfig.extensions.containsKey('cloneOptions')) {
                       extensions += 'cloneOptions {\n'
                       if (jobConfig.extensions.cloneOptions.containsKey('honorRefspec')) {
