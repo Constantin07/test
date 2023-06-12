@@ -42,7 +42,7 @@ jobs:
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.11.2
         with:
-          image-ref: 'docker.io/constantin07/consul-template:latest'
+          image-ref: 'constantin07/consul-template:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
 
