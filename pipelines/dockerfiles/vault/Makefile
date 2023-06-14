@@ -11,24 +11,20 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 VAULT_VERSION = 1.13.2
 
-.PHONY: login build scan tag publish clean
-default: build tag publish
+.PHONY: login build scan publish clean
+default: build publish
 
 login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
-	docker build --compress --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REPOSITORY}:${VAULT_VERSION} .
+	docker build --provenance=true --build-arg VAULT_VERSION=${VAULT_VERSION} -t ${REPOSITORY}:${VAULT_VERSION} .
 
 scan:
 	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${VAULT_VERSION}
 
-tag:
-	docker tag ${REPOSITORY}:${VAULT_VERSION} ${REPOSITORY}:latest
-
 publish:
 	docker push ${REPOSITORY}:${VAULT_VERSION}
-	docker push ${REPOSITORY}:latest
 
 clean:
 	docker rmi ${REPOSITORY}:${VAULT_VERSION} || true

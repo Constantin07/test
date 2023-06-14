@@ -1,0 +1,95 @@
+name: vault
+run-name: Build vault container
+
+on:
+  pull_request:
+    paths:
+      - 'pipelines/dockerfiles/vault/**'
+      - '!pipelines/dockerfiles/vault/Jenkinsfile'
+      - '!pipelines/dockerfiles/vault/config.yml'
+      - '!pipelines/dockerfiles/vault/Makefile'
+      - .github/workflows/vault.yml
+    branches: [ master ]
+
+  push:
+    paths:
+      - 'pipelines/dockerfiles/vault/**'
+      - '!pipelines/dockerfiles/vault/Jenkinsfile'
+      - '!pipelines/dockerfiles/vault/config.yml'
+      - '!pipelines/dockerfiles/vault/Makefile'
+      - .github/workflows/vault.yml
+    branches: [ master ]
+
+  workflow_dispatch:
+
+env:
+  REPOSITORY: constantin07/vault
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
+    defaults:
+      run:
+        working-directory: pipelines/dockerfiles/vault
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.7.0
+        with:
+          driver-opts: image=moby/buildkit:master
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get version
+        run: |
+          VAULT_VERSION=$(grep -E "^VAULT_VERSION" Makefile | awk '{print $3}')
+          echo "VAULT_VERSION=$VAULT_VERSION" >> $GITHUB_ENV
+          echo $VAULT_VERSION
+
+      - name: Docker build
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: pipelines/dockerfiles/vault
+          platforms: 'linux/amd64'
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: VAULT_VERSION=${{ env.VAULT_VERSION }}
+          tags: ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}
+          provenance: true
+          load: false
+
+      - name: Load platform image
+        run: |
+          docker buildx build --load --platform 'linux/amd64' \
+          --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
+          -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} .
+
+      - name: Run trivy scan
+        uses: aquasecurity/trivy-action@0.11.2
+        with:
+          image-ref: ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Test image
+        run: docker run --rm -t --cap-add IPC_LOCK ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} --version
+
+      - name: Push platform image
+        run: |
+          docker buildx build --push --platform 'linux/arm64' \
+          --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
+          -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} .

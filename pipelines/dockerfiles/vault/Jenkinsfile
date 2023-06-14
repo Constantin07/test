@@ -37,14 +37,6 @@ pipeline {
       }
     }
 
-    stage('Tag image') {
-      steps {
-        dir(env.DIRECTORY) {
-          sh 'make tag'
-        }
-      }
-    }
-
     stage('Publish image') {
       steps {
         dir(env.DIRECTORY) {
