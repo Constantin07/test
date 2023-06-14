@@ -28,4 +28,3 @@ publish:
 
 clean:
 	docker rmi ${REPOSITORY}:${VAULT_VERSION} || true
-	docker rmi ${REPOSITORY}:latest || true
