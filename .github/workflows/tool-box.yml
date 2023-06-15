@@ -48,7 +48,7 @@ jobs:
           cp -a ../../../bin .
 
       - name: Docker build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           context: pipelines/dockerfiles/tool-box
           platforms: 'linux/amd64,linux/arm64'
@@ -78,4 +78,10 @@ jobs:
           sarif_file: 'trivy-results.sarif'
 
       - name: Push both platforms as one image manifest list
-        run: docker buildx build --push --platform 'linux/arm64,linux/amd64' -t ${{ env.IMAGE_NAME }} .
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: pipelines/dockerfiles/tool-box
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: VAULT_CERTS=no_copy
+          tags: ${{ env.IMAGE_NAME }}
