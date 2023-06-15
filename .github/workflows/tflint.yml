@@ -18,17 +18,17 @@ on:
   workflow_dispatch:
 
 env:
-  terraform_version: 1.4.5
+  terraform_version: 1.5.0
 
 jobs:
   tflint:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.5.3
 
       - name: Cache plugin dir
-        uses: actions/cache@v3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.tflint.d/plugins
           key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
