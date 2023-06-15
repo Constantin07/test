@@ -37,6 +37,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2.0.0
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.7.0
         with:
@@ -54,11 +57,11 @@ jobs:
           echo "VAULT_VERSION=$VAULT_VERSION" >> $GITHUB_ENV
           echo $VAULT_VERSION
 
-      - name: Docker build
+      - name: Build image and export to docker
         uses: docker/build-push-action@v4.1.1
         with:
           context: pipelines/dockerfiles/vault
-          platforms: 'linux/amd64'
+          platforms: 'linux/amd64,linux/arm64'
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -67,11 +70,17 @@ jobs:
           provenance: true
           load: false
 
-      - name: Load platform image
+      - name: Load amd64 platform image
         run: |
           docker buildx build --load --platform 'linux/amd64' \
           --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
           -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} .
+
+      - name: Load arm64 platform image
+        run: |
+          docker buildx build --load --platform 'linux/arm64' \
+          --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
+          -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}-arm64 .
 
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.11.2
@@ -81,15 +90,15 @@ jobs:
           output: 'trivy-results.sarif'
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v2.20.0
         with:
           sarif_file: 'trivy-results.sarif'
 
       - name: Test image
         run: docker run --rm -t --cap-add IPC_LOCK ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} --version
 
-      - name: Push platform image
+      - name: Push amd64 & arm64 platform images
         run: |
-          docker buildx build --push --platform 'linux/arm64' \
+          docker buildx build --push --platform 'linux/amd64,linux/arm64' \
           --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
           -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} .
