@@ -98,7 +98,10 @@ jobs:
         run: docker run --rm -t --cap-add IPC_LOCK ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} --version
 
       - name: Push amd64 & arm64 platform images
-        run: |
-          docker buildx build --push --platform 'linux/amd64,linux/arm64' \
-          --build-arg VAULT_VERSION=${{ env.VAULT_VERSION }} \
-          -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} .
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: pipelines/dockerfiles/vault
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: VAULT_VERSION=${{ env.VAULT_VERSION }}
+          tags: ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}
