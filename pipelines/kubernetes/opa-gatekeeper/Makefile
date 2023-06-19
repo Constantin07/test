@@ -6,7 +6,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init template validate lint diff apply status destroy
+.PHONY: init template validate lint diff deploy apply status delete destroy
 
 init:
 	helmfile repos
@@ -27,8 +27,14 @@ diff:
 deploy: validate
 	helmfile sync
 
+apply:
+	kubectl apply -f k8srequiredlabels_template.yaml -f k8srequiredlabels_constraint.yaml
+
 status:
 	helmfile status
+
+delete:
+	kubectl delete -f k8srequiredlabels_template.yaml -f k8srequiredlabels_constraint.yaml --ignore-not-found=true
 
 destroy:
 	helmfile destroy
