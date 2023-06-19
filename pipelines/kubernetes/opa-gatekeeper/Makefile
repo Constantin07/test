@@ -1,4 +1,4 @@
-export NAMESPACE ?= kube-system
+export NAMESPACE ?= gatekeeper-system
 
 # Check for required binaries
 EXECUTABLES = helm helmfile kubeconform
