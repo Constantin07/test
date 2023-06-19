@@ -1,0 +1,30 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: gatekeeper
+    url: https://open-policy-agent.github.io/gatekeeper/charts
+
+releases:
+  - name: gatekeeper
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    createNamespace: false
+    chart: gatekeeper/gatekeeper
+    version: 3.12.0
+    values:
+      - postInstall:
+          labelNamespace:
+            enabled: false
+        psp:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        replicas: 1

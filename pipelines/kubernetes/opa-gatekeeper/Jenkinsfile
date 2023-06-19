@@ -1,0 +1,49 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    DIRECTORY = 'pipelines/kubernetes/opa-gatekeeper'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
+    ARGS = '''
+      -u toolbox \
+      -t \
+      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly
+    '''
+  }
+
+  stages {
+
+    stage('Install OPA Gatekeeper') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make deploy'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
