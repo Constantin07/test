@@ -32,3 +32,4 @@ status:
 
 destroy:
 	helmfile destroy
+	kubectl delete crd -l gatekeeper.sh/system=yes || true
