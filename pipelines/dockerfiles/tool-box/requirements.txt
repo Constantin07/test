@@ -1,4 +1,4 @@
-ansible-core==2.15.0
+ansible-core==2.15.1
 #ansible-lint==6.12.1
 awscli==1.27.156
 boto3==1.26.156
