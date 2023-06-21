@@ -16,15 +16,13 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: deliveryhero/node-problem-detector
-    version: 2.3.4
+    version: 2.3.5
     values:
-      - image:
-          pullPolicy: Always
-        metrics:
+      - metrics:
           enabled: true
         resources:
           requests:
-            memory: 30Mi
+            memory: 20Mi
             cpu: 25m
           limits:
             memory: 32Mi
