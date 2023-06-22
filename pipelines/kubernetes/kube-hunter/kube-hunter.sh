@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-NAMESPACE="${NAMESPACE:-default}"
+NAMESPACE="${NAMESPACE:-system}"
 JOB_NAME="kube-hunter"
 TIMEOUT="120s"
 
@@ -12,7 +12,7 @@ function cleanup() {
 
 trap cleanup ERR
 
-echo "Run kube-hunter in ${NAMESPACE} namespace."
+echo "Run kube-hunter in '${NAMESPACE}' namespace."
 kubectl create -n "${NAMESPACE}" -f job.yaml
 
 echo "Waiting for job completion ..."
