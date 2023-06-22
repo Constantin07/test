@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-hunter
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-hunter
+    spec:
+      containers:
+        - name: kube-hunter
+          image: public.ecr.aws/aquasecurity/kube-hunter:latest
+          command: ["kube-hunter"]
+          args: ["--pod"]
+          securityContext:
+            allowPrivilegeEscalation: false
+          #   runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+      restartPolicy: Never
