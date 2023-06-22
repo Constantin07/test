@@ -22,7 +22,7 @@ pipeline {
 
   stages {
 
-    stage('Run kube-hunter') {
+    stage('Run kube-hunter as pod') {
       agent {
         docker {
           registryUrl env.REGISTRY
@@ -35,6 +35,12 @@ pipeline {
         dir(env.DIRECTORY) {
           sh './kube-hunter.sh'
         }
+      }
+    }
+
+    stage('Run kube-hunter remote') {
+      steps {
+        sh 'docker run -t --rm public.ecr.aws/aquasecurity/kube-hunter:latest --remote kube-cluster.internal'
       }
     }
 
