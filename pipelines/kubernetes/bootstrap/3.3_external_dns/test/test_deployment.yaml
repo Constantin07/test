@@ -1,0 +1,69 @@
+---
+# Test deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+  selector:
+    matchLabels:
+      app: hello-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: hello-world
+          image: training/webapp:latest
+          ports:
+            - containerPort: 5000
+          securityContext:
+#            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+
+---
+# Test service
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-world
+spec:
+  selector:
+    app: hello-world
+  ports:
+    - protocol: TCP
+      targetPort: 5000
+      port: 5000
+  type: ClusterIP
+
+---
+# Test ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "hello-world.internal."
+    external-dns.alpha.kubernetes.io/ttl: "30"
+spec:
+  ingressClassName: internal
+  tls:
+    - hosts:
+        - hello-world.internal
+  rules:
+    - host: hello-world.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-world
+                port:
+                  number: 5000
