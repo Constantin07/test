@@ -2,6 +2,7 @@ package test
 
 import (
 	"crypto/tls"
+	"flag"
 	"fmt"
 	"net"
 	"testing"
@@ -15,20 +16,20 @@ import (
 
 const (
 	name               = "hello-world"   // name of K8s test resources
-	namespace          = "default"       // namespace to run tests in
 	maxRetries         = 20              // number of retries
 	timeBetweenRetries = 3 * time.Second // seconds between retries
 	host               = "hello-world.internal"
 )
 
+var namespace = flag.String("namespace", "default", "Kubernetes namespace to run tests in.")
+
 func TestExternalDNS(t *testing.T) {
-	t.Parallel()
 
 	// Path to the Kubernetes resource config we will test.
 	kubeResourcePath := "./test_deployment.yaml"
 
 	// Setup the kubectl config and context.
-	options := k8s.NewKubectlOptions("", "", namespace)
+	options := k8s.NewKubectlOptions("", "", *namespace)
 
 	// At the end of the test, clean up any resources that were created.
 	defer k8s.KubectlDelete(t, options, kubeResourcePath)
