@@ -40,14 +40,13 @@ func TestExternalDNS(t *testing.T) {
 	// Wait for all pods to be ready.
 	k8s.WaitUntilDeploymentAvailable(t, options, name, maxRetries, timeBetweenRetries)
 
-	// Wait for service endpoints is ready to accept traffic.
+	// Wait for service endpoints to be ready to accept traffic.
 	k8s.WaitUntilServiceAvailable(t, options, name, maxRetries, timeBetweenRetries)
 
 	// Wait for ingress resource to have an endpoint provisioned for it.
 	k8s.WaitUntilIngressAvailable(t, options, name, maxRetries, timeBetweenRetries)
-	//ingress := k8s.GetIngress(t, options, name)
-
-	url := fmt.Sprintf("https://%s", host)
+	ingressHost := k8s.GetIngress(t, options, name).Spec.TLS[0].Hosts[0]
+	url := fmt.Sprintf("https://%s", ingressHost)
 	fmt.Println(url)
 
 	retry.DoWithRetry(t, "Wait for FQDN to be resolvable", maxRetries, timeBetweenRetries, func() (string, error) {
