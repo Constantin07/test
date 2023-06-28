@@ -1,0 +1,76 @@
+name: golang-terratest
+run-name: Build golang-terratest
+
+on:
+  pull_request:
+    paths:
+      - 'pipelines/dockerfiles/golang-terratest/**'
+      - .github/workflows/golang-terratest.yml
+    branches: [ master ]
+
+  push:
+    paths:
+      - 'pipelines/dockerfiles/golang-terratest/**'
+      - .github/workflows/golang-terratest.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
+    defaults:
+      run:
+        working-directory: pipelines/dockerfiles/golang-terratest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Docker login
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: make login
+
+      - name: Docker build
+        run: make build
+
+      - name: Run trivy scan
+        uses: aquasecurity/trivy-action@0.11.2
+        with:
+          image-ref: 'constantin07/golang-terratest:1.0.0'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Docker publish
+        run: make publish
+
+  checkov:
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Run Checkov action
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: pipelines/dockerfiles/golang-terratest
+          framework: dockerfile
+          skip_check: CKV_DOCKER_2
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          soft_fail: true
+
+      - name: Upload Checkov results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'checkov-results.sarif'

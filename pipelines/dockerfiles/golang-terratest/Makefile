@@ -16,7 +16,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
-	docker build --provenance=true -t ${REPOSITORY}:${TAG} .
+	docker build -t ${REPOSITORY}:${TAG} .
 
 scan:
 	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${TAG}
