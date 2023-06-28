@@ -1,6 +1,6 @@
 # Run the test
 
 ```sh
-go mod tidy
+go mod download
 go test -namespace <namespace>
 ```
