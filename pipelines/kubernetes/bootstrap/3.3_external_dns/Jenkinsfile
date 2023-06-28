@@ -57,7 +57,7 @@ pipeline {
        dir(env.ROOT_DIR + '/test') {
          sh '''
            go mod download
-           go test -v -namespace default
+           go test -count=1 -namespace default
          '''
        }
      }

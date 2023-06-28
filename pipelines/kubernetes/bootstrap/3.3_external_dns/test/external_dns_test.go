@@ -18,7 +18,6 @@ const (
 	k8sResourceName    = "hello-world"   // name of K8s test resource(s)
 	maxRetries         = 20              // number of retries
 	timeBetweenRetries = 3 * time.Second // seconds between retries
-	host               = "hello-world.internal"
 )
 
 var namespace = flag.String("namespace", "default", "Kubernetes namespace to run tests in.")
@@ -47,10 +46,9 @@ func TestExternalDNS(t *testing.T) {
 	k8s.WaitUntilIngressAvailable(t, options, k8sResourceName, maxRetries, timeBetweenRetries)
 	ingressHost := k8s.GetIngress(t, options, k8sResourceName).Spec.TLS[0].Hosts[0]
 	url := fmt.Sprintf("https://%s", ingressHost)
-	fmt.Println(url)
 
 	retry.DoWithRetry(t, "Wait for FQDN to be resolvable", maxRetries, timeBetweenRetries, func() (string, error) {
-		_, err := net.LookupIP(host)
+		_, err := net.LookupIP(ingressHost)
 		assert.Nil(t, err)
 		return "", err
 	})
