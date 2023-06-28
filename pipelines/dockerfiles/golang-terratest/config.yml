@@ -1,0 +1,9 @@
+---
+
+description: Build and publish Golang image for Terratest.
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true
