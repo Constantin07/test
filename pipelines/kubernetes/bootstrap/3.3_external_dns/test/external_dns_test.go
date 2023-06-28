@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	name               = "hello-world"   // name of K8s test resources
+	k8sResourceName    = "hello-world"   // name of K8s test resource(s)
 	maxRetries         = 20              // number of retries
 	timeBetweenRetries = 3 * time.Second // seconds between retries
 	host               = "hello-world.internal"
@@ -38,14 +38,14 @@ func TestExternalDNS(t *testing.T) {
 	k8s.KubectlApply(t, options, kubeResourcePath)
 
 	// Wait for all pods to be ready.
-	k8s.WaitUntilDeploymentAvailable(t, options, name, maxRetries, timeBetweenRetries)
+	k8s.WaitUntilDeploymentAvailable(t, options, k8sResourceName, maxRetries, timeBetweenRetries)
 
 	// Wait for service endpoints to be ready to accept traffic.
-	k8s.WaitUntilServiceAvailable(t, options, name, maxRetries, timeBetweenRetries)
+	k8s.WaitUntilServiceAvailable(t, options, k8sResourceName, maxRetries, timeBetweenRetries)
 
 	// Wait for ingress resource to have an endpoint provisioned for it.
-	k8s.WaitUntilIngressAvailable(t, options, name, maxRetries, timeBetweenRetries)
-	ingressHost := k8s.GetIngress(t, options, name).Spec.TLS[0].Hosts[0]
+	k8s.WaitUntilIngressAvailable(t, options, k8sResourceName, maxRetries, timeBetweenRetries)
+	ingressHost := k8s.GetIngress(t, options, k8sResourceName).Spec.TLS[0].Hosts[0]
 	url := fmt.Sprintf("https://%s", ingressHost)
 	fmt.Println(url)
 
