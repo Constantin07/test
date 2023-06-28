@@ -1,0 +1,56 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/golang-terratest'
+  }
+
+  stages {
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make login build'
+          }
+        }
+      }
+    }
+
+    stage('Scan image') {
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+          recordIssues(tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')])
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make publish'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
