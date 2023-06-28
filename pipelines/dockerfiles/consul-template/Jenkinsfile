@@ -17,7 +17,7 @@ pipeline {
 
   stages {
 
-    stage('Static code analysis') {
+    stage('Checkov scan') {
       agent {
         docker {
           image 'bridgecrew/checkov:latest'
