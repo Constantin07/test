@@ -51,7 +51,7 @@ pipeline {
      }
      environment {
        GOCACHE = "${WORKSPACE}"
-       KUBECONFIG = '/go/.kube'
+       KUBECONFIG = '/go/.kube/config'
      }
      steps {
        dir(env.ROOT_DIR + '/test') {
