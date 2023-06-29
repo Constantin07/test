@@ -1,0 +1,9 @@
+---
+
+description: Test http web server image.
+
+extensions:
+  cleanBeforeCheckout: true
+  cloneOptions:
+    shallow: true
+    noTags: true

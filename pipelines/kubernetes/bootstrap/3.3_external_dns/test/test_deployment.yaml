@@ -14,13 +14,28 @@ spec:
       labels:
         app: hello-world
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
       containers:
         - name: hello-world
-          image: training/webapp:latest
+          image: constantin07/test-http:1.0.0
           ports:
-            - containerPort: 5000
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
           securityContext:
-#            runAsNonRoot: true
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
@@ -38,8 +53,8 @@ spec:
     app: hello-world
   ports:
     - protocol: TCP
-      targetPort: 5000
-      port: 5000
+      targetPort: 8080
+      port: 8080
   type: ClusterIP
 
 ---
@@ -66,4 +81,4 @@ spec:
               service:
                 name: hello-world
                 port:
-                  number: 5000
+                  number: 8080

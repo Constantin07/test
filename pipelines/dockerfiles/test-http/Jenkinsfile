@@ -1,0 +1,74 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    ansiColor('xterm')
+  }
+
+  environment {
+    DIRECTORY = 'pipelines/dockerfiles/test-http'
+  }
+
+  stages {
+
+    stage('Checkov scan') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:latest'
+          args "--entrypoint=''"
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh """
+            checkov -d . --skip-check CKV_DOCKER_2 \
+            -o cli -o junitxml --output-file-path console,results.xml --soft-fail
+          """
+          junit skipPublishingChecks: true, testResults: 'results.xml'
+        }
+      }
+    }
+
+    stage('Build image') {
+      steps {
+        dir(env.DIRECTORY) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh 'make login build'
+          }
+        }
+      }
+    }
+
+    stage('Scan image') {
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make scan'
+          recordIssues(tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')])
+        }
+      }
+    }
+
+    stage('Publish image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make publish'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}
