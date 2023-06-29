@@ -62,7 +62,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "ansible/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     labels:
       - "dependencies"
       - "python"
@@ -70,7 +70,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "pipelines/dockerfiles/tool-box/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     labels:
       - "dependencies"
       - "python"
@@ -82,3 +82,8 @@ updates:
     labels:
       - "dependencies"
       - "python"
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: "daily"
