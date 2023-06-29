@@ -59,6 +59,14 @@ updates:
       - "dependencies"
       - "docker"
 
+  - package-ecosystem: "docker"
+    directory: "pipelines/dockerfiles/test-http/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "docker"
+
   - package-ecosystem: "pip"
     directory: "ansible/"
     schedule:
