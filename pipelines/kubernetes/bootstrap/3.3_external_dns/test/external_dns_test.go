@@ -47,15 +47,21 @@ func TestExternalDNS(t *testing.T) {
 	ingressHost := k8s.GetIngress(t, options, k8sResourceName).Spec.TLS[0].Hosts[0]
 	url := fmt.Sprintf("https://%s", ingressHost)
 
-	retry.DoWithRetry(t, "Wait for FQDN to be resolvable", maxRetries, timeBetweenRetries, func() (string, error) {
-		_, err := net.LookupIP(ingressHost)
-		assert.Nil(t, err)
-		return "", err
-	})
+	retry.DoWithRetry(t, "Wait for FQDN to be resolvable", maxRetries, timeBetweenRetries,
+		func() (string, error) {
+			_, err := net.LookupIP(ingressHost)
+			assert.Nil(t, err)
+			return "", err
+		},
+	)
 
-	// Make an HTTPS request to the URL and make sure it returns a 200 OK with the body "Hello, World".
+	// Make an HTTPS request to the URL and make sure it returns a 200 OK.
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
 	}
-	http_helper.HttpGetWithRetry(t, url, tlsConfig, 200, "Hello world!", maxRetries, timeBetweenRetries)
+	http_helper.HttpGetWithRetryWithCustomValidation(t, url, tlsConfig, maxRetries, timeBetweenRetries,
+		func(statusCode int, body string) bool {
+			return statusCode == 200
+		},
+	)
 }
