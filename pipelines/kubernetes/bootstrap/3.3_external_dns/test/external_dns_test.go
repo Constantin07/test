@@ -11,7 +11,6 @@ import (
 	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/retry"
-	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -45,17 +44,21 @@ func TestExternalDNS(t *testing.T) {
 	// Wait for ingress resource to have an endpoint provisioned for it.
 	k8s.WaitUntilIngressAvailable(t, options, k8sResourceName, maxRetries, timeBetweenRetries)
 	ingressHost := k8s.GetIngress(t, options, k8sResourceName).Spec.TLS[0].Hosts[0]
-	url := fmt.Sprintf("https://%s", ingressHost)
 
-	retry.DoWithRetry(t, "Wait for FQDN to be resolvable", maxRetries, timeBetweenRetries,
+	// Wait for DNS hostname to resolve
+	errorMatchRegexp := "no such host"
+	retryableErrors := map[string]string{
+		errorMatchRegexp: "Could not resolve hostname yet",
+	}
+	retry.DoWithRetryableErrors(t, "Wait for FQDN to be resolvable", retryableErrors, maxRetries, timeBetweenRetries,
 		func() (string, error) {
 			_, err := net.LookupIP(ingressHost)
-			assert.Nil(t, err)
 			return "", err
 		},
 	)
 
 	// Make an HTTPS request to the URL and make sure it returns a 200 OK.
+	url := fmt.Sprintf("https://%s", ingressHost)
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
 	}

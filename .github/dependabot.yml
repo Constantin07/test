@@ -86,7 +86,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "terraform/vault/config/kubernetes/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     labels:
       - "dependencies"
       - "python"

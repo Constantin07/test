@@ -2,5 +2,5 @@
 
 ```sh
 go mod download
-go test -namespace <namespace>
+go test -v -count=1 -namespace <namespace>
 ```
