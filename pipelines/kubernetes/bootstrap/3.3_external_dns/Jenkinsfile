@@ -23,10 +23,21 @@ pipeline {
 
   stages {
 
-    stage('Helm lint') {
+    stage('Helm lint & validate') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
       steps {
         dir(env.ROOT_DIR) {
-          sh 'make init lint'
+          sh '''
+            git crypt unlock
+            make init lint validate
+          '''
         }
       }
     }
@@ -44,32 +55,32 @@ pipeline {
         dir(env.ROOT_DIR) {
           sh '''
             git crypt unlock
-            make init lint apply
+            make init apply
           '''
         }
       }
     }
 
-   stage('Run tests') {
-     agent {
-       docker {
-         image 'constantin07/golang-terratest:1.0.0'
-         args '-t --mount type=bind,src=/var/lib/jenkins/.kube,dst=/go/.kube,readonly'
-       }
-     }
-     environment {
-       GOCACHE = "${WORKSPACE}"
-       KUBECONFIG = '/go/.kube/config'
-     }
-     steps {
-       dir(env.ROOT_DIR + '/test') {
-         sh '''
-           go mod download
-           go test -count=1 -namespace default
-         '''
-       }
-     }
-   }
+    stage('Run tests') {
+      agent {
+        docker {
+          image 'constantin07/golang-terratest:1.0.0'
+          args '-t --mount type=bind,src=/var/lib/jenkins/.kube,dst=/go/.kube,readonly'
+        }
+      }
+      environment {
+        GOCACHE = "${WORKSPACE}"
+        KUBECONFIG = '/go/.kube/config'
+      }
+      steps {
+        dir(env.ROOT_DIR + '/test') {
+          sh '''
+            go mod download
+            go test -count=1 -namespace default
+          '''
+        }
+      }
+    }
 
   }
 
