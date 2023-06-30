@@ -2,7 +2,7 @@
 
 # Label namespace with Pod Security Admissions
 
-set -eu
+set -eu -o pipefail
 
 # Must be a valid Kubernetes minor version
 K8S_VERSION="v1.26"

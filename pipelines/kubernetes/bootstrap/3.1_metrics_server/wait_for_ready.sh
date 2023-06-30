@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -u
+set -u -o pipefail
 
 timeout=5
 max_retry=60

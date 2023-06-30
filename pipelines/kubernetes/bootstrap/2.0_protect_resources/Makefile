@@ -10,6 +10,5 @@ K := $(foreach exec,$(EXECUTABLES),\
 protect:
 	./protect.sh
 
-# Upgrade tiller to helm version
 test:
 	./protect_tests.sh

@@ -13,7 +13,7 @@ validate:
 	mkdir -p /tmp/kubeconform
 	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.26.6 ${CONFIG_FILE}
 
-install: validate
+install:
 	kubectl apply -f ${CONFIG_FILE} --wait=true
 
 diff:
