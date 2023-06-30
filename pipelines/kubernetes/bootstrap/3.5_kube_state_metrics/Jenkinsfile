@@ -1,0 +1,81 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'pipelines/kubernetes/bootstrap/3.5_kube_state_metrics'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
+    ARGS = '''
+      -u toolbox \
+      -t \
+      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly
+    '''
+  }
+
+  stages {
+
+    stage('Lint & Validate') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh 'make init lint validate'
+        }
+      }
+    }
+
+    stage('Install kube-state-metrics') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh 'make init apply'
+        }
+      }
+    }
+
+    stage('Run tests') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh 'make tests'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

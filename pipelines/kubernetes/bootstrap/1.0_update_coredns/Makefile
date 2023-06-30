@@ -15,7 +15,7 @@ validate:
 	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.26.6 \
 	${CONFIGMAP_FILE} ${PDB_FILE}
 
-apply: validate
+apply:
 	@kubectl diff -f ${CONFIGMAP_FILE}; \
 	if [ $$? -eq 0 ]; then \
 	    echo "No changes in CoreDNS configmap."; \

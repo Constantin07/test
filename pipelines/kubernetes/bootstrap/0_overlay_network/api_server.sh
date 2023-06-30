@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 NAMESPACE="${NAMESPACE:-calico-apiserver}"
 TIMEOUT="600s"

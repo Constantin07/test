@@ -1,0 +1,72 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'pipelines/kubernetes/bootstrap/3.2_nginx_ingress'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
+    ARGS = '''
+      -u toolbox \
+      -t \
+      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly \
+      --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg
+    '''
+  }
+
+  stages {
+
+    stage('Helm lint & validate') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh '''
+            git crypt unlock
+            make init lint validate
+          '''
+        }
+      }
+    }
+
+    stage('Install nginx-ingress') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          sh '''
+            git crypt unlock
+            make init apply
+          '''
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

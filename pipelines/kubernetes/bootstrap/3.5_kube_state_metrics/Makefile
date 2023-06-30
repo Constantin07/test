@@ -28,7 +28,7 @@ diff:
 	gomplate -f ingress.yaml | kubectl diff -f -
 	helmfile diff
 
-apply: validate
+apply:
 	gomplate -f ingress.yaml | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 

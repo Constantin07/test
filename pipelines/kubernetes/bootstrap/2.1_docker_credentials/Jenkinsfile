@@ -1,0 +1,51 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'pipelines/kubernetes/bootstrap/2.1_docker_credentials'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
+    ARGS = '''
+      -u toolbox \
+      -t \
+      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly
+    '''
+  }
+
+  stages {
+
+    stage('Docker-registry creds') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.ROOT_DIR) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            sh './regcred.sh'
+          }
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

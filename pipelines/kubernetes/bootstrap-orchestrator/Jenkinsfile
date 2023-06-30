@@ -1,0 +1,137 @@
+pipeline {
+
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+    ansiColor('xterm')
+    parallelsAlwaysFailFast()
+  }
+
+  environment {
+    KUBECONFIG = '/home/toolbox/.kube/config'
+    ROOT_DIR = 'pipelines/kubernetes/bootstrap-orchestrator'
+    REGISTRY = 'http://registry.internal:5000'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
+    ARGS = '''
+      -u toolbox -t \
+      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly
+    '''
+  }
+
+  stages {
+
+    stage('Install Calico Overlay Network') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/0_overlay_network'
+        }
+      }
+    }
+
+    stage('Update CoreDNS') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/1.0_update_coredns'
+        }
+      }
+    }
+
+    stage('Create namespaces') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/1.1_create_namespaces'
+        }
+      }
+    }
+
+    stage('Protect critical resources') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/2.0_protect_resources'
+        }
+      }
+    }
+
+    stage('Docker-registry creds') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/2.1_docker_credentials'
+        }
+      }
+    }
+
+    stage('PSA label namespace') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/2.2_pod_security_admission'
+        }
+      }
+    }
+
+    stage('Install metrics-server') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.1_metrics_server'
+        }
+      }
+    }
+
+    stage('Config vault-auth') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.0_vault_auth'
+        }
+      }
+    }
+
+    stage('Install nginx-ingress') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.2_nginx_ingress'
+        }
+      }
+    }
+
+    stage('Install external-dns') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.3_external_dns'
+        }
+      }
+    }
+
+    stage('Install node-problem-detector') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.4_node_problem_detector'
+        }
+      }
+    }
+
+    stage('Install kube-state-metrics') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.5_kube_state_metrics'
+        }
+      }
+    }
+
+    stage('Test cluster health') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/7_cluster_tests'
+        }
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+
+}

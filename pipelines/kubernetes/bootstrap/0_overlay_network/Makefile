@@ -17,7 +17,7 @@ validate:
 	kubeconform ${KUBECONFORM_OPTS} ${APISERVER_FILE}
 
 # Install Calico overlay network in K8s
-install: validate
+install:
 	@kubectl apply -f ${CONFIG_FILE} --wait=true
 	@./wait.sh
 	# Make sure CPU/RAM resources are guaranteed
