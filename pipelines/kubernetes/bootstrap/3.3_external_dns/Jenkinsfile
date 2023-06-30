@@ -23,6 +23,14 @@ pipeline {
 
   stages {
 
+    stage('Helm lint') {
+      steps {
+        dir(env.ROOT_DIR) {
+          sh 'make init lint'
+        }
+      }
+    }
+
     stage('Install external-dns') {
       agent {
         docker {
