@@ -7,7 +7,7 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "terraform"
-    directory: "terraform/"
+    directory: "terraform/pipeline"
     schedule:
       interval: "daily"
 
