@@ -6,17 +6,17 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 )
 
 var port string = "8080" // default port to listen
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Request at %v\n", time.Now())
-	for k, v := range r.Header {
+func getRoot(w http.ResponseWriter, req *http.Request) {
+	// Print headers
+	for k, v := range req.Header {
 		fmt.Printf("%v: %v\n", k, v)
 	}
-	io.WriteString(w, "OK\n")
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, "{\"status\": \"UP\"}\n")
 }
 
 func main() {
