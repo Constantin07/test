@@ -28,3 +28,5 @@ releases:
             cpu: 50m
             memory: 128Mi
         replicas: 1
+        auditMatchKindOnly: true
+        logDenies: true

@@ -26,14 +26,14 @@ diff:
 
 deploy:
 	helmfile sync
-
-apply:
+	kubectl -n ${NAMESPACE} apply -f config.gatekeeper.yaml
 	kubectl apply -f *_template.yaml -f *_constraint.yaml
 
 status:
 	helmfile status
 
 destroy:
+	kubectl -n ${NAMESPACE} delete -f config.gatekeeper.yaml --ignore-not-found=true
 	kubectl delete -f *_template.yaml -f *_constraint.yaml --ignore-not-found=true
 	helmfile destroy
 	kubectl delete crd -l gatekeeper.sh/system=yes || true
