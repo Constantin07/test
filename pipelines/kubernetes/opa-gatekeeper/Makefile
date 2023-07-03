@@ -24,18 +24,16 @@ lint:
 diff:
 	helmfile diff
 
-deploy: validate
+deploy:
 	helmfile sync
 
 apply:
-	kubectl apply -f k8srequiredlabels_template.yaml -f k8srequiredlabels_constraint.yaml
+	kubectl apply -f *_template.yaml -f *_constraint.yaml
 
 status:
 	helmfile status
 
-delete:
-	kubectl delete -f k8srequiredlabels_template.yaml -f k8srequiredlabels_constraint.yaml --ignore-not-found=true
-
 destroy:
+	kubectl delete -f *_template.yaml -f *_constraint.yaml --ignore-not-found=true
 	helmfile destroy
 	kubectl delete crd -l gatekeeper.sh/system=yes || true
