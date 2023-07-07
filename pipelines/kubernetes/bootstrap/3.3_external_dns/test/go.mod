@@ -2,7 +2,7 @@ module external-dns-test
 
 go 1.20
 
-require github.com/gruntwork-io/terratest v0.43.6
+require github.com/gruntwork-io/terratest v0.43.7
 
 require (
 	github.com/aws/aws-sdk-go v1.44.122 // indirect
