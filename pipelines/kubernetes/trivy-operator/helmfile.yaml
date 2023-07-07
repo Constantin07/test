@@ -1,0 +1,23 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: aqua
+    url: https://aquasecurity.github.io/helm-charts
+
+releases:
+  - name: trivy-operator
+    namespace: trivy-system
+    createNamespace: true
+    chart: aqua/trivy-operator
+    version: 0.14.1
+    values:
+      - excludeNamespaces: "kube-system"
+        trivy:
+          ignoreUnfixed: true
