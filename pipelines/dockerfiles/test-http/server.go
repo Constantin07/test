@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-var port string = "8080" // default port to listen
+var port string = "8080" // default port to listen on
 
 func getRoot(w http.ResponseWriter, req *http.Request) {
 	// Print headers
