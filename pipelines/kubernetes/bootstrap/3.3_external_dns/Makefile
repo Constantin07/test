@@ -6,7 +6,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init validate template lint diff apply status destroy
+.PHONY: init validate template lint diff apply status destroy test
 
 $(eval export TSIG_SECRET=$(shell cat kube-cluster.internal.enc))
 
@@ -34,3 +34,6 @@ status:
 
 destroy:
 	helmfile destroy
+
+test:
+	cd test; go mod download; go test -count=1 -namespace default
