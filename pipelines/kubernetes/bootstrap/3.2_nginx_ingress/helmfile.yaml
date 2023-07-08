@@ -15,7 +15,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: ingress-nginx/ingress-nginx
-    version: 4.7.0
+    version: 4.7.1
     values:
       - controller:
           config:
@@ -27,6 +27,12 @@ releases:
               more_clear_headers Server X-Powered-By;
             use-forwarded-headers: "true"
             compute-full-forwarded-for: "true"
+          podSecurityContext:
+            runAsNonRoot: true
+            runAsUser: 101
+            runAsGroup: 82
+            seccompProfile:
+              type: RuntimeDefault
           extraArgs:
             enable-ssl-passthrough: true
           dnsPolicy: ClusterFirstWithHostNet
@@ -49,3 +55,10 @@ releases:
             enabled: false
           metrics:
             enabled: true
+          resources:
+            requests:
+              cpu: 75m
+              memory: 90Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
