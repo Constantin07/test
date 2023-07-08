@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/metrics-server
-    version: 6.4.1
+    version: 6.4.3
     values:
       - serviceAccount:
           name: metrics-server
@@ -28,9 +28,12 @@ releases:
         resources:
           requests:
             memory: "32Mi"
-            cpu: "50m"
+            cpu: "40m"
           limits:
             memory: "32Mi"
             cpu: "150m"
         startupProbe:
           enabled: true
+        podSecurityContext:
+          enabled: true
+
