@@ -37,6 +37,7 @@ releases:
         securityContext:
           runAsNonRoot: true
           runAsUser: 65534
+          runAsGroup: 65534
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
@@ -49,4 +50,4 @@ releases:
             cpu: "10m"
           limits:
             memory: "45Mi"
-            cpu: "50m"
+            cpu: "75m"
