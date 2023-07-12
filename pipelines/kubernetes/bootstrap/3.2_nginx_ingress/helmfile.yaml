@@ -55,6 +55,12 @@ releases:
             enabled: false
           metrics:
             enabled: true
+#          admissionWebhooks:
+#            patch:
+#              securityContext:
+#                allowPrivilegeEscalation: false
+#                capabilities:
+#                  drop: [ "ALL" ]
           resources:
             requests:
               cpu: 75m
