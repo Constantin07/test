@@ -1,0 +1,18 @@
+---
+
+- name: Download and install shellcheck v{{ shellcheck_version }}
+  ansible.builtin.unarchive:
+    src: "{{ shellcheck_url }}"
+    dest: "{{ install_dir }}"
+    mode: 0755
+    remote_src: yes
+    exclude:
+      - LICENSE
+      - README.md
+    extra_opts:
+      - "--strip-components=1"
+  retries: 3
+  delay: 3
+  register: result
+  until: result is succeeded
+  tags: shellcheck
