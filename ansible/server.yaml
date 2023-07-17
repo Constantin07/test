@@ -15,6 +15,7 @@
     - trivy
 ##    - calicoctl
     - git_chglog
+    - shellcheck
 #    - { role: jenkins_master, jenkins_version: "2.414", enable_https: true }
 ##    - podman
     - prometheus/node_exporter
