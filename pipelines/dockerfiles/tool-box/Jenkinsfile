@@ -17,6 +17,22 @@ pipeline {
 
   stages {
 
+    stage('Run shellcheck') {
+      agent {
+        docker {
+          image 'koalaman/shellcheck-alpine:stable'
+          args "--entrypoint=''"
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh """
+            shellcheck -o all ./*.sh
+          """
+        }
+      }
+    }
+
     stage('Checkov scan') {
       agent {
         docker {
@@ -62,6 +78,7 @@ pipeline {
           dir('ansible') {
             sh 'python3 -V'
             sh 'ansible --version'
+            sh 'aws --version'
           }
         }
       }

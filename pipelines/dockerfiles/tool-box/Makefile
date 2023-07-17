@@ -17,13 +17,16 @@ else
   TAG=${GIT_COMMIT}
 endif
 
-.PHONY: default all login build scan tag push publish
+.PHONY: default all check-scripts login build scan tag push publish
 
 .DEFAULT_GOAL := default
 
 default: build tag test push clean
 
 all: login build scan tag push publish
+
+check-scripts:
+	@shellcheck ./*.sh
 
 login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
