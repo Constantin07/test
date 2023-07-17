@@ -21,7 +21,6 @@ pipeline {
       agent {
         docker {
           image 'koalaman/shellcheck-alpine:stable'
-          //args "--entrypoint=''"
         }
       }
       steps {
