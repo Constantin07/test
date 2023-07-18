@@ -55,16 +55,10 @@ releases:
             enabled: false
           metrics:
             enabled: true
-#          admissionWebhooks:
-#            patch:
-#              securityContext:
-#                allowPrivilegeEscalation: false
-#                capabilities:
-#                  drop: [ "ALL" ]
           resources:
             requests:
               cpu: 75m
-              memory: 90Mi
+              memory: 100Mi
             limits:
               cpu: 500m
-              memory: 128Mi
+              memory: 168Mi
