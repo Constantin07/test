@@ -64,13 +64,13 @@ pipeline {
     stage('Run tests') {
       agent {
         docker {
-          image 'constantin07/golang-terratest:1.0.0'
-          args '-t --mount type=bind,src=/var/lib/jenkins/.kube,dst=/go/.kube,readonly'
+          image 'constantin07/golang-terratest:1.0.1'
+          args '-t --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/test/.kube,readonly'
         }
       }
       environment {
         GOCACHE = "${WORKSPACE}"
-        KUBECONFIG = '/go/.kube/config'
+        KUBECONFIG = '/home/test/.kube/config'
       }
       steps {
         dir(env.ROOT_DIR + '/test') {
