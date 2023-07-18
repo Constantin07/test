@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM golang:1.20-alpine3.18 as BUILDER
 
 WORKDIR /app

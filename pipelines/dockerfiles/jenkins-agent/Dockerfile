@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM adoptopenjdk/openjdk11:alpine-jre
 
 # Install required packages

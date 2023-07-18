@@ -10,7 +10,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 TAG = 1.0.0
 
 .PHONY: login build scan publish clean
-default: login build publish
+default: build publish
 
 login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
@@ -21,7 +21,7 @@ build:
 scan:
 	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${TAG}
 
-publish:
+publish: login
 	docker push ${REPOSITORY}:${TAG}
 
 clean:

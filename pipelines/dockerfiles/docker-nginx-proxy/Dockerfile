@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM openresty/openresty:bullseye-fat
 
 # Create nginx user/group
