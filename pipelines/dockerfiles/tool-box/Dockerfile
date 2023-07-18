@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 #checkov:skip=CKV_DOCKER_2: No healcheck is required for this image
 
 ARG VAULT_CERTS=copy

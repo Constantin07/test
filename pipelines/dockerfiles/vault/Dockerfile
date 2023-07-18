@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG VAULT_VERSION
 
 FROM vault:${VAULT_VERSION}
