@@ -7,7 +7,7 @@ EXECUTABLES = git docker
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-TAG = 1.0.0
+TAG = 1.0.1
 
 .PHONY: login build scan publish clean
 default: build publish
