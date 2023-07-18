@@ -37,7 +37,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make build'
+            sh 'make login build'
           }
         }
       }

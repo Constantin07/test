@@ -13,7 +13,7 @@ TAG = 1.0.1
 default: build publish
 
 login:
-	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
+	@echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
 	docker build -t ${REPOSITORY}:${TAG} .
@@ -21,7 +21,7 @@ build:
 scan:
 	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${REPOSITORY}:${TAG}
 
-publish: login
+publish:
 	docker push ${REPOSITORY}:${TAG}
 
 clean:
