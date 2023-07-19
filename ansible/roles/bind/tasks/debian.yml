@@ -1,0 +1,19 @@
+---
+
+- name: Wait for any possibly running unattended upgrade to finish
+  raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
+  tags: bind
+
+- name: Install required packages | Debian
+  apt:
+    name: "{{ debian_packages }}"
+    state: present
+    update_cache: yes
+  tags: bind
+
+- name: Start BIND service
+  service:
+    name: named
+    state: started
+    enabled: true
+  tags: bind

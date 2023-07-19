@@ -6,7 +6,6 @@
     - common
     - resolv
     - chronyd
-    - ctop
     - docker
     - helm
     - helmfile
