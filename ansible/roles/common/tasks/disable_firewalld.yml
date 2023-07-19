@@ -2,6 +2,7 @@
 
 - name: Populate service facts
   service_facts:
+  tags: common
 
 - name: Disable firewalld
   systemd:
@@ -9,4 +10,5 @@
     enabled: no
     state: stopped
   when: "'firewalld' in ansible_facts.services"
+  tags: common
 

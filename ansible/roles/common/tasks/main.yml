@@ -2,8 +2,10 @@
 
 - name: Include OS specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
+  tags: common
 
 - include_tasks: disable_firewalld.yml
+  tags: common
 
 # Disabled via kernel command-line parameter
 #- include_tasks: disable_ipv6.yml
