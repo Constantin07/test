@@ -5,7 +5,7 @@ description: Upgrade Kubernetes cluster.
 parameters:
   - name: K8S_VERSION
     type: stringParam
-    defaultValue: '1.27.3'
+    defaultValue: '1.27.4'
     description: 'The version of Kubernetes to upgrade to.'
 
 extensions:
