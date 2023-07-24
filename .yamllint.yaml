@@ -4,5 +4,13 @@ extends: default
 rules:
   indentation:
     spaces: 2
+  document-start:
+    present: true
+  document-end:
+    present: false
+  line-length: disable
   new-lines:
     type: unix
+  quoted-strings:
+    quote-type: double
+    required: only-when-needed
