@@ -1,3 +1,4 @@
+---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -15,3 +16,11 @@ repos:
     rev: 3.0.0
     hooks:
       - id: shellcheck
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        name: Yamllint
+        args:
+          - --strict
