@@ -3,11 +3,15 @@ repos:
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
-      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args:
+          - --fix=lf
       - id: check-yaml
+        args:
+          - --allow-multiple-documents
+        exclude: templates/
 
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.9.0
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
     hooks:
       - id: shellcheck
-        args: ["--severity=warning"]  # Optionally only show errors and warnings
