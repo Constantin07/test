@@ -1,19 +1,9 @@
-name: tflint
+name: pre-commit
 
 on:
   pull_request:
-    paths:
-      - 'terraform/**'
-      - .github/workflows/tflint.yml
-      - .tflint.hcl
-      - '!**/README.md'
 
   push:
-    paths:
-      - 'terraform/**'
-      - .github/workflows/tflint.yml
-      - .tflint.hcl
-      - '!**/README.md'
 
   workflow_dispatch:
 
