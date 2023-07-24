@@ -24,8 +24,6 @@ env:
 jobs:
   pre-commit:
     runs-on: ubuntu-22.04
-    permissions:
-      contents: read
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
