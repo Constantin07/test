@@ -18,17 +18,48 @@ on:
   workflow_dispatch:
 
 env:
-  terraform_version: 1.5.2
+  terraform_version: 1.5.3
+  tflint_version: v0.47.0
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Cache TFLint plugin dir
+        uses: actions/cache@v3
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3
+        with:
+          tflint_version: ${{ env.tflint_version }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.terraform_version }}
+          terraform_wrapper: false
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: --from-ref origin/master --to-ref HEAD
+
   tflint:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3
 
       - name: Cache plugin dir
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3
         with:
           path: ~/.tflint.d/plugins
           key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
