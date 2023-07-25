@@ -4,5 +4,21 @@ extends: default
 rules:
   indentation:
     spaces: 2
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  comments:
+    min-spaces-from-content: 1
+  document-start:
+    present: true
+  document-end:
+    present: false
+  line-length: disable
   new-lines:
     type: unix
+  quoted-strings:
+    quote-type: double
+    required: only-when-needed
