@@ -5,3 +5,4 @@
     name: vault.service
     state: restarted
     daemon_reload: yes
+  tags: vault_standalone
