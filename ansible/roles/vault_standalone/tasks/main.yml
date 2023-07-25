@@ -5,12 +5,14 @@
   package:
     name: unzip
     update_cache: yes
+  tags: vault_standalone
 
 - name: Add vault group
   group:
     name: "{{ vault_group }}"
     system: yes
     state: present
+  tags: vault_standalone
 
 - name: Create vault config directory
   file:
@@ -19,6 +21,7 @@
     owner: "{{ vault_user }}"
     group: "{{ vault_user }}"
     mode: 0700
+  tags: vault_standalone
 
 - name: Add vault user
   user:
@@ -28,12 +31,14 @@
     home: "{{ vault_home_dir }}"
     shell: /bin/false
     system: yes
+  tags: vault_standalone
 
 - name: Download vault and check (sha256)
   get_url:
     url: "{{ vault_url }}"
     dest: /tmp
     checksum: "{{ vault_checksum }}"
+  tags: vault_standalone
 
 - name: Install vault
   unarchive:
@@ -41,9 +46,11 @@
     dest: "{{ vault_install_dir }}"
     remote_src: True
     mode: 0555
+  tags: vault_standalone
 
 - name: Allow mlock syscall
   command: "setcap cap_ipc_lock=+ep {{ vault_install_dir }}/vault"
+  tags: vault_standalone
 
 - name: Copy vault config file
   copy:
@@ -53,6 +60,7 @@
     group: "{{ vault_user }}"
     mode: 0640
   notify: restart vault
+  tags: vault_standalone
 
 - name: Install Vault systemd unit file
   template:
@@ -62,6 +70,7 @@
     group: root
     mode: 0644
   notify: restart vault
+  tags: vault_standalone
 
 - name: Enable and start vault
   systemd:
@@ -69,3 +78,4 @@
     enabled: yes
     state: started
     daemon_reload: yes
+  tags: vault_standalone
