@@ -4,11 +4,12 @@ on:
   pull_request:
 
   push:
+    branches: [main]
 
   workflow_dispatch:
 
 env:
-  terraform_version: 1.5.3
+  terraform_version: 1.5.4
   tflint_version: v0.47.0
 
 jobs:
@@ -34,6 +35,9 @@ jobs:
         with:
           terraform_version: ${{ env.terraform_version }}
           terraform_wrapper: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
