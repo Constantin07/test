@@ -82,6 +82,11 @@ updates:
     labels:
       - "dependencies"
       - "python"
+    groups:
+      aws-dependencies:
+        patterns:
+          - awscli
+          - boto3
 
   - package-ecosystem: "pip"
     directory: "terraform/vault/config/kubernetes/"
