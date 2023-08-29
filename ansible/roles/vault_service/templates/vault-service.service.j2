@@ -16,7 +16,6 @@ ExecStart=/usr/bin/docker run --rm --name vault \
   -p {{ vault_port }}:{{ vault_port }} \
   --network=bridge \
   --cap-add=IPC_LOCK \
-  --ipc=private \
   --memory={{ memory|default('512mb') }} \
   --log-driver=journald \
   {{ image_name }}:{{ vault_version }} \
