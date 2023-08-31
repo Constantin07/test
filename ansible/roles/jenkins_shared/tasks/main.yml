@@ -1,7 +1,7 @@
 ---
 
-- name: Include Linux distribution specific tasks | {{ ansible_os_family|lower }}
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+- name: Include Linux distribution specific tasks | {{ ansible_os_family | lower }}
+  include_tasks: "{{ ansible_os_family | lower }}.yml"
   tags: jenkins_shared
 
 - name: Install required pip packages
@@ -29,8 +29,17 @@
     validate: 'visudo -cf %s'
   tags: jenkins_shared
 
+- name: Create Jenkins work directory
+  ansible.builtin.file:
+    path: "{{ jenkins_work_dir }}"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    mode: 0755
+  tags: jenkins_shared
+
 - name: Create Kubernetes config directory
-  file:
+  ansible.builtin.file:
     path: "{{ jenkins_work_dir }}/.kube"
     state: directory
     owner: "{{ jenkins_user }}"
@@ -39,7 +48,7 @@
   tags: jenkins_shared
 
 - name: Add Kubernetes config file
-  copy:
+  ansible.builtin.copy:
     src: config.enc
     dest: "{{ jenkins_work_dir }}/.kube/config"
     owner: "{{ jenkins_user }}"
@@ -54,7 +63,7 @@
   tags: jenkins_shared
 
 - name: Create .docker directory
-  file:
+  ansible.builtin.file:
     path: "{{ jenkins_work_dir }}/.docker"
     state: directory
     owner: "{{ jenkins_user }}"
@@ -63,7 +72,7 @@
   tags: jenkins_shared
 
 - name: Update docker config.json
-  copy:
+  ansible.builtin.copy:
     dest: "{{ jenkins_work_dir }}/.docker/config.json"
     content: "{{ src | combine(ecr) }}"
     group: "{{ jenkins_user }}"
@@ -72,7 +81,7 @@
   tags: jenkins_shared
 
 - name: Create .ssh directory
-  file:
+  ansible.builtin.file:
     path: "{{ jenkins_work_dir }}/.ssh"
     state: directory
     owner: "{{ jenkins_user }}"
@@ -81,7 +90,7 @@
   tags: jenkins_shared
 
 - name: Copy SSH config file
-  copy:
+  ansible.builtin.copy:
     dest: "{{ jenkins_work_dir }}/.ssh/config"
     src: config
     group: "{{ jenkins_user }}"

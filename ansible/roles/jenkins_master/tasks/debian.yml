@@ -1,0 +1,22 @@
+---
+
+- name: Add Jenkins official GPG key
+  ansible.builtin.apt_key:
+    url: "{{ jenkins_apt_gpg_key }}"
+    state: present
+  tags: jenkins_master
+
+- name: Add Jenkins repository
+  ansible.builtin.apt_repository:
+    repo: deb {{ jenkins_apt_repo_url }} binary/
+    filename: jenkins.list
+    update_cache: yes
+    state: present
+  tags: jenkins_master
+
+- name: Install Jenkins
+  ansible.builtin.apt:
+    name: "jenkins={{ jenkins_version }}*"
+    state: present
+    update_cache: yes
+  tags: jenkins_master

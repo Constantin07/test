@@ -20,6 +20,6 @@ redhat_packages:
 
 debian_packages:
   - git
-  - openjdk-11-jdk
+  - openjdk-17-jdk-headless
   - unzip
   - curl

@@ -1,6 +1,6 @@
 ---
 
-- name: Install required packages for Jenkins both master and agent
+- name: Install required common packages for Jenkins both master and agent
   ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: yes
