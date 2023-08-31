@@ -31,9 +31,6 @@ pipeline {
           rm -rf $HOME/.packer.d
           rm -rf /tmp/kubeconform/*
         '''
-        retry(2) {
-          sh 'podman system prune -fa'
-        }
       }
     }
 
