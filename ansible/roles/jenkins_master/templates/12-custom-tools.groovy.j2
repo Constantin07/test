@@ -20,8 +20,8 @@ def RemoveTool(desc, name) {
 }
 
 def Tools = []
-Tools.add(name: 'Terraform', url: 'https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_amd64.zip')
-Tools.add(name: 'Packer', url: 'https://releases.hashicorp.com/packer/1.9.1/packer_1.9.1_linux_amd64.zip')
+Tools.add(name: 'Terraform', url: 'https://releases.hashicorp.com/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip')
+Tools.add(name: 'Packer', url: 'https://releases.hashicorp.com/packer/1.9.4/packer_1.9.4_linux_amd64.zip')
 
 def inst = Jenkins.getInstance()
 def desc = inst.getExtensionList(com.cloudbees.jenkins.plugins.customtools.CustomTool.DescriptorImpl.class)[0]
