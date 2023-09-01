@@ -28,6 +28,7 @@ ansible_user=ubuntu
 server.internal
 vault.internal
 registry.internal
+jenkins.internal
 
 [server:vars]
 ansible_user=ubuntu
