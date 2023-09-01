@@ -1,5 +1,5 @@
 ---
 
 - name: Include Linux distribution specific tasks
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  include_tasks: "{{ ansible_os_family | lower }}.yml"
   tags: git_crypt

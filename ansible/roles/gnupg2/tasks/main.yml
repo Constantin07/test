@@ -1,7 +1,7 @@
 ---
 
-- name: Include Linux distribution specific tasks | {{ ansible_os_family|lower }}
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+- name: Include Linux distribution specific tasks | {{ ansible_os_family | lower }}
+  include_tasks: "{{ ansible_os_family | lower }}.yml"
   tags: gnupg2
 
 - name: Check if required variables are defined
