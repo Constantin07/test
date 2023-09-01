@@ -9,6 +9,10 @@
   no_log: True
   tags: jenkins_master
 
+- name: Include distribution specific vars
+  include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: jenkins_master
+
 - name: Enable HTTPS
   include_tasks: https.yml
   when: ansible_os_family == "redhat" and (enable_https | bool)
@@ -98,8 +102,8 @@
 
 - name: Install Jenkins systemd unit file
   template:
-    src: jenkins.service.j2
-    dest: /etc/systemd/system/jenkins.service
+    src: "{{ ansible_os_family | lower }}-jenkins.service.j2"
+    dest: "{{ jenkins_systemd_file }}"
     owner: root
     group: root
     mode: 0644
