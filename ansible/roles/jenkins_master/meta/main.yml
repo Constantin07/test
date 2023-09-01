@@ -1,4 +1,10 @@
 ---
 dependencies:
-  - role: git_crypt
   - role: jenkins_shared
+  - role: git_crypt
+    vars:
+      gpg_user: "{{ jenkins_user }}"
+      gpg_group: "{{ jenkins_group }}"
+      gpg_home: "{{ jenkins_work_dir }}"
+      gpg_private_key: 'jenkins_automation.asc'
+      gpg_ownertrust:  'ownertrust.txt'

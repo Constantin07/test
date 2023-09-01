@@ -1,6 +1,6 @@
 ---
 
-- name: Install required packages | {{ ansible_os_family|lower }}
+- name: Install required packages | {{ ansible_os_family | lower }}
   ansible.builtin.apt:
     name: gnupg2
     update_cache: yes
