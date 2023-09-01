@@ -1,0 +1,11 @@
+---
+settings:
+  anchor: false
+  html: false
+  lockfile: false
+
+content: |-
+  {{ .Providers }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+
