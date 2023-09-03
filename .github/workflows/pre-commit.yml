@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 env:
-  terraform_version: 1.5.4
-  tflint_version: v0.47.0
+  terraform_version: 1.5.5
+  tflint_version: v0.48.0
 
 jobs:
   pre-commit:
