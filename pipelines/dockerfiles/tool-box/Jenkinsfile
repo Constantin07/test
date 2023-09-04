@@ -61,7 +61,7 @@ pipeline {
         }
       }
     }
-/*
+
     stage('Test image') {
       agent {
         docker {
@@ -82,7 +82,7 @@ pipeline {
         }
       }
     }
-*/
+
     stage('Scan image'){
       environment {
         TRIVY_INSECURE = 'true'
