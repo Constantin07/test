@@ -6,6 +6,7 @@
     regexp: '^JENKINS_HTTPS_PORT='
     line: 'JENKINS_HTTPS_PORT="{{ jenkins_https_port }}"'
   notify: restart jenkins
+  when: ansible_os_family == "redhat" and (enable_https | bool)
   tags: jenkins_master
 
 - name: Jenkins configure - JENKINS_HTTPS_KEYSTORE
@@ -14,6 +15,7 @@
     regexp: '^JENKINS_HTTPS_KEYSTORE='
     line: 'JENKINS_HTTPS_KEYSTORE="{{ jenkins_home }}/jenkins.jks"'
   notify: restart jenkins
+  when: ansible_os_family == "redhat" and (enable_https | bool)
   tags: jenkins_master
 
 - name: Jenkins configure - JENKINS_HTTPS_KEYSTORE_PASSWORD
@@ -22,6 +24,7 @@
     regexp: '^JENKINS_HTTPS_KEYSTORE_PASSWORD='
     line: 'JENKINS_HTTPS_KEYSTORE_PASSWORD="{{ jks_password }}"'
   notify: restart jenkins
+  when: ansible_os_family == "redhat" and (enable_https | bool)
   tags: jenkins_master
 
 - name: Jenkins configure - JENKINS_HTTPS_LISTEN_ADDRESS
@@ -30,6 +33,7 @@
     regexp: '^JENKINS_HTTPS_LISTEN_ADDRESS='
     line: 'JENKINS_HTTPS_LISTEN_ADDRESS="0.0.0.0"'
   notify: restart jenkins
+  when: ansible_os_family == "redhat" and (enable_https | bool)
   tags: jenkins_master
 
 - name: Copy script to generate JKS keystore
@@ -46,7 +50,7 @@
   ansible.builtin.command:
     argv:
       - ./generate_cert.sh
-      - "{{ ansible_nodename }}"
+      - "{{ jenkins_hostname }}"
       - "{{ jks_password }}"
     chdir: "{{ jenkins_home }}"
   environment:

@@ -1,4 +1,3 @@
 ---
 
 jenkins_systemd_file: /lib/systemd/system/jenkins.service
-jenkins_url: "https://jenkins.internal:{{ jenkins_https_port }}"
