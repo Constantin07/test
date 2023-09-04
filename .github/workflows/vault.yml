@@ -36,7 +36,7 @@ jobs:
         working-directory: pipelines/dockerfiles/vault
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2.2.0
