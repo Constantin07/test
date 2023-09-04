@@ -15,7 +15,6 @@
 
 - name: Enable HTTPS
   include_tasks: https.yml
-  when: ansible_os_family == "redhat" and (enable_https | bool)
   tags: jenkins_master
 
 - name: Add jenkins user to docker group

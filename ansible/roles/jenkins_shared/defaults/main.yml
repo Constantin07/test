@@ -23,3 +23,4 @@ debian_packages:
   - openjdk-17-jdk-headless
   - unzip
   - curl
+  - jq

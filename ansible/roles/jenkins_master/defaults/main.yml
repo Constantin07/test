@@ -11,18 +11,23 @@ jenkins_home:         /var/lib/jenkins
 jenkins_port:         "-1"
 jenkins_https_port:   "8443"
 jenkins_agent_port:   "50000"
-jenkins_url: "https://{{ ansible_nodename }}:{{ jenkins_https_port }}"
+jenkins_hostname:     jenkins.internal
+jenkins_url:          https://{{ jenkins_hostname }}:{{ jenkins_https_port }}
+
+vault_url:            http://vault.internal:8200
 
 jenkins_system_properties: >-
   -Djenkins.install.runSetupWizard=false
-
-vault_url: "http://vault.internal:8200"
+  -Djava.awt.headless=true
+  -Dsun.net.inetaddr.ttl=0
+  -Dhudson.udp=-1
+  -Dhudson.DNSMultiCast.disabled=true
 
 # More details on tuning https://jenkins.io/blog/2016/11/21/gc-tuning
-jenkins_java_options: >-
-  -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1 -Dhudson.DNSMultiCast.disabled=true
-  -XX:-BytecodeVerificationLocal -XX:-BytecodeVerificationRemote -XX:+ReduceSignalUsage
-  -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation
-  -XX:+ExplicitGCInvokesConcurrent
-  -XX:+ParallelRefProcEnabled
-  -XX:+UseStringDeduplication
+# jenkins_java_options: >-
+#  -Djava.awt.headless=true -Dsun.net.inetaddr.ttl=0 -Dhudson.udp=-1 -Dhudson.DNSMultiCast.disabled=true
+#  -XX:-BytecodeVerificationLocal -XX:-BytecodeVerificationRemote -XX:+ReduceSignalUsage
+#  -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation
+#  -XX:+ExplicitGCInvokesConcurrent
+#  -XX:+ParallelRefProcEnabled
+#  -XX:+UseStringDeduplication
