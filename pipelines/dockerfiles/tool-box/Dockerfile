@@ -157,8 +157,8 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
 RUN ln -s /usr/bin/git-crypt /usr/local/bin/git-crypt
 
 # Add non-privileged user
-RUN addgroup -g 992 ${USERNAME} && \
-    adduser -D -h /home/${USERNAME} -u 995 -G ${USERNAME} ${USERNAME}
+RUN addgroup -g 113 ${USERNAME} && \
+    adduser -D -h /home/${USERNAME} -u 109 -G ${USERNAME} ${USERNAME}
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
