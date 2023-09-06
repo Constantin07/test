@@ -25,7 +25,6 @@ pipeline {
           registryUrl 'http://registry.internal:5000'
           image 'registry.internal:5000/tool-box:latest'
           alwaysPull true
-          args '-u toolbox'
         }
       }
       steps {

@@ -5,7 +5,7 @@ pipeline {
       registryUrl 'http://registry.internal:5000'
       image 'registry.internal:5000/tool-box:latest'
       alwaysPull true
-      args '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
+      args '--mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
     }
   }
 
