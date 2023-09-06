@@ -27,7 +27,7 @@ pipeline {
       }
     }
 
-    stage('Run docker-bench-secirity') {
+    stage('Run docker-bench-security') {
       steps {
         dir('pipelines/security/docker-bench-security') {
           sh './docker-bench-security.sh'
