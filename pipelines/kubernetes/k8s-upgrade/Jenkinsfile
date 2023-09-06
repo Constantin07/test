@@ -27,7 +27,7 @@ pipeline {
           registryUrl 'http://registry.internal:5000'
           image 'registry.internal:5000/tool-box:latest'
           alwaysPull true
-          args '-u toolbox --mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
+          args '--mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
         }
       }
       steps {

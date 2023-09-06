@@ -13,11 +13,7 @@ pipeline {
     ROOT_DIR = 'pipelines/kubernetes/bootstrap/2.1_docker_credentials'
     REGISTRY = 'http://registry.internal:5000'
     DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
-    ARGS = '''
-      -u toolbox \
-      -t \
-      --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly
-    '''
+    ARGS = '--mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {
