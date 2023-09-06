@@ -18,6 +18,6 @@
     - calicoctl
     - git_chglog
     - shellcheck
-    - { role: jenkins_master, jenkins_version: "2.421", enable_https: true }
+    - { role: jenkins_master, jenkins_version: "2.422", enable_https: true }
     - prometheus/node_exporter
 #    - nfs_server
