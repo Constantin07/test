@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/kube-state-metrics
-    version: 3.5.7
+    version: 3.6.1
     values:
       - rbac:
           pspEnabled: false
