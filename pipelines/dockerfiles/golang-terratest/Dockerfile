@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.21.0-alpine3.18
+FROM golang:1.21.1-alpine3.18
 
 ARG USER=test
 ENV HOME /home/$USER
