@@ -23,4 +23,7 @@ rules:
     quote-type: double
     required: only-when-needed
   truthy:
-    allowed-values: ['true', 'false', 'on']
+    allowed-values:
+      - "true"
+      - "false"
+      - "on"

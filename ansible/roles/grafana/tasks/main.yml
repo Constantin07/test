@@ -1,12 +1,12 @@
 ---
 
 - name: Create a grafana volume
-  docker_volume:
+  community.docker.docker_volume:
     name: grafana
   tags: grafana
 
 - name: Run grafana docker container v{{ grafana_version }}
-  docker_container:
+  community.docker.docker_container:
     name: grafana
     image: "grafana/grafana:{{ grafana_version }}"
     state: started
@@ -23,12 +23,11 @@
       - grafana:/var/lib/grafana:rw
     env:
       GF_INSTALL_PLUGINS: "{{ plugins }}"
-      GF_SERVER_ROOT_URL: "http://grafana.internal"
+      GF_SERVER_ROOT_URL: http://grafana.internal
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: changeme
       GF_USERS_ALLOW_SIGN_UP: "false"
       DOCKER_HOST: "{{ ansible_nodename|default(ansible_default_ipv4['address']) }}"
     restart_policy: always
-    trust_image_content: true
     log_driver: journald
   tags: grafana
