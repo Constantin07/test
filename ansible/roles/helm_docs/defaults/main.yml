@@ -1,0 +1,5 @@
+---
+
+helm_docs_version: 1.11.0
+helm_docs_url: "https://github.com/norwoodj/helm-docs/releases/download/v{{ helm_docs_version }}/helm-docs_{{ helm_docs_version }}_Linux_x86_64.tar.gz"
+install_dir: /usr/local/bin
