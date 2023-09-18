@@ -1,4 +1,4 @@
-ansible-core==2.15.3
+ansible-core==2.15.4
 awscli==1.29.49
 boto3==1.28.49
 cryptography==41.0.3
