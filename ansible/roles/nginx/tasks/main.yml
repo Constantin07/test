@@ -1,0 +1,23 @@
+---
+
+- name: Include Linux distribution specific tasks
+  include_tasks: "{{ ansible_os_family | lower }}.yml"
+  tags: nginx
+
+- name: Install Nginx config file for K8s LB
+  template:
+    src: kube-cluster.conf.j2
+    dest: /etc/nginx/modules-enabled/kube-cluster.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+  tags: nginx
+
+- name: Ensure Nginx service is started and enabled
+  systemd:
+    name: nginx.service
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  tags: nginx
