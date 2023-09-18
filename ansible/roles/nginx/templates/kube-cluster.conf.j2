@@ -1,0 +1,39 @@
+# Loadbalabcer configuration for Kubernetes API server
+
+stream {
+
+  resolver 10.0.2.4 valid=30s;
+
+  upstream kube-cluster-api {
+    least_conn;
+    server master-node1.internal:6443 max_fails=3 fail_timeout=5;
+  }
+
+  server {
+    listen 6443;
+    proxy_pass kube-cluster-api;
+  }
+
+  upstream ingress-http {
+    least_conn;
+    server worker-node1.internal:30000 max_fails=3 fail_timeout=5;
+    server worker-node2.internal:30000 max_fails=3 fail_timeout=5;
+  }
+
+  server {
+    listen 30000;
+    proxy_pass ingress-http;
+  }
+
+  upstream ingress-https {
+    least_conn;
+    server worker-node1.internal:30001 max_fails=3 fail_timeout=5;
+    server worker-node2.internal:30001 max_fails=3 fail_timeout=5;
+  }
+
+  server {
+    listen 30001;
+    proxy_pass ingress-https;
+  }
+
+}
