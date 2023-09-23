@@ -4,14 +4,14 @@ jenkins_user: jenkins
 jenkins_user_uid: 995
 jenkins_group: jenkins
 jenkins_group_gid: 992
-jenkins_work_dir: '/var/lib/jenkins'
-jenkins_bin_path: '/usr/local/bin'
-jenkins_service_name: "jenkins-agent.service"
+jenkins_work_dir: /var/lib/jenkins
+jenkins_bin_path: /usr/local/bin
+jenkins_service_name: jenkins-agent.service
 
-jenkins_master_host: centos7.internal
+jenkins_master_host: jenkins.internal
 jenkins_master_port: 8443
 jenkins_master_scheme: https
-jenkins_remoting_version: 3107.v665000b_51092
+jenkins_remoting_version: 3148.v532a_7e715ee3
 jenkins_remoting_package: "remoting-{{ jenkins_remoting_version }}.jar"
 jenkins_remoting_url: "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/{{ jenkins_remoting_version }}/{{ jenkins_remoting_package }}"
 
