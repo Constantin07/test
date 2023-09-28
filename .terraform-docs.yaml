@@ -8,4 +8,3 @@ content: |-
   {{ .Providers }}
   {{ .Inputs }}
   {{ .Outputs }}
-

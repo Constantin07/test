@@ -1,0 +1,5 @@
+---
+
+tflint_version: v0.48.0
+tflint_url: "https://github.com/terraform-linters/tflint/releases/download/{{ tflint_version }}/tflint_linux_amd64.zip"
+install_dir: /usr/local/bin

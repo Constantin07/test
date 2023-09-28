@@ -4,15 +4,15 @@ terraform {
   required_providers {
     external = {
       source  = "hashicorp/external"
-      version = "2.2.3"
+      version = "2.3.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.18"
+      version = "~> 2.23"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 3.14"
+      version = "~> 3.20"
     }
   }
 }
