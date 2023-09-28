@@ -1,0 +1,8 @@
+---
+
+- name: Download and install tflint {{ tflint_version }}
+  unarchive:
+    src: "{{ tflint_url }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+  tags: tflint

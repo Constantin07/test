@@ -13,7 +13,7 @@ repos:
         exclude: templates/
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.81.0
+    rev: v1.83.4
     hooks:
       - id: terraform_fmt
       - id: terraform_tflint
@@ -28,7 +28,7 @@ repos:
           - --output-file=README.md
 
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 2.3.335
+    rev: 2.4.55
     hooks:
       - id: checkov
 
@@ -46,6 +46,6 @@ repos:
           - --strict
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.35.0
+    rev: v0.37.0
     hooks:
       - id: markdownlint
