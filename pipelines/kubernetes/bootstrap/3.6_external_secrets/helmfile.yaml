@@ -1,0 +1,18 @@
+---
+
+helmDefaults:
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: external-secrets
+    url: https://charts.external-secrets.io
+
+releases:
+  - name: external-secrets
+    namespace: {{ requiredEnv "NAMESPACE" }}
+    createNamespace: false
+    chart: external-secrets/external-secrets
+    version: 0.9.5
