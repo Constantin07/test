@@ -12,7 +12,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	mkdir -p /tmp/kubeconform
-	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.27.3 \
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.27.6 \
 	${CONFIGMAP_FILE} ${PDB_FILE}
 
 apply:

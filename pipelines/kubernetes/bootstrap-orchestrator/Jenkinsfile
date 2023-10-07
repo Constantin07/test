@@ -115,6 +115,14 @@ pipeline {
       }
     }
 
+    stage('Install external-secrets') {
+      steps {
+        script {
+          build job: 'kubernetes/bootstrap/3.6_external_secrets'
+        }
+      }
+    }
+
     stage('Test cluster health') {
       steps {
         script {
