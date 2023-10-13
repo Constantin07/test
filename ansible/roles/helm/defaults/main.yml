@@ -1,14 +1,21 @@
 ---
 
-helm_version: v3.13.0
+helm_version: v3.13.1
 helm_url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
 install_dir: /usr/local/bin
 
 helm_repos:
-  - { name: ingress-nginx, url: https://kubernetes.github.io/ingress-nginx }
-  - { name: bitnami, url: https://charts.bitnami.com/bitnami }
-  - { name: deliveryhero, url: https://charts.deliveryhero.io }
-  - { name: kube-state-metrics, url: https://kubernetes.github.io/kube-state-metrics }
-  - { name: stable, url: https://charts.helm.sh/stable }
-  - { name: prometheus-community, url: https://prometheus-community.github.io/helm-charts }
-  - { name: external-dns, url: https://kubernetes-sigs.github.io/external-dns }
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: deliveryhero
+    url: https://charts.deliveryhero.io
+  - name: kube-state-metrics
+    url: https://kubernetes.github.io/kube-state-metrics
+  - name: stable
+    url: https://charts.helm.sh/stable
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: external-dns
+    url: https://kubernetes-sigs.github.io/external-dns
