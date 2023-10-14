@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: gatekeeper/gatekeeper
-    version: 3.12.0
+    version: 3.13.3
     values:
       - postInstall:
           labelNamespace:
