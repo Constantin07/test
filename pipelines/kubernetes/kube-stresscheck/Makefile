@@ -1,5 +1,5 @@
-NAMESPACE ?= default
-CONFIG_FILE ?= node.yaml
+export NAMESPACE ?= default
+export CONFIG_FILE ?= node.yaml
 
 # Check for required binaries
 EXECUTABLES = gomplate kubectl kubeconform
