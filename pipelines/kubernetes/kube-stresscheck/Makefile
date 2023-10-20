@@ -1,5 +1,5 @@
-export NAMESPACE ?= default
-export CONFIG_FILE ?= node.yaml
+NAMESPACE ?= default
+CONFIG_FILE ?= node.yaml
 
 # Check for required binaries
 EXECUTABLES = gomplate kubectl kubeconform
@@ -10,7 +10,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	mkdir -p /tmp/kubeconform
-	gomplate -f ${CONFIG_FILE} | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.27.3
+	gomplate -f ${CONFIG_FILE} | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.28.2
 
 template:
 	gomplate -f ${CONFIG_FILE}
