@@ -23,7 +23,7 @@
 
     - name: Upgrade kubeadm to {{ k8s_version }}
       ansible.builtin.apt:
-        name: kubeadm={{ k8s_version }}-00
+        name: kubeadm={{ k8s_version }}-*
         update_cache: true
         allow_downgrade: true
 
