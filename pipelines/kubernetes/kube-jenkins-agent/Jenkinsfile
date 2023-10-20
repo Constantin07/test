@@ -36,7 +36,6 @@ pipeline {
         {
           sh """
             ls -la
-            #docker pull public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest
           """
         }
       }
