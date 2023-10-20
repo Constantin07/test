@@ -17,6 +17,7 @@
     - bind
     - git_chglog
     - shellcheck
+    - shunit2
     - nginx
     - tflint
     - terraform_docs

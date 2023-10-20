@@ -12,7 +12,7 @@ init:
 
 validate:
 	mkdir -p /tmp/kubeconform
-	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.27.6
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.28.2
 
 template:
 	helmfile template
