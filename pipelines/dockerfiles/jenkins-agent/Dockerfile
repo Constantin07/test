@@ -5,7 +5,7 @@ FROM adoptopenjdk/openjdk11:alpine-jre
 # Install required packages
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
-    apk add --no-cache ca-certificates curl bash git git-lfs jq openssh-client openssl procps img && \
+    apk add --no-cache ca-certificates curl bash git git-lfs jq openssh-client openssl procps && \
     update-ca-certificates
 
 # Add jenkins user
@@ -18,8 +18,7 @@ RUN addgroup -g ${GID} ${GROUP} && \
     adduser -h /home/${USER} -u ${UID} -G ${GROUP} -D ${USER} && \
     echo "${USER}:165536:65536" >> /etc/subuid && \
     echo "${GROUP}:165536:65536" >> /etc/subgid && \
-    mkdir -p /run/runc && chmod 777 /run/runc && \
-    ln -s /usr/bin/img /usr/bin/docker
+    mkdir -p /run/runc && chmod 777 /run/runc
 
 # Add jenkins agent
 
