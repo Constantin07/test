@@ -12,15 +12,15 @@ spec:
       containers:
         - name: kube-hunter
           image: public.ecr.aws/aquasecurity/kube-hunter:latest
-          command: ["kube-hunter"]
-          args: ["--pod"]
+          command: [kube-hunter]
+          args: [--pod]
           securityContext:
             allowPrivilegeEscalation: false
-          #   runAsNonRoot: true
+            # runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
             capabilities:
-              drop: ["ALL"]
+              drop: [ALL]
             readOnlyRootFilesystem: true
           resources:
             requests:
