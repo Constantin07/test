@@ -15,16 +15,17 @@
       raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
 
     - name: Run apt update
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
 
     - name: Unhold kubeadm
       command: apt-mark unhold kubeadm
 
     - name: Upgrade kubeadm to {{ k8s_version }}
-      apt:
+      ansible.builtin.apt:
         name: kubeadm={{ k8s_version }}-00
-        update_cache: yes
+        update_cache: true
+        allow_downgrade: true
 
     - name: Hold kubeadm
       command: apt-mark hold kubeadm
