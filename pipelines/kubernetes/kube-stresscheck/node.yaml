@@ -4,10 +4,10 @@ kind: ClusterRole
 metadata:
   name: kube-stresscheck-psp
 rules:
-  - apiGroups: ["extensions"]
-    resources: ["podsecuritypolicies"]
-    verbs: ["use"]
-    resourceNames: ["kube-stresscheck-psp"]
+  - apiGroups: [extensions]
+    resources: [podsecuritypolicies]
+    verbs: [use]
+    resourceNames: [kube-stresscheck-psp]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -47,7 +47,7 @@ spec:
   supplementalGroups:
     rule: RunAsAny
   volumes:
-  - 'secret'
+    - secret
 
 ---
 kind: Deployment
@@ -66,10 +66,10 @@ spec:
       labels:
         app: kube-stresscheck
     spec:
-      #tolerations:
-        # Allow the pod to run on the master.
-        #- key: node-role.kubernetes.io/master
-        #  effect: NoSchedule
+      # Allow the pod to run on the master.
+      # tolerations:
+        # - key: node-role.kubernetes.io/master
+        #   effect: NoSchedule
       serviceAccount: kube-stresscheck
       securityContext:
         runAsUser: 0
