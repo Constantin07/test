@@ -3,8 +3,8 @@ collections:
   - name: kubernetes.core
     version: 2.4.0
   - name: community.docker
-    version: 3.4.8
+    version: 3.4.9
   - name: ansible.posix
     version: 1.5.4
   - name: community.general
-    version: 7.4.0
+    version: 7.5.0
