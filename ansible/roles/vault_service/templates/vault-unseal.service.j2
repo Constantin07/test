@@ -12,9 +12,9 @@ Environment="UNSEAL_KEY2={{ unseal_key2 }}"
 Environment="UNSEAL_KEY3={{ unseal_key3 }}"
 RemainAfterExit=true
 ExecStartPre=/usr/bin/sleep 5
-ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY1
-ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY2
-ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY3
+ExecStart=/usr/bin/vault operator unseal -tls-skip-verify "$UNSEAL_KEY1"
+ExecStart=/usr/bin/vault operator unseal -tls-skip-verify "$UNSEAL_KEY2"
+ExecStart=/usr/bin/vault operator unseal -tls-skip-verify "$UNSEAL_KEY3"
 Restart=on-failure
 RestartSec=15
 
