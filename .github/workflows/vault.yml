@@ -85,7 +85,7 @@ jobs:
           -t ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}-arm64 .
 
       - name: Run trivy scan
-        uses: aquasecurity/trivy-action@0.12.0
+        uses: aquasecurity/trivy-action@0.13.0
         with:
           image-ref: ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }}
           format: 'sarif'
