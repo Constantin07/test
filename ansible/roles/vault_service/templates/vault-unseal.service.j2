@@ -16,7 +16,7 @@ ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY1
 ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY2
 ExecStart=/usr/bin/vault operator unseal -tls-skip-verify $UNSEAL_KEY3
 Restart=on-failure
-RestartSec=10
+RestartSec=15
 
 [Install]
 WantedBy=multi-user.target
