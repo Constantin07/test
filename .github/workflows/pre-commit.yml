@@ -36,7 +36,7 @@ jobs:
           tflint_version: ${{ env.tflint_version }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.terraform_version }}
           terraform_wrapper: false
