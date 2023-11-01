@@ -6,11 +6,11 @@ Requires=network-online.target docker.service
 [Service]
 TimeoutStartSec=0
 Restart=always
-RestartSec=10s
-ExecStartPre=-/usr/bin/docker stop vault
-ExecStartPre=-/usr/bin/docker rm vault
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull {{ image_name }}:{{ vault_version }}
-ExecStart=/usr/bin/docker run --rm --name vault \
+ExecStart=/usr/bin/docker run --rm \
+  --name %n \
   -v vault_logs:/vault/logs:rw \
   -v vault_data:/vault/file:rw \
   -p {{ vault_port }}:{{ vault_port }} \

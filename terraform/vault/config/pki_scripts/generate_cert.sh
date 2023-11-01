@@ -20,9 +20,10 @@ KEY_FILE="server.key"
 CA_FILE="ca.crt"
 PKCS12_FILE="server.p12"
 JKS_FILE="server.jks"
+ROLE="server"
 
 # Grab SSL certificate from Vault
-RESULT="$(vault write -format=json pki_int/issue/server common_name=$CN ttl=8760h | jq -r .data)"
+RESULT="$(vault write -format=json pki_int/issue/$ROLE common_name=$CN ttl=8760h | jq -r .data)"
 echo "$(jq -r .certificate <<<"$RESULT")" > $CERT_FILE
 echo "$(jq -r .private_key <<<"$RESULT")" > $KEY_FILE
 echo "$(jq -r .issuing_ca <<<"$RESULT")" > $CA_FILE

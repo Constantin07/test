@@ -1,0 +1,8 @@
+---
+
+- name: restart vault
+  systemd:
+    name: vault-service.service
+    state: restarted
+    daemon_reload: yes
+  tags: vault_service

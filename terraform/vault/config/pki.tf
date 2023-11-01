@@ -12,9 +12,10 @@ resource "vault_mount" "pki" {
 }
 
 resource "vault_pki_secret_backend_crl_config" "crl_config" {
-  backend = vault_mount.pki.path
-  expiry  = "72h"
-  disable = false
+  backend      = vault_mount.pki.path
+  expiry       = "72h"
+  disable      = false
+  auto_rebuild = true
 }
 
 resource "vault_pki_secret_backend_config_urls" "config_urls" {
@@ -35,9 +36,10 @@ resource "vault_mount" "pki_int" {
 }
 
 resource "vault_pki_secret_backend_crl_config" "crl_config_int" {
-  backend = vault_mount.pki_int.path
-  expiry  = "72h"
-  disable = false
+  backend      = vault_mount.pki_int.path
+  expiry       = "72h"
+  disable      = false
+  auto_rebuild = true
 }
 
 resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
