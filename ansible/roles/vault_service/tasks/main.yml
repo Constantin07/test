@@ -6,14 +6,12 @@
   tags: vault_service
 
 - name: Create a vault_logs volume
-#  community.docker.docker_volume:
-  docker_volume:
+  community.docker.docker_volume:
     name: vault_logs
   tags: vault_service
 
 - name: Create a vault_data volume
-#  community.docker.docker_volume:
-  docker_volume:
+  community.docker.docker_volume:
     name: vault_data
   tags: vault_service
 
@@ -25,6 +23,7 @@
     group: root
     mode: 0644
   tags: vault_service
+  notify: restart vault
 
 - name: Enable and start Vault service
   systemd:
