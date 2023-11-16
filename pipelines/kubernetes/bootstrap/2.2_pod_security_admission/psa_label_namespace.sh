@@ -9,7 +9,6 @@ K8S_VERSION="v1.28"
 
 # List of namespaces in scope for the 'baseline' Pod Security Standard
 NAMESPACES_BASELINE=(
-  default
 )
 
 # https://v1-24.docs.kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/
@@ -25,6 +24,7 @@ done
 
 # List of namespaces in scope for the 'privileged' Pod Security Standard
 NAMESPACES_PRIVILEGED=(
+  default
   system
 )
 
