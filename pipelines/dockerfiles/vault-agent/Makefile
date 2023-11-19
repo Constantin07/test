@@ -11,8 +11,11 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 VAULT_VERSION = 1.15.2
 
-.PHONY: login build scan publish clean
+.PHONY: version login build scan publish clean
 default: login build publish
+
+version:
+	@echo ${VAULT_VERSION}
 
 login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
