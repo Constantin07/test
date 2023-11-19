@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+# Based on https://github.com/hashicorp/docker-vault/blob/main/0.X/Dockerfile
+
 FROM alpine:3.18
 
 ARG VAULT_VERSION
@@ -9,7 +11,7 @@ RUN addgroup -g 10001 vault && \
 
 RUN set -eux; \
     apk --no-cache update && apk --no-cache upgrade && \
-    apk add --no-cache ca-certificates libcap su-exec dumb-init tzdata && \
+    apk add --no-cache ca-certificates && \
     apkArch="$(apk --print-arch)"; \
     case "$apkArch" in \
       armhf) ARCH='arm' ;; \
@@ -27,10 +29,6 @@ RUN mkdir -p /vault/logs && \
     mkdir -p /vault/file && \
     mkdir -p /vault/config && \
     chown -R vault:vault /vault
-
-VOLUME /vault/logs
-
-VOLUME /vault/file
 
 EXPOSE 8200
 
