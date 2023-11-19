@@ -20,6 +20,18 @@ pipeline {
 
   stages {
 
+    stage('Get version'){
+      steps {
+        dir(env.DIRECTORY) {
+          script {
+            version = sh(returnStdout: true, script: 'make version').trim()
+            println "Version: $version"
+            currentBuild.description = version
+          }
+        }
+      }
+    }
+
     stage('Checkov scan') {
       agent {
         docker {
