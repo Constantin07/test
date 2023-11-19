@@ -19,7 +19,7 @@ TAG=$(VERSION)
 all: build tag push clean
 
 version:
-	@echo ${VAULT_VERSION}
+	@echo ${VERSION}
 
 tmp:
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
