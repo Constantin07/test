@@ -3,7 +3,8 @@ IMAGE_NAME ?= docker-registry
 SERVICE_PORT ?= 5000
 DOCKER_REGISTRY = https://github.com/docker/distribution-library-image.git
 TMP_DIR = tmp
-VERSION = 2.8.1
+# See https://github.com/distribution/distribution/releases
+VERSION = 2.8.3
 
 # Check for required binaries
 EXECUTABLES = git docker
@@ -14,8 +15,11 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
 TAG=$(VERSION)
 
-.PHONY: tmp login build scan tag push clean deploy
+.PHONY: version tmp login build scan tag push clean deploy
 all: build tag push clean
+
+version:
+	@echo ${VAULT_VERSION}
 
 tmp:
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
