@@ -2,9 +2,6 @@
 
 description: Build and publish HashiCorp Vault image.
 
-properties:
-  githubProjectUrl: https://github.com/hashicorp/vault
-
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:
