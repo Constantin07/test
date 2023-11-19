@@ -56,9 +56,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
             sh 'make build tag'
           }
-          script {
-            version = sh(script: "grep -Po '^VERSION\\s*=\\s*\\K.*\$' Makefile", returnStdout: true).trim()
-          }
         }
       }
     }
@@ -86,9 +83,6 @@ pipeline {
   post {
     always {
       cleanWs()
-      script {
-        currentBuild.description = version
-      }
     }
   }
 
