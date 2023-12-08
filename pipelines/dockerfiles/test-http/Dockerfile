@@ -12,7 +12,7 @@ RUN go mod download && \
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server
 
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 RUN apk --no-cache update && apk --no-cache upgrade && \
     addgroup -g 10001 app && \
