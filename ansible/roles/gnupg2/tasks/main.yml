@@ -5,9 +5,9 @@
   tags: gnupg2
 
 - name: Check if required variables are defined
-  assert:
+  ansible.builtin.assert:
     that:
-      - "{{ item }} is defined and {{ item | length }} > 0"
+      - "item is defined and (item | length > 0)"
   with_items:
     - gpg_user
     - gpg_group
