@@ -1,7 +1,7 @@
 ---
 dependencies:
   - role: jenkins_shared
-  - role: git_crypt
+  - role: gnupg2
     vars:
       gpg_user: "{{ jenkins_user }}"
       gpg_group: "{{ jenkins_group }}"

@@ -10,6 +10,6 @@
     - common
     - chronyd
     - docker
+    - git_crypt
     - jenkins_agent
-    - gnupg2
     - prometheus/node_exporter
