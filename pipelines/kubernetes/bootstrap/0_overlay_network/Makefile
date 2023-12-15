@@ -21,7 +21,7 @@ install:
 	@kubectl apply -f ${CONFIG_FILE} --wait=true
 	@./wait.sh
 	# Make sure CPU/RAM resources are guaranteed
-	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=250m,memory=128Mi' --limits='cpu=250m,memory=128Mi' || true
+	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=100m,memory=150Mi' --limits='cpu=300m,memory=150Mi' || true
 	@kubectl apply -f ${APISERVER_FILE} --wait=true
 	@./api_server.sh
 
