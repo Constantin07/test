@@ -118,7 +118,7 @@ ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 FROM certs_${VAULT_CERTS} as certs
 
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 ARG USERNAME=toolbox
 ENV USER=${USERNAME} \
@@ -137,9 +137,9 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
     apk --no-cache add ca-certificates git curl bash procps jq python3 py3-pip make openssh-client openssl gnupg git-crypt && \
     apk --no-cache add --virtual build-dependencies python3-dev libffi-dev musl-dev gcc openssl-dev libcap && \
     setcap cap_net_raw+ep /bin/busybox && \
-    pip3 install --no-cache-dir --upgrade setuptools && \
-    pip3 install --no-cache-dir --upgrade --ignore-installed pip && \
-    pip3 install --no-cache-dir -r /requirements.txt && \
+    pip3 install --no-cache-dir --upgrade setuptools --break-system-packages && \
+    pip3 install --no-cache-dir --upgrade --ignore-installed pip --break-system-packages && \
+    pip3 install --no-cache-dir -r /requirements.txt --break-system-packages && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/* /root/.cache/pip && \
     update-ca-certificates
