@@ -4,7 +4,7 @@
 
 ARG VAULT_CERTS=copy
 
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -107,11 +107,11 @@ RUN apk --no-cache add ansible && \
     ansible-galaxy collection install -r requirements.yml
 
 
-FROM alpine:3.18 as certs_copy
+FROM alpine:3.19 as certs_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
 
-FROM alpine:3.18 as certs_no_copy
+FROM alpine:3.19 as certs_no_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 
 #checkov:skip=CKV_DOCKER_7: Using multistage build images with no version tags
