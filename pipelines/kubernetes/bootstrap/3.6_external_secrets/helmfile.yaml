@@ -15,4 +15,4 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: external-secrets/external-secrets
-    version: 0.9.9
+    version: 0.9.10
