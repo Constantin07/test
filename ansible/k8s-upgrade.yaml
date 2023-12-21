@@ -103,7 +103,7 @@
 
     - name: Upgrade kubelet kubectl to {{ k8s_version }}
       apt:
-        name: "{{ item }}={{ k8s_version }}-00"
+        name: "{{ item }}={{ k8s_version }}-*"
         update_cache: yes
       loop:
         - kubelet
