@@ -41,8 +41,8 @@
     - name: Drain the control plane node
       command: "kubectl drain {{ ansible_fqdn }} --ignore-daemonsets"
 
-    - name: Run kubeadm upgrade plan
-      command: kubeadm upgrade plan
+    - name: Run kubeadm upgrade plan {{ k8s_version }}
+      command: kubeadm upgrade plan {{ k8s_version }}
       register: plan
 
     - debug: msg="{{ plan.stdout_lines }}"
