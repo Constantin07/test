@@ -15,15 +15,16 @@
   tags: kube_common
 
 - name: Add GPG key | Ubuntu
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  ansible.builtin.apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/Release.key
+    keyring: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
     state: present
   tags: kube_common
 
 - name: Add repository source list | Ubuntu
-  apt_repository:
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-    filename: "kubernetes"
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/ /"
+    filename: kubernetes
     update_cache: yes
     state: present
   tags: kube_common
