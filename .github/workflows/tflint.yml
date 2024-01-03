@@ -1,6 +1,6 @@
 ---
 
-name: pre-commit
+name: tflint
 
 on:
   pull_request:
@@ -10,10 +10,10 @@ on:
 
 env:
   terraform_version: 1.6.6
-  tflint_version: v0.49.0
+  tflint_version: v0.50.0
 
 jobs:
-  pre-commit:
+  tflint:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
