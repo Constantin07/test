@@ -45,7 +45,7 @@ pipeline {
       }
       steps {
         dir(env.ROOT_DIR) {
-          sh 'make install'
+          sh 'make install update_resources'
         }
       }
     }

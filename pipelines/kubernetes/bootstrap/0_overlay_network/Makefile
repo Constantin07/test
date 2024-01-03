@@ -9,7 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.28.5
 
-.PHONY: validate install diff destroy clean
+.PHONY: validate install update_resources diff destroy clean
 
 validate:
 	mkdir -p /tmp/kubeconform
@@ -20,10 +20,12 @@ validate:
 install:
 	@kubectl apply -f ${CONFIG_FILE} --wait=true
 	@./wait.sh
-	# Make sure CPU/RAM resources are guaranteed
-	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=100m,memory=150Mi' --limits='cpu=300m,memory=150Mi' || true
 	@kubectl apply -f ${APISERVER_FILE} --wait=true
 	@./api_server.sh
+
+update_resources:
+	# Make sure CPU/RAM resources are guaranteed
+	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=100m,memory=155Mi' --limits='cpu=300m,memory=155Mi' || true
 
 diff:
 	kubectl -n ${NAMESPACE} diff -f ${CONFIG_FILE}
