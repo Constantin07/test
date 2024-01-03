@@ -44,15 +44,15 @@ jobs:
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.16.1
         with:
-          image-ref: 'constantin07/consul-template:latest'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          image-ref: constantin07/consul-template:latest
+          format: sarif
+          output: trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: trivy-results.sarif
 
       - name: Docker push
         run: make push
@@ -78,4 +78,4 @@ jobs:
       - name: Upload Checkov results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'checkov-results.sarif'
+          sarif_file: checkov-results.sarif
