@@ -1,5 +1,5 @@
 ---
 
-helmfile_version: 0.159.0
+helmfile_version: 0.160.0
 helmfile_url: "https://github.com/helmfile/helmfile/releases/download/v{{ helmfile_version }}/helmfile_{{ helmfile_version }}_{{ ansible_system | lower }}_amd64.tar.gz"
 install_dir: /usr/local/bin
