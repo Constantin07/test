@@ -4,13 +4,16 @@ name: pre-commit
 
 on:
   pull_request:
+    branches: [main]
 
   push:
     branches: [main]
 
+  workflow_dispatch:
+
 env:
   terraform_version: 1.6.6
-  tflint_version: v0.49.0
+  tflint_version: v0.50.0
 
 jobs:
   pre-commit:
@@ -26,7 +29,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.tflint.d/plugins
-          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
 
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
