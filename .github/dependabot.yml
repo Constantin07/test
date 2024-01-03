@@ -3,102 +3,102 @@
 version: 2
 updates:
   # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: ".github/workflows/"
+  - package-ecosystem: github-actions
+    directory: .github/workflows/
     schedule:
-      interval: "daily"
+      interval: weekly
 
-  - package-ecosystem: "terraform"
-    directory: "terraform/pipeline"
+  - package-ecosystem: terraform
+    directory: terraform/pipeline
     schedule:
-      interval: "daily"
+      interval: weekly
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/tool-box/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/tool-box/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/vault/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/vault/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/jenkins-agent/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/jenkins-agent/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/docker-nginx-proxy/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/docker-nginx-proxy/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/consul-template/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/consul-template/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/golang-terratest/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/golang-terratest/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/dockerfiles/test-http/"
+  - package-ecosystem: docker
+    directory: pipelines/dockerfiles/test-http/
     schedule:
-      interval: "daily"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "docker"
+      - dependencies
+      - docker
 
-  - package-ecosystem: "pip"
-    directory: "ansible/"
+  - package-ecosystem: pip
+    directory: ansible/
     schedule:
-      interval: "weekly"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "python"
+      - dependencies
+      - python
 
-  - package-ecosystem: "pip"
-    directory: "pipelines/dockerfiles/tool-box/"
+  - package-ecosystem: pip
+    directory: pipelines/dockerfiles/tool-box/
     schedule:
-      interval: "weekly"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "python"
+      - dependencies
+      - python
     groups:
       aws-dependencies:
         patterns:
           - awscli
           - boto3
 
-  - package-ecosystem: "pip"
-    directory: "terraform/vault/config/kubernetes/"
+  - package-ecosystem: pip
+    directory: terraform/vault/config/kubernetes/
     schedule:
-      interval: "weekly"
+      interval: weekly
     labels:
-      - "dependencies"
-      - "python"
+      - dependencies
+      - python
 
   - package-ecosystem: gomod
     directory: pipelines/kubernetes/bootstrap/3.3_external_dns/test
     schedule:
-      interval: "daily"
+      interval: weekly
