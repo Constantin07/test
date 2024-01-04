@@ -1,0 +1,23 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: k8s-image-puller
+    url: git+https://github.com/che-incubator/kubernetes-image-puller@deploy/helm?ref=main
+
+releases:
+  - name: kubernetes-image-puller
+    namespace: k8s-image-puller
+    createNamespace: true
+    chart: k8s-image-puller/kubernetes-image-puller
+    version: 1.0.0
+    values:
+      - configMap:
+          images: >
+             alpine-3-19=docker.io/alpine:3.19;
