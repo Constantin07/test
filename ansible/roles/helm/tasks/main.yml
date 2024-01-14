@@ -13,8 +13,8 @@
   until: res is succeeded
   tags: helm
 
-- name: Install helm-diff
-  command: helm plugin install https://github.com/databus23/helm-diff --version master
+- name: Install helm-diff {{ helm_diff_version }}
+  command: helm plugin install https://github.com/databus23/helm-diff --version {{ helm_diff_version }}
   environment:
     HELM_HOME: '/tmp/.helm'
   register: result_install
