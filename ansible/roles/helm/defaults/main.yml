@@ -1,6 +1,7 @@
 ---
 
 helm_version: v3.13.3
+helm_diff_version: 3.9.1
 helm_url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
 install_dir: /usr/local/bin
 

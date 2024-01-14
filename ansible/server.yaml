@@ -21,6 +21,6 @@
     - nginx
     - tflint
     - terraform_docs
-    - { role: jenkins_master, jenkins_version: 2.439, enable_https: true }
+    - { role: jenkins_master, jenkins_version: 2.440, enable_https: true }
     - prometheus/node_exporter
 ##    - nfs_server
