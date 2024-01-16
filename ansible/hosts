@@ -1,5 +1,5 @@
 [local]
-centos7.internal
+server.internal
 
 [jenkins_agents]
 jenkins-agent.internal
