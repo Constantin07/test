@@ -13,6 +13,13 @@
   until: res is succeeded
   tags: helm
 
+- name: Un-install helm-diff
+  command: helm plugin uninstall diff
+  environment:
+    HELM_HOME: '/tmp/.helm'
+  ignore_errors: yes
+  tags: helm
+
 - name: Install helm-diff {{ helm_diff_version }}
   command: helm plugin install https://github.com/databus23/helm-diff --version {{ helm_diff_version }}
   environment:
