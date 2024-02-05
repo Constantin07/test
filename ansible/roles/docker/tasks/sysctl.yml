@@ -7,7 +7,7 @@
     state: present
     reload: false
     ignoreerrors: true
-  with_items: "{{ sysctl_config }}"
+  loop: "{{ sysctl_config }}"
   notify: reload sysctl.conf
   tags: docker
 

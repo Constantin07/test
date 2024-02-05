@@ -78,6 +78,7 @@ pipeline {
             sh 'python3 -V'
             sh 'ansible --version'
             sh 'aws --version'
+            sh 'ansible-galaxy collection list'
           }
         }
       }
