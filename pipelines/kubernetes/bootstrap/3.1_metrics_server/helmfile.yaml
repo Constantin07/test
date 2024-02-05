@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/metrics-server
-    version: 6.8.0
+    version: 6.9.1
     values:
       - serviceAccount:
           name: metrics-server
@@ -25,6 +25,8 @@ releases:
         apiService:
           create: true
           insecureSkipTLSVerify: true
+        networkPolicy:
+          enabled: false
         resources:
           requests:
             memory: "32Mi"
