@@ -62,12 +62,20 @@ pipeline {
       }
     }
 
+    stage('Tag image') {
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make tag'
+        }
+      }
+    }
+
     stage('Test image') {
       agent {
         docker {
           image 'registry.internal:5000/tool-box:latest'
           reuseNode true
-          alwaysPull true
+          alwaysPull false
           args '--mount type=bind,src=/var/lib/jenkins/.gnupg,dst=/home/toolbox/.gnupg'
         }
       }
@@ -96,14 +104,6 @@ pipeline {
           recordIssues(
             tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
           )
-        }
-      }
-    }
-
-    stage('Tag image') {
-      steps {
-        dir(env.DIRECTORY) {
-          sh 'make tag'
         }
       }
     }
