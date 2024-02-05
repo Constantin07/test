@@ -101,18 +101,15 @@ ARG SHUNIT2_FILE=shunit2
 
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
-# Add ansible galaxy dependencies
-COPY requirements.yml .
-RUN apk --no-cache add ansible && \
-    ansible-galaxy collection install -r requirements.yml
-
 
 FROM alpine:3.19 as certs_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
 
+
 FROM alpine:3.19 as certs_no_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
+
 
 #checkov:skip=CKV_DOCKER_7: Using multistage build images with no version tags
 FROM certs_${VAULT_CERTS} as certs
@@ -153,11 +150,14 @@ RUN addgroup -g 113 ${USERNAME} && \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
-COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder --chown=${USERNAME} /root/.ansible .ansible
+# Add ansible galaxy dependencies
+COPY --chown=${USERNAME}:${USERNAME} requirements.yml .
+RUN ansible-galaxy collection install -r ./requirements.yml
+
+COPY --from=builder --chown=${USERNAME} /usr/local/bin /usr/local/bin
 
 RUN mkdir -p /home/${USERNAME}/.docker
 COPY --chown=${USERNAME}:${USERNAME} config.json /home/${USERNAME}/.docker/
 
 # Other common binaries
-COPY bin/* /usr/local/bin/
+COPY --chown=${USERNAME}:${USERNAME} bin/* /usr/local/bin/
