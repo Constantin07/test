@@ -5,8 +5,8 @@
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     state: present
-    reload: no
-    ignoreerrors: yes
+    reload: false
+    ignoreerrors: true
   with_items: "{{ sysctl_config }}"
   notify: reload sysctl.conf
   tags: docker
