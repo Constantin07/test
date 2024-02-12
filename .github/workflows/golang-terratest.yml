@@ -38,6 +38,7 @@ jobs:
         run: |
           version="$(cat Makefile | grep TAG | head -n 1 | awk '{print $3}')"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Version: $version"
 
   checkov:
     runs-on: ubuntu-22.04
