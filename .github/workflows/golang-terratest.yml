@@ -17,24 +17,52 @@ on:
 
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+    working-directory: pipelines/dockerfiles/golang-terratest
+
 jobs:
   get-version:
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: pipelines/dockerfiles/golang-terratest
+    permissions:
+      contents: read
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-  build:
-    needs: [ get-version ]
+      - name: Get version
+        id: get-version
+        run: version="$(cat Makefile | grep TAG | head -n 1 | awk '{print $3}')"
+
+  checkov:
     runs-on: ubuntu-22.04
     permissions:
       security-events: write
-    defaults:
-      run:
-        working-directory: pipelines/dockerfiles/golang-terratest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov action
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: pipelines/dockerfiles/golang-terratest
+          framework: dockerfile
+          skip_check: CKV_DOCKER_2
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          soft_fail: true
+
+      - name: Upload Checkov results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+
+  build:
+    needs: [ get-version, checkov ]
+    runs-on: ubuntu-22.04
+    permissions:
+      security-events: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -65,26 +93,3 @@ jobs:
 
       - name: Docker publish
         run: make publish
-
-  checkov:
-    runs-on: ubuntu-22.04
-    permissions:
-      security-events: write
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Run Checkov action
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: pipelines/dockerfiles/golang-terratest
-          framework: dockerfile
-          skip_check: CKV_DOCKER_2
-          output_format: sarif
-          output_file_path: checkov-results.sarif
-          soft_fail: true
-
-      - name: Upload Checkov results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: checkov-results.sarif
