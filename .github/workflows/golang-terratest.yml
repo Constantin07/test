@@ -81,13 +81,6 @@ jobs:
       - name: Docker build
         run: make build
 
-      - uses: actions/cache@v3
-        with:
-          path: .trivy
-          key: ${{ runner.os }}-trivy-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-trivy-
-
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.17.0
         with:
@@ -96,10 +89,6 @@ jobs:
           severity: 'LOW,MEDIUM,HIGH,CRITICAL'
           format: sarif
           output: trivy-results.sarif
-          cache-dir: .trivy
-
-#      - name: Correct Trivy cache permissions
-#        run: sudo chown -R $USER:$GROUP .trivy
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
