@@ -64,7 +64,7 @@ jobs:
           sarif_file: checkov-results.sarif
 
   build:
-    needs: [ get-version, checkov ]
+    needs: [ get-version ]
     runs-on: ubuntu-22.04
     permissions:
       security-events: write
