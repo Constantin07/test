@@ -43,8 +43,8 @@ jobs:
         with:
           image-ref: constantin07/golang-terratest:1.0.1
           ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
-          format: 'sarif,table'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          format: sarif
           output: trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
