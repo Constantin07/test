@@ -98,8 +98,8 @@ jobs:
           output: trivy-results.sarif
           cache-dir: .trivy
 
-      - name: Correct Trivy cache permissions
-        run: sudo chown -R $USER:$GROUP .trivy
+#      - name: Correct Trivy cache permissions
+#        run: sudo chown -R $USER:$GROUP .trivy
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
