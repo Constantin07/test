@@ -81,7 +81,15 @@ jobs:
       - name: Docker build
         run: make build
 
-      - name: Run trivy scan
+      - name: Run trivy scan (console)
+        uses: aquasecurity/trivy-action@0.17.0
+        with:
+          image-ref: constantin07/golang-terratest:${{ needs.get-version.outputs.version }}
+          ignore-unfixed: true
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          format: table
+
+      - name: Run trivy scan (report upload)
         uses: aquasecurity/trivy-action@0.17.0
         with:
           image-ref: constantin07/golang-terratest:${{ needs.get-version.outputs.version }}
