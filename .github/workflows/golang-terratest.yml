@@ -81,7 +81,7 @@ jobs:
       - name: Docker build
         run: make build
 
-      - name: Run trivy scan (console)
+      - name: Run trivy scan (console output)
         uses: aquasecurity/trivy-action@0.17.0
         with:
           image-ref: constantin07/golang-terratest:${{ needs.get-version.outputs.version }}

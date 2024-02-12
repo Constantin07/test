@@ -89,7 +89,7 @@
   tags: jenkins_master
 
 - name: Install Jenkins plugins
-  shell: "{{ jenkins_home }}/install-plugins.sh < {{ jenkins_home }}/plugins.txt"
+  ansible.builtin.shell: "{{ jenkins_home }}/install-plugins.sh < {{ jenkins_home }}/plugins.txt"
   environment:
     REF_DIR: "{{ jenkins_home }}/plugins"
     FAILED: "{{ jenkins_home }}/plugins/failed-plugins.txt"

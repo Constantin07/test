@@ -24,3 +24,4 @@ debian_packages:
   - unzip
   - curl
   - jq
+  - acl  # required by ansible
