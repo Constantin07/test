@@ -18,7 +18,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-version:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: pipelines/dockerfiles/golang-terratest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
   build:
+    needs: [ get-version ]
     runs-on: ubuntu-22.04
     permissions:
       security-events: write
