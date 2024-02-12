@@ -33,7 +33,10 @@ jobs:
 
       - name: Get version
         id: get-version
-        run: version="$(cat Makefile | grep TAG | head -n 1 | awk '{print $3}')"
+        run: |
+          version="$(cat Makefile | grep TAG | head -n 1 | awk '{print $3}')"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Version::${VERSION}"
 
   checkov:
     runs-on: ubuntu-22.04
