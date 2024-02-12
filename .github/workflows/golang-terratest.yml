@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: read
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -35,8 +37,7 @@ jobs:
         id: get-version
         run: |
           version="$(cat Makefile | grep TAG | head -n 1 | awk '{print $3}')"
-          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "::notice title=Version::${VERSION}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
 
   checkov:
     runs-on: ubuntu-22.04
@@ -82,7 +83,7 @@ jobs:
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.17.0
         with:
-          image-ref: constantin07/golang-terratest:1.0.1
+          image-ref: constantin07/golang-terratest:${{ needs.get-version.outputs.version }}
           ignore-unfixed: true
           severity: 'LOW,MEDIUM,HIGH,CRITICAL'
           format: sarif
