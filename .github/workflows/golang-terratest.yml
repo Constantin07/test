@@ -41,7 +41,8 @@ jobs:
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.17.0
         with:
-          image-ref: constantin07/golang-terratest:1.0.0
+          image-ref: constantin07/golang-terratest:1.0.1
+          ignore-unfixed: true
           format: sarif
           output: trivy-results.sarif
 
