@@ -1,10 +1,10 @@
 ---
 
 - name: Install required packages | Ubuntu
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
-    update_cache: yes
+    update_cache: true
   loop:
     - apt-transport-https
     - bash-completion
@@ -25,19 +25,21 @@
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/ /"
     filename: kubernetes
-    update_cache: yes
+    update_cache: true
     state: present
   tags: kube_common
 
 - name: Install Kubernetes packages | Ubuntu
-  apt:
+  ansible.builtin.apt:
     name: "{{ kubernetes_packages }}"
+    allow_change_held_packages: true
+    allow_downgrade: true
     state: present
-    update_cache: yes
+    update_cache: true
   tags: kube_common
 
 - name: Exclude K8s tools from upgrade | Ubuntu
-  dpkg_selections:
+  ansible.builtin.dpkg_selections:
     name: "{{ item }}"
     selection: hold
   loop:

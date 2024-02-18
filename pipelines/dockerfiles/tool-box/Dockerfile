@@ -20,10 +20,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG KUBECTL_VERSION=v1.28.7
+ARG KUBECTL_VERSION=v1.29.2
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=aff42d3167685e4d8e86fda0ad9c6ce6ec6c047bc24d608041d54717a18192ba
+ARG KUBECTL_SHA256=7816d067740f47f949be826ac76943167b7b3a38c4f0c18b902fffa8779a5afa
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \

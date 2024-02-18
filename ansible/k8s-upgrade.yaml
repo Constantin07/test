@@ -12,7 +12,7 @@
   tasks:
 
     - name: Wait for any possibly running unattended upgrade to finish
-      raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
+      ansible.builtin.raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
 
     - name: Run apt update
       ansible.builtin.apt:
@@ -26,9 +26,10 @@
         name: kubeadm={{ k8s_version }}-*
         update_cache: true
         allow_downgrade: true
+        allow_change_held_packages: true
 
     - name: Hold kubeadm
-      command: apt-mark hold kubeadm
+      ansible.builtin.command: apt-mark hold kubeadm
 
 # First upgrade one master
 - hosts: master-node1.internal
@@ -39,10 +40,10 @@
   tasks:
 
     - name: Drain the control plane node
-      command: "kubectl drain {{ ansible_fqdn }} --ignore-daemonsets"
+      ansible.builtin.command: "kubectl drain {{ ansible_fqdn }} --ignore-daemonsets"
 
     - name: Run kubeadm upgrade plan {{ k8s_version }}
-      command: kubeadm upgrade plan {{ k8s_version }}
+      ansible.builtin.command: kubeadm upgrade plan {{ k8s_version }}
       register: plan
 
     - debug: msg="{{ plan.stdout_lines }}"
@@ -53,7 +54,7 @@
       when: non_interactive is undefined
 
     - name: Run kubeadm upgrade apply {{ k8s_version }}
-      command: kubeadm upgrade apply {{ k8s_version }} --force
+      ansible.builtin.command: kubeadm upgrade apply {{ k8s_version }} --force
       register: apply
 
     - debug: msg="{{ apply.stdout_lines }}"

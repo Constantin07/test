@@ -16,8 +16,8 @@ init:
 
 validate:
 	mkdir -p /tmp/kubeconform
-	gomplate -f ${HEADERS_FILE} | kubeconform --strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.28.7
-	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.28.7
+	gomplate -f ${HEADERS_FILE} | kubeconform --strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.29.2
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.29.2
 
 template:
 	helmfile template
