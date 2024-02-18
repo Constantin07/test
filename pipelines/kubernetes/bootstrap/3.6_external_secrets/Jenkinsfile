@@ -29,9 +29,7 @@ pipeline {
       }
       steps {
         dir(env.ROOT_DIR) {
-          sh '''
-            make init lint validate
-          '''
+          sh 'make init lint validate'
         }
       }
     }
@@ -47,9 +45,7 @@ pipeline {
       }
       steps {
         dir(env.ROOT_DIR) {
-          sh '''
-            make init apply
-          '''
+          sh 'make init apply'
         }
       }
     }
