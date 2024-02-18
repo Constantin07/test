@@ -1,10 +1,10 @@
 ---
 
 - name: Install required packages | Ubuntu
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
-    update_cache: yes
+    update_cache: true
   loop:
     - apt-transport-https
     - bash-completion
@@ -13,22 +13,25 @@
   tags: kubectl_binary
 
 - name: Add GPG key | Ubuntu
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  ansible.builtin.apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/Release.key
+    keyring: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
     state: present
   tags: kubectl_binary
 
 - name: Add repository source list | Ubuntu
-  apt_repository:
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-    filename: "kubernetes"
-    update_cache: yes
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/ /
+    filename: kubernetes
+    update_cache: true
     state: present
   tags: kubectl_binary
 
-- name: Install kubectl package | Ubuntu
+- name: Install kubectl package v{{ kubectl_version }} | Ubuntu
   apt:
-    name: kubectl={{ kubectl_version }}
+    name: kubectl={{ kubectl_version }}-*
+    allow_change_held_packages: true
+    allow_downgrade: true
     state: present
-    update_cache: yes
+    update_cache: true
   tags: kubectl_binary

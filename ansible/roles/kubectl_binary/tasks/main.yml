@@ -2,4 +2,3 @@
 
 - include_tasks: "{{ ansible_distribution|lower }}.yml"
   tags: kubectl_binary
-

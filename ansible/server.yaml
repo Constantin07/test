@@ -13,6 +13,7 @@
     - kubeconform
     - fzf
     - vault_binary
+    - kubectl_binary
     - trivy
     - bind
     - git_chglog
