@@ -10,10 +10,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.7.3
+ARG TERRAFORM_VERSION=1.7.5
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=617042989ce46b5dd07772237b49b57b8f8e97b1604c9dbbd85ead87effb51fe
+ARG TERRAFORM_SHA256=3ff056b5e8259003f67fd0f0ed7229499cfb0b41f3ff55cc184088589994f7a5
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -30,10 +30,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.14.2
+ARG HELM_VERSION=v3.14.3
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=0885a501d586c1e949e9b113bf3fb3290b0bbf74db9444a1d8c2723a143006a5
+ARG HELM_SHA256=3c90f24e180f8c207b8a18e5ec82cb0fa49858a7a0a86e4ed52a98398681e00b
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
