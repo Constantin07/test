@@ -13,22 +13,20 @@ repos:
         exclude: templates/
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.88.0
+    rev: v1.88.3
     hooks:
       - id: terraform_fmt
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: v0.16.0
+    rev: v0.17.0
     hooks:
       - id: terraform-docs-go
         args:
-          - markdown
-          - table
-          - --output-file=README.md
+          - terraform
 
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 2.4.55
+    rev: 3.2.43
     hooks:
       - id: checkov
 
@@ -38,7 +36,7 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         name: Yamllint
@@ -46,6 +44,7 @@ repos:
           - --strict
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.39.0
     hooks:
       - id: markdownlint
+        exclude: terraform/README.md
