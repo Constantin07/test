@@ -27,6 +27,8 @@ The subnet CIDR blocks will be automatically calculated based on the number of A
 | internal\_dns\_domain | Internal DNS domain | `string` | `""` | no |
 | vpc\_cidr | The CIDR IP block allocated for VPC | `string` | n/a | yes |
 
+
+
 ## Outputs
 
 | Name | Description |

@@ -7,6 +7,12 @@
 |------|---------|
 | terraform | >= 1.3 |
 
+
+
+
+
+
+
 ## Outputs
 
 | Name | Description |

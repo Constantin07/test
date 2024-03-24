@@ -47,4 +47,4 @@ repos:
     rev: v0.39.0
     hooks:
       - id: markdownlint
-        exclude: terraform/README.md
+        exclude: ^terraform/

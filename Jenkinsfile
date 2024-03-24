@@ -161,7 +161,7 @@ node {
             	    }
     		}
     	    }
-    	    
+
     	    stage(name: 'Cleanup', concurency: 1) {
     		cleanWs()
     	    }
