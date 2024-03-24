@@ -25,6 +25,8 @@
 | private\_key\_ecdsa\_curve | The name of the elliptic curve to use when ECDSA algorithm is used | `string` | `"P224"` | no |
 | private\_key\_rsa\_bits | The size in bits of SSH key | `number` | `2048` | no |
 
+
+
 ## Outputs
 
 | Name | Description |
