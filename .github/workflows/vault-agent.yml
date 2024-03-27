@@ -1,6 +1,6 @@
 ---
 
-name: vault
+name: vault-agent
 run-name: Build vault-agent container
 
 on:
