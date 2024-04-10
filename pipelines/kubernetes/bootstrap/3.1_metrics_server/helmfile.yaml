@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/metrics-server
-    version: 6.10.0
+    version: 7.0.3
     values:
       - serviceAccount:
           name: metrics-server
