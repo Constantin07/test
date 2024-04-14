@@ -39,10 +39,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.162.0
+ARG HELMFILE_VERSION=0.163.1
 ARG HELMFILE_URL=https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
 ARG HELMFILE_FILE=helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
-ARG HELMFILE_SHA256=e8e7fb360d4cbc6192348c5b4587a4e64d4b619db88046d1142467a2e6d676ad
+ARG HELMFILE_SHA256=a8f9351cbca8f1181e8787350160d4a87c362274ed26286579031815408bb5cb
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
