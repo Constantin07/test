@@ -9,7 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init validate template lint diff apply status destroy
+.PHONY: init validate template lint diff deploy status destroy
 
 init:
 	helmfile repos
@@ -29,7 +29,7 @@ diff:
 	gomplate -f ${HEADERS_FILE} | kubectl diff -f -
 	helmfile diff
 
-apply: validate
+deploy: validate
 	gomplate -f ${HEADERS_FILE} | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 

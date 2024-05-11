@@ -6,7 +6,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init template validate lint diff deploy apply status delete destroy
+.PHONY: init template validate lint diff deploy deploy status delete destroy
 
 init:
 	helm plugin install https://github.com/aslafy-z/helm-git --version 0.15.1 || true
@@ -25,7 +25,7 @@ lint:
 diff:
 	helmfile diff
 
-apply:
+deploy:
 	helmfile sync
 
 status:

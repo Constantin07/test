@@ -6,7 +6,7 @@ K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
 
-.PHONY: init validate template lint diff apply status destroy test
+.PHONY: init validate template lint diff deploy status destroy test
 
 $(eval export TSIG_SECRET=$(shell cat kube-cluster.internal.enc))
 
@@ -26,7 +26,7 @@ lint:
 diff:
 	HELM_DIFF_COLOR=true helmfile diff
 
-apply: validate
+deploy: validate
 	helmfile sync
 
 status:
