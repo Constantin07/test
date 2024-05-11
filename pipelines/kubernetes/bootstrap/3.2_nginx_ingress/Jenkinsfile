@@ -53,7 +53,7 @@ pipeline {
         dir(env.ROOT_DIR) {
           sh '''
             git crypt unlock
-            make init apply
+            make init deploy
           '''
         }
       }

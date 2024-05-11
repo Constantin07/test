@@ -51,7 +51,7 @@ pipeline {
       steps {
         dir(env.ROOT_DIR) {
           sh '''
-            make init apply
+            make init deploy
           '''
         }
       }

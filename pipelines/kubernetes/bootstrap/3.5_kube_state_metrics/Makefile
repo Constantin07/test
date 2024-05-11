@@ -8,7 +8,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 KUBECONFORM_OPTS = -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.29.4
 
 
-.PHONY: init template validate lint diff apply status destroy tests
+.PHONY: init template validate lint diff deploy status destroy tests
 
 init:
 	helmfile repos
@@ -29,7 +29,7 @@ diff:
 	gomplate -f ingress.yaml | kubectl diff -f -
 	helmfile diff
 
-apply:
+deploy:
 	gomplate -f ingress.yaml | tee /dev/tty | kubectl apply -f -
 	helmfile sync
 
