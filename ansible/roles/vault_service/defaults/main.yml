@@ -1,6 +1,6 @@
 ---
 
 vault_port: 8200
-vault_addr: "http://vault.internal:{{ vault_port }}"
+vault_addr: http://vault.internal:{{ vault_port }}
 image_name: constantin07/vault
 memory: 450m
