@@ -15,4 +15,6 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: external-secrets/external-secrets
-    version: 0.9.17
+    version: 0.9.18
+    values:
+      - installCRDs: true
