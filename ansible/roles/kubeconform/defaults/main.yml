@@ -1,5 +1,5 @@
 ---
 
-kubeconform_version: v0.6.4
+kubeconform_version: v0.6.6
 kubeconform_url: https://github.com/yannh/kubeconform/releases/download/{{ kubeconform_version }}/kubeconform-linux-amd64.tar.gz
 install_dir: /usr/local/bin
