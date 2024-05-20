@@ -10,39 +10,39 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.8.1
+ARG TERRAFORM_VERSION=1.8.3
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=265d28a1a6dd81bdd5822eba55663613b7a51c582d663f9417f8777905d39002
+ARG TERRAFORM_SHA256=4ff78474d0407ba6e8c3fb9ef798f2822326d121e045577f80e2a637ec33f553
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
     unzip -d ${INSTALL_DIR} ${TERRAFORM_FILE}; \
     chmod +x ${INSTALL_DIR}/terraform
 
-ARG KUBECTL_VERSION=v1.29.4
+ARG KUBECTL_VERSION=v1.30.1
 ARG KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 ARG KUBECTL_FILE=kubectl
-ARG KUBECTL_SHA256=10e343861c3cb0010161e703307ba907add2aeeeaffc6444779ad915f9889c88
+ARG KUBECTL_SHA256=5b86f0b06e1a5ba6f8f00e2b01e8ed39407729c4990aeda961f83a586f975e8a
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     sha256sum ${KUBECTL_FILE} | grep ${KUBECTL_SHA256}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.14.3
+ARG HELM_VERSION=v3.15.0
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=3c90f24e180f8c207b8a18e5ec82cb0fa49858a7a0a86e4ed52a98398681e00b
+ARG HELM_SHA256=a74747ac40777b86d3ff6f1be201504bba65ca46cd68b5fe25d3c394d0dcf745
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.163.1
+ARG HELMFILE_VERSION=0.164.0
 ARG HELMFILE_URL=https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
 ARG HELMFILE_FILE=helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
-ARG HELMFILE_SHA256=a8f9351cbca8f1181e8787350160d4a87c362274ed26286579031815408bb5cb
+ARG HELMFILE_SHA256=6c2ef280f0d09ea0d9f3eb7d6eed68870d28f25fdf02021228690b3fe6ae6ff3
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
@@ -69,10 +69,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
-ARG KUBECONFORM_VERSION=v0.6.4
+ARG KUBECONFORM_VERSION=v0.6.6
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
-ARG KUBECONFORM_SHA256=2b4ebeaa4d5ac4843cf8f7b7e66a8874252b6b71bc7cbfc4ef1cbf85acec7c07
+ARG KUBECONFORM_SHA256=2ff56999a6ed9e96fe5ab9ee52271f2db5335baf7f17789035b9561970cdd3eb
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
