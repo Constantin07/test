@@ -61,7 +61,7 @@ resource "vault_kubernetes_auth_backend_role" "vault_auth" {
 resource "vault_kubernetes_auth_backend_role" "hello_kubernetes" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "hello-kubernetes"
-  bound_service_account_names      = ["hello-kubernetes", "default"]
+  bound_service_account_names      = ["hello-kubernetes"]
   bound_service_account_namespaces = ["default"]
   token_ttl                        = 7200
   token_policies                   = ["default", "hello-kubernetes"]

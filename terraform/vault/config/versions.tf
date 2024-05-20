@@ -2,8 +2,8 @@ terraform {
   required_providers {
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 3.21"
+      version = "~> 4.2"
     }
   }
-  required_version = "~> 1.3"
+  required_version = "~> 1.8"
 }
