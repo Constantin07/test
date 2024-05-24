@@ -30,10 +30,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECTL_FILE} ${KUBECTL_URL}; \
     mv ${KUBECTL_FILE} ${INSTALL_DIR}/${KUBECTL_FILE}; \
     chmod +x ${INSTALL_DIR}/${KUBECTL_FILE}
 
-ARG HELM_VERSION=v3.15.0
+ARG HELM_VERSION=v3.15.1
 ARG HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz
 ARG HELM_FILE=helm-${HELM_VERSION}-linux-amd64.tar.gz
-ARG HELM_SHA256=a74747ac40777b86d3ff6f1be201504bba65ca46cd68b5fe25d3c394d0dcf745
+ARG HELM_SHA256=7b20e7791c04ea71e7fe0cbe11f1a8be4a55a692898b57d9db28f3b0c1d52f11
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
