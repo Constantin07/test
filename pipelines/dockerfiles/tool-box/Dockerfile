@@ -4,7 +4,7 @@
 
 ARG VAULT_CERTS=copy
 
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk --no-cache add curl unzip
 
@@ -102,12 +102,12 @@ ARG SHUNIT2_FILE=shunit2
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.19 as certs_copy
+FROM alpine:3.20 as certs_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
 
 
-FROM alpine:3.19 as certs_no_copy
+FROM alpine:3.20 as certs_no_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 
 
@@ -115,7 +115,7 @@ ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 FROM certs_${VAULT_CERTS} as certs
 
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 ARG USERNAME=toolbox
 ENV USER=${USERNAME} \
