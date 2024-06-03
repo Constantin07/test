@@ -1,5 +1,5 @@
 ---
 
-tfdocs_version: v0.17.0
+tfdocs_version: v0.18.0
 tfdocs_url: https://github.com/terraform-docs/terraform-docs/releases/download/{{ tfdocs_version }}/terraform-docs-{{ tfdocs_version }}-linux-amd64.tar.gz
 install_dir: /usr/local/bin
