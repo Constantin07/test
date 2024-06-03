@@ -12,6 +12,7 @@
     dest: /etc/apt/keyrings/trivy.key
     mode: '0644'
     force: true
+  tags: trivy
 
 - name: Add Trivy repository
   apt_repository:
