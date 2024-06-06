@@ -10,10 +10,10 @@ RUN apk --no-cache add curl unzip
 
 ARG INSTALL_DIR="/usr/local/bin"
 
-ARG TERRAFORM_VERSION=1.8.3
+ARG TERRAFORM_VERSION=1.8.5
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_FILE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_SHA256=4ff78474d0407ba6e8c3fb9ef798f2822326d121e045577f80e2a637ec33f553
+ARG TERRAFORM_SHA256=bb1ee3e8314da76658002e2e584f2d8854b6def50b7f124e27b957a42ddacfea
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${TERRAFORM_FILE} ${TERRAFORM_URL}; \
     sha256sum ${TERRAFORM_FILE} | grep ${TERRAFORM_SHA256}; \
@@ -49,10 +49,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL};
     tar -xvzf ${HELMFILE_FILE} -C ${INSTALL_DIR} helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
-ARG GOMPLATE_VERSION=3.11.7
+ARG GOMPLATE_VERSION=3.11.8
 ARG GOMPLATE_URL=https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64
 ARG GOMPLATE_FILE=gomplate_linux-amd64
-ARG GOMPLATE_SHA256=adfa5c7412610dde5fadea07a6b25e7cfa2db462a55b128bdce2ec8fcff22136
+ARG GOMPLATE_SHA256=edd7e578094a08e97552d002e84cce576b4df61bb6e29724c2026dc9c9afbc38
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
     sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
