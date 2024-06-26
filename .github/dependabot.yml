@@ -14,55 +14,14 @@ updates:
       interval: weekly
 
   - package-ecosystem: docker
-    directory: pipelines/dockerfiles/tool-box/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/vault/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/jenkins-agent/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/docker-nginx-proxy/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/consul-template/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/golang-terratest/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: pipelines/dockerfiles/test-http/
+    directories:
+      - pipelines/dockerfiles/tool-box/
+      - pipelines/dockerfiles/vault/
+      - pipelines/dockerfiles/jenkins-agent/
+      - pipelines/dockerfiles/docker-nginx-proxy/
+      - pipelines/dockerfiles/consul-template/
+      - pipelines/dockerfiles/golang-terratest/
+      - pipelines/dockerfiles/test-http/
     schedule:
       interval: weekly
     labels:
@@ -70,7 +29,9 @@ updates:
       - docker
 
   - package-ecosystem: pip
-    directory: ansible/
+    directories:
+      - ansible/
+      - terraform/vault/config/kubernetes/
     schedule:
       interval: weekly
     labels:
@@ -89,14 +50,6 @@ updates:
         patterns:
           - awscli
           - boto3
-
-  - package-ecosystem: pip
-    directory: terraform/vault/config/kubernetes/
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
-      - python
 
   - package-ecosystem: gomod
     directory: pipelines/kubernetes/bootstrap/3.3_external_dns/test
