@@ -2,7 +2,7 @@
 
 # Based on https://github.com/hashicorp/docker-vault/blob/main/0.X/Dockerfile
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 ARG VAULT_VERSION
 
