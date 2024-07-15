@@ -41,7 +41,7 @@ jobs:
         run: make tag
 
       - name: Run trivy scan
-        uses: aquasecurity/trivy-action@0.23.0
+        uses: aquasecurity/trivy-action@0.24.0
         with:
           image-ref: 'docker.io/constantin07/docker-nginx-proxy:latest'
           security-checks: 'vuln,secret,config'
