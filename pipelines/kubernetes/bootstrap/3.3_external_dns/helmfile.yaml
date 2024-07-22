@@ -15,7 +15,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: external-dns/external-dns
-    version: 1.14.4
+    version: 1.14.5
     values:
       - terminationGracePeriodSeconds: 5
         sources:
