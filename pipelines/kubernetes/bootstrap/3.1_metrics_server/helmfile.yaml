@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: true
     chart: bitnami/metrics-server
-    version: 7.0.4
+    version: 7.2.8
     values:
       - serviceAccount:
           name: metrics-server
@@ -38,4 +38,5 @@ releases:
           enabled: true
         podSecurityContext:
           enabled: true
-
+        pdb:
+          create: false

@@ -11,7 +11,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 validate:
 	mkdir -p /tmp/kubeconform
-	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.30.1 ${CONFIG_FILE}
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.30.3 ${CONFIG_FILE}
 
 install:
 	kubectl apply -f ${CONFIG_FILE} --wait=true
