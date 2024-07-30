@@ -5,3 +5,6 @@ debian_packages:
   - bind9utils
   - bind9-doc
   - dnsutils
+
+bind_user: bind
+bind_group: bind

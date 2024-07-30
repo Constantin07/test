@@ -1,0 +1,24 @@
+acl "trusted" {
+    localhost;
+    10.0.0.0/8;
+    172.16.0.0/12;
+    192.168.0.0/16;
+};
+
+options {
+    directory "/var/cache/bind";
+
+    recursion yes;
+    auth-nxdomain yes;
+
+    allow-query { trusted; };
+    forwarders {
+	192.168.0.1; 8.8.8.8;
+    };
+
+    allow-transfer { 10.0.0.0/8; }; // Used by external-dns in Kubernetes
+
+    dnssec-validation auto;
+
+    listen-on-v6 { any; };
+};

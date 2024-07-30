@@ -1,0 +1,8 @@
+---
+
+- name: restart bind
+  systemd:
+    name: named.service
+    daemon_reload: true
+    state: restarted
+  tags: bind
