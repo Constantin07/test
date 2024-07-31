@@ -1,23 +1,23 @@
 ---
 
 - name: Wait for any possibly running unattended upgrade to finish
-  raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
+  ansible.builtin.raw: systemd-run --property="After=apt-daily.service apt-daily-upgrade.service" --wait /bin/true
   tags: bind
 
 - name: Update apt cache
-  apt:
+  ansible.builtin.apt:
     update_cache: true
   tags: bind
 
 - name: Install required packages | Debian
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop: "{{ debian_packages }}"
   tags: bind
 
 - name: Update /etc/bind/named.conf.options file
-  template:
+  ansible.builtin.template:
     src: named.conf.options.j2
     dest: /etc/bind/named.conf.options
     owner: "{{ bind_user }}"
@@ -27,7 +27,7 @@
   tags: bind
 
 - name: Start bind service
-  service:
+  ansible.builtin.service:
     name: named
     state: started
     enabled: true
