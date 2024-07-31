@@ -69,10 +69,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
-ARG KUBECONFORM_VERSION=v0.6.6
+ARG KUBECONFORM_VERSION=v0.6.7
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
-ARG KUBECONFORM_SHA256=2ff56999a6ed9e96fe5ab9ee52271f2db5335baf7f17789035b9561970cdd3eb
+ARG KUBECONFORM_SHA256=95f14e87aa28c09d5941f11bd024c1d02fdc0303ccaa23f61cef67bc92619d73
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
