@@ -16,6 +16,11 @@
   loop: "{{ debian_packages }}"
   tags: bind
 
+- name: Include secrets
+  include_vars: key.enc.yml
+  no_log: true
+  tags: bind
+
 - name: Update /etc/bind/named.conf.options file
   ansible.builtin.template:
     src: named.conf.options.j2
@@ -23,6 +28,40 @@
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
     mode: 0644
+    validate: /usr/bin/named-checkconf %s
+  notify: restart bind
+  tags: bind
+
+- name: Copy /etc/bind/named.conf.internal file
+  ansible.builtin.template:
+    src: named.conf.internal.j2
+    dest: /etc/bind/named.conf.internal
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: 0644
+    validate: /usr/bin/named-checkconf %s
+  notify: restart bind
+  tags: bind
+
+- name: Create zone file /etc/bind/db.internal
+  ansible.builtin.template:
+    src: db.internal.j2
+    dest: /etc/bind/db.internal
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: 0644
+    validate: /usr/bin/named-checkzone internal %s
+  notify: restart bind
+  tags: bind
+
+- name: Update /etc/bind/named.conf
+  ansible.builtin.lineinfile:
+    path: /etc/bind/named.conf
+    line: 'include "/etc/bind/named.conf.internal";'
+    create: true
+    mode: 0644
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
     validate: /usr/bin/named-checkconf %s
   notify: restart bind
   tags: bind

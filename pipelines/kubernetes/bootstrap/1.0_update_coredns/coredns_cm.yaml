@@ -10,7 +10,7 @@ data:
     internal:53 {
         errors
         cache 10
-        forward . 10.0.2.4:53 {
+        forward . 10.0.2.26:53 {
             prefer_udp
         }
     }

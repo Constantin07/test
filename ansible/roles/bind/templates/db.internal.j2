@@ -1,0 +1,32 @@
+$ORIGIN .
+$TTL 60 ; 1 minute
+internal                IN SOA  ns1.internal. admin.internal. (
+                                2014       ; serial
+                                604800     ; refresh (1 week)
+                                86400      ; retry (1 day)
+                                2419200    ; expire (4 weeks)
+                                604800     ; minimum (1 week)
+                                )
+                        NS      ns1.internal.
+                        NS      ns2.internal.
+$ORIGIN internal.
+$TTL 60 ; 1 minute
+ns1                     A       10.0.2.26
+ns2                     A       10.0.2.26
+server                  A       10.0.2.26
+jenkins                 CNAME   server
+registry                CNAME   server
+kube-cluster            CNAME   server
+ingress                 CNAME   kube-cluster
+jenkins-agent           A       10.0.2.37
+registry                CNAME   server
+vault                   CNAME   server
+prometheus              A       10.0.2.14
+grafana                 CNAME   prometheus
+master-node1            A       10.0.2.34
+worker-node1            A       10.0.2.32
+worker-node2            A       10.0.2.33
+kube-state-metrics      A       10.0.2.32
+                        A       10.0.2.33
+hello-kubernetes        A       10.0.2.32
+                        A       10.0.2.33

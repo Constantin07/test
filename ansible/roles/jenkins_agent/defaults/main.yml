@@ -11,7 +11,7 @@ jenkins_service_name: jenkins-agent.service
 jenkins_master_host: jenkins.internal
 jenkins_master_port: 8443
 jenkins_master_scheme: https
-jenkins_remoting_version: 3198.v03a_401881f3e
+jenkins_remoting_version: 3256.v88a_f6e922152
 jenkins_remoting_package: remoting-{{ jenkins_remoting_version }}.jar
 jenkins_remoting_url: https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/{{ jenkins_remoting_version }}/{{ jenkins_remoting_package }}
 

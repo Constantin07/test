@@ -22,7 +22,7 @@ releases:
           - ingress
         provider: rfc2136
         extraArgs:
-          - --rfc2136-host=centos7.internal
+          - --rfc2136-host=server.internal
           - --rfc2136-port=53
           - --rfc2136-zone=internal
           - --rfc2136-tsig-keyname=kube-cluster.internal.
