@@ -23,6 +23,7 @@
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
     mode: 0644
+    validate: /usr/bin/named-checkconf %s
   notify: restart bind
   tags: bind
 
