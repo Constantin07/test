@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.18 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache ca-certificates
 
@@ -22,7 +22,7 @@ RUN set -eux; apkArch="$(apk --print-arch)"; \
     registry --version
 
 
-FROM alpine:3.18
+FROM alpine:3.20
 
 ARG USER=registry
 ARG GROUP=registry
@@ -34,7 +34,7 @@ RUN set -ex; apk --no-cache update && apk --no-cache upgrade && \
 
 COPY --from=builder --chown=${USER}:${GROUP} /bin/registry /bin/registry
 COPY --chown=${USER}:${GROUP} config-example.yml /etc/docker/registry/config.yml
-COPY --chown=${USER}:${GROUP} tmp/docker-entrypoint.sh /entrypoint.sh
+COPY --chown=${USER}:${GROUP} tmp/entrypoint.sh /entrypoint.sh
 
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000

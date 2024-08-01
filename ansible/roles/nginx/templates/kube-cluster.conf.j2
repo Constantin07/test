@@ -2,7 +2,7 @@
 
 stream {
 
-  resolver 10.0.2.4 valid=30s;
+  resolver {{ ansible_default_ipv4.address }} valid=30s;
 
   upstream kube-cluster-api {
     least_conn;
