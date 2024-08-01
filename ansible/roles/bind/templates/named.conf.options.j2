@@ -1,3 +1,8 @@
+controls {
+  inet {{ ansible_default_ipv4.address }} port 953 allow { 10.0.0.0/8; } keys { "kube-cluster.internal."; };
+//    inet 127.0.0.1 port 953 allow { 127.0.0.1; } keys { "rndc-key"; };
+};
+
 acl "trusted" {
     localhost;
     10.0.0.0/8;
@@ -5,20 +10,29 @@ acl "trusted" {
     192.168.0.0/16;
 };
 
+// For external-dns
+key kube-cluster.internal. {
+  algorithm hmac-sha256;
+  secret "{{ key_internal }}";
+};
+
 options {
     directory "/var/cache/bind";
+
+    listen-on port 53 { 127.0.0.1; {% for ip in ansible_all_ipv4_addresses %}{{ ip }}; {% endfor %}};
 
     recursion yes;
     auth-nxdomain yes;
 
     allow-query { trusted; };
     forwarders {
-	192.168.0.1; 8.8.8.8;
+	192.168.1.254; 8.8.8.8;
     };
 
     allow-transfer { 10.0.0.0/8; }; // Used by external-dns in Kubernetes
 
     dnssec-validation auto;
+    dnssec-must-be-secure internal no;
 
     listen-on-v6 { any; };
 };

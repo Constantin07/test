@@ -13,4 +13,4 @@
    - containerd
    - kube_common
    - kubelet_config
-   - role: prometheus/node_exporter
+#   - role: prometheus/node_exporter

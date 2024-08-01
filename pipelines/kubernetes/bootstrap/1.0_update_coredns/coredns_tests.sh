@@ -22,9 +22,9 @@ test_CoreDnsCheckLocalDomainConfigured() {
 }
 
 test_CoreDnsCanResolveInternal() {
-  local HOST='centos7.internal'
+  local HOST='server.internal'
   result=`kubectl exec busybox -- nslookup -type=a ${HOST} | tail -n +2 | grep Address | awk '{print $2}'`
-  assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.4'
+  assertContains "CoreDNS can resolve ${HOST}" "${result}" '10.0.2.26'
 }
 
 test_CoreDnsCanResolveVault() {

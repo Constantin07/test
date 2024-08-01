@@ -1,0 +1,14 @@
+// DNS zone internal
+
+zone "internal" IN {
+    type master;
+    file "/etc/bind/db.internal"; // path to zone file
+
+    allow-transfer {
+      key kube-cluster.internal.;
+    };
+
+    update-policy {
+      grant kube-cluster.internal. zonesub ANY;
+    };
+};
