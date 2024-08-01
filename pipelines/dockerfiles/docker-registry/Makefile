@@ -22,6 +22,7 @@ version:
 	@echo ${VERSION}
 
 tmp:
+	@rm -rf ${TMP_DIR}
 	git clone --depth 1 --single-branch -b master ${DOCKER_REGISTRY} ${TMP_DIR}
 
 login:
