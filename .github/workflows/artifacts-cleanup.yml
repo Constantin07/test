@@ -1,0 +1,16 @@
+---
+
+name: Cleanup old artifacts
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Runs weekly
+
+  workflow_dispatch:	 # Allow to trigger manually
+
+jobs:
+  cleanup-artifacts:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check for gh
+        run: which gh
