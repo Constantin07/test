@@ -2,10 +2,10 @@
 
 # Used to list and delete docker images from v2 registry
 
-registry='centos7.internal:5000'
+registry='registry.internal:5000'
 name=$1
 tag=$2
-curl -sSL "http://${registry}/v2/${name}/tags/list" | jq
+curl -sSL "http://${registry}/v2/${name}/tags/list" | jq -c '.tags | sort' | jq -r
 
 curl -v -sSL -X DELETE "http://${registry}/v2/${name}/manifests/$(
     curl -sSL -I \
