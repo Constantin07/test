@@ -51,6 +51,21 @@ pipeline {
       }
     }
 
+    stage('Garbage collect old images') {
+      steps {
+        sh '''
+          sudo systemctl stop docker-registry.service
+          docker run --rm -v docker_registry:/var/lib/registry:rw constantin07/docker-registry:latest \
+            /bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml
+          sudo systemctl start docker-registry.service
+        '''
+      }
+    }
   }
 
+  post {
+    always {
+      cleanWs()
+    }
+  }
 }
