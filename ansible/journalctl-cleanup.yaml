@@ -2,9 +2,9 @@
 # Used to vacuum journalctl logs
 
 - hosts: all,!server.internal,jenkins.internal
-  become: yes
+  become: true
   become_user: root
-  gather_facts: no
+  gather_facts: false
   ignore_unreachable: true
 
   tasks:
