@@ -4,7 +4,7 @@
 
 FROM alpine:3.20
 
-ARG VAULT_VERSION
+ARG VAULT_VERSION=latest
 
 RUN addgroup -g 10001 vault && \
     adduser -S -u 10001 -G vault vault
