@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG VAULT_VERSION
+ARG VAULT_VERSION=latest
 
 FROM hashicorp/vault:${VAULT_VERSION}
 
