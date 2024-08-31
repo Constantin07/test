@@ -11,6 +11,7 @@
     owner: root
     group: root
     mode: 0644
+    validate: /usr/sbin/nginx -c %s -t
   notify: restart nginx
   tags: nginx
 

@@ -26,13 +26,12 @@ options {
 
     allow-query { trusted; };
     forwarders {
-	192.168.1.254; 8.8.8.8;
+	10.0.2.1; 192.168.1.254; 8.8.8.8;
     };
 
     allow-transfer { 10.0.0.0/8; }; // Used by external-dns in Kubernetes
 
     dnssec-validation auto;
-    dnssec-must-be-secure internal no;
 
     listen-on-v6 { any; };
 };
