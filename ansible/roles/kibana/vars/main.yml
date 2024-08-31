@@ -2,6 +2,6 @@
 
 version: "latest"
 
-docker_host: "centos7.internal:5000"
+docker_host: "registry.internal:5000"
 image_name: "kibana"
 memory: "1000m"

@@ -1,6 +1,6 @@
 ---
 
-prometheus_version: 2.50.0
+prometheus_version: 2.54.1
 download_url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
 install_dir: /usr/local/bin
 prometheus_config_dir: /etc/prometheus
@@ -12,12 +12,8 @@ prometheus_group: prometheus
 # List of nodes to monitor
 nodes:
   - prometheus
-  - centos7
-  - jenkins-slave
-  - jenkins-slave2
+  - jenkins-agent
   - master-node1
-  - master-node2
   - worker-node1
   - worker-node2
-  - worker-node3
   - server
