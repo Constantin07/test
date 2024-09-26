@@ -33,7 +33,6 @@ pipeline-utility-steps
 ssh-agent
 startup-trigger-plugin
 workflow-aggregator
-workflow-remote-loader
 ws-cleanup
 # Updates for builtins
 command-launcher
