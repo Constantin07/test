@@ -1,4 +1,4 @@
 ---
 
-kubectl_version: 1.30.6
+kubectl_version: 1.30.7
 k8s_version_prefix: "{{ kubectl_version | ansible.builtin.regex_search('^[0-9]+.[0-9]+') }}"
