@@ -27,7 +27,7 @@ install:
 
 update_resources:
 	# Make sure CPU/RAM resources are guaranteed
-	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=100m,memory=160Mi' --limits='cpu=320m,memory=160Mi' || true
+	@kubectl -n ${NAMESPACE} set resources ds/calico-node -c=calico-node --requests='cpu=100m,memory=160Mi' --limits='cpu=350m,memory=170Mi' || true
 
 diff:
 	kubectl -n ${NAMESPACE} diff -f ${CONFIG_FILE}
