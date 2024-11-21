@@ -76,7 +76,7 @@ spec:
         env:
         - name: DATASTORE_TYPE
           value: kubernetes
-        image: calico/apiserver:v3.28.1
+        image: calico/apiserver:v3.29.1
         name: calico-apiserver
         readinessProbe:
           httpGet:
@@ -173,6 +173,7 @@ rules:
   - blockaffinities
   - caliconodestatuses
   - ipamconfigs
+  - tiers
   verbs:
   - get
   - list
