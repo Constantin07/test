@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip
 
@@ -13,7 +13,7 @@ RUN curl -fsSL --retry 3 https://releases.hashicorp.com/consul-template/${VERSIO
     rm -f consul-template.zip
 
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache ca-certificates bash curl jq && \
     update-ca-certificates
