@@ -2,7 +2,7 @@ module external-dns-test
 
 go 1.20
 
-require github.com/gruntwork-io/terratest v0.48.0
+require github.com/gruntwork-io/terratest v0.48.1
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
