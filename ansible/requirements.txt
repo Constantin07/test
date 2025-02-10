@@ -1,4 +1,4 @@
 ansible-lint==25.1.1
 ansible-core==2.18.2
-paramiko==3.5.0
+paramiko==3.5.1
 Jinja2==3.1.5
