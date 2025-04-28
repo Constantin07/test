@@ -60,7 +60,7 @@ jobs:
           echo $VAULT_VERSION
 
       - name: Build image and export to docker
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         with:
           context: pipelines/dockerfiles/vault
           platforms: linux/amd64,linux/arm64
@@ -100,7 +100,7 @@ jobs:
         run: docker run --rm -t --cap-add IPC_LOCK ${{ env.REPOSITORY }}:${{ env.VAULT_VERSION }} vault --version
 
       - name: Push amd64 & arm64 platform images
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         with:
           context: pipelines/dockerfiles/vault
           platforms: linux/amd64,linux/arm64
