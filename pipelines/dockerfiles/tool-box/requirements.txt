@@ -1,6 +1,6 @@
 ansible-core==2.18.2
-awscli==1.40.26
-boto3==1.38.27
+awscli==1.40.31
+boto3==1.38.32
 cryptography==45.0.3
 Jinja2==3.1.6
 PyYAML>=6.0.1
