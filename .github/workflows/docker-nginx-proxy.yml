@@ -26,7 +26,7 @@ jobs:
         working-directory: pipelines/dockerfiles/docker-nginx-proxy
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Docker login
         env:
@@ -62,7 +62,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run Checkov action
         uses: bridgecrewio/checkov-action@master
