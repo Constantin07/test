@@ -1,4 +1,4 @@
 PyYAML==6.0.3
 terraform-external-data==1.0.3
 kubernetes==34.1.0
-pylint==4.0.0
+pylint==4.0.2
