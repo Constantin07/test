@@ -1,7 +1,4 @@
----
-
-name: vault-agent
-run-name: Build vault-agent container
+name: Build vault-agent container
 
 on:
   pull_request:
@@ -11,7 +8,8 @@ on:
       - '!pipelines/dockerfiles/vault-agent/config.yml'
       - '!pipelines/dockerfiles/vault-agent/Makefile'
       - .github/workflows/vault-agent.yml
-    branches: [ master ]
+    branches:
+      - master
 
   push:
     paths:
@@ -20,7 +18,8 @@ on:
       - '!pipelines/dockerfiles/vault-agent/config.yml'
       - '!pipelines/dockerfiles/vault-agent/Makefile'
       - .github/workflows/vault-agent.yml
-    branches: [ master ]
+    branches:
+      - master
 
   workflow_dispatch:
 
@@ -29,7 +28,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     defaults:
