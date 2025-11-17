@@ -39,20 +39,20 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELM_FILE} ${HELM_URL}; \
     sha256sum ${HELM_FILE} | grep ${HELM_SHA256}; \
     tar xvzf ${HELM_FILE} -C ${INSTALL_DIR} --strip-components=1 linux-amd64/helm
 
-ARG HELMFILE_VERSION=0.169.1
+ARG HELMFILE_VERSION=1.0.9
 ARG HELMFILE_URL=https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
 ARG HELMFILE_FILE=helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
-ARG HELMFILE_SHA256=c3c18ad2fbc83a5440f09f79a9dfa8df2a288595766655fe79b34dd902ba8c6d
+ARG HELMFILE_SHA256=ee71196bb12460905b8cbe0ef67b28db51ef681b777cc212d8c0956475b51905
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${HELMFILE_FILE} ${HELMFILE_URL}; \
     sha256sum ${HELMFILE_FILE} | grep ${HELMFILE_SHA256}; \
     tar -xvzf ${HELMFILE_FILE} -C ${INSTALL_DIR} helmfile; \
     chmod +x ${INSTALL_DIR}/helmfile
 
-ARG GOMPLATE_VERSION=4.1.0
+ARG GOMPLATE_VERSION=4.3.3
 ARG GOMPLATE_URL=https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64
 ARG GOMPLATE_FILE=gomplate_linux-amd64
-ARG GOMPLATE_SHA256=0f5c89747e6b838cc5b7e8371eda0582388edebf7a4878e84de92a7f4a7f82a6
+ARG GOMPLATE_SHA256=ca281666e86f2f09218c1653e1908f572c0e349e9de64cb4ea93ade9333f0596
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${GOMPLATE_FILE} ${GOMPLATE_URL}; \
     sha256sum ${GOMPLATE_FILE} | grep ${GOMPLATE_SHA256}; \
@@ -69,10 +69,10 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
     mv ${VALIDATEYAML_FILE} ${INSTALL_DIR}/validate-yaml; \
     chmod +x ${INSTALL_DIR}/validate-yaml
 
-ARG KUBECONFORM_VERSION=v0.6.7
+ARG KUBECONFORM_VERSION=v0.7.0
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
-ARG KUBECONFORM_SHA256=95f14e87aa28c09d5941f11bd024c1d02fdc0303ccaa23f61cef67bc92619d73
+ARG KUBECONFORM_SHA256=cc907ccf9e3c34523f0f32b69745265e0a6908ca85b92f41931d4537860eb83c
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
