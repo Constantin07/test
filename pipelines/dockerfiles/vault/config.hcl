@@ -11,5 +11,4 @@ storage "file" {
 }
 
 default_lease_ttl = "24h"
-
 max_lease_ttl = "720h"
