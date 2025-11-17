@@ -4,7 +4,7 @@ SERVICE_PORT ?= 5000
 DOCKER_REGISTRY = https://github.com/docker/distribution-library-image.git
 TMP_DIR = tmp
 # See https://github.com/distribution/distribution/releases
-VERSION = 2.8.3
+VERSION = 3.0.0
 
 # Check for required binaries
 EXECUTABLES = git docker

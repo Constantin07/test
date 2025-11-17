@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.20 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache ca-certificates
 
@@ -22,7 +22,7 @@ RUN set -eux; apkArch="$(apk --print-arch)"; \
     registry --version
 
 
-FROM alpine:3.20
+FROM alpine:3.22
 
 ARG USER=registry
 ARG GROUP=registry
