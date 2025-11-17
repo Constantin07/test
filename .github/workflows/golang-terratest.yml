@@ -1,19 +1,19 @@
----
-
-name: golang-terratest
-run-name: Build golang-terratest
+name: Build golang-terratest
 
 on:
   pull_request:
     paths:
       - 'pipelines/dockerfiles/golang-terratest/**'
       - .github/workflows/golang-terratest.yml
-    branches: [ master ]
+    branches:
+      - master
 
   push:
     paths:
       - 'pipelines/dockerfiles/golang-terratest/**'
       - .github/workflows/golang-terratest.yml
+    branches:
+      - master
 
   workflow_dispatch:
 
@@ -24,7 +24,7 @@ defaults:
 
 jobs:
   get-version:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -41,7 +41,7 @@ jobs:
           echo "::notice::Tag version: $version"
 
   checkov:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     steps:
@@ -65,7 +65,7 @@ jobs:
 
   build:
     needs: [ get-version ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     steps:
