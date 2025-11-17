@@ -1,20 +1,19 @@
----
-
-name: tool-box
-run-name: Build tool-box container
+name: Build tool-box container
 
 on:
   pull_request:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
       - .github/workflows/tool-box.yml
-    branches: [ master ]
+    branches:
+      - master
 
   push:
     paths:
       - 'pipelines/dockerfiles/tool-box/**'
       - .github/workflows/tool-box.yml
-    branches: [ master ]
+    branches:
+      - master
 
   workflow_dispatch:
 
@@ -23,7 +22,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     defaults:
