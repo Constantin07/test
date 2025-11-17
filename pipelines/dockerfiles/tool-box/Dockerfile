@@ -102,17 +102,17 @@ ARG SHUNIT2_FILE=shunit2
 RUN set -ex; curl -fsSL --retry 3 -o ${INSTALL_DIR}/${SHUNIT2_FILE} ${SHUNIT2_URL}
 
 
-FROM alpine:3.22 as certs_copy
+FROM alpine:3.22 AS certs_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 ONBUILD COPY *_ca.crt /usr/local/share/ca-certificates/
 
 
-FROM alpine:3.22 as certs_no_copy
+FROM alpine:3.22 AS certs_no_copy
 ONBUILD RUN apk --no-cache update && apk --no-cache add ca-certificates
 
 
 #checkov:skip=CKV_DOCKER_7: Using multistage build images with no version tags
-FROM certs_${VAULT_CERTS} as certs
+FROM certs_${VAULT_CERTS} AS certs
 
 
 FROM alpine:3.22
