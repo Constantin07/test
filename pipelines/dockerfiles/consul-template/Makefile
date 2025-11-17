@@ -5,7 +5,7 @@ EXECUTABLES = docker
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-VERSION=0.39.1
+VERSION=0.41.3
 
 .PHONY: all login build scan tag push clean
 default: build tag push
