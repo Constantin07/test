@@ -43,7 +43,8 @@ jobs:
         uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: 'docker.io/constantin07/docker-nginx-proxy:latest'
-          security-checks: 'vuln,secret,config'
+          scan-type: 'image'
+          scanners: 'vuln,secret,config'
           format: 'sarif'
           output: 'trivy-results.sarif'
 
