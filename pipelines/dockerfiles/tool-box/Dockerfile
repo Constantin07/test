@@ -72,7 +72,7 @@ RUN set -exo pipefail; curl -fsSL --retry 3 -o ${VALIDATEYAML_FILE} ${VALIDATEYA
 ARG KUBECONFORM_VERSION=v0.7.0
 ARG KUBECONFORM_URL=https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz
 ARG KUBECONFORM_FILE=kubeconform-linux-amd64.tar.gz
-ARG KUBECONFORM_SHA256=cc907ccf9e3c34523f0f32b69745265e0a6908ca85b92f41931d4537860eb83c
+ARG KUBECONFORM_SHA256=c31518ddd122663b3f3aa874cfe8178cb0988de944f29c74a0b9260920d115d3
 
 RUN set -exo pipefail; curl -fsSL --retry 3 -o ${KUBECONFORM_FILE} ${KUBECONFORM_URL}; \
     sha256sum ${KUBECONFORM_FILE} | grep ${KUBECONFORM_SHA256}; \
