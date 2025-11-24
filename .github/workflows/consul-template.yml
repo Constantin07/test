@@ -27,7 +27,7 @@ jobs:
         working-directory: pipelines/dockerfiles/consul-template
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Docker login
         env:
@@ -63,7 +63,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Run Checkov action
         uses: bridgecrewio/checkov-action@master
