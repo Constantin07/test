@@ -56,7 +56,8 @@ jobs:
         uses: docker/build-push-action@v6.18.0
         with:
           context: pipelines/dockerfiles/tool-box
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -67,8 +68,8 @@ jobs:
       - name: Load amd64 platform
         run: docker buildx build --load --platform 'linux/amd64' -t ${{ env.IMAGE_NAME }} .
 
-      - name: Load arm64 platform with a different tag
-        run: docker buildx build --load --platform 'linux/arm64' -t ${{ env.IMAGE_NAME }}-arm64 .
+      # - name: Load arm64 platform with a different tag
+      #   run: docker buildx build --load --platform 'linux/arm64' -t ${{ env.IMAGE_NAME }}-arm64 .
 
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@0.33.1
@@ -86,7 +87,8 @@ jobs:
         uses: docker/build-push-action@v6.18.0
         with:
           context: pipelines/dockerfiles/tool-box
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           build-args: VAULT_CERTS=no_copy
           tags: ${{ env.IMAGE_NAME }}
