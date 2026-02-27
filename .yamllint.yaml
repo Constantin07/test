@@ -22,7 +22,9 @@ rules:
   quoted-strings:
     quote-type: double
     required: only-when-needed
-    ignore: .github/workflows/
+    ignore: |
+      .github/workflows/
+      ansible/.ansible-lint
   truthy:
     allowed-values:
       - "true"
