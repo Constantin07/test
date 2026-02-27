@@ -22,6 +22,7 @@ rules:
   quoted-strings:
     quote-type: double
     required: only-when-needed
+    ignore: .github/workflows/
   truthy:
     allowed-values:
       - "true"

@@ -1,31 +1,35 @@
 ---
 
 name: ansible-lint
-run-name: Ansible lint
 
 on:
   pull_request:
     paths:
       - 'ansible/**'
+      - 'kubespray/**'
       - .github/workflows/ansible-lint.yml
 
   push:
     paths:
       - 'ansible/**'
+      - 'kubespray/**'
       - .github/workflows/ansible-lint.yml
     branches: [ master ]
 
   workflow_dispatch:
 
-env:
-  DIRECTORY: ansible
+permissions:
+  contents: read
 
 jobs:
   ansible-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: [ansible, kubespray]
     defaults:
       run:
-        working-directory: ${{ env.DIRECTORY }}
+        working-directory: ${{ matrix.directory }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v6
