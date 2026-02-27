@@ -1,6 +1,6 @@
 ---
 
 skip_list:
-  - 301
-  - 701
+  - '301'
+  - '701'
   - ComplexityRule
