@@ -1,4 +1,4 @@
 ---
+
 - name: Reset the cluster
   ansible.builtin.import_playbook: kubernetes_sigs.kubespray.reset
-
