@@ -1,3 +1,4 @@
 ---
+
 - name: Scalet the cluster
   ansible.builtin.import_playbook: kubernetes_sigs.kubespray.scale
