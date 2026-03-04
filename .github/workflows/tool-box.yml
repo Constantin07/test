@@ -76,7 +76,7 @@ jobs:
         run: docker buildx build --load --platform 'linux/arm64' -t ${{ env.IMAGE_NAME }}-arm64 .
 
       - name: Run trivy scan
-        uses: aquasecurity/trivy-action@0.34.1
+        uses: aquasecurity/trivy-action@0.34.2
         with:
           image-ref: ${{ env.IMAGE_NAME }}
           format: sarif
