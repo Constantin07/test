@@ -1,4 +1,4 @@
-ansible-lint==26.2.0
+ansible-lint==26.3.0
 ansible-core==2.18.14 # required by Kubespray
 Jinja2==3.1.6
 distlib==0.4.0 # required by Kubespray
