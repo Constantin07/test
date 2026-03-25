@@ -1,0 +1,124 @@
+name: Kubespray lint
+
+on:
+  pull_request:
+    paths:
+      - 'kubespray/**'
+      - .github/workflows/kubespray-lint.yml
+
+  push:
+    paths:
+      - 'kubespray/**'
+      - .github/workflows/kubespray-lint.yml
+    branches: [ master ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  kubespray-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kubespray
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: "False"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: 'pip' # cache pip dependencies
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Cache Ansible Galaxy collections
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ansible/collections
+            ~/.ansible/galaxy_cache
+          key: ${{ runner.os }}-ansible-galaxy-${{ hashFiles('requirements.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-ansible-galaxy-
+
+      - name: Install collections
+        run: make collections
+
+      - name: Detect Kubespray collection
+        id: kubespray
+        run: |
+          ansible-galaxy collection list
+
+          KS_LINE=$(ansible-galaxy collection list | grep kubernetes_sigs.kubespray)
+
+          if [ -z "$KS_LINE" ]; then
+            echo "Kubespray collection not found!"
+            exit 1
+          fi
+
+          echo "Detected: $KS_LINE"
+
+          KS_VERSION=$(echo $KS_LINE | awk '{print $2}')
+          echo "version=$KS_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Show installed versions
+        run: |
+          echo "Ansible version:"
+          ansible --version
+          echo "Kubespray version: ${{ steps.kubespray.outputs.version }}"
+
+      - name: Prepare minimal inventory
+        run: |
+          cat > hosts.yaml <<EOF
+          all:
+            hosts:
+              localhost:
+                ansible_connection: local
+            children:
+              kube_control_plane:
+                hosts:
+                  localhost:
+              kube_node:
+                hosts:
+                  localhost:
+              etcd:
+                hosts:
+                  localhost:
+              calico_rr:
+                hosts:
+                  localhost:
+              bastion:
+                hosts:
+                  localhost:
+              k8s_cluster:
+                children:
+                  kube_control_plane:
+                  kube_node:
+          EOF
+
+      - name: Syntax check
+        run: |
+          ansible-playbook -i hosts.yaml cluster.yml --syntax-check
+
+      - name: List tasks
+        run: |
+          ansible-playbook  -i hosts.yaml cluster.yml --list-tasks
+
+      - name: Run bootstrap roles
+        run: |
+          ansible-playbook -b -i hosts.yaml cluster.yml \
+            --tags "bootstrap-os,preinstall"
+
+      - name: Deeper validation (check mode)
+        run: |
+          ansible-playbook -i hosts.yaml cluster.yml \
+            --tags "kubernetes/preinstall" \
+            --check \
+            -e ansible_connection=local
