@@ -87,9 +87,15 @@ jobs:
                   kube_node:
           EOF
 
-      - name: Run dry-run
+      - name: Syntax check
         run: |
           ansible-playbook -i hosts.yaml cluster.yml --syntax-check
-          ansible-playbook cluster.yml --list-tasks
-          ansible-playbook cluster.yml --list-hosts
-          
+
+      - name: List tasks
+        run: |
+          ansible-playbook  -i hosts.yaml cluster.yml --list-tasks
+
+      - name: Run bootstrap roles
+        run: |
+          ansible-playbook -b -i hosts.yaml cluster.yml \
+            --tags "bootstrap-os,preinstall"
