@@ -23,6 +23,8 @@ jobs:
     defaults:
       run:
         working-directory: kubespray
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: "False"
     steps:
       - name: Checkout source code
         uses: actions/checkout@v6
@@ -39,39 +41,28 @@ jobs:
       - name: Install collections
         run: make collections
 
-      - name: Locate Kubespray directory
-        id: locate_kubespray
+      - name: Detect Kubespray collection
+        id: kubespray
         run: |
-          # Try common locations
-          if [ -d "./roles/kubespray" ]; then
-            echo "path=./roles/kubespray" >> $GITHUB_OUTPUT
-          elif [ -d "./kubespray" ]; then
-            echo "path=./kubespray" >> $GITHUB_OUTPUT
-          else
-            echo "Kubespray not found!"
-            ls -R
+          ansible-galaxy collection list
+
+          KS_LINE=$(ansible-galaxy collection list | grep kubernetes_sigs.kubespray)
+
+          if [ -z "$KS_LINE" ]; then
+            echo "Kubespray collection not found!"
             exit 1
           fi
 
-      - name: Show Kubespray version (if available)
-        run: |
-          KS_PATH="${{ steps.locate_kubespray.outputs.path }}"
+          echo "Detected: $KS_LINE"
 
-          if [ -f "$KS_PATH/galaxy.yml" ]; then
-            echo "Kubespray galaxy.yml:"
-            grep version "$KS_PATH/galaxy.yml" || true
-          fi
-
-          if [ -f "$KS_PATH/roles/kubespray-defaults/defaults/main.yml" ]; then
-            echo "Defaults file exists"
-          fi
+          KS_VERSION=$(echo $KS_LINE | awk '{print $2}')
+          echo "version=$KS_VERSION" >> $GITHUB_OUTPUT
 
       - name: Show installed versions
         run: |
           echo "Ansible version:"
           ansible --version
-          echo "Kubespray version:"
-          pip show kubespray || echo "Kubespray not installed via pip"
+          echo "Kubespray version: ${{ steps.kubespray.outputs.version }}"
 
       - name: Run dry-run
         run: |
