@@ -36,3 +36,4 @@ jobs:
       - name: Run dry-run
         run: |
           ansible-playbook cluster.yml --syntax-check
+          ansible-playbook cluster.yml --list-tasks
