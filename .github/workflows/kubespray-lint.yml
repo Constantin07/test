@@ -92,11 +92,7 @@ jobs:
                 hosts:
                   localhost:
               calico_rr:
-                hosts:
-                  localhost:
               bastion:
-                hosts:
-                  localhost:
               k8s_cluster:
                 children:
                   kube_control_plane:
