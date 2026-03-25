@@ -37,3 +37,4 @@ jobs:
         run: |
           ansible-playbook cluster.yml --syntax-check
           ansible-playbook cluster.yml --list-tasks
+          ansible-playbook cluster.yml --list-hosts
