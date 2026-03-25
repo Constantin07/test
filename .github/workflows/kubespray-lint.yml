@@ -64,14 +64,31 @@ jobs:
           ansible --version
           echo "Kubespray version: ${{ steps.kubespray.outputs.version }}"
 
+      - name: Prepare minimal inventory
+        run: |
+          cat > hosts.yaml <<EOF
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+  children:
+    kube_control_plane:
+      hosts:
+        localhost:
+    kube_node:
+      hosts:
+        localhost:
+    etcd:
+      hosts:
+        localhost:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+EOF
+
       - name: Run dry-run
         run: |
-          # Create fake inventory
-          cat <<EOF >> hosts.yaml
-          [all]
-          localhost ansible_connection=local
-          EOF
-          
           ansible-playbook -i hosts.yaml cluster.yml --syntax-check
           ansible-playbook cluster.yml --list-tasks
           ansible-playbook cluster.yml --list-hosts
