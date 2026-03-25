@@ -1,0 +1,38 @@
+name: Kubespray lint
+
+on:
+  pull_request:
+    paths:
+      - 'kubespray/**'
+      - .github/workflows/kubespray-lint.yml
+
+  push:
+    paths:
+      - 'kubespray/**'
+      - .github/workflows/kubespray-lint.yml
+    branches: [ master ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  kubespray-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kubespray
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Install collections
+        run: make collections
+
+      - name: Run dry-run
+        run: |
+          ansible-playbook cluster.yml --syntax-check
