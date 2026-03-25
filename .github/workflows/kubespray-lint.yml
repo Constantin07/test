@@ -38,6 +38,16 @@ jobs:
       - name: Install dependencies
         run: make deps
 
+      - name: Cache Ansible Galaxy collections
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ansible/collections
+            ~/.ansible/galaxy_cache
+          key: ${{ runner.os }}-ansible-galaxy-${{ hashFiles('requirements.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-ansible-galaxy-
+
       - name: Install collections
         run: make collections
 
