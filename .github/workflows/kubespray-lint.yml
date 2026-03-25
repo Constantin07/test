@@ -38,6 +38,13 @@ jobs:
       - name: Install collections
         run: make collections
 
+      - name: Show installed versions
+        run: |
+          echo "Ansible version:"
+          ansible --version
+          echo "Kubespray version:"
+          pip show kubespray || echo "Kubespray not installed via pip"
+
       - name: Run dry-run
         run: |
           # Create fake inventory
