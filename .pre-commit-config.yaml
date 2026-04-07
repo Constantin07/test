@@ -21,14 +21,14 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: v0.21.0
+    rev: v0.22.0
     hooks:
       - id: terraform-docs-go
         args:
           - terraform
 
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 3.2.506
+    rev: 3.2.517
     hooks:
       - id: checkov
 
@@ -46,7 +46,7 @@ repos:
           - --strict
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.47.0
+    rev: v0.48.0
     hooks:
       - id: markdownlint
         exclude: ^terraform/
