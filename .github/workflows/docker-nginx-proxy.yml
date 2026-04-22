@@ -40,7 +40,7 @@ jobs:
         run: make tag
 
       - name: Run trivy scan
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: 'docker.io/constantin07/docker-nginx-proxy:latest'
           scan-type: 'image'
