@@ -6,4 +6,4 @@ collections:
     version: 9.2.0
   - name: https://github.com/kubernetes-sigs/kubespray
     type: git
-    version: master
+    version: v2.31.0
