@@ -95,3 +95,7 @@ node_modules/
 # Certificates
 pipelines/kubernetes/bootstrap/0_overlay_network/*.crt
 pipelines/kubernetes/bootstrap/0_overlay_network/*.key
+
+# Kubespray credentials
+**/credentials/*.creds
+
