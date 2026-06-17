@@ -14,32 +14,34 @@
   tags: helm
 
 - name: Un-install helm-diff
-  command: helm plugin uninstall diff
+  ansible.builtin.command: helm plugin uninstall diff
   environment:
     HELM_HOME: '/tmp/.helm'
   ignore_errors: yes
+  become: no
   tags: helm
 
 - name: Install helm-diff {{ helm_diff_version }}
-  command: helm plugin install https://github.com/databus23/helm-diff --version {{ helm_diff_version }}
+  ansible.builtin.command: helm plugin install https://github.com/databus23/helm-diff --version {{ helm_diff_version }} --verify=false
   environment:
     HELM_HOME: '/tmp/.helm'
-  register: result_install
+  become: no
   ignore_errors: yes
+  register: result_install
   tags: helm
 
 - name: Update helm-diff
-  command: helm plugin update diff
+  ansible.builtin.command: helm plugin update diff
   environment:
     HELM_HOME: '/tmp/.helm'
   when: "'plugin already exists' in result_install.stderr"
+  become: no
   tags: helm
 
-- name: Add necessary pip packages
-  pip:
-    name: PyYAML
-    version: 5.3.1
-  tags: helm
+#- name: Add necessary pip packages
+#  ansible.builtin.pip:
+#    name: PyYAML==6.0.3
+#  tags: helm
 
 # Requires galaxy kubernetes.core collection
 - name: Add helm repositories
@@ -50,4 +52,5 @@
   environment:
     HELM_HOME: '/tmp/.helm'
   notify: helm repo update
+  become: no
   tags: helm
