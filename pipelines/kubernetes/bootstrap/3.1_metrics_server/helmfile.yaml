@@ -8,35 +8,29 @@ helmDefaults:
   historyMax: 5
 
 repositories:
-  - name: bitnami
-    url: https://charts.bitnami.com/bitnami
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server
 
 releases:
   - name: metrics-server
-    namespace: {{ requiredEnv "NAMESPACE" }}
+    namespace: system
     createNamespace: true
-    chart: bitnami/metrics-server
-    version: 7.2.8
+    chart: metrics-server/metrics-server
+    version: 3.13.1
     values:
       - serviceAccount:
           name: metrics-server
-        extraArgs:
+        args:
           - "--kubelet-insecure-tls=true"
         apiService:
           create: true
           insecureSkipTLSVerify: true
-        networkPolicy:
-          enabled: false
         resources:
           requests:
             memory: "32Mi"
             cpu: "40m"
-          limits:
-            memory: "32Mi"
-            cpu: "150m"
-        startupProbe:
-          enabled: true
-        podSecurityContext:
-          enabled: true
-        pdb:
-          create: false
+#          limits:
+#            memory: "32Mi"
+#            cpu: "150m"
+        podDisruptionBudget:
+          enabled: false
