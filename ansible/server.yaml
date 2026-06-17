@@ -6,11 +6,11 @@
 #    - resolv
 #    - common
 #    - docker
-#    - helm
-#    - helmfile
-#    - helm_docs
-#    - gomplate
-#    - kubeconform
+    - helm
+    - helmfile
+    - helm_docs
+    - gomplate
+    - kubeconform
 #    - fzf
 #    - vault_binary
     - kubectl_binary
