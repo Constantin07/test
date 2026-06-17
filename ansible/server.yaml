@@ -10,7 +10,7 @@
     - helmfile
     - helm_docs
     - gomplate
-#    - kubeconform
+    - kubeconform
 #    - fzf
 #    - vault_binary
     - kubectl_binary
