@@ -1,6 +1,10 @@
 ---
 kube_version: 1.35.4
 
+#kubelet_rotate_server_certificates: true
+#kubelet_authorization_mode_webhook: true
+#kubelet_authentication_token_webhook: true
+
 # Kubernetes configuration dirs and system namespace.
 # Those are where all the additional config stuff goes
 # the kubernetes normally puts in /srv/kubernetes.
