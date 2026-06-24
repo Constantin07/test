@@ -23,7 +23,7 @@ jobs:
         working-directory: terraform/vault/config/kubernetes
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Run pylint
         run: make
