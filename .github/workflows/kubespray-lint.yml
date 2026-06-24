@@ -27,7 +27,7 @@ jobs:
       ANSIBLE_HOST_KEY_CHECKING: "False"
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v6
