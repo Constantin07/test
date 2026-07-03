@@ -1,0 +1,21 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: kong
+    url: https://charts.konghq.com
+
+releases:
+  - name: kong
+    namespace: kong
+    createNamespace: false
+    chart: kong/ingress
+    version: 0.24.0
+    values:
+      - ./values.yaml

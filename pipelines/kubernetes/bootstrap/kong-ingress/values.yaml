@@ -1,0 +1,17 @@
+---
+controller:
+  enabled: true
+
+gateway:
+  enabled: true
+
+  env:
+   proxy_listen: "0.0.0.0:8000, 0.0.0.0:8443 http2 ssl"
+
+   admin_listen: "0.0.0.0:8444 http2 ssl"
+
+   status_listen: "0.0.0.0:8100"
+
+  proxy:
+    type: NodePort # Use NodePort to expose the proxy on on-prem VMs
+    ipFamilies: ["IPv4"]
