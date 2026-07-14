@@ -1,9 +1,23 @@
+# https://github.com/Kong/charts/blob/main/charts/ingress/README.md
 ---
 controller:
   enabled: true
 
 gateway:
   enabled: true
+  deployment:
+    enabled: true
+
+  # Schedule on master node
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node.kubernetes.io/memory-pressure"
+      operator: "Exists"
 
   env:
    proxy_listen: "0.0.0.0:8000, 0.0.0.0:8443 http2 ssl"

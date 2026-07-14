@@ -1,0 +1,36 @@
+#
+---
+
+crds:
+  keep: false # fails to re-install after deletion due to CRD
+
+global:
+  domain: argocd.internal
+  networkPolicy:
+    create: false
+
+controller:
+  replicas: 1
+
+dex:
+  enabled: false
+
+server:
+  replicas: 1
+  extraArgs:
+    - --insecure
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: kong
+    ingressClassName: "kong"
+
+repoServer:
+  replicas: 1
+
+notifications:
+  enabled: false
+
+applicationSet:
+  replicas: 1

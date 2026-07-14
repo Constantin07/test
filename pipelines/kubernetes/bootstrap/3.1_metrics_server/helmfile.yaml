@@ -13,8 +13,8 @@ repositories:
 
 releases:
   - name: metrics-server
-    namespace: system
-    createNamespace: true
+    namespace: kube-system
+    createNamespace: false
     chart: metrics-server/metrics-server
     version: 3.13.1
     values:
