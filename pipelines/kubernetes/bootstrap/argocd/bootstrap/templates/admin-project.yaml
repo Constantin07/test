@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: admin-project
+  labels:
+   {{ include "bootstrap.labels" . | nindent 4 }}
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Admin Project
+  # Allow all cluster resource types
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  # Only permit applications to deploy to  these destinations
+  destinations:
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+      name: in-cluster
+  # Allow manifests to deploy from these Git repos / Container registries
+  sourceRepos:
+    - https://github.com/Constantin07/argocd-config-{{ .Values.environment }}.git
+    - 'oci://ghcr.io/constantin07/*'
+  sourceNamespaces:
+    - argocd

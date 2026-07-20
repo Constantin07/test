@@ -32,3 +32,7 @@ status:
 
 destroy:
 	helmfile destroy
+
+.PHONY: bootstrap
+bootstrap:
+	helm upgrade --install argocd-bootstrap ./bootstrap --set environment=dev --wait --timeout=180s -n ${NAMESPACE}

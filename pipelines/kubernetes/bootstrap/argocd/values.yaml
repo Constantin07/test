@@ -1,4 +1,3 @@
-#
 ---
 
 crds:
@@ -34,3 +33,7 @@ notifications:
 
 applicationSet:
   replicas: 1
+
+configs:
+  cm:
+    exec.enabled: true # for testing purposes
