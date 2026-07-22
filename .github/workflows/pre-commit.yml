@@ -41,7 +41,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
