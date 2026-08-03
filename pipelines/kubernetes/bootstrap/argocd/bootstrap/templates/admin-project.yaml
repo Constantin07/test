@@ -13,7 +13,7 @@ spec:
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
-  # Only permit applications to deploy to  these destinations
+  # Only permit applications to deploy to these destinations
   destinations:
     - namespace: "*"
       server: https://kubernetes.default.svc
