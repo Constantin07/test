@@ -2,7 +2,7 @@
 
 ## Install ArgoCD
 
-Run `make deploy`. The default values can be found [here](https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml)
+Run `make deploy`. The default values can be found [here](https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml).
 
 ## Get admin password for UI
 
