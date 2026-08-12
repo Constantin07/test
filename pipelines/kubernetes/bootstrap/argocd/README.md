@@ -11,3 +11,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ## Bootstrap ArgoCD
 
 Run `make bootsrap`
+
+## Check for updates
+
+```sh
+helm search repo argo
+```
