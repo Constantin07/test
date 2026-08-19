@@ -16,7 +16,7 @@ releases:
     namespace: kube-system
     createNamespace: false
     chart: metrics-server/metrics-server
-    version: 3.13.1
+    version: 3.14.0
     values:
       - serviceAccount:
           name: metrics-server
