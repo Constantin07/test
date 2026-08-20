@@ -1,9 +1,9 @@
 ---
 collections:
   - name: ansible.posix
-    version: 2.2.0
+    version: 2.2.2
   - name: community.general
-    version: 13.0.0
+    version: 13.3.0
   - name: https://github.com/kubernetes-sigs/kubespray
     type: git
-    version: v2.31.0
+    version: master
