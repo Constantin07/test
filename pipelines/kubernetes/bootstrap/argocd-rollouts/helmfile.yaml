@@ -1,0 +1,21 @@
+---
+
+helmDefaults:
+  cleanupOnFail: false
+  verify: false
+  wait: true
+  timeout: 120
+  historyMax: 5
+
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+releases:
+  - name: argocd-rollouts
+    namespace: argocd
+    createNamespace: false # Already taken care by argocd chart
+    chart: argo/argo-rollouts
+    version: 2.41.1
+    values:
+      - ./values.yaml
