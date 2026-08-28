@@ -392,5 +392,5 @@ remove_anonymous_access: false
 
 ## Custom configs
 # https://kubespray.io/#/docs/advanced/downloads
-download_run_once: true
+download_run_once: false
 download_localhost: false
