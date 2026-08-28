@@ -12,19 +12,19 @@
     - socat  # required for kubectl port-forward to work
   tags: kubectl_binary
 
-- name: Add GPG key | Ubuntu
-  ansible.builtin.apt_key:
-    url: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/Release.key
-    keyring: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
+- name: Add repository source list | Ubuntu
+  ansible.builtin.deb822_repository:
+    name: kubernetes
+    types: deb
+    uris: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/
+    suites: /
+    signed_by: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
     state: present
   tags: kubectl_binary
 
-- name: Add repository source list | Ubuntu
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/ /
-    filename: kubernetes
+- name: Update apt cache
+  ansible.builtin.apt:
     update_cache: true
-    state: present
   tags: kubectl_binary
 
 - name: Install kubectl package v{{ kubectl_version }} | Ubuntu
