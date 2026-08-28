@@ -1,0 +1,30 @@
+---
+
+- name: Download and install nerdctl v{{ nerdctl_version }}
+  unarchive:
+    src: "{{ nerdctl_url }}"
+    dest: "{{ nerdctl_install_dir }}"
+    remote_src: yes
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded
+  tags: nerdctl
+
+- name: Create a directory for cni-plugins
+  ansible.builtin.file:
+    path: "{{ cni_plugins_install_dir }}"
+    state: directory
+    mode: '0755'
+  tags: nerdctl
+
+- name: Download and install cni-plugins {{ cni_plugins_version }}
+  unarchive:
+    src: "{{ cni_plugins_url }}"
+    dest: "{{ cni_plugins_install_dir }}"
+    remote_src: yes
+  retries: 3
+  delay: 3
+  register: res
+  until: res is succeeded
+  tags: nerdctl

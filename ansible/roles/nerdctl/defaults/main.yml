@@ -1,0 +1,9 @@
+---
+
+nerdctl_version: 2.3.5
+nerdctl_url: https://github.com/containerd/nerdctl/releases/download/v{{ nerdctl_version }}/nerdctl-{{ nerdctl_version }}-linux-amd64.tar.gz
+nerdctl_install_dir: /usr/local/bin
+
+cni_plugins_version: v1.9.1
+cni_plugins_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_plugins_version }}/cni-plugins-linux-amd64-{{ cni_plugins_version }}.tgz
+cni_plugins_install_dir: /opt/cni/bin/
