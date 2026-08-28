@@ -1,5 +1,5 @@
 ---
-kube_version: 1.35.8
+kube_version: 1.36.4
 
 #kubelet_rotate_server_certificates: true
 #kubelet_authorization_mode_webhook: true
@@ -388,3 +388,9 @@ kubeadm_patches: []
 
 # Set to true to remove the role binding to anonymous users created by kubeadm
 remove_anonymous_access: false
+
+
+## Custom configs
+# https://kubespray.io/#/docs/advanced/downloads
+download_run_once: true
+download_localhost: false
