@@ -36,4 +36,5 @@ applicationSet:
 
 configs:
   cm:
-    exec.enabled: true # for testing purposes
+    exec:
+      enabled: true # for testing purposes

@@ -23,7 +23,7 @@ spec:
   gatewayClassName: kong
   listeners:
   - name: proxy
-    port: 80
+    port: 8080
     protocol: HTTP
     allowedRoutes:
       namespaces:

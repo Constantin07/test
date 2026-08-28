@@ -27,5 +27,8 @@ gateway:
    status_listen: "0.0.0.0:8100"
 
   proxy:
-    type: NodePort # Use NodePort to expose the proxy on on-prem VMs
+    http:
+      servicePort: 8080  # same port nr. as in Gateway resource
+      nodePort: 30000    # must be in the valid NodePort range (30000-32767)
+    type: NodePort       # Use NodePort to expose the proxy on on-prem VMs
     ipFamilies: ["IPv4"]
