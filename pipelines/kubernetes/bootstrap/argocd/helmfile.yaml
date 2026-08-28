@@ -4,7 +4,7 @@ helmDefaults:
   cleanupOnFail: false
   verify: false
   wait: true
-  timeout: 120
+  timeout: 180
   historyMax: 5
 
 repositories:
@@ -19,6 +19,6 @@ releases:
     namespace: argocd
     createNamespace: true
     chart: argo/argo-cd
-    version: 10.4.0
+    version: 10.4.1
     values:
       - ./values.yaml
