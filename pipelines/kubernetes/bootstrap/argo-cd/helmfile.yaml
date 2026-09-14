@@ -15,7 +15,7 @@ apiVersions:
   - monitoring.coreos.com/v1
 
 releases:
-  - name: argocd
+  - name: argo-cd
     namespace: argocd
     createNamespace: true
     chart: argo/argo-cd

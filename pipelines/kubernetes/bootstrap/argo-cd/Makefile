@@ -31,6 +31,7 @@ status:
 	helmfile status
 
 destroy:
+	helm uninstall argocd-bootstrap --cascade foreground --wait --timeout=180s --ignore-not-found -n ${NAMESPACE}
 	helmfile destroy
 
 .PHONY: bootstrap
