@@ -7,8 +7,17 @@ controller:
 
 dashboard:
   enabled: true
+
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: kong
     hosts:
+      - argorollouts.internal
+
+  httproute:
+    enabled: true
+    parentRefs:
+      - name: kong
+        namespace: kong
+    hostnames:
       - argorollouts.internal
