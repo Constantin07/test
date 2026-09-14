@@ -12,10 +12,10 @@ repositories:
     url: https://argoproj.github.io/argo-helm
 
 releases:
-  - name: argocd-rollouts
-    namespace: argocd
-    createNamespace: false # Already taken care by argocd chart
+  - name: argo-rollouts
+    namespace: argo-rollouts
+    createNamespace: true
     chart: argo/argo-rollouts
-    version: 2.41.1
+    version: 2.43.1
     values:
       - ./values.yaml
