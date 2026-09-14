@@ -4,3 +4,11 @@ keepCRDs: false   # For clean uninstall
 
 controller:
   replicas: 1
+
+dashboard:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: kong
+    hosts:
+      - argorollouts.internal
