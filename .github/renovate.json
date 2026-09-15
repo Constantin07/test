@@ -11,7 +11,7 @@
 
   "minimumReleaseAge": "1 day",
 
-  "prConcurrentLimit": 2,
+  "prConcurrentLimit": 1,
   "prBodyNotes": [],
 
   "packageRules": [
