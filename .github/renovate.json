@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "enabledManagers": [
+    "helmfile"
+  ],
+
+  "extends": [
+    "config:recommended"
+  ],
+
+  "prConcurrentLimit": 5,
+
+  "packageRules": [
+    {
+      "matchManagers": [
+        "helmfile"
+      ],
+      "groupName": "helm charts"
+    }
+  ]
+}
