@@ -6,7 +6,7 @@
   ],
 
   "extends": [
-    "config:recommended"
+    "config:best-practices"
   ],
 
   "minimumReleaseAge": "1 day",
