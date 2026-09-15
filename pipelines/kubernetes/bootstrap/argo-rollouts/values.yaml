@@ -4,12 +4,16 @@ keepCRDs: false   # For clean uninstall
 
 controller:
   replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
 
 dashboard:
   enabled: true
 
   ingress:
-    enabled: false
+    enabled: false    # Use httproute instead
     ingressClassName: kong
     hosts:
       - argorollouts.internal
