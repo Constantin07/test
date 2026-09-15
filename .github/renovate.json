@@ -10,8 +10,10 @@
   ],
 
   "prConcurrentLimit": 1,
-
+  "minimumReleaseAge": "1 day",
   "prCreation": "immediate",
+
+  "dependencyDashboard": false,
 
   "packageRules": [
     {
