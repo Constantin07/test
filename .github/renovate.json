@@ -11,8 +11,6 @@
 
   "platform": "github",
 
-  "minimumReleaseAge": "1 day",
-
   "prConcurrentLimit": 1,
   "prBodyNotes": [],
   "prCreation": "immediate",
