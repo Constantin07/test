@@ -9,7 +9,7 @@
     "config:best-practices"
   ],
 
-  "prConcurrentLimit": 1,
+  "prConcurrentLimit": 5,
   "minimumReleaseAge": "1 day",
   "prCreation": "immediate",
 
