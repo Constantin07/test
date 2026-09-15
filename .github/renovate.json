@@ -9,6 +9,8 @@
     "config:recommended"
   ],
 
+  "minimumReleaseAge": "1 day",
+
   "prConcurrentLimit": 5,
 
   "packageRules": [
