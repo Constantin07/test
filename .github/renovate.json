@@ -21,7 +21,7 @@
         "helmfile"
       ],
       "groupName": "helm charts",
-      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "matchUpdateTypes": ["patch", "minor", "digest"]
     }
   ]
 }
