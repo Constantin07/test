@@ -29,4 +29,5 @@ jobs:
           RENOVATE_GIT_AUTHOR: "Renovate Bot <renovate-bot@users.noreply.github.com>"
           LOG_LEVEL: info
         with:
+          configurationFile: .github/renovate.json
           token: ${{ secrets.GITHUB_TOKEN }}
