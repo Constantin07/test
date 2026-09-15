@@ -9,6 +9,8 @@
     "config:best-practices"
   ],
 
+  "platform": "github",
+
   "minimumReleaseAge": "1 day",
 
   "prConcurrentLimit": 1,
