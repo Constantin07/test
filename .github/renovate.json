@@ -9,8 +9,6 @@
     "config:best-practices"
   ],
 
-  "platform": "github",
-
   "prConcurrentLimit": 1,
   "prBodyNotes": [],
   "prCreation": "immediate",
