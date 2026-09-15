@@ -2,10 +2,10 @@ name: pre-commit
 
 on:
   pull_request:
-    branches: [main]
+    branches: [mmaster]
 
   push:
-    branches: [main]
+    branches: [master]
 
   workflow_dispatch:
 
