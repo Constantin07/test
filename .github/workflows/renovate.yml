@@ -1,0 +1,19 @@
+name: Renovate
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 3 * * 1" # Runs at 03:00, only on Monday
+      timezone: "Europe/London"
+
+permissions:
+  contents: read
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
