@@ -16,7 +16,7 @@ releases:
     namespace: {{ requiredEnv "NAMESPACE" }}
     createNamespace: false
     chart: prometheus-community/kube-prometheus-stack
-    version: 19.0.2
+    version: 91.4.0
     values:
       - defaultRules:
           create: false
