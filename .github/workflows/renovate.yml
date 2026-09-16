@@ -13,7 +13,7 @@ on:
           - reset
 
   schedule:
-    - cron: "*/5 * * * *" 
+    - cron: "7,17,27,37,47,57 * * * *" 
 
 concurrency:
   group: renovate-${{ github.repository }}
