@@ -9,6 +9,7 @@
     "config:best-practices"
   ],
 
+  "prHourlyLimit": 4,
   "prConcurrentLimit": 5,
   "minimumReleaseAge": "1 day",
   "prCreation": "immediate",
@@ -18,7 +19,7 @@
   "packageRules": [
     {
       "matchManagers": ["helmfile"],
-      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "matchUpdateTypes": ["major", "minor", "patch", "digest"],
       "labels": ["helmfile"]
     }
   ]
