@@ -20,7 +20,6 @@
       "matchManagers": [
         "helmfile"
       ],
-      "groupName": "helm charts",
       "matchUpdateTypes": ["patch", "minor", "digest"]
     }
   ]
