@@ -14,7 +14,6 @@ on:
 
   schedule:
     - cron: "*/10 * * * *" # Runs at 03:00, only on Monday
-      timezone: "Europe/London"
 
 concurrency:
   group: renovate-${{ github.repository }}
