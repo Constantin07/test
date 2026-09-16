@@ -13,7 +13,7 @@ on:
           - reset
 
   schedule:
-    - cron: "0 3 * * 1" # Runs at 03:00, only on Monday
+    - cron: "0 3 * * *" # Runs at 03:00, only on Monday
       timezone: "Europe/London"
 
 concurrency:
