@@ -17,10 +17,9 @@
 
   "packageRules": [
     {
-      "matchManagers": [
-        "helmfile"
-      ],
-      "matchUpdateTypes": ["patch", "minor", "digest"]
+      "matchManagers": ["helmfile"],
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "labels": ["helmfile"]
     }
   ]
 }
