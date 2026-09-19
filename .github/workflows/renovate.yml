@@ -1,6 +1,13 @@
 name: Renovate
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/renovate.yml
+      - .github/renovate.json
+
   workflow_dispatch:
     inputs:
       repoCache:
@@ -13,7 +20,7 @@ on:
           - reset
 
   schedule:
-    - cron: "30 3 * * 1" 
+    - cron: "30 3 * * *" 
 
 concurrency:
   group: renovate-${{ github.repository }}
