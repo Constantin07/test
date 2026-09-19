@@ -2,7 +2,10 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
   "enabledManagers": [
-    "helmfile"
+    "helmfile",
+    "terraform",
+    "terraform-version",
+    "tflint-plugin"
   ],
 
   "extends": [
