@@ -16,6 +16,6 @@ releases:
     namespace: argo-rollouts
     createNamespace: true
     chart: argo/argo-rollouts
-    version: 2.43.1
+    version: 2.43.2
     values:
       - ./values.yaml
