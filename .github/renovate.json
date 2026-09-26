@@ -27,7 +27,9 @@
 
   "packageRules": [
     {
-      "matchPaths": ["**/.terraform.lock.hcl"],
+      "matchFileNames": [
+        "**/.terraform.lock.hcl"
+      ],
       "matchUpdateTypes": ["lockFileMaintenance"],
       "enabled": false
     },
