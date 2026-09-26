@@ -10,7 +10,7 @@
 
   "ignorePaths": [
     "**/.terraform.lock.hcl"
-  ]
+  ],
 
   "extends": [
     "config:best-practices"
