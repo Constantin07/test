@@ -27,6 +27,11 @@
 
   "packageRules": [
     {
+      "matchPaths": ["**/.terraform.lock.hcl"],
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "enabled": false
+    },
+    {
       "matchManagers": ["helmfile"],
       "matchUpdateTypes": ["major", "minor", "patch", "digest"],
       "labels": ["helmfile"]
