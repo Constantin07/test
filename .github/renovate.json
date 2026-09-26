@@ -8,7 +8,7 @@
     "tflint-plugin"
   ],
 
-  "semanticCommits": true,
+  "semanticCommits": "enabled",
 
   "ignorePaths": [
     "**/.terraform.lock.hcl"
