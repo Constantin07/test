@@ -9,7 +9,7 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
-VAULT_VERSION = 1.21.3
+VAULT_VERSION = 2.1.1
 
 .PHONY: version login build scan publish clean
 default: login build publish
