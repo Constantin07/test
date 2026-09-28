@@ -36,3 +36,7 @@ jobs:
           LOG_LEVEL: debug
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail if Renovate configuration is invalid
+        if: failure()
+        run: exit 1
