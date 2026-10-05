@@ -4,17 +4,17 @@ updates:
   - package-ecosystem: github-actions
     directory: .github/workflows/
     schedule:
-      interval: weekly
+      interval: monthly
 
   - package-ecosystem: pre-commit
     directory: "/"
     schedule:
-      interval: weekly
+      interval: monthly
 
   - package-ecosystem: terraform
     directory: terraform/pipeline
     schedule:
-      interval: weekly
+      interval: monthly
 
   - package-ecosystem: docker
     directories:
@@ -26,7 +26,7 @@ updates:
       - pipelines/dockerfiles/golang-terratest/
       - pipelines/dockerfiles/test-http/
     schedule:
-      interval: weekly
+      interval: monthly
     labels:
       - dependencies
       - docker
@@ -37,7 +37,7 @@ updates:
       - terraform/vault/config/kubernetes/
       - kubespray/
     schedule:
-      interval: weekly
+      interval: monthly
     labels:
       - dependencies
       - python
@@ -45,7 +45,7 @@ updates:
   - package-ecosystem: pip
     directory: pipelines/dockerfiles/tool-box/
     schedule:
-      interval: weekly
+      interval: monthly
     labels:
       - dependencies
       - python
@@ -58,4 +58,4 @@ updates:
   - package-ecosystem: gomod
     directory: pipelines/kubernetes/bootstrap/3.3_external_dns/test
     schedule:
-      interval: weekly
+      interval: monthly
