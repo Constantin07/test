@@ -9,6 +9,27 @@ controller:
       cpu: 50m
       memory: 64Mi
 
+  # Gateway API plugin
+  # https://github.com/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi/blob/main/docs/installation.md
+  initContainers:
+    - name: copy-gwapi-plugin
+      image: ghcr.io/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi:v0.17.0
+      command: ["/bin/sh", "-c"]
+      args:
+        - cp /bin/rollouts-plugin-trafficrouter-gatewayapi /plugins
+      volumeMounts:
+        - name: gwapi-plugin
+          mountPath: /plugins
+  trafficRouterPlugins:
+    - name: argoproj-labs/gatewayAPI
+      location: "file:///plugins/rollouts-plugin-trafficrouter-gatewayapi"
+  volumes:
+    - name: gwapi-plugin
+      emptyDir: {}
+  volumeMounts:
+    - name: gwapi-plugin
+      mountPath: /plugins
+
 dashboard:
   enabled: true
 

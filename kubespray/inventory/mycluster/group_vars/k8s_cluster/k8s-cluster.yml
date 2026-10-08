@@ -402,3 +402,8 @@ coredns_default_zone_cache_block: |
     denial 0
     prefetch 10 1m
   }
+
+
+dns_etchosts: |
+  192.168.137.20 hello-kubernetes.internal
+  192.168.137.20 hello-kubernetes-preview.internal
