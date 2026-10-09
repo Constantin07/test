@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   renovate-config:
-    name: Validate Renovate configuration
+    name: Validate configuration
     runs-on: ubuntu-24.04
 
     steps:
@@ -38,7 +38,7 @@ jobs:
             renovate-config-validator .github/renovate.json
 
   renovate:
-    name: Renovate
+    name: Run Renovate
     needs: [renovate-config]
     runs-on: ubuntu-24.04
     steps:
