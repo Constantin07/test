@@ -38,7 +38,7 @@ jobs:
             renovate-config-validator .github/renovate.json
 
   renovate:
-    name: Run Renovate
+    name: Renovate
     needs: [renovate-config]
     runs-on: ubuntu-24.04
     steps:
