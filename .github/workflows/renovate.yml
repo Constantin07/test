@@ -18,6 +18,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  renovate-config:
+    name: Validate Renovate configuration
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Renovate configuration
+        run: |
+          npx --yes renovate@latest renovate-config-validator .github/renovate.json
+
   renovate:
     name: Renovate
     runs-on: ubuntu-24.04
