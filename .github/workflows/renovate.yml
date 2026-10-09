@@ -59,7 +59,3 @@ jobs:
           LOG_LEVEL: debug
         with:
           token: ${{ steps.app-token.outputs.token }}
-
-      - name: Fail if Renovate configuration is invalid
-        if: failure()
-        run: exit 1
