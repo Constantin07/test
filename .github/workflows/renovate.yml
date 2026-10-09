@@ -17,6 +17,9 @@ concurrency:
   group: renovate-${{ github.repository }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   renovate-config:
     name: Validate Renovate configuration
@@ -32,9 +35,8 @@ jobs:
 
   renovate:
     name: Renovate
+    needs: [renovate-config]
     runs-on: ubuntu-24.04
-    permissions:
-      contents: read
     steps:
       - name: Generate GitHub App token
         id: app-token
