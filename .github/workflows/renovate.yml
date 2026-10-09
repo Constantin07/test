@@ -31,7 +31,7 @@ jobs:
 
       - name: Validate Renovate configuration
         run: |
-          npx --yes renovate@46.3.6 renovate-config-validator .github/renovate.json
+          npx --yes renovate@44.119.1 renovate-config-validator .github/renovate.json
 
   renovate:
     name: Renovate
