@@ -12,13 +12,29 @@
     - socat  # required for kubectl port-forward to work
   tags: kubectl_binary
 
+- name: Ensure Kubernetes apt keyring exists | Ubuntu
+  ansible.builtin.get_url:
+    url: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/Release.key"
+    dest: /etc/apt/keyrings/kubernetes-apt-keyring.asc
+    mode: "0644"
+    force: true
+  tags: kubectl_binary
+
+- name: Dearmor Kubernetes apt key | Ubuntu
+  ansible.builtin.command:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    cmd: >
+      gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      /etc/apt/keyrings/kubernetes-apt-keyring.asc
+  tags: kubectl_binary
+
 - name: Add repository source list | Ubuntu
   ansible.builtin.deb822_repository:
     name: kubernetes
     types: deb
     uris: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version_prefix }}/deb/
     suites: /
-    signed_by: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
+    signed_by: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     state: present
   tags: kubectl_binary
 
