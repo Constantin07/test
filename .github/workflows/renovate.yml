@@ -9,7 +9,7 @@ on:
       - .github/renovate.json
 
   schedule:
-    - cron: "30 3 * * *" 
+    - cron: "30 3 * * 1" 
 
   workflow_dispatch:
 
