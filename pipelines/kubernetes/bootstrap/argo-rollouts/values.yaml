@@ -13,7 +13,7 @@ controller:
   # https://github.com/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi/blob/main/docs/installation.md
   initContainers:
     - name: copy-gwapi-plugin
-      image: ghcr.io/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi:v0.17.0
+      image: ghcr.io/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi:v0.18.0
       command: ["/bin/sh", "-c"]
       args:
         - cp /bin/rollouts-plugin-trafficrouter-gatewayapi /plugins
